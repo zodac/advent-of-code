@@ -35,13 +35,10 @@ public record PartOne() {
      * Iterates through the supplied {@code values} and compares each entry to the one before it. If the new value is greater than the previous one,
      * the counter is updated.
      *
-     * <p>
-     * The supplied {@code values} are parsed to {@link Integer}s in order to be compared, rather than rely on {@link String#compareTo(String)}.
-     *
-     * @param values the {@link List} of {@link String}s to be checked
+     * @param values the {@link List} of {@link Integer}s to be checked
      * @return the count of the values higher than their predecessor
      */
-    public int countValuesHigherThanPreviousValue(final List<String> values) {
+    public int countValuesHigherThanPreviousValue(final List<Integer> values) {
         if (values.isEmpty()) {
             return 0;
         }
@@ -49,11 +46,9 @@ public record PartOne() {
         int count = 0;
 
         // Initialise with first value, rather than assuming the value cannot be negative
-        int currentValue = Integer.parseInt(values.get(0));
+        int currentValue = values.get(0);
 
-        for (final String value : values) {
-            final int nextValue = Integer.parseInt(value);
-
+        for (final int nextValue : values) {
             if (nextValue > currentValue) {
                 count++;
             }

@@ -42,7 +42,11 @@ class DayOneTest {
     @Test
     void partOne() {
         final PartOne partOne = new PartOne();
-        final List<String> values = FileUtils.readLinesFromFileInResources(INPUT_FILE_PATH);
+        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILE_PATH)
+            .stream()
+            .mapToInt(Integer::parseInt)
+            .boxed()
+            .toList();
 
         final int count = partOne.countValuesHigherThanPreviousValue(values);
         assertThat(count)
@@ -52,7 +56,11 @@ class DayOneTest {
     @Test
     void partTwo() {
         final PartTwo partTwo = new PartTwo();
-        final List<String> values = FileUtils.readLinesFromFileInResources(INPUT_FILE_PATH);
+        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILE_PATH)
+            .stream()
+            .mapToInt(Integer::parseInt)
+            .boxed()
+            .toList();
 
         final int count = partTwo.countThreeValueWindowHigherThanPreviousValue(values);
         assertThat(count)

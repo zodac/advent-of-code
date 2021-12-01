@@ -38,13 +38,10 @@ public record PartTwo() {
      * together as the first window. Then we iterate down one value (so the second and third values of the first window are reused) to calculate the
      * second window, and so on. If the new windows summed value is greater than the previous one, the counter is updated.
      *
-     * <p>
-     * The supplied {@code values} are parsed to {@link Integer}s in order to be compared, rather than rely on {@link String#compareTo(String)}.
-     *
-     * @param values the {@link List} of {@link String}s to be checked
+     * @param values the {@link List} of {@link Integer}s to be checked
      * @return the count of the windows with a higher summed value than their predecessor
      */
-    public int countThreeValueWindowHigherThanPreviousValue(final List<String> values) {
+    public int countThreeValueWindowHigherThanPreviousValue(final List<Integer> values) {
         if (values.size() < WINDOW_SIZE) {
             return 0;
         }
@@ -52,12 +49,12 @@ public record PartTwo() {
         int count = 0;
 
         // Initialise with first value, rather than assuming the value cannot be negative
-        int currentValue = Integer.parseInt(values.get(0)) + Integer.parseInt(values.get(1)) + Integer.parseInt(values.get(2));
+        int currentValue = values.get(0) + values.get(1) + values.get(2);
 
         for (int i = 0; i < values.size() - 2; i++) {
-            final int firstValue = Integer.parseInt(values.get(i));
-            final int secondValue = Integer.parseInt(values.get(i + 1));
-            final int thirdValue = Integer.parseInt(values.get(i + 2));
+            final int firstValue = values.get(i);
+            final int secondValue = values.get(i + 1);
+            final int thirdValue = values.get(i + 2);
 
             final int nextValue = firstValue + secondValue + thirdValue;
 
