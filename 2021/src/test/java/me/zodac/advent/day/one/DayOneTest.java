@@ -22,13 +22,11 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.day;
+package me.zodac.advent.day.one;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.day.one.PartOne;
-import me.zodac.advent.day.one.PartTwo;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 

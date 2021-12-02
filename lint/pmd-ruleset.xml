@@ -18,6 +18,10 @@
         <exclude name="JUnitTestContainsTooManyAsserts"/>
         <!-- False positives with AssertJ using #as() to include an error message -->
         <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+
+        <!-- False positives in JDK17, needs PMD 7.x release for fix -->
+        <!-- https://github.com/pmd/pmd/issues/2997 -->
+        <exclude name="SwitchStmtsShouldHaveDefault"/>
     </rule>
 
     <rule ref="category/java/codestyle.xml">
