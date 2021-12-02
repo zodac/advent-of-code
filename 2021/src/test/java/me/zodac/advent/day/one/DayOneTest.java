@@ -35,12 +35,12 @@ import org.junit.jupiter.api.Test;
  */
 class DayOneTest {
 
-    private static final String INPUT_FILE_PATH = "day1/input.txt";
+    private static final String INPUT_FILENAME = "day1.txt";
 
     @Test
     void partOne() {
         final PartOne partOne = new PartOne();
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILE_PATH)
+        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
             .mapToInt(Integer::parseInt)
             .boxed()
@@ -54,7 +54,7 @@ class DayOneTest {
     @Test
     void partTwo() {
         final PartTwo partTwo = new PartTwo();
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILE_PATH)
+        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
             .mapToInt(Integer::parseInt)
             .boxed()

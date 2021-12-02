@@ -37,12 +37,12 @@ import org.junit.jupiter.api.Test;
  */
 class DayTwoTest {
 
-    private static final String INPUT_FILE_PATH = "day2/input.txt";
+    private static final String INPUT_FILENAME = "day2.txt";
 
     @Test
     void partOne() {
         final PartOne partOne = new PartOne();
-        final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILE_PATH)
+        final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
             .map(DayTwoTest::convertToMovement)
             .toList();
@@ -55,7 +55,7 @@ class DayTwoTest {
     @Test
     void partTwo() {
         final PartTwo partTwo = new PartTwo();
-        final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILE_PATH)
+        final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
             .map(DayTwoTest::convertToMovement)
             .toList();
