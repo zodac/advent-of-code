@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.util;
+package me.zodac.advent.util.pojo;
 
 import java.util.List;
 

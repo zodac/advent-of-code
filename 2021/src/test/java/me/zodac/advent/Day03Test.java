@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.day.one;
+package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,38 +31,31 @@ import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for <a href="https://adventofcode.com/2021/day/1">AoC 2021, Day 1</a>.
+ * Tests to verify answers for <a href="https://adventofcode.com/2021/day/3">AoC 2021, Day 3</a>.
  */
-class DayOneTest {
+class Day03Test {
 
-    private static final String INPUT_FILENAME = "day1.txt";
-    private static final int WINDOW_SIZE = 3;
+    private static final String INPUT_FILENAME = "day03.txt";
 
     @Test
-    void partOne() {
-        final PartOne partOne = new PartOne();
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+    void day2() {
+        final List<String> binaryValues = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
-            .mapToInt(Integer::parseInt)
-            .boxed()
             .toList();
 
-        final int count = partOne.countValuesHigherThanPreviousValue(values);
-        assertThat(count)
-            .isEqualTo(1_766);
+        final long powerConsumption = Day03.calculatePowerConsumption(binaryValues);
+        assertThat(powerConsumption)
+            .isEqualTo(3_374_136L);
     }
 
     @Test
     void partTwo() {
-        final PartTwo partTwo = new PartTwo(WINDOW_SIZE);
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<String> binaryValues = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
-            .mapToInt(Integer::parseInt)
-            .boxed()
             .toList();
 
-        final int count = partTwo.countWindowValueHigherThanPreviousValue(values);
-        assertThat(count)
-            .isEqualTo(1_797);
+        final long lifeSupportRating = Day03.calculateLifeSupportRating(binaryValues);
+        assertThat(lifeSupportRating)
+            .isEqualTo(4_432_698L);
     }
 }

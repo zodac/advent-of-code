@@ -22,19 +22,84 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.day.three;
+package me.zodac.advent;
 
 import java.util.ArrayList;
 import java.util.List;
 import me.zodac.advent.util.BinaryConverter;
-import me.zodac.advent.util.BitParityCount;
+import me.zodac.advent.util.pojo.BitParityCount;
 
 /**
- * @see <a href="https://adventofcode.com/2021/day/3#part2">AoC 2021, Day 3, Part 2</a>
+ * @see <a href="https://adventofcode.com/2021/day/3">AoC 2021, Day 3</a>
  */
-public record PartTwo() {
+public final class Day03 {
 
     private static final int EXPECTED_NUMBER_OF_VALID_RATINGS = 1;
+
+    private Day03() {
+
+    }
+
+    /**
+     * Given an input {@link List} of binary values, we calculate the most common bit and least common bit per index. We then reconstitute these
+     * most/least common bits to calculate the gamma (most common bits) and epsilon (least common bits) rates of the input.
+     *
+     * <p>
+     * For example, take the input:
+     * <pre>
+     *     01101
+     *     10010
+     *     10000
+     *     11000
+     *     00010
+     * </pre>
+     *
+     * <p>
+     * We can calculate the gamma rate as:
+     * <pre>
+     *     10000
+     * </pre>
+     *
+     * <p>
+     * And the epsilon rate as:
+     * <pre>
+     *     01111
+     * </pre>
+     *
+     * <p>
+     * We can then convert these binary values to decimal values, and multiply them to determine the power consumption.
+     *
+     * @param binaryValues the values to be checked
+     * @return the power consumption
+     * @see BinaryConverter
+     * @see BitParityCount#createForIndexOfBinaryValues(List, int)
+     */
+    public static long calculatePowerConsumption(final List<String> binaryValues) {
+        if (binaryValues.isEmpty()) {
+            return 0L;
+        }
+
+        // Input should have 12 digits, but no harm being a bit flexible
+        final int lengthOfBinaryValue = binaryValues.get(0).length();
+
+        final StringBuilder gammaRate = new StringBuilder();
+        final StringBuilder epsilonRate = new StringBuilder();
+
+        for (int i = 0; i < lengthOfBinaryValue; i++) {
+            final BitParityCount bitParityCount = BitParityCount.createForIndexOfBinaryValues(binaryValues, i);
+
+            final char gammaValue = bitParityCount.mostCommonBit();
+            final char epsilonValue = bitParityCount.leastCommonBit();
+
+            gammaRate.append(gammaValue);
+            epsilonRate.append(epsilonValue);
+        }
+
+        final long gamma = BinaryConverter.toDecimal(gammaRate.toString());
+        final long epsilon = BinaryConverter.toDecimal(epsilonRate.toString());
+
+        return gamma * epsilon;
+    }
 
     /**
      * Given an input {@link List} of binary values, we calculate the most common bit and least common bit of each index, and filter out any values
@@ -82,7 +147,7 @@ public record PartTwo() {
      * @see BinaryConverter
      * @see BitParityCount#createForIndexOfBinaryValues(List, int)
      */
-    public long calculateLifeSupportRating(final List<String> binaryValues) {
+    public static long calculateLifeSupportRating(final List<String> binaryValues) {
         if (binaryValues.isEmpty()) {
             return 0L;
         }
@@ -130,4 +195,5 @@ public record PartTwo() {
         return BinaryConverter.toDecimal(validRatings.get(0));
     }
 }
+
 

@@ -22,16 +22,20 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.day.two;
+package me.zodac.advent;
 
 import java.util.List;
 import me.zodac.advent.util.Direction;
-import me.zodac.advent.util.Movement;
+import me.zodac.advent.util.pojo.Movement;
 
 /**
- * @see <a href="https://adventofcode.com/2021/day/2">AoC 2021, Day 2, Part 1</a>
+ * @see <a href="https://adventofcode.com/2021/day/2">AoC 2021, Day 2</a>
  */
-public record PartOne() {
+public final class Day02 {
+
+    private Day02(){
+
+    }
 
     /**
      * Iterates over and calculates the magnitude of the supplied {@link Movement}s.
@@ -45,7 +49,7 @@ public record PartOne() {
      * @param movements the {@link Movement}s to iterate over
      * @return the magnitude of all vertical and horizontal {@link Movement}s
      */
-    public long magnitudeOfAllMovements(final List<Movement> movements) {
+    public static long magnitudeOfAllMovements(final List<Movement> movements) {
         long horizontal = 0L;
         long vertical = 0L;
 
@@ -57,6 +61,43 @@ public record PartOne() {
                 case UP -> vertical -= spaces;
                 case DOWN -> vertical += spaces;
                 case FORWARD -> horizontal += spaces;
+                default -> throw new IllegalStateException(String.format("Cannot handle direction: '%s'", direction));
+            }
+        }
+
+        return horizontal * vertical;
+    }
+
+    /**
+     * Iterates over and calculates the magnitude of the supplied {@link Movement}s.
+     *
+     * <p>
+     * A {@link Movement} with {@link Direction} of {@link Direction#DOWN} or {@link Direction#UP} does not change the vertical value, but instead
+     * sets and {@code aim} value. When a {@link Direction#FORWARD} {@link Movement} is found, it will calculate the change in the vertical position
+     * as this {@code aim} and the number of spaces. It will also increment the horizontal position at this time.
+     *
+     * <p>
+     * The magnitude is the resultant vertical multiplied by the resultant horizontal.
+     *
+     * @param movements the {@link Movement}s to iterate over
+     * @return the magnitude of all vertical and horizontal {@link Movement}s
+     */
+    public static long magnitudeOfAllMovementsWithAim(final List<Movement> movements) {
+        long horizontal = 0L;
+        long vertical = 0L;
+        long aim = 0L;
+
+        for (final Movement movement : movements) {
+            final Direction direction = movement.direction();
+            final int spaces = movement.spaces();
+
+            switch (direction) {
+                case UP -> aim -= spaces;
+                case DOWN -> aim += spaces;
+                case FORWARD -> {
+                    horizontal += spaces;
+                    vertical += (aim * spaces);
+                }
                 default -> throw new IllegalStateException(String.format("Cannot handle direction: '%s'", direction));
             }
         }

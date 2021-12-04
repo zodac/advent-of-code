@@ -22,14 +22,46 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.day.one;
+package me.zodac.advent;
 
 import java.util.List;
 
 /**
- * @see <a href="https://adventofcode.com/2021/day/1#part2">AoC 2021, Day 1, Part 2</a>
+ * @see <a href="https://adventofcode.com/2021/day/1">AoC 2021, Day 1</a>
  */
-public record PartTwo(int windowSize) {
+public final class Day01 {
+
+    private Day01() {
+
+    }
+
+    /**
+     * Iterates through the supplied {@code values} and compares each entry to the one before it. If the new value is greater than the previous one,
+     * the counter is updated.
+     *
+     * @param values the {@link List} of {@link Integer}s to be checked
+     * @return the count of the values higher than their predecessor
+     */
+    public static int countValuesHigherThanPreviousValue(final List<Integer> values) {
+        if (values.isEmpty()) {
+            return 0;
+        }
+
+        int count = 0;
+
+        // Initialise with first value, rather than assuming the value cannot be negative
+        int currentValue = values.get(0);
+
+        for (final int nextValue : values) {
+            if (nextValue > currentValue) {
+                count++;
+            }
+
+            currentValue = nextValue;
+        }
+
+        return count;
+    }
 
     /**
      * Iterates through the supplied {@code values} and groups each {@code windowSize} entries into a 'window' for comparison. These values are summed
@@ -37,10 +69,11 @@ public record PartTwo(int windowSize) {
      * values of the first window are reused) to calculate the second window, and so on. If the new windows summed value is greater than the previous
      * one, the counter is updated.
      *
-     * @param values the {@link List} of {@link Integer}s to be checked
+     * @param windowSize the size of the 'window' to be calculated
+     * @param values     the {@link List} of {@link Integer}s to be checked
      * @return the count of the windows with a higher summed value than their predecessor
      */
-    public int countWindowValueHigherThanPreviousValue(final List<Integer> values) {
+    public static int countWindowValueHigherThanPreviousValue(final int windowSize, final List<Integer> values) {
         if (values.size() < windowSize) {
             return 0;
         }

@@ -22,40 +22,45 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.day.one;
+package me.zodac.advent;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.util.FileUtils;
+import org.junit.jupiter.api.Test;
 
 /**
- * @see <a href="https://adventofcode.com/2021/day/1">AoC 2021, Day 1, Part 1</a>
+ * Tests to verify answers for <a href="https://adventofcode.com/2021/day/1">AoC 2021, Day 1</a>.
  */
-public record PartOne() {
+class Day01Test {
 
-    /**
-     * Iterates through the supplied {@code values} and compares each entry to the one before it. If the new value is greater than the previous one,
-     * the counter is updated.
-     *
-     * @param values the {@link List} of {@link Integer}s to be checked
-     * @return the count of the values higher than their predecessor
-     */
-    public int countValuesHigherThanPreviousValue(final List<Integer> values) {
-        if (values.isEmpty()) {
-            return 0;
-        }
+    private static final String INPUT_FILENAME = "day01.txt";
+    private static final int WINDOW_SIZE = 3;
 
-        int count = 0;
+    @Test
+    void day2() {
+        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+            .stream()
+            .mapToInt(Integer::parseInt)
+            .boxed()
+            .toList();
 
-        // Initialise with first value, rather than assuming the value cannot be negative
-        int currentValue = values.get(0);
+        final int count = Day01.countValuesHigherThanPreviousValue(values);
+        assertThat(count)
+            .isEqualTo(1_766);
+    }
 
-        for (final int nextValue : values) {
-            if (nextValue > currentValue) {
-                count++;
-            }
+    @Test
+    void partTwo() {
+        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+            .stream()
+            .mapToInt(Integer::parseInt)
+            .boxed()
+            .toList();
 
-            currentValue = nextValue;
-        }
-
-        return count;
+        final int count = Day01.countWindowValueHigherThanPreviousValue(WINDOW_SIZE, values);
+        assertThat(count)
+            .isEqualTo(1_797);
     }
 }

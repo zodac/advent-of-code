@@ -22,45 +22,43 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.day.two;
+package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import me.zodac.advent.util.Direction;
 import me.zodac.advent.util.FileUtils;
-import me.zodac.advent.util.Movement;
+import me.zodac.advent.util.pojo.Movement;
 import org.junit.jupiter.api.Test;
 
 /**
  * Tests to verify answers for <a href="https://adventofcode.com/2021/day/2">AoC 2021, Day 2</a>.
  */
-class DayTwoTest {
+class Day02Test {
 
-    private static final String INPUT_FILENAME = "day2.txt";
+    private static final String INPUT_FILENAME = "day02.txt";
 
     @Test
-    void partOne() {
-        final PartOne partOne = new PartOne();
+    void day2() {
         final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
-            .map(DayTwoTest::convertToMovement)
+            .map(Day02Test::convertToMovement)
             .toList();
 
-        final long magnitude = partOne.magnitudeOfAllMovements(movements);
+        final long magnitude = Day02.magnitudeOfAllMovements(movements);
         assertThat(magnitude)
             .isEqualTo(1_813_801L);
     }
 
     @Test
     void partTwo() {
-        final PartTwo partTwo = new PartTwo();
         final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
-            .map(DayTwoTest::convertToMovement)
+            .map(Day02Test::convertToMovement)
             .toList();
 
-        final long magnitude = partTwo.magnitudeOfAllMovementsWithAim(movements);
+        final long magnitude = Day02.magnitudeOfAllMovementsWithAim(movements);
         assertThat(magnitude)
             .isEqualTo(1_960_569_556L);
     }

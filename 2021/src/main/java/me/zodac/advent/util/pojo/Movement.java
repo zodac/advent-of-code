@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.util;
+package me.zodac.advent.util.pojo;
+
+import me.zodac.advent.util.Direction;
 
 /**
  * Simple POJO defining the submarine movement in a given {@link Direction} for a number of spaces.
