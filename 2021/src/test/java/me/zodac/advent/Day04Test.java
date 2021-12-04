@@ -26,41 +26,53 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
 import java.util.List;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day01}.
+ * Tests to verify answers for {@link Day04}.
  */
-class Day01Test {
+class Day04Test {
 
-    private static final String INPUT_FILENAME = "day01.txt";
-    private static final int WINDOW_SIZE = 3;
+    private static final String INPUT_FILENAME = "day04.txt";
 
     @Test
     void part1() {
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<String> bingoInput = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
+            .filter(string -> !string.isBlank())
+            .toList();
+
+        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.get(0).split(","))
             .mapToInt(Integer::parseInt)
             .boxed()
             .toList();
 
-        final int count = Day01.countValuesHigherThanPreviousValue(values);
-        assertThat(count)
-            .isEqualTo(1_766);
+        // Remove the first entry
+        final List<String> bingoBoardsInput = bingoInput.subList(1, bingoInput.size());
+
+        final long finalScore = Day04.finalScoreOfFirstWinningBingoBoard(bingoNumbers, bingoBoardsInput);
+        assertThat(finalScore).isEqualTo(45_031L);
     }
 
     @Test
     void part2() {
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<String> bingoInput = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
+            .filter(string -> !string.isBlank())
+            .toList();
+
+        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.get(0).split(","))
             .mapToInt(Integer::parseInt)
             .boxed()
             .toList();
 
-        final int count = Day01.countWindowValueHigherThanPreviousValue(WINDOW_SIZE, values);
-        assertThat(count)
-            .isEqualTo(1_797);
+        // Remove the first entry
+        final List<String> bingoBoardsInput = bingoInput.subList(1, bingoInput.size());
+
+        final long finalScore = Day04.finalScoreOfLastWinningBingoBoard(bingoNumbers, bingoBoardsInput);
+        assertThat(finalScore).isEqualTo(2_568L);
     }
 }

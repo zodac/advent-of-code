@@ -33,7 +33,7 @@ import me.zodac.advent.util.pojo.Movement;
  */
 public final class Day02 {
 
-    private Day02(){
+    private Day02() {
 
     }
 

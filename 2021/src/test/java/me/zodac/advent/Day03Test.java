@@ -31,14 +31,14 @@ import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for <a href="https://adventofcode.com/2021/day/3">AoC 2021, Day 3</a>.
+ * Tests to verify answers for {@link Day03}.
  */
 class Day03Test {
 
     private static final String INPUT_FILENAME = "day03.txt";
 
     @Test
-    void day2() {
+    void part1() {
         final List<String> binaryValues = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
             .toList();
@@ -49,7 +49,7 @@ class Day03Test {
     }
 
     @Test
-    void partTwo() {
+    void part2() {
         final List<String> binaryValues = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
             .toList();

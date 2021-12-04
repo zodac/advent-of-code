@@ -22,45 +22,26 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-import me.zodac.advent.util.FileUtils;
-import org.junit.jupiter.api.Test;
+package me.zodac.advent.util.pojo;
 
 /**
- * Tests to verify answers for {@link Day01}.
+ * Simple tuple class to return two objects from a function instead of one.
+ *
+ * @param <E1> type of first value
+ * @param <E2> type of second value
  */
-class Day01Test {
+public record Tuple<E1, E2>(E1 first, E2 second) {
 
-    private static final String INPUT_FILENAME = "day01.txt";
-    private static final int WINDOW_SIZE = 3;
-
-    @Test
-    void part1() {
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
-            .stream()
-            .mapToInt(Integer::parseInt)
-            .boxed()
-            .toList();
-
-        final int count = Day01.countValuesHigherThanPreviousValue(values);
-        assertThat(count)
-            .isEqualTo(1_766);
-    }
-
-    @Test
-    void part2() {
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
-            .stream()
-            .mapToInt(Integer::parseInt)
-            .boxed()
-            .toList();
-
-        final int count = Day01.countWindowValueHigherThanPreviousValue(WINDOW_SIZE, values);
-        assertThat(count)
-            .isEqualTo(1_797);
+    /**
+     * Create a {@link Tuple} with two values.
+     *
+     * @param first  the first value
+     * @param second the second value
+     * @param <E1>   type of first value
+     * @param <E2>   type of second value
+     * @return the created {@link Tuple}
+     */
+    public static <E1, E2> Tuple<E1, E2> of(final E1 first, final E2 second) {
+        return new Tuple<>(first, second);
     }
 }

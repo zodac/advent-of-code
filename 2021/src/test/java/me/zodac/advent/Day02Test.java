@@ -33,14 +33,14 @@ import me.zodac.advent.util.pojo.Movement;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for <a href="https://adventofcode.com/2021/day/2">AoC 2021, Day 2</a>.
+ * Tests to verify answers for {@link Day02}.
  */
 class Day02Test {
 
     private static final String INPUT_FILENAME = "day02.txt";
 
     @Test
-    void day2() {
+    void part1() {
         final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
             .map(Day02Test::convertToMovement)
@@ -52,7 +52,7 @@ class Day02Test {
     }
 
     @Test
-    void partTwo() {
+    void part2() {
         final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
             .stream()
             .map(Day02Test::convertToMovement)
