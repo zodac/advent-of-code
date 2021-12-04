@@ -29,34 +29,38 @@ import java.util.List;
 /**
  * @see <a href="https://adventofcode.com/2021/day/1#part2">AoC 2021, Day 1, Part 2</a>
  */
-public record PartTwo() {
-
-    private static final int WINDOW_SIZE = 3;
+public record PartTwo(int windowSize) {
 
     /**
-     * Iterates through the supplied {@code values} and groups each three entries into a 'window' for comparison. These three values are summed
-     * together as the first window. Then we iterate down one value (so the second and third values of the first window are reused) to calculate the
-     * second window, and so on. If the new windows summed value is greater than the previous one, the counter is updated.
+     * Iterates through the supplied {@code values} and groups each {@code windowSize} entries into a 'window' for comparison. These values are summed
+     * together as the first window. Then we iterate down one value (for a {@code windowSize} of <b>three</b>, for example) the second and third
+     * values of the first window are reused) to calculate the second window, and so on. If the new windows summed value is greater than the previous
+     * one, the counter is updated.
      *
      * @param values the {@link List} of {@link Integer}s to be checked
      * @return the count of the windows with a higher summed value than their predecessor
      */
-    public int countThreeValueWindowHigherThanPreviousValue(final List<Integer> values) {
-        if (values.size() < WINDOW_SIZE) {
+    public int countWindowValueHigherThanPreviousValue(final List<Integer> values) {
+        if (values.size() < windowSize) {
             return 0;
         }
 
         int count = 0;
 
         // Initialise with first value, rather than assuming the value cannot be negative
-        int currentValue = values.get(0) + values.get(1) + values.get(2);
+        int currentValue = 0;
+        for (int i = 0; i < windowSize; i++) {
+            currentValue += values.get(i);
+        }
 
-        for (int i = 0; i < values.size() - 2; i++) {
-            final int firstValue = values.get(i);
-            final int secondValue = values.get(i + 1);
-            final int thirdValue = values.get(i + 2);
+        // We want to stop iterating 'windowSize - 1' entries before the end of the values, to avoid an IndexOutOfBoundsException
+        final int iterationBoundary = values.size() - (windowSize - 1);
 
-            final int nextValue = firstValue + secondValue + thirdValue;
+        for (int i = 0; i < iterationBoundary; i++) {
+            int nextValue = 0;
+            for (int j = 0; j < windowSize; j++) {
+                nextValue += values.get(i + j);
+            }
 
             if (nextValue > currentValue) {
                 count++;
