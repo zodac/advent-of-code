@@ -26,6 +26,7 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.util.List;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
@@ -44,9 +45,9 @@ class Day06Test {
             .flatMap(List::stream)
             .toList();
 
-        final long finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 80);
+        final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 80);
         assertThat(finalNumberOfLanterns)
-            .isEqualTo(362_346L);
+            .isEqualTo(BigDecimal.valueOf(362_346L));
     }
 
     @Test
@@ -56,8 +57,8 @@ class Day06Test {
             .flatMap(List::stream)
             .toList();
 
-        final long finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 256);
+        final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 256);
         assertThat(finalNumberOfLanterns)
-            .isEqualTo(1_639_643_057_051L);
+            .isEqualTo(BigDecimal.valueOf(1_639_643_057_051L));
     }
 }
