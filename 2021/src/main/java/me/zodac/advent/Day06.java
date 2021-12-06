@@ -26,9 +26,7 @@ package me.zodac.advent;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @see <a href="https://adventofcode.com/2021/day/6">AoC 2021, Day 6</a>
@@ -36,7 +34,6 @@ import java.util.Map;
 public final class Day06 {
 
     private static final int NUMBER_OF_TIMERS_FOR_LANTERNFISH = 9; // 0-8
-    private static final int TIMER_FOR_NEW_FISH = 6; // See where this is used for an explanation on why we are adding new fish to timer 6 and not 8
 
     private Day06() {
 
@@ -64,29 +61,69 @@ public final class Day06 {
         }
 
         for (int day = 0; day < numberOfDays; day++) {
-            // We need to extract the current values for each timer, so we can then use them later
-            // This allows us to (for example), update the value for timer 8, while still using the value at the start of the day for timer 7
-            final Map<Integer, BigDecimal> lanternfishCountByTimer = getLanternfishCountAtStartOfDay(lanternFishByTimer, day);
+            // This is the more flexible code, that can take a variable number of timers for each lanternfish.
+            // Not really necessary, and makes the logic harder to follow, so I'm not using it, but keeping for reference
+            //
+            //// We need to extract the current values for each timer, so we can then use them later
+            //// This allows us to (for example), update the value for timer 8, while still using the value at the start of the day for timer 7
+            //final Map<Integer, BigDecimal> lanternfishCountByTimer = getLanternfishCountAtStartOfDay(lanternFishByTimer, day);
+            //
+            //// Each timer takes the previous timer's value
+            //// So if there were 5 fish at 3-timer at the start of the day, we set 2-timer to 5, and so on
+            //// Special cases exist for 8 (which uses 0-timer) and 6 (which uses 7-timer and 0-timer, to count the 'new' fish)
+            //for (int timer = 0; timer < NUMBER_OF_TIMERS_FOR_LANTERNFISH; timer++) {
+            //    if (timer == TIMER_FOR_NEW_FISH) {
+            //        // Technically we want all 0-timer fish to be reset to timer 6, and a new one at timer 8
+            //        // However, it is simpler to wrap timer 8 to use the value at timer 0,
+            //        // and simply update timer with the values from timer 7 and 'new' fish for timer 0
+            //        lanternFishByTimer[timer] = lanternfishCountByTimer.get(timer + 1).add(lanternfishCountByTimer.get(0));
+            //    } else {
+            //        // We want timer 8 to wrap around to timer 0
+            //        final int nextTimer = (timer + 1) % 9;
+            //        lanternFishByTimer[timer] = lanternfishCountByTimer.get(nextTimer);
+            //    }
+            //}
 
-            // Each timer takes the previous timer's value
-            // So if there were 5 fish at 3-timer at the start of the day, we set 2-timer to 5, and so on
-            // Special cases exist for 8 (which uses 0-timer) and 6 (which uses 7-timer and 0-timer, to count the 'new' fish)
-            for (int timer = 0; timer < NUMBER_OF_TIMERS_FOR_LANTERNFISH; timer++) {
-                if (timer == TIMER_FOR_NEW_FISH) {
-                    // Technically we want all 0-timer fish to be reset to timer 6, and a new one at timer 8
-                    // However, it is simpler to wrap timer 8 to use the value at timer 0,
-                    // and simply update timer with the values from timer 7 and 'new' fish for timer 0
-                    lanternFishByTimer[timer] = lanternfishCountByTimer.get(timer + 1).add(lanternfishCountByTimer.get(0));
-                } else {
-                    // We want timer 8 to wrap around to timer 0
-                    final int nextTimer = (timer + 1) % 9;
-                    lanternFishByTimer[timer] = lanternfishCountByTimer.get(nextTimer);
-                }
-            }
+            // Keeping number of lanternfish for each timer at the start of the day
+            final BigDecimal zero = lanternFishByTimer[0];
+            final BigDecimal one = lanternFishByTimer[1];
+            final BigDecimal two = lanternFishByTimer[2];
+            final BigDecimal three = lanternFishByTimer[3];
+            final BigDecimal four = lanternFishByTimer[4];
+            final BigDecimal five = lanternFishByTimer[5];
+            final BigDecimal six = lanternFishByTimer[6];
+            final BigDecimal seven = lanternFishByTimer[7];
+            final BigDecimal eight = lanternFishByTimer[8];
+
+            lanternFishByTimer[0] = one;
+            lanternFishByTimer[1] = two;
+            lanternFishByTimer[2] = three;
+            lanternFishByTimer[3] = four;
+            lanternFishByTimer[4] = five;
+            lanternFishByTimer[5] = six;
+            lanternFishByTimer[6] = seven.add(zero); // Timer 6 has all fish from timer 7, and also the fish from timer 0 that just spawned new fish
+            lanternFishByTimer[7] = eight;
+            lanternFishByTimer[8] = zero;
         }
 
         return sumOfAll(lanternFishByTimer);
     }
+
+    //private static Map<Integer, BigDecimal> getLanternfishCountAtStartOfDay(final BigDecimal[] lanternFishByTimer, final int day) {
+    //    final Map<Integer, BigDecimal> lanternfishValues = new HashMap<>();
+    //    for (int i = 0; i < 9; i++) {
+    //        final BigDecimal lanternfishCountAtTimer = lanternFishByTimer[i];
+    //
+    //        if (lanternfishCountAtTimer.compareTo(BigDecimal.ZERO) < 0) { // If value is negative
+    //            throw new IllegalStateException(
+    //                String.format("Day %d, overflow has been achieved, code needs to be updated to use BigDecimal: %s", day,
+    //                    Arrays.toString(lanternFishByTimer)));
+    //        }
+    //
+    //        lanternfishValues.put(i, lanternfishCountAtTimer);
+    //    }
+    //    return lanternfishValues;
+    //}
 
     private static BigDecimal sumOfAll(final BigDecimal... values) {
         BigDecimal count = BigDecimal.ZERO;
@@ -94,21 +131,5 @@ public final class Day06 {
             count = count.add(value);
         }
         return count;
-    }
-
-    private static Map<Integer, BigDecimal> getLanternfishCountAtStartOfDay(final BigDecimal[] lanternFishByTimer, final int day) {
-        final Map<Integer, BigDecimal> lanternfishValues = new HashMap<>();
-        for (int i = 0; i < 9; i++) {
-            final BigDecimal lanternfishCountAtTimer = lanternFishByTimer[i];
-
-            if (lanternfishCountAtTimer.compareTo(BigDecimal.ZERO) < 0) { // If value is negative
-                throw new IllegalStateException(
-                    String.format("Day %d, overflow has been achieved, code needs to be updated to use BigDecimal: %s", day,
-                        Arrays.toString(lanternFishByTimer)));
-            }
-
-            lanternfishValues.put(i, lanternfishCountAtTimer);
-        }
-        return lanternfishValues;
     }
 }
