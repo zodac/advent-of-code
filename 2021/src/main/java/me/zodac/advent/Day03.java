@@ -26,8 +26,8 @@ package me.zodac.advent;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.zodac.advent.util.BinaryConverter;
-import me.zodac.advent.util.pojo.BitParityCount;
+import me.zodac.advent.pojo.BitParityCount;
+import me.zodac.advent.util.BinaryConversionUtils;
 
 /**
  * @see <a href="https://adventofcode.com/2021/day/3">AoC 2021, Day 3</a>
@@ -71,7 +71,7 @@ public final class Day03 {
      *
      * @param binaryValues the values to be checked
      * @return the power consumption
-     * @see BinaryConverter
+     * @see BinaryConversionUtils
      * @see BitParityCount#createForIndexOfBinaryValues(List, int)
      */
     public static long calculatePowerConsumption(final List<String> binaryValues) {
@@ -95,8 +95,8 @@ public final class Day03 {
             epsilonRate.append(epsilonValue);
         }
 
-        final long gamma = BinaryConverter.toDecimal(gammaRate.toString());
-        final long epsilon = BinaryConverter.toDecimal(epsilonRate.toString());
+        final long gamma = BinaryConversionUtils.toDecimal(gammaRate.toString());
+        final long epsilon = BinaryConversionUtils.toDecimal(epsilonRate.toString());
 
         return gamma * epsilon;
     }
@@ -144,7 +144,7 @@ public final class Day03 {
      *
      * @param binaryValues the values to be checked
      * @return the life support rating
-     * @see BinaryConverter
+     * @see BinaryConversionUtils
      * @see BitParityCount#createForIndexOfBinaryValues(List, int)
      */
     public static long calculateLifeSupportRating(final List<String> binaryValues) {
@@ -192,7 +192,7 @@ public final class Day03 {
         if (validRatings.size() != EXPECTED_NUMBER_OF_VALID_RATINGS) {
             throw new IllegalStateException("Expected there to be only 1 valid rating, found: " + validRatings.size());
         }
-        return BinaryConverter.toDecimal(validRatings.get(0));
+        return BinaryConversionUtils.toDecimal(validRatings.get(0));
     }
 }
 

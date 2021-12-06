@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import me.zodac.advent.util.pojo.BingoBoard;
-import me.zodac.advent.util.pojo.Tuple;
+import me.zodac.advent.pojo.BingoBoard;
+import me.zodac.advent.pojo.Pair;
 
 /**
  * @see <a href="https://adventofcode.com/2021/day/4">AoC 2021, Day 4</a>
@@ -58,7 +58,7 @@ public final class Day04 {
      */
     public static long finalScoreOfFirstWinningBingoBoard(final List<Integer> bingoNumbersToDraw, final List<String> bingoBoardValues) {
         final List<BingoBoard> bingoBoards = convertBingoBoards(bingoBoardValues);
-        final Tuple<Integer, BingoBoard> firstWinningNumberAndBingoBoard = drawNumbersAndReturnFirstWinner(bingoNumbersToDraw, bingoBoards);
+        final Pair<Integer, BingoBoard> firstWinningNumberAndBingoBoard = drawNumbersAndReturnFirstWinner(bingoNumbersToDraw, bingoBoards);
 
         if (firstWinningNumberAndBingoBoard.first() == INVALID_WINNING_NUMBER) {
             return 0L;
@@ -82,7 +82,7 @@ public final class Day04 {
      */
     public static long finalScoreOfLastWinningBingoBoard(final List<Integer> bingoNumbersToDraw, final List<String> bingoBoardValues) {
         final List<BingoBoard> bingoBoards = convertBingoBoards(bingoBoardValues);
-        final Tuple<Integer, BingoBoard> lastWinningNumberAndBingoBoard = drawNumbersAndReturnLastWinner(bingoNumbersToDraw, bingoBoards);
+        final Pair<Integer, BingoBoard> lastWinningNumberAndBingoBoard = drawNumbersAndReturnLastWinner(bingoNumbersToDraw, bingoBoards);
 
         if (lastWinningNumberAndBingoBoard.first() == INVALID_WINNING_NUMBER) {
             return 0L;
@@ -91,22 +91,22 @@ public final class Day04 {
         return lastWinningNumberAndBingoBoard.second().sum() * lastWinningNumberAndBingoBoard.first();
     }
 
-    private static Tuple<Integer, BingoBoard> drawNumbersAndReturnFirstWinner(final List<Integer> pickedNumbers, final List<BingoBoard> bingoBoards) {
+    private static Pair<Integer, BingoBoard> drawNumbersAndReturnFirstWinner(final List<Integer> pickedNumbers, final List<BingoBoard> bingoBoards) {
         for (final int pickedNumber : pickedNumbers) {
             for (final BingoBoard bingoBoard : bingoBoards) {
                 bingoBoard.mark(pickedNumber);
 
                 if (bingoBoard.isWinner()) {
-                    return Tuple.of(pickedNumber, bingoBoard);
+                    return Pair.of(pickedNumber, bingoBoard);
                 }
             }
         }
 
-        return Tuple.of(INVALID_WINNING_NUMBER, null);
+        return Pair.withNull(INVALID_WINNING_NUMBER);
     }
 
-    private static Tuple<Integer, BingoBoard> drawNumbersAndReturnLastWinner(final List<Integer> bingoNumbers, final List<BingoBoard> bingoBoards) {
-        Tuple<Integer, BingoBoard> lastWinner = Tuple.of(INVALID_WINNING_NUMBER, null);
+    private static Pair<Integer, BingoBoard> drawNumbersAndReturnLastWinner(final List<Integer> bingoNumbers, final List<BingoBoard> bingoBoards) {
+        Pair<Integer, BingoBoard> lastWinner = Pair.withNull(INVALID_WINNING_NUMBER);
 
         // If the board is not a winner, it is added to the boards to be check for the next number
         // If it is a winner, we update 'lastWinner' and stop checking it for future numbers
@@ -118,7 +118,7 @@ public final class Day04 {
                 bingoBoard.mark(number);
 
                 if (bingoBoard.isWinner()) {
-                    lastWinner = Tuple.of(number, bingoBoard);
+                    lastWinner = Pair.of(number, bingoBoard);
                 } else {
                     nextBingoBoardsToCheck.add(bingoBoard);
                 }

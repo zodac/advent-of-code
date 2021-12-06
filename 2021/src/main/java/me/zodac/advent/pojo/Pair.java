@@ -22,24 +22,38 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.util;
+package me.zodac.advent.pojo;
 
 /**
- * Utility class used to convert a {@link String} representing a binary value to a base-10 numeric value.
+ * Simple tuple for two objects.
+ *
+ * @param <E1> type of first value
+ * @param <E2> type of second value
  */
-public final class BinaryConverter {
+public record Pair<E1, E2>(E1 first, E2 second) {
 
-    private BinaryConverter() {
-
+    /**
+     * Create a {@link Pair} with two values.
+     *
+     * @param first  the first value
+     * @param second the second value
+     * @param <E1>   type of first value
+     * @param <E2>   type of second value
+     * @return the created {@link Pair}
+     */
+    public static <E1, E2> Pair<E1, E2> of(final E1 first, final E2 second) {
+        return new Pair<>(first, second);
     }
 
     /**
-     * Converts the provided binary {@link String} into a base-10 {@code long} value.
+     * Create a {@link Pair} with one values, with the second value set to {@code null}.
      *
-     * @param binaryValue the binary {@link String to convert}
-     * @return the converted base-10 value
+     * @param first the first value
+     * @param <E1>  type of first value
+     * @param <E2>  type of second value
+     * @return the created {@link Pair}
      */
-    public static long toDecimal(final String binaryValue) {
-        return Integer.parseInt(binaryValue, 2);
+    public static <E1, E2> Pair<E1, E2> withNull(final E1 first) {
+        return new Pair<>(first, null);
     }
 }

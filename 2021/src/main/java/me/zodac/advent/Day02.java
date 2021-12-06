@@ -25,8 +25,8 @@
 package me.zodac.advent;
 
 import java.util.List;
-import me.zodac.advent.util.Direction;
-import me.zodac.advent.util.pojo.Movement;
+import me.zodac.advent.pojo.Direction;
+import me.zodac.advent.pojo.Movement;
 
 /**
  * @see <a href="https://adventofcode.com/2021/day/2">AoC 2021, Day 2</a>

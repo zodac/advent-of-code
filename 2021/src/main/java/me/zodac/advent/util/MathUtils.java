@@ -22,13 +22,27 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.util.pojo;
+package me.zodac.advent.util;
 
-import me.zodac.advent.util.Direction;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
- * Simple POJO defining the submarine movement in a given {@link Direction} for a number of spaces.
+ * Utility class with math-based functions.
  */
-public record Movement(Direction direction, int spaces) {
+public final class MathUtils {
 
+    private MathUtils() {
+
+    }
+
+    /**
+     * Returns the maximum value of the provides {@link Integer} {@code values}.
+     *
+     * @param values the {@link Integer}s to check
+     * @return the largest value
+     */
+    public static int max(final Integer... values) {
+        return Collections.max(Arrays.asList(values));
+    }
 }

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.util.pojo;
+package me.zodac.advent.pojo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +37,7 @@ public final class BingoBoard {
     private static final int MARKED_VALUE = 0;
 
     // Used to easily find the index for a given number on the board
-    private final Map<Integer, Tuple<Integer, Integer>> cellsAndIndex = new HashMap<>();
+    private final Map<Integer, Pair<Integer, Integer>> cellsAndIndex = new HashMap<>();
 
     private final int[][] board;
 
@@ -49,8 +49,8 @@ public final class BingoBoard {
             for (int column = 0; column < boardSize; column++) {
                 final int value = boardNumbers.get(index++);
 
-                this.board[row][column] = value;
-                cellsAndIndex.put(value, Tuple.of(row, column));
+                board[row][column] = value;
+                cellsAndIndex.put(value, Pair.of(row, column));
             }
         }
     }
@@ -84,7 +84,7 @@ public final class BingoBoard {
      * @param number the number to mark off in the {@link BingoBoard}
      */
     public void mark(final int number) {
-        final Tuple<Integer, Integer> indexToMark = cellsAndIndex.get(number);
+        final Pair<Integer, Integer> indexToMark = cellsAndIndex.get(number);
 
         if (indexToMark == null) {
             return;

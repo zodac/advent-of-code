@@ -27,9 +27,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.Direction;
+import me.zodac.advent.pojo.Direction;
+import me.zodac.advent.pojo.Movement;
 import me.zodac.advent.util.FileUtils;
-import me.zodac.advent.util.pojo.Movement;
 import org.junit.jupiter.api.Test;
 
 /**

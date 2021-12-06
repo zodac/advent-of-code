@@ -54,7 +54,8 @@ class Day04Test {
         final List<String> bingoBoardsInput = bingoInput.subList(1, bingoInput.size());
 
         final long finalScore = Day04.finalScoreOfFirstWinningBingoBoard(bingoNumbers, bingoBoardsInput);
-        assertThat(finalScore).isEqualTo(45_031L);
+        assertThat(finalScore)
+            .isEqualTo(45_031L);
     }
 
     @Test
@@ -73,6 +74,7 @@ class Day04Test {
         final List<String> bingoBoardsInput = bingoInput.subList(1, bingoInput.size());
 
         final long finalScore = Day04.finalScoreOfLastWinningBingoBoard(bingoNumbers, bingoBoardsInput);
-        assertThat(finalScore).isEqualTo(2_568L);
+        assertThat(finalScore)
+            .isEqualTo(2_568L);
     }
 }

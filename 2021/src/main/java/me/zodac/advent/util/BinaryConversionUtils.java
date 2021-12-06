@@ -22,26 +22,24 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.util.pojo;
+package me.zodac.advent.util;
 
 /**
- * Simple tuple class to return two objects from a function instead of one.
- *
- * @param <E1> type of first value
- * @param <E2> type of second value
+ * Utility class used to convert a {@link String} representing a binary value to a base-10 numeric value.
  */
-public record Tuple<E1, E2>(E1 first, E2 second) {
+public final class BinaryConversionUtils {
+
+    private BinaryConversionUtils() {
+
+    }
 
     /**
-     * Create a {@link Tuple} with two values.
+     * Converts the provided binary {@link String} into a base-10 {@code long} value.
      *
-     * @param first  the first value
-     * @param second the second value
-     * @param <E1>   type of first value
-     * @param <E2>   type of second value
-     * @return the created {@link Tuple}
+     * @param binaryValue the binary {@link String to convert}
+     * @return the converted base-10 value
      */
-    public static <E1, E2> Tuple<E1, E2> of(final E1 first, final E2 second) {
-        return new Tuple<>(first, second);
+    public static long toDecimal(final String binaryValue) {
+        return Integer.parseInt(binaryValue, 2);
     }
 }
