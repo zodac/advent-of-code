@@ -37,12 +37,23 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the maximum value of the provides {@link Integer} {@code values}.
+     * Returns the maximum value of the provided {@code int} values.
      *
-     * @param values the {@link Integer}s to check
+     * @param values the {@link int}s to check
      * @return the largest value
      */
-    public static int max(final Integer... values) {
-        return Collections.max(Arrays.asList(values));
+    public static int max(final int... values) {
+        return Collections.max(Arrays.stream(values).boxed().toList());
+    }
+
+    /**
+     * Sums all values in a {@code long} values.
+     *
+     * @param values the {@code long}s to sum
+     * @return the total sum of all values
+     */
+    public static long sumOfAll(final long... values) {
+        return Arrays.stream(values)
+            .reduce(0, Long::sum);
     }
 }

@@ -40,7 +40,7 @@ class Day04Test {
 
     @Test
     void part1() {
-        final List<String> bingoInput = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<String> bingoInput = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .filter(string -> !string.isBlank())
             .toList();
@@ -60,7 +60,7 @@ class Day04Test {
 
     @Test
     void part2() {
-        final List<String> bingoInput = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<String> bingoInput = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .filter(string -> !string.isBlank())
             .toList();

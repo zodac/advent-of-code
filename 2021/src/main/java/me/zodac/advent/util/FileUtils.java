@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,11 +47,25 @@ public final class FileUtils {
      * @param filePathInResources file path to be read
      * @return a {@link List} of the {@link String} lines from the file, or {@link Collections#emptyList()} if an error occurs
      */
-    public static List<String> readLinesFromFileInResources(final String filePathInResources) {
+    public static List<String> readLines(final String filePathInResources) {
         try {
             return Files.readAllLines(Paths.get(ClassLoader.getSystemResource(filePathInResources).toURI()));
         } catch (final IOException | URISyntaxException e) {
             return Collections.emptyList();
         }
+    }
+
+    /**
+     * Reads all lines from a file in <code>src/main/resources</code> where each line is a row of comma-separated {@link Integer}s.
+     *
+     * @param filePathInResources file path to be read
+     * @return a {@link List} of each line from the file as a {@link List} of {@link Integer}s, or {@link Collections#emptyList()} if an error occurs
+     */
+    public static List<List<Integer>> readCommaSeparatedIntegers(final String filePathInResources) {
+        return readLines(filePathInResources)
+            .stream()
+            .map(string -> Arrays.asList(string.split(",")))
+            .map(listOfStrings -> listOfStrings.stream().mapToInt(Integer::parseInt).boxed().toList())
+            .toList();
     }
 }

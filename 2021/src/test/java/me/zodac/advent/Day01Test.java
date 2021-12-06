@@ -40,7 +40,7 @@ class Day01Test {
 
     @Test
     void part1() {
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<Integer> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .mapToInt(Integer::parseInt)
             .boxed()
@@ -53,7 +53,7 @@ class Day01Test {
 
     @Test
     void part2() {
-        final List<Integer> values = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<Integer> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .mapToInt(Integer::parseInt)
             .boxed()

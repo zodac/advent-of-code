@@ -49,7 +49,7 @@ public record BitParityCount(int zeros, int ones) {
      *
      * <p>
      * If the index <b>0</b> is provided, the number of zero bits is <b>2</b> and the number of one bits is <b>3</b>.
-     * Similarly, give an index <b>4</b>, the number of zero bits is <b>4</b> and the number of one bits is <b>1</b>.
+     * Similarly, given an index <b>4</b>, the number of zero bits is <b>4</b> and the number of one bits is <b>1</b>.
      *
      * @param binaryValues the binary values to be checked
      * @param index        the index of the bit we are interested in

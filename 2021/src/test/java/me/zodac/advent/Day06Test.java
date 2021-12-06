@@ -31,27 +31,33 @@ import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day03}.
+ * Tests to verify answers for {@link Day06}.
  */
-class Day03Test {
+class Day06Test {
 
-    private static final String INPUT_FILENAME = "day03.txt";
+    private static final String INPUT_FILENAME = "day06.txt";
 
     @Test
     void part1() {
-        final List<String> binaryValues = FileUtils.readLines(INPUT_FILENAME);
+        final List<Integer> lanternValues = FileUtils.readCommaSeparatedIntegers(INPUT_FILENAME)
+            .stream()
+            .flatMap(List::stream)
+            .toList();
 
-        final long powerConsumption = Day03.calculatePowerConsumption(binaryValues);
-        assertThat(powerConsumption)
-            .isEqualTo(3_374_136L);
+        final long finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 80);
+        assertThat(finalNumberOfLanterns)
+            .isEqualTo(362_346L);
     }
 
     @Test
     void part2() {
-        final List<String> binaryValues = FileUtils.readLines(INPUT_FILENAME);
+        final List<Integer> lanternValues = FileUtils.readCommaSeparatedIntegers(INPUT_FILENAME)
+            .stream()
+            .flatMap(List::stream)
+            .toList();
 
-        final long lifeSupportRating = Day03.calculateLifeSupportRating(binaryValues);
-        assertThat(lifeSupportRating)
-            .isEqualTo(4_432_698L);
+        final long finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 256);
+        assertThat(finalNumberOfLanterns)
+            .isEqualTo(1_639_643_057_051L);
     }
 }

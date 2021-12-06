@@ -45,7 +45,7 @@ class Day05Test {
 
     @Test
     void part1() {
-        final List<Line> coordinateLines = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<Line> coordinateLines = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .map(Day05Test::convertToLine)
             .toList();
@@ -57,7 +57,7 @@ class Day05Test {
 
     @Test
     void part2() {
-        final List<Line> coordinateLines = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<Line> coordinateLines = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .map(Day05Test::convertToLine)
             .toList();

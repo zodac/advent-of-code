@@ -41,7 +41,7 @@ class Day02Test {
 
     @Test
     void part1() {
-        final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<Movement> movements = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .map(Day02Test::convertToMovement)
             .toList();
@@ -53,7 +53,7 @@ class Day02Test {
 
     @Test
     void part2() {
-        final List<Movement> movements = FileUtils.readLinesFromFileInResources(INPUT_FILENAME)
+        final List<Movement> movements = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .map(Day02Test::convertToMovement)
             .toList();

@@ -25,7 +25,7 @@
 package me.zodac.advent.pojo;
 
 /**
- * Simple POJO defining the submarine movement in a given {@link Direction} for a number of spaces.
+ * Simple POJO defining a movement in a given {@link Direction} for a number of spaces.
  */
 public record Movement(Direction direction, int spaces) {
 

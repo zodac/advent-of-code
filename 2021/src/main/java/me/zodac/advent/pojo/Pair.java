@@ -54,6 +54,6 @@ public record Pair<E1, E2>(E1 first, E2 second) {
      * @return the created {@link Pair}
      */
     public static <E1, E2> Pair<E1, E2> withNull(final E1 first) {
-        return new Pair<>(first, null);
+        return of(first, null);
     }
 }

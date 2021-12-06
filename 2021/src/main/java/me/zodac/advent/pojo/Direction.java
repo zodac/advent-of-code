@@ -28,22 +28,22 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 /**
- * ENUM defining the directions that the submarine can move in.
+ * ENUM defining the directions that can be moved in.
  */
 public enum Direction {
 
     /**
-     * The submarine is making a positive vertical movement.
+     * A downwards vertical movement.
      */
     DOWN,
 
     /**
-     * The submarine is making a positive horizontal movement.
+     * A positive horizontal movement.
      */
     FORWARD,
 
     /**
-     * The submarine is making a negative vertical movement.
+     * An upwards vertical movement.
      */
     UP,
 

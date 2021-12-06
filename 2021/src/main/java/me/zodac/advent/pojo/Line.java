@@ -51,6 +51,7 @@ public record Line(int x1, int y1, int x2, int y2) {
      *
      * @param coordinates the {@link Line} coordinates
      * @return the created {@link Line}
+     * @throws IllegalArgumentException thrown if the input {@link List} does not have {@link #NUMBER_OF_COORDINATES_PER_LINE} entries
      */
     public static Line of(final List<Integer> coordinates) {
         if (coordinates.size() != NUMBER_OF_COORDINATES_PER_LINE) {
@@ -65,7 +66,7 @@ public record Line(int x1, int y1, int x2, int y2) {
      * Returns the maximum value of the x1, x2, y1, y2 coordinates.
      *
      * @return the largest value of the coordinates
-     * @see MathUtils#max(Integer...)
+     * @see MathUtils#max(int...)
      */
     public int maxCoordinateValue() {
         return MathUtils.max(x1, x2, y1, y2);
