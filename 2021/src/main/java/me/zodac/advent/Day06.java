@@ -51,8 +51,7 @@ public final class Day06 {
      *                               (exponential growth, don't you know?)
      */
     public static BigDecimal countLanternFishAfterDays(final List<Integer> lanternFish, final int numberOfDays) {
-        // Since the number of lanternfish will rise exponentially, we need to use longs to avoid an Integer overflow
-        // Could potentially look at using BigDecimal if the expected numberOfDays is very large, but unnecessary for now
+        // Rather than storing the lanternfish themselves (which explodes in size), we group the fish by their timers and simply increment/decrement
         final BigDecimal[] lanternFishByTimer = new BigDecimal[NUMBER_OF_TIMERS_FOR_LANTERNFISH];
         Arrays.fill(lanternFishByTimer, BigDecimal.ZERO);
 
@@ -61,7 +60,7 @@ public final class Day06 {
         }
 
         for (int day = 0; day < numberOfDays; day++) {
-            // This is the more flexible code, that can take a variable number of timers for each lanternfish.
+            // This is more flexible code, that can take a variable number of timers for each lanternfish.
             // Not really necessary, and makes the logic harder to follow, so I'm not using it, but keeping for reference
             //
             //// We need to extract the current values for each timer, so we can then use them later
@@ -84,7 +83,7 @@ public final class Day06 {
             //    }
             //}
 
-            // Keeping number of lanternfish for each timer at the start of the day
+            // Keeping the number of lanternfish for each timer at the start of the day
             final BigDecimal zero = lanternFishByTimer[0];
             final BigDecimal one = lanternFishByTimer[1];
             final BigDecimal two = lanternFishByTimer[2];

@@ -47,13 +47,17 @@ public final class MathUtils {
     }
 
     /**
-     * Sums all values in a {@code long} values.
+     * Similar to a factorial, but using addition instead of multiplication. The equation 1 + 2 + 3 ... + n can be simplified to:
+     * <pre>
+     *     n*(n+1)/2
+     * </pre>
+     * We then round to the nearest whole number.
      *
-     * @param values the {@code long}s to sum
-     * @return the total sum of all values
+     * @param value the value whose triangular number is to be found
+     * @return the triangular number for the input
+     * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
      */
-    public static long sumOfAll(final long... values) {
-        return Arrays.stream(values)
-            .reduce(0, Long::sum);
+    public static long triangularNumber(final int value) {
+        return Math.round(value * (value + 1) / 2.0D);
     }
 }
