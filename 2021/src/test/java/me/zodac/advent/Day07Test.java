@@ -33,7 +33,7 @@ import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day06}.
+ * Tests to verify answers for {@link Day07}.
  */
 class Day07Test {
 
@@ -46,8 +46,8 @@ class Day07Test {
             .flatMap(List::stream)
             .toList();
 
-        final long leastFuel = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
-        assertThat(leastFuel)
+        final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
+        assertThat(minimumMoves)
             .isEqualTo(341_558L);
     }
 
@@ -58,8 +58,8 @@ class Day07Test {
             .flatMap(List::stream)
             .toList();
 
-        final long leastFuel = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);
-        assertThat(leastFuel)
+        final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);
+        assertThat(minimumMoves)
             .isEqualTo(93_214_037L);
     }
 }

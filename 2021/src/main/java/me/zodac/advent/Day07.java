@@ -44,28 +44,27 @@ public final class Day07 {
      * <p>
      * The cost for the moves are defined by {@link MoveCostType}.
      *
-     * @param verticalLocations the locations to align vertically
-     * @param moveCostType      the {@link MoveCostType} per move
+     * @param locations    the locations to align vertically
+     * @param moveCostType the {@link MoveCostType} per move
      * @return the minimum moves required to align to the ideal vertical location
      */
-    public static long minimumMovesNeededToAlignVertically(final List<Integer> verticalLocations, final MoveCostType moveCostType) {
-        final int minVerticalLocation = Collections.min(verticalLocations);
-        final int maxVerticalLocation = Collections.max(verticalLocations);
-        long leastFuel = Long.MAX_VALUE;
+    public static long minimumMovesNeededToAlignVertically(final List<Integer> locations, final MoveCostType moveCostType) {
+        final int minValue = Collections.min(locations);
+        final int maxValue = Collections.max(locations);
+        long minimumNumberOfMoves = Long.MAX_VALUE;
 
-        for (int possibleIdealVerticalLocation = minVerticalLocation; possibleIdealVerticalLocation < maxVerticalLocation;
-             possibleIdealVerticalLocation++) {
-            long fuelNeeded = 0L;
+        for (int possibleAlignmentLocation = minValue; possibleAlignmentLocation < maxValue; possibleAlignmentLocation++) {
+            long movedNeeded = 0L;
 
-            for (final int verticalLocation : verticalLocations) {
-                fuelNeeded += moveCostType.costForMove(verticalLocation, possibleIdealVerticalLocation);
+            for (final int location : locations) {
+                movedNeeded += moveCostType.costForMove(location, possibleAlignmentLocation);
             }
 
-            if (fuelNeeded < leastFuel) {
-                leastFuel = fuelNeeded;
+            if (movedNeeded < minimumNumberOfMoves) {
+                minimumNumberOfMoves = movedNeeded;
             }
         }
 
-        return leastFuel;
+        return minimumNumberOfMoves;
     }
 }
