@@ -22,42 +22,43 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.util;
+package me.zodac.advent;
 
-import java.util.Arrays;
-import java.util.Collections;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+import me.zodac.advent.pojo.Signal;
+import me.zodac.advent.util.FileUtils;
+import org.junit.jupiter.api.Test;
 
 /**
- * Utility class with {@link Math}-based functions.
+ * Tests to verify answers for {@link Day08}.
  */
-public final class MathUtils {
+class Day08Test {
 
-    private MathUtils() {
+    private static final String INPUT_FILENAME = "day08.txt";
 
+    @Test
+    void part1() {
+        final List<Signal> signals = FileUtils.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Signal::create)
+            .toList();
+
+        final long numberOfUniqueOutputSignals = Day08.identifyUniqueOutputValues(signals);
+        assertThat(numberOfUniqueOutputSignals)
+            .isEqualTo(245L);
     }
 
-    /**
-     * Returns the maximum value of the provided {@code int} values.
-     *
-     * @param values the {@link int}s to check
-     * @return the largest value
-     */
-    public static int max(final int... values) {
-        return Collections.max(Arrays.stream(values).boxed().toList());
-    }
+    @Test
+    void part2() {
+        final List<Signal> signals = FileUtils.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Signal::create)
+            .toList();
 
-    /**
-     * Similar to a factorial, but using addition instead of multiplication. The equation 1 + 2 + 3 ... + n can be simplified to:
-     * <pre>
-     *     n*(n+1)/2
-     * </pre>
-     * We then round to the nearest whole number.
-     *
-     * @param value the value whose triangular number is to be found
-     * @return the triangular number for the input
-     * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
-     */
-    public static long triangularNumber(final int value) {
-        return Math.round(value * (value + 1) / 2.0D);
+        final long sumOfDecodedOutputs = Day08.sumOfDecodedOutputs(signals);
+        assertThat(sumOfDecodedOutputs)
+            .isEqualTo(983_026L);
     }
 }

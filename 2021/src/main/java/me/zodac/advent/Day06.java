@@ -71,7 +71,7 @@ public final class Day06 {
             //// So if there were 5 fish at 3-timer at the start of the day, we set 2-timer to 5, and so on
             //// Special cases exist for 8 (which uses 0-timer) and 6 (which uses 7-timer and 0-timer, to count the 'new' fish)
             //for (int timer = 0; timer < NUMBER_OF_TIMERS_FOR_LANTERNFISH; timer++) {
-            //    if (timer == TIMER_FOR_NEW_FISH) {
+            //    if (timer == TIMER_FOR_NEW_FISH) { // TIMER_FOR_NEW_FISH = 6
             //        // Technically we want all 0-timer fish to be reset to timer 6, and a new one at timer 8
             //        // However, it is simpler to wrap timer 8 to use the value at timer 0,
             //        // and simply update timer with the values from timer 7 and 'new' fish for timer 0
@@ -94,6 +94,10 @@ public final class Day06 {
             final BigDecimal seven = lanternFishByTimer[7];
             final BigDecimal eight = lanternFishByTimer[8];
 
+            // Note that due to the way BigDecimal works, there is no need to check for any overflow
+            // BigDecimal should
+            // use all available memory on the system, so we will get an OutOfMemoryError instead of any overflow
+
             lanternFishByTimer[0] = one;
             lanternFishByTimer[1] = two;
             lanternFishByTimer[2] = three;
@@ -111,14 +115,9 @@ public final class Day06 {
     //private static Map<Integer, BigDecimal> getLanternfishCountAtStartOfDay(final BigDecimal[] lanternFishByTimer, final int day) {
     //    final Map<Integer, BigDecimal> lanternfishValues = new HashMap<>();
     //    for (int i = 0; i < 9; i++) {
+    //        // Note that due to the way BigDecimal works, there is no need to check for any overflow
+    //        // BigDecimal should use all available memory on the system, so we will get an OutOfMemoryError instead of any overflow
     //        final BigDecimal lanternfishCountAtTimer = lanternFishByTimer[i];
-    //
-    //        if (lanternfishCountAtTimer.compareTo(BigDecimal.ZERO) < 0) { // If value is negative
-    //            throw new IllegalStateException(
-    //                String.format("Day %d, overflow has been achieved, code needs to be updated to use BigDecimal: %s", day,
-    //                    Arrays.toString(lanternFishByTimer)));
-    //        }
-    //
     //        lanternfishValues.put(i, lanternfishCountAtTimer);
     //    }
     //    return lanternfishValues;

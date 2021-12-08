@@ -43,12 +43,12 @@ public enum MoveCostType {
     },
 
     /**
-     * The cost for movement increased per move (<b>1</b>, then <b>2</b>, then <b>3</b>, etc.).
+     * The cost for movement increases per move (<b>1</b>, then <b>2</b>, then <b>3</b>, etc.).
      */
     VARIABLE {
         @Override
         public long costForMove(final int startPosition, final int endPosition) {
-            // This is 1 + 2 + 3 ... + diff, described as n*(n+1)/2
+            // This is 1 + 2 + 3 ... + n, described as n*(n+1)/2
             final int diff = Math.abs(startPosition - endPosition);
             return MathUtils.triangularNumber(diff);
         }

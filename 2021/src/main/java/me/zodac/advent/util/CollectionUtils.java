@@ -24,40 +24,35 @@
 
 package me.zodac.advent.util;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * Utility class with {@link Math}-based functions.
+ * Utility functions for {@link java.util.Collection}s.
  */
-public final class MathUtils {
+public final class CollectionUtils {
 
-    private MathUtils() {
+    private CollectionUtils() {
 
     }
 
     /**
-     * Returns the maximum value of the provided {@code int} values.
+     * For cases when the value of a {@link Map} might be known, but the key is not. We iterate over all {@link Map.Entry}s and check the value. If it
+     * matches the input, then the key for that {@link Map.Entry} is returned.
      *
-     * @param values the {@link int}s to check
-     * @return the largest value
+     * @param map   the {@link Map} to be searched
+     * @param value the value whose key is to be found
+     * @param <K>   the type of the key
+     * @param <V>   the type of the value
+     * @return an {@link Optional} of the found key
      */
-    public static int max(final int... values) {
-        return Collections.max(Arrays.stream(values).boxed().toList());
-    }
+    public static <K, V> Optional<K> getKeyByValue(final Map<K, V> map, final V value) {
+        for (final Map.Entry<K, V> entry : map.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                return Optional.of(entry.getKey());
+            }
+        }
 
-    /**
-     * Similar to a factorial, but using addition instead of multiplication. The equation 1 + 2 + 3 ... + n can be simplified to:
-     * <pre>
-     *     n*(n+1)/2
-     * </pre>
-     * We then round to the nearest whole number.
-     *
-     * @param value the value whose triangular number is to be found
-     * @return the triangular number for the input
-     * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
-     */
-    public static long triangularNumber(final int value) {
-        return Math.round(value * (value + 1) / 2.0D);
+        return Optional.empty();
     }
 }
