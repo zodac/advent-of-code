@@ -25,9 +25,11 @@
 package me.zodac.advent.pojo;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import me.zodac.advent.util.CollectionUtils;
 import me.zodac.advent.util.StringUtils;
@@ -37,10 +39,28 @@ import me.zodac.advent.util.StringUtils;
  */
 public final class SignalDecoder {
 
+    private static final Set<Integer> UNIQUE_OUTPUT_VALUES = Set.of(2, 3, 4, 7);
     private static final int INPUT_SIZE_THAT_MUST_BE_DECODED_LAST = 5;
 
     private SignalDecoder() {
 
+    }
+
+    /**
+     * Checks if the provided {@link Signal} output value is a unique value. In a standard 7-segment display, we can identify four values
+     * based on the number of segments that are lit:
+     * <ol>
+     *     <li>2-segments: '1'</li>
+     *     <li>3-segments: '7'</li>
+     *     <li>4-segments: '4'</li>
+     *     <li>7-segments: '8'</li>
+     * </ol>
+     *
+     * @param signalOutputValue {@link String} to check
+     * @return <code>true</code> if the output value is '1', '4', '7' or '8'
+     */
+    public static boolean isUniqueOutputValue(final String signalOutputValue) {
+        return UNIQUE_OUTPUT_VALUES.contains(signalOutputValue.length());
     }
 
     /**
@@ -61,7 +81,7 @@ public final class SignalDecoder {
      *             <li>Else the value is '6'</li>
      *         </ol>
      *     </li>
-     *     <li>If the size of the input is 4:
+     *     <li>If the size of the input is 5:
      *         <ol>
      *             <li>If the input is a superset of the characters in the values for '1' and '7', the value is '3'</li>
      *             <li>Else if the input is a subset of the characters in the value for '6', the value is '5'</li>
@@ -76,13 +96,12 @@ public final class SignalDecoder {
     public static long decode(final Signal signal) {
         final Map<String, Integer> decoder = generateDecoderForSignal(signal);
 
-        return Long.parseLong(
-            signal.outputs()
-                .stream()
-                .map(decoder::get)
-                .map(String::valueOf)
-                .collect(Collectors.joining(""))
-        );
+        final String outputsDecodedAndConcatenated = signal.outputs()
+            .stream()
+            .map(decoder::get)
+            .map(String::valueOf)
+            .collect(Collectors.joining(""));
+        return Long.parseLong(outputsDecodedAndConcatenated);
     }
 
     private static Map<String, Integer> generateDecoderForSignal(final Signal signal) {
@@ -116,7 +135,7 @@ public final class SignalDecoder {
         }
 
         final String valueForSix = CollectionUtils.getKeyByValue(decoder, 6).orElseThrow();
-        
+
         // If the input is a subset of the value for '6', value is '5'
         if (StringUtils.containsAll(valueForSix, input)) {
             return 5;
@@ -145,8 +164,8 @@ public final class SignalDecoder {
         return 6;
     }
 
-    // For the decoding, inputs of size 5 must be determined last
-    // This is because the only way to differentiate a 2 and a 5 is by checking if one is a subset of 6 (5 is, 2 is not)
+    // For the decoding, inputs of size 5 must be determined last, as the only way to differentiate a 2 and a 5 is comparing to 6
+    // All other inputs are ordered by the size of the String
     private static List<String> sortInputsForDecoding(final List<String> inputs) {
         final List<String> orderedInputs = new ArrayList<>(inputs.size());
 
@@ -155,6 +174,7 @@ public final class SignalDecoder {
                 orderedInputs.add(input);
             }
         }
+        orderedInputs.sort(Comparator.comparingInt(String::length));
 
         for (final String input : inputs) {
             if (input.length() == INPUT_SIZE_THAT_MUST_BE_DECODED_LAST) {

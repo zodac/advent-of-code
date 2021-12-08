@@ -25,7 +25,6 @@
 package me.zodac.advent.pojo;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 import me.zodac.advent.util.StringUtils;
@@ -44,8 +43,7 @@ public record Signal(List<String> inputs, List<String> outputs) {
      * </pre>
      *
      * <p>
-     * We split at the delimiter and keep the inputs and outputs. Each input and output value will be ordered alphabetically, and the {@link List} of
-     * inputs will be sorted according to size. The {@link List} of outputs will remain in the order provided.
+     * We split at the delimiter and keep the inputs and outputs. Each input and output value will be ordered alphabetically.
      *
      * @param signalEntry the raw signal input
      * @return the created {@link Signal}
@@ -60,7 +58,6 @@ public record Signal(List<String> inputs, List<String> outputs) {
 
         final List<String> inputs = Arrays.stream(StringUtils.splitOnWhitespace(inputTokens[0]))
             .map(StringUtils::sort)
-            .sorted(Comparator.comparingInt(String::length))
             .toList();
 
         final List<String> outputs = Arrays.stream(StringUtils.splitOnWhitespace(inputTokens[1]))

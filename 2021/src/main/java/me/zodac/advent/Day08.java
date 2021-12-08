@@ -25,7 +25,6 @@
 package me.zodac.advent;
 
 import java.util.List;
-import java.util.Set;
 import me.zodac.advent.pojo.Signal;
 import me.zodac.advent.pojo.SignalDecoder;
 
@@ -34,34 +33,23 @@ import me.zodac.advent.pojo.SignalDecoder;
  */
 public final class Day08 {
 
-    private static final Set<Integer> UNIQUE_OUTPUT_VALUES = Set.of(2, 3, 4, 7);
-
     private Day08() {
 
     }
 
     /**
-     * Provided a {@link List} of {@link Signal}s, we focus on the available outputs. In a standard 7-segment display, we can identify four values
-     * based on the number of segments that are lit:
-     * <ol>
-     *     <li>2-segments: '1'</li>
-     *     <li>3-segments: '7'</li>
-     *     <li>4-segments: '4'</li>
-     *     <li>7-segments: '8'</li>
-     * </ol>
-     *
-     * <p>
-     * For each of the provides {@link Signal}s we will count how many unique values we can find, then return the sum.
+     * Provided a {@link List} of {@link Signal}s, count the total number of unique output values.
      *
      * @param signals the {@link Signal}s to check
      * @return the sum of unique output values
+     * @see SignalDecoder#isUniqueOutputValue(String)
      */
     public static long identifyUniqueOutputValues(final List<Signal> signals) {
         return signals
             .stream()
             .map(Signal::outputs)
             .flatMap(List::stream)
-            .filter(outputValue -> UNIQUE_OUTPUT_VALUES.contains(outputValue.length()))
+            .filter(SignalDecoder::isUniqueOutputValue)
             .count();
     }
 
@@ -71,6 +59,7 @@ public final class Day08 {
      *
      * @param signals the {@link Signal}s to decode
      * @return the sum of the decoded {@link Signal} values
+     * @see SignalDecoder#decode(Signal)
      */
     public static long sumOfDecodedOutputs(final List<Signal> signals) {
         return signals
