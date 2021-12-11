@@ -100,7 +100,7 @@ public final class SignalDecoder {
             .stream()
             .map(decoder::get)
             .map(String::valueOf)
-            .collect(Collectors.joining(""));
+            .collect(Collectors.joining());
         return Long.parseLong(outputsDecodedAndConcatenated);
     }
 

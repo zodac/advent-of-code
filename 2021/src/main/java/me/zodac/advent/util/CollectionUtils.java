@@ -24,6 +24,8 @@
 
 package me.zodac.advent.util;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,5 +56,22 @@ public final class CollectionUtils {
         }
 
         return Optional.empty();
+    }
+
+    /**
+     * Returns the value at the middle index of a {@link List}. The {@link List} is sorted then the middle index is returned.
+     *
+     * @param list the {@link List} whose middle index is to be found
+     * @param <E>  the type of the {@link List}, must extend {@link Comparable}
+     * @return the value at the middle of the sorted {@link List}
+     * @throws IllegalArgumentException thrown if the {@link List} has an even size
+     */
+    public static <E extends Comparable<E>> E getMiddleValueOfList(final List<E> list) {
+        if (list.size() % 2 == 0) {
+            throw new IllegalArgumentException("Expected list with odd size, found size: " + list.size());
+        }
+
+        Collections.sort(list);
+        return list.get((list.size() / 2));
     }
 }
