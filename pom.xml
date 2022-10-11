@@ -19,8 +19,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-release>17</java-release>
         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
-        <license-file>${project.parent.basedir}/license-template.txt</license-file>
-        <skip-lints>true</skip-lints>
+        <license-file>${project.parent.basedir}/lint/license-template.txt</license-file>
+        <skip-linters>true</skip-linters>
         <skip-tests>true</skip-tests>
 
         <!-- Test 3PP Versions -->
@@ -28,6 +28,7 @@
         <junit.version>5.8.1</junit.version>
 
         <!-- Plugin Versions -->
+        <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
@@ -75,6 +76,29 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- Plugin run at first phase to define properties for use in later phases -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>timestamp-property</id>
+                            <goals>
+                                <goal>timestamp-property</goal>
+                            </goals>
+                            <configuration>
+                                <name>current-year</name>
+                                <!-- Property config -->
+                                <locale>en_GB</locale>
+                                <pattern>yyyy</pattern>
+                                <timeZone>UTC</timeZone>
+                                <unit>year</unit>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
@@ -154,7 +178,9 @@
                     <configuration>
                         <header>${license-file}</header>
                         <properties>
-                            <year>2021</year>
+                            <initial-year>2021</initial-year>
+                            <!--suppress UnresolvedMavenProperty, defined by build-helper-maven-plugin -->
+                            <year>${current-year}</year>
                             <website>zodac.me</website>
                         </properties>
                         <includes>
@@ -281,6 +307,14 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <!-- Run to create properties for other plugins -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>
@@ -289,11 +323,11 @@
             <id>activate_all</id>
             <activation>
                 <property>
-                    <name>ts</name> <!-- Name means 'testsuite', but it's just what I'm used to running from work -->
+                    <name>all</name>
                 </property>
             </activation>
             <properties>
-                <skip-lints>false</skip-lints>
+                <skip-linters>false</skip-linters>
                 <skip-tests>false</skip-tests>
             </properties>
         </profile>
@@ -303,11 +337,11 @@
             <id>activate_lints</id>
             <activation>
                 <property>
-                    <name>lints</name>
+                    <name>lint</name>
                 </property>
             </activation>
             <properties>
-                <skip-lints>false</skip-lints>
+                <skip-linters>false</skip-linters>
             </properties>
         </profile>
 
