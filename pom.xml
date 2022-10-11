@@ -11,6 +11,7 @@
     <name>[${project.artifactId}] project</name>
 
     <modules>
+        <module>common-utils</module>
         <module>2021</module>
     </modules>
 
@@ -187,7 +188,7 @@
                             <include>src/main/java/**</include>
                             <include>src/test/java/**</include>
                         </includes>
-                        <skip>${skip-lints}</skip>
+                        <skip>${skip-linters}</skip>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -214,7 +215,7 @@
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
                         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
                         <propertyExpansion>checkstyle.config.path=${project.parent.basedir}/lint</propertyExpansion>
-                        <skip>${skip-lints}</skip>
+                        <skip>${skip-linters}</skip>
                         <violationSeverity>info</violationSeverity>
                     </configuration>
                     <executions>
@@ -244,7 +245,7 @@
                         <failOnWarnings>true</failOnWarnings>
                         <quiet>true</quiet>
                         <serialwarn>true</serialwarn>
-                        <skip>${skip-lints}</skip>
+                        <skip>${skip-linters}</skip>
                         <validateLinks>true</validateLinks>
                     </configuration>
                     <executions>
@@ -292,7 +293,7 @@
                         <rulesets>
                             <ruleset>${pmd-ruleset}</ruleset>
                         </rulesets>
-                        <skip>${skip-lints}</skip>
+                        <skip>${skip-linters}</skip>
                         <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                         <targetJdk>${java-release}</targetJdk>
                     </configuration>

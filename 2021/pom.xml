@@ -14,6 +14,13 @@
     <name>[${project.parent.artifactId}] 2021</name>
 
     <dependencies>
+        <!-- Project Dependencies -->
+        <dependency>
+            <groupId>me.zodac</groupId>
+            <artifactId>common-utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.assertj</groupId>
