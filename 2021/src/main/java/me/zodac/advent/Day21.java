@@ -29,6 +29,8 @@ import me.zodac.advent.pojo.CircularBoard;
 import me.zodac.advent.pojo.DeterministicDie;
 
 /**
+ * Solution for 2021, Day 21.
+ *
  * @see <a href="https://adventofcode.com/2021/day/21">AoC 2021, Day 21</a>
  */
 public final class Day21 {
@@ -40,7 +42,6 @@ public final class Day21 {
     /**
      * Given a number of player positions on a {@link CircularBoard}, we roll a {@link DeterministicDie} {@code numberOfDiceRolls} times. After each
      * set of rolls, we check the player's score. If it is above the {@code winningScoreThreshold}, the game ends.
-     *
      *
      * <p>
      * We then get the losing score (the lowest score) and multiply by the number of dice rolls thrown during the game.
@@ -65,9 +66,9 @@ public final class Day21 {
         final long[] scores = new long[numberOfPlayers];
 
         long numberOfTimesRolled = 0;
-        boolean winnerFound = false;
+        boolean searchingForWinner = true;
 
-        while (!winnerFound) {
+        while (searchingForWinner) {
             for (int playerNumber = 0; playerNumber < numberOfPlayers; playerNumber++) {
                 final int currentPosition = boardPositions[playerNumber];
                 final long currentScore = scores[playerNumber];
@@ -79,7 +80,7 @@ public final class Day21 {
                 final long newScore = currentScore + newPosition;
 
                 if (newScore >= winningScoreThreshold) {
-                    winnerFound = true;
+                    searchingForWinner = false;
                     break; // Break so we don't roll for another player
                 }
 

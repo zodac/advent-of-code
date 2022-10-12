@@ -102,14 +102,14 @@ public final class BingoBoard {
      * <p>
      * We first check all rows if any is complete, then all column.
      *
-     * @return <code>true</code> if the {@link BingoBoard} is a winner
+     * @return {@code true} if the {@link BingoBoard} is a winner
      * @see #mark(int)
      */
     public boolean isWinner() {
         for (final int[] row : board) {
             boolean winner = true;
             for (final int columnInRow : row) {
-                winner &= (columnInRow == MARKED_VALUE);
+                winner = winner && (columnInRow == MARKED_VALUE);
             }
 
             if (winner) {
@@ -117,10 +117,11 @@ public final class BingoBoard {
             }
         }
 
-        for (int column = 0; column < board[0].length; column++) {
+        final int boardLength = board[0].length;
+        for (int column = 0; column < boardLength; column++) {
             boolean winner = true;
             for (final int[] row : board) {
-                winner &= (row[column] == MARKED_VALUE);
+                winner = winner && (row[column] == MARKED_VALUE);
             }
 
             if (winner) {
@@ -140,10 +141,11 @@ public final class BingoBoard {
      * @return the sum of all non-marked numbers in the {@link BingoBoard}
      */
     public long sum() {
+        final int boardLength = board[0].length;
         long sum = 0L;
 
         for (final int[] row : board) {
-            for (int column = 0; column < board[0].length; column++) {
+            for (int column = 0; column < boardLength; column++) {
                 sum += row[column];
             }
         }

@@ -29,6 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Solution for 2021, Day 6.
+ *
  * @see <a href="https://adventofcode.com/2021/day/6">AoC 2021, Day 6</a>
  */
 public final class Day06 {
@@ -50,7 +52,7 @@ public final class Day06 {
      * @throws IllegalStateException possible to cause a long overflow if the number of {@code lanternfish} or {@code numberOfDays} is too high
      *                               (exponential growth, don't you know?)
      */
-    public static BigDecimal countLanternFishAfterDays(final List<Integer> lanternFish, final int numberOfDays) {
+    public static BigDecimal countLanternFishAfterDays(final Iterable<Integer> lanternFish, final int numberOfDays) {
         // Rather than storing the lanternfish themselves (which explodes in size), we group the fish by their timers and simply increment/decrement
         final BigDecimal[] lanternFishByTimer = new BigDecimal[NUMBER_OF_TIMERS_FOR_LANTERNFISH];
         Arrays.fill(lanternFishByTimer, BigDecimal.ZERO);
@@ -84,44 +86,33 @@ public final class Day06 {
             //}
 
             // Keeping the number of lanternfish for each timer at the start of the day
-            final BigDecimal zero = lanternFishByTimer[0];
-            final BigDecimal one = lanternFishByTimer[1];
-            final BigDecimal two = lanternFishByTimer[2];
-            final BigDecimal three = lanternFishByTimer[3];
-            final BigDecimal four = lanternFishByTimer[4];
-            final BigDecimal five = lanternFishByTimer[5];
-            final BigDecimal six = lanternFishByTimer[6];
-            final BigDecimal seven = lanternFishByTimer[7];
-            final BigDecimal eight = lanternFishByTimer[8];
+            final BigDecimal fishWithTimerOf0 = lanternFishByTimer[0];
+            final BigDecimal fishWithTimerOf1 = lanternFishByTimer[1];
+            final BigDecimal fishWithTimerOf2 = lanternFishByTimer[2];
+            final BigDecimal fishWithTimerOf3 = lanternFishByTimer[3];
+            final BigDecimal fishWithTimerOf4 = lanternFishByTimer[4];
+            final BigDecimal fishWithTimerOf5 = lanternFishByTimer[5];
+            final BigDecimal fishWithTimerOf6 = lanternFishByTimer[6];
+            final BigDecimal fishWithTimerOf7 = lanternFishByTimer[7];
+            final BigDecimal fishWithTimerOf8 = lanternFishByTimer[8];
 
             // Note that due to the way BigDecimal works, there is no need to check for any overflow
-            // BigDecimal should
-            // use all available memory on the system, so we will get an OutOfMemoryError instead of any overflow
+            // BigDecimal should use all available memory on the system, so we will get an OutOfMemoryError instead of any overflow
 
-            lanternFishByTimer[0] = one;
-            lanternFishByTimer[1] = two;
-            lanternFishByTimer[2] = three;
-            lanternFishByTimer[3] = four;
-            lanternFishByTimer[4] = five;
-            lanternFishByTimer[5] = six;
-            lanternFishByTimer[6] = seven.add(zero); // Timer 6 has all fish from timer 7, and also the fish from timer 0 that just spawned new fish
-            lanternFishByTimer[7] = eight;
-            lanternFishByTimer[8] = zero;
+            lanternFishByTimer[0] = fishWithTimerOf1;
+            lanternFishByTimer[1] = fishWithTimerOf2;
+            lanternFishByTimer[2] = fishWithTimerOf3;
+            lanternFishByTimer[3] = fishWithTimerOf4;
+            lanternFishByTimer[4] = fishWithTimerOf5;
+            lanternFishByTimer[5] = fishWithTimerOf6;
+            // Timer 6 has all fish from timer 7, and also the fish from timer 0 that just spawned new fish
+            lanternFishByTimer[6] = fishWithTimerOf7.add(fishWithTimerOf0);
+            lanternFishByTimer[7] = fishWithTimerOf8;
+            lanternFishByTimer[8] = fishWithTimerOf0;
         }
 
         return sumOfAll(lanternFishByTimer);
     }
-
-    //private static Map<Integer, BigDecimal> getLanternfishCountAtStartOfDay(final BigDecimal[] lanternFishByTimer, final int day) {
-    //    final Map<Integer, BigDecimal> lanternfishValues = new HashMap<>();
-    //    for (int i = 0; i < 9; i++) {
-    //        // Note that due to the way BigDecimal works, there is no need to check for any overflow
-    //        // BigDecimal should use all available memory on the system, so we will get an OutOfMemoryError instead of any overflow
-    //        final BigDecimal lanternfishCountAtTimer = lanternFishByTimer[i];
-    //        lanternfishValues.put(i, lanternfishCountAtTimer);
-    //    }
-    //    return lanternfishValues;
-    //}
 
     private static BigDecimal sumOfAll(final BigDecimal... values) {
         BigDecimal count = BigDecimal.ZERO;

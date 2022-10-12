@@ -26,6 +26,8 @@ package me.zodac.advent.pojo;
 
 /**
  * A game board that loops back on itself.
+ *
+ * @param maxValue the maximum value for the board
  */
 public record CircularBoard(int maxValue) {
 
@@ -50,6 +52,6 @@ public record CircularBoard(int maxValue) {
      * @return the final position on the {@link CircularBoard}
      */
     public int moveOnBoardAndGetNewPosition(final int startPosition, final long spacesToMove) {
-        return (int) (startPosition + spacesToMove - 1) % maxValue + 1;
+        return (int) ((startPosition + spacesToMove - 1) % maxValue) + 1;
     }
 }

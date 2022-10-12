@@ -27,11 +27,12 @@ package me.zodac.advent;
 import static me.zodac.advent.pojo.CoordinateGrid.AllowedLineType.ALL_LINES;
 import static me.zodac.advent.pojo.CoordinateGrid.AllowedLineType.NO_DIAGONAL_LINES;
 
-import java.util.List;
 import me.zodac.advent.pojo.CoordinateGrid;
 import me.zodac.advent.pojo.Line;
 
 /**
+ * Solution for 2021, Day 5.
+ *
  * @see <a href="https://adventofcode.com/2021/day/5">AoC 2021, Day 5</a>
  */
 public final class Day05 {
@@ -49,7 +50,7 @@ public final class Day05 {
      * @see Line#isHorizontal()
      * @see Line#isVertical()
      */
-    public static int addHorizontalAndVerticalLinesAndReturnOverlap(final List<Line> coordinateLines) {
+    public static int addHorizontalAndVerticalLinesAndReturnOverlap(final Iterable<Line> coordinateLines) {
         final int maxGridSize = getMaxGridSize(coordinateLines);
         final CoordinateGrid coordinateGrid = CoordinateGrid.ofSize(maxGridSize, NO_DIAGONAL_LINES);
 
@@ -70,7 +71,7 @@ public final class Day05 {
      * @see Line#isVertical()
      * @see Line#isPerfectDiagonal()
      */
-    public static int addAllLinesAndReturnOverlap(final List<Line> coordinateLines) {
+    public static int addAllLinesAndReturnOverlap(final Iterable<Line> coordinateLines) {
         final int maxGridSize = getMaxGridSize(coordinateLines);
         final CoordinateGrid coordinateGrid = CoordinateGrid.ofSize(maxGridSize, ALL_LINES);
 
@@ -81,7 +82,7 @@ public final class Day05 {
         return coordinateGrid.numberOfOverlaps();
     }
 
-    private static int getMaxGridSize(final List<Line> coordinateLines) {
+    private static int getMaxGridSize(final Iterable<Line> coordinateLines) {
         int max = 0;
         for (final Line coordinateLine : coordinateLines) {
             if (coordinateLine.maxCoordinateValue() > max) {

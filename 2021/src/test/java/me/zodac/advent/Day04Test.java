@@ -42,7 +42,7 @@ class Day04Test {
     void part1() {
         final List<String> bingoInput = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .filter(string -> !string.isBlank())
+            .filter(input -> !input.isBlank())
             .toList();
 
         final List<Integer> bingoNumbers = Arrays.stream(bingoInput.get(0).split(","))
@@ -62,7 +62,7 @@ class Day04Test {
     void part2() {
         final List<String> bingoInput = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .filter(string -> !string.isBlank())
+            .filter(input -> !input.isBlank())
             .toList();
 
         final List<Integer> bingoNumbers = Arrays.stream(bingoInput.get(0).split(","))

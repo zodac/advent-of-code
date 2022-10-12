@@ -29,6 +29,11 @@ import me.zodac.advent.util.MathUtils;
 
 /**
  * POJO defining the coordinates (x1, y1) and (x2, y2) of a line.
+ *
+ * @param x1 x1 coordinate
+ * @param x2 x2 coordinate
+ * @param y1 y1 coordinate
+ * @param y2 y2 coordinate
  */
 public record Line(int x1, int y1, int x2, int y2) {
 
@@ -75,7 +80,7 @@ public record Line(int x1, int y1, int x2, int y2) {
     /**
      * Checks if the line is horizontal.
      *
-     * @return <code>true</code> if the line is horizontal
+     * @return {@code true} if the line is horizontal
      */
     public boolean isHorizontal() {
         return x1 == x2;
@@ -84,7 +89,7 @@ public record Line(int x1, int y1, int x2, int y2) {
     /**
      * Checks if the line is vertical.
      *
-     * @return <code>true</code> if the line is vertical
+     * @return {@code true} if the line is vertical
      */
     public boolean isVertical() {
         return y1 == y2;
@@ -93,7 +98,7 @@ public record Line(int x1, int y1, int x2, int y2) {
     /**
      * Checks if the line is a 'perfect' diagonal (meaning a 45-degree angle).
      *
-     * @return <code>true</code> if the line is a 45-degree diagonal
+     * @return {@code true} if the line is a 45-degree diagonal
      */
     public boolean isPerfectDiagonal() {
         return Math.abs(x1 - x2) == Math.abs(y1 - y2);

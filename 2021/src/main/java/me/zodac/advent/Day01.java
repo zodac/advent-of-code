@@ -27,6 +27,8 @@ package me.zodac.advent;
 import java.util.List;
 
 /**
+ * Solution for 2021, Day 1.
+ *
  * @see <a href="https://adventofcode.com/2021/day/1">AoC 2021, Day 1</a>
  */
 public final class Day01 {
@@ -66,7 +68,7 @@ public final class Day01 {
     /**
      * Iterates through the supplied {@code values} and groups each {@code windowSize} entries into a 'window' for comparison. These values are summed
      * together as the first window. Then we iterate down one value (for a {@code windowSize} of <b>three</b>, for example) the second and third
-     * values of the first window are reused) to calculate the second window, and so on. If the new windows summed value is greater than the previous
+     * values of the first window are reused to calculate the second window, and so on. If the new windows summed value is greater than the previous
      * one, the counter is updated.
      *
      * @param windowSize the size of the 'window' to be calculated

@@ -57,29 +57,16 @@ public enum Direction {
         .toList();
 
     /**
-     * Retrieve all available {@link Direction}s (excluding {@link Direction#INVALID}.
-     *
-     * <p>
-     * Should be used instead of {@link Direction#values()}, as that recalculates the array for each call,
-     * while this method uses a static {@link Collection}.
-     *
-     * @return a {@link Collection} of all {@link Direction}s
-     */
-    public static Collection<Direction> getAllValues() {
-        return ALL_VALUES;
-    }
-
-    /**
      * Retrieve a {@link Direction} based on the input {@link String}. The search is case-insensitive.
      *
      * @param input the {@link Direction} as a {@link String}
      * @return the matching {@link Direction}, or {@link Direction#INVALID} if none is found
      */
     public static Direction get(final String input) {
-        return getAllValues()
+        return ALL_VALUES
             .stream()
             .filter(direction -> direction.toString().equalsIgnoreCase(input))
             .findAny()
-            .orElse(Direction.INVALID);
+            .orElse(INVALID);
     }
 }

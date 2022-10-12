@@ -24,13 +24,16 @@
 
 package me.zodac.advent.pojo;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 import java.util.regex.Pattern;
 
 /**
  * POJO defining a line of syntax characters.
+ *
+ * @param line the input {@link String} to create into a {@link SyntaxLine}
  */
 public record SyntaxLine(String line) {
 
@@ -77,30 +80,30 @@ public record SyntaxLine(String line) {
      * </pre>
      *
      * <p>
-     * We would expect the first close symbol to appear to be <b>}</b>, as <b>{</b> was the last open symbol listed. Instead we find <b>)</b>. Note
+     * We would expect the first close symbol to appear to be <b>}</b>, as <b>{</b> was the last open symbol listed. Instead, we find <b>)</b>. Note
      * that a {@link SyntaxLine} that has no invalid close symbols may be incomplete, but is considered valid.
      *
      * <p>
      * Based on whether there is an invalid close symbol, we can return one of two {@link Pair}s:
      * <ul>
-     *     <li>For an invalid {@link SyntaxLine}, a {@link Pair} of the first invalid close symbol and an empty {@link Stack}</li>
-     *     <li>For a valid {@link SyntaxLine}, a {@link Pair} of the <b>'0'</b> character and a {@link Stack} of the remaining open characters</li>
+     *     <li>For an invalid {@link SyntaxLine}, a {@link Pair} of the first invalid close symbol and an empty {@link Deque}</li>
+     *     <li>For a valid {@link SyntaxLine}, a {@link Pair} of the <b>'0'</b> character and a {@link Deque} of the remaining open characters</li>
      * </ul>
      *
      * @return the {@link Pair} for either invalid or valid {@link SyntaxLine}
      */
-    public Pair<Character, Stack<Character>> evaluateSyntaxErrorScoreForLine() {
-        final Stack<Character> openSymbols = new Stack<>();
+    public Pair<Character, Deque<Character>> evaluateSyntaxErrorScoreForLine() {
+        final Deque<Character> openSymbols = new ArrayDeque<>();
 
         for (final char syntaxSymbol : symbols()) {
-            if (SyntaxLine.isValidOpenSymbol(syntaxSymbol)) {
+            if (isValidOpenSymbol(syntaxSymbol)) {
                 openSymbols.push(syntaxSymbol);
-            } else if (SyntaxLine.isValidCloseSymbol(syntaxSymbol)) {
+            } else if (isValidCloseSymbol(syntaxSymbol)) {
                 final char nextOpenSymbol = openSymbols.pop();
-                final char expectedCloseSymbol = SyntaxLine.getMatchingCloseSymbol(nextOpenSymbol);
+                final char expectedCloseSymbol = getMatchingCloseSymbol(nextOpenSymbol);
 
                 if (expectedCloseSymbol != syntaxSymbol) {
-                    return Pair.of(syntaxSymbol, new Stack<>());
+                    return Pair.of(syntaxSymbol, new ArrayDeque<>());
                 }
             }
         }
@@ -121,7 +124,7 @@ public record SyntaxLine(String line) {
      * Checks if the provided input symbol is a valid opening symbol.
      *
      * @param inputSymbol the symbol to check
-     * @return <code>true</code> if the input is a valid opening symbol
+     * @return {@code true} if the input is a valid opening symbol
      */
     public static boolean isValidOpenSymbol(final char inputSymbol) {
         return VALID_OPEN_SYMBOLS.contains(inputSymbol);
@@ -131,7 +134,7 @@ public record SyntaxLine(String line) {
      * Checks if the provided input symbol is a valid close symbol.
      *
      * @param inputSymbol the symbol to check
-     * @return <code>true</code> if the input is a valid close symbol
+     * @return {@code true} if the input is a valid close symbol
      */
     public static boolean isValidCloseSymbol(final char inputSymbol) {
         return VALID_CLOSE_SYMBOLS.contains(inputSymbol);

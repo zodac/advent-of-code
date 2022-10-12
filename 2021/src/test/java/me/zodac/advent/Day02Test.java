@@ -30,6 +30,7 @@ import java.util.List;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Movement;
 import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.util.StringUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -73,7 +74,7 @@ class Day02Test {
      * @return the converted {@link Movement}
      */
     private static Movement convertToMovement(final String input) {
-        final String[] tokens = input.split("\s+");
+        final String[] tokens = StringUtils.splitOnWhitespace(input);
 
         final Direction direction = Direction.get(tokens[0]);
         final int spaces = Integer.parseInt(tokens[1]);

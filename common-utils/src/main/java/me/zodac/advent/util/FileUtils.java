@@ -42,7 +42,7 @@ public final class FileUtils {
     }
 
     /**
-     * Reads all lines from a file in <code>src/main/resources</code>.
+     * Reads all lines from a file in {@code src/main/resources}.
      *
      * @param filePathInResources file path to be read
      * @return a {@link List} of the {@link String} lines from the file, or {@link Collections#emptyList()} if an error occurs
@@ -56,7 +56,7 @@ public final class FileUtils {
     }
 
     /**
-     * Reads all lines from a file in <code>src/main/resources</code> where each line is a row of comma-separated {@link Integer}s.
+     * Reads all lines from a file in {@code src/main/resources} where each line is a row of comma-separated {@link Integer}s.
      *
      * @param filePathInResources file path to be read
      * @return a {@link List} of each line from the file as a {@link List} of {@link Integer}s, or {@link Collections#emptyList()} if an error occurs
@@ -64,7 +64,7 @@ public final class FileUtils {
     public static List<List<Integer>> readCommaSeparatedIntegers(final String filePathInResources) {
         return readLines(filePathInResources)
             .stream()
-            .map(string -> Arrays.asList(string.split(",")))
+            .map(input -> Arrays.asList(input.split(",")))
             .map(listOfStrings -> listOfStrings.stream().mapToInt(Integer::parseInt).boxed().toList())
             .toList();
     }

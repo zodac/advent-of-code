@@ -25,6 +25,7 @@
 package me.zodac.advent.pojo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +58,7 @@ public final class SignalDecoder {
      * </ol>
      *
      * @param signalOutputValue {@link String} to check
-     * @return <code>true</code> if the output value is '1', '4', '7' or '8'
+     * @return {@code true} if the output value is '1', '4', '7' or '8'
      */
     public static boolean isUniqueOutputValue(final String signalOutputValue) {
         return UNIQUE_OUTPUT_VALUES.contains(signalOutputValue.length());
@@ -112,20 +113,20 @@ public final class SignalDecoder {
             final int inputLength = input.length();
 
             switch (inputLength) {
-                default -> throw new IllegalStateException("Cannot decode input with length: " + inputLength);
                 case 2 -> decoder.put(input, 1);
                 case 3 -> decoder.put(input, 7);
                 case 4 -> decoder.put(input, 4);
                 case 5 -> decoder.put(input, lengthFive(input, decoder));
                 case 6 -> decoder.put(input, lengthSix(input, decoder));
                 case 7 -> decoder.put(input, 8);
+                default -> throw new IllegalStateException("Cannot decode input with length: " + inputLength);
             }
         }
 
         return decoder;
     }
 
-    private static int lengthFive(final String input, final Map<String, Integer> decoder) {
+    private static int lengthFive(final String input, final Map<String, ? super Integer> decoder) {
         final String valueForOne = CollectionUtils.getKeyByValue(decoder, 1).orElseThrow();
         final String valueForSeven = CollectionUtils.getKeyByValue(decoder, 7).orElseThrow();
 
@@ -145,7 +146,7 @@ public final class SignalDecoder {
         return 2;
     }
 
-    private static int lengthSix(final String input, final Map<String, Integer> decoder) {
+    private static int lengthSix(final String input, final Map<String, ? super Integer> decoder) {
         final String valueForOne = CollectionUtils.getKeyByValue(decoder, 1).orElseThrow();
         final String valueForFour = CollectionUtils.getKeyByValue(decoder, 4).orElseThrow();
         final String valueForSeven = CollectionUtils.getKeyByValue(decoder, 7).orElseThrow();
@@ -166,7 +167,7 @@ public final class SignalDecoder {
 
     // For the decoding, inputs of size 5 must be determined last, as the only way to differentiate a 2 and a 5 is comparing to 6
     // All other inputs are ordered by the size of the String
-    private static List<String> sortInputsForDecoding(final List<String> inputs) {
+    private static List<String> sortInputsForDecoding(final Collection<String> inputs) {
         final List<String> orderedInputs = new ArrayList<>(inputs.size());
 
         for (final String input : inputs) {

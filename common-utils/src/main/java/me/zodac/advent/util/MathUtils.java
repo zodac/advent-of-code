@@ -32,6 +32,8 @@ import java.util.Collections;
  */
 public final class MathUtils {
 
+    private static final double TRIANGULAR_NUMBER_DENOMINATOR = 2.0D;
+
     private MathUtils() {
 
     }
@@ -58,6 +60,6 @@ public final class MathUtils {
      * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
      */
     public static long triangularNumber(final int value) {
-        return Math.round(value * (value + 1) / 2.0D);
+        return Math.round(value * (value + 1) / TRIANGULAR_NUMBER_DENOMINATOR);
     }
 }

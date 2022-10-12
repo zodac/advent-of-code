@@ -25,7 +25,10 @@
 package me.zodac.advent.pojo;
 
 /**
- * Class defining a co-ordinate grid of points, which can have lines drawn on it.
+ * Class defining a coordinate grid of points, which can have lines drawn on it.
+ *
+ * @param grid            the coordinate grid as a 2D array of {@code ints}
+ * @param allowedLineType the types of lines allowed to be drawn on the {@link CoordinateGrid}
  */
 public record CoordinateGrid(int[][] grid, AllowedLineType allowedLineType) {
 
@@ -98,17 +101,20 @@ public record CoordinateGrid(int[][] grid, AllowedLineType allowedLineType) {
         final int incrementForX = diagonalIncrement(line.x2() - line.x1());
         final int incrementForY = diagonalIncrement(line.y2() - line.y1());
 
+        final int x2 = line.x2();
+        final int y2 = line.y2();
+
         int currX = line.x1();
         int currY = line.y1();
 
-        while (currX != line.x2() && currY != line.y2()) {
+        while (currX != x2 && currY != y2) {
             grid[currY][currX] = grid[currY][currX] + 1;
 
             currX += incrementForX;
             currY += incrementForY;
         }
 
-        // Get the end co-ordinate, as it is missed in the while loop
+        // Get the end coordinate, as it is missed in the while loop
         grid[line.y2()][line.x2()] = grid[line.y2()][line.x2()] + 1;
     }
 
@@ -126,9 +132,11 @@ public record CoordinateGrid(int[][] grid, AllowedLineType allowedLineType) {
      * @return the number of points with overlapping {@link Line}s
      */
     public int numberOfOverlaps() {
+        final int gridLength = grid[0].length;
         int count = 0;
+
         for (final int[] rows : grid) {
-            for (int column = 0; column < grid[0].length; column++) {
+            for (int column = 0; column < gridLength; column++) {
                 if (rows[column] >= MINIMUM_NUMBER_SIGNIFYING_OVERLAP) {
                     count++;
                 }

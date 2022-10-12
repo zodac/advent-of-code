@@ -29,6 +29,8 @@ package me.zodac.advent.pojo;
  *
  * @param <E1> type of first value
  * @param <E2> type of second value
+ * @param first the first object
+ * @param second the second object
  */
 public record Pair<E1, E2>(E1 first, E2 second) {
 

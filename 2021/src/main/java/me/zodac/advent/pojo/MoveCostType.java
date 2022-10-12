@@ -61,5 +61,5 @@ public enum MoveCostType {
      * @param endPosition   the end position
      * @return the cost for the move
      */
-    public abstract long costForMove(final int startPosition, final int endPosition);
+    public abstract long costForMove(int startPosition, int endPosition);
 }

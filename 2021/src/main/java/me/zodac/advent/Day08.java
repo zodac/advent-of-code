@@ -24,11 +24,14 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.List;
 import me.zodac.advent.pojo.Signal;
 import me.zodac.advent.pojo.SignalDecoder;
 
 /**
+ * Solution for 2021, Day 8.
+ *
  * @see <a href="https://adventofcode.com/2021/day/8">AoC 2021, Day 8</a>
  */
 public final class Day08 {
@@ -44,7 +47,7 @@ public final class Day08 {
      * @return the sum of unique output values
      * @see SignalDecoder#isUniqueOutputValue(String)
      */
-    public static long identifyUniqueOutputValues(final List<Signal> signals) {
+    public static long identifyUniqueOutputValues(final Collection<Signal> signals) {
         return signals
             .stream()
             .map(Signal::outputs)
@@ -61,7 +64,7 @@ public final class Day08 {
      * @return the sum of the decoded {@link Signal} values
      * @see SignalDecoder#decode(Signal)
      */
-    public static long sumOfDecodedOutputs(final List<Signal> signals) {
+    public static long sumOfDecodedOutputs(final Collection<Signal> signals) {
         return signals
             .stream()
             .mapToLong(SignalDecoder::decode)

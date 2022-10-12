@@ -25,14 +25,17 @@
 package me.zodac.advent;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import me.zodac.advent.pojo.Pair;
 import me.zodac.advent.pojo.SyntaxLine;
 import me.zodac.advent.util.CollectionUtils;
 
 /**
+ * Solution for 2021, Day 10.
+ *
  * @see <a href="https://adventofcode.com/2021/day/10">AoC 2021, Day 10</a>
  */
 public final class Day10 {
@@ -68,7 +71,7 @@ public final class Day10 {
      * @return the syntax error score for all {@link SyntaxLine}s
      * @see SyntaxLine#evaluateSyntaxErrorScoreForLine()
      */
-    public static long calculateSyntaxErrorScoreForLines(final List<SyntaxLine> syntaxLines) {
+    public static long calculateSyntaxErrorScoreForLines(final Collection<SyntaxLine> syntaxLines) {
         return syntaxLines
             .stream()
             .map(SyntaxLine::evaluateSyntaxErrorScoreForLine)
@@ -81,7 +84,7 @@ public final class Day10 {
     /**
      * For the given {@link List} of {@link SyntaxLine}s, evaluate them using {@link SyntaxLine#evaluateSyntaxErrorScoreForLine()}. We can then filter
      * this to only include evaluated {@link SyntaxLine}s that have some remaining open symbols, as an invalid {@link SyntaxLine} would return an
-     * empty {@link Stack}, as would a valid but completed {@link SyntaxLine}.
+     * empty {@link Deque}, as would a valid but completed {@link SyntaxLine}.
      *
      * <p>
      * We iterate over the remaining symbols (in reverse, so we get the most recent open symbol first), find their matching close symbol, and
@@ -95,8 +98,8 @@ public final class Day10 {
      * @see SyntaxLine#evaluateSyntaxErrorScoreForLine()
      * @see CollectionUtils#getMiddleValueOfList(List)
      */
-    public static long calculateMiddleScoreForIncompleteLines(final List<SyntaxLine> syntaxLines) {
-        final List<Stack<Character>> openSymbolsForIncompleteLines = syntaxLines
+    public static long calculateMiddleScoreForIncompleteLines(final Collection<SyntaxLine> syntaxLines) {
+        final List<Deque<Character>> openSymbolsForIncompleteLines = syntaxLines
             .stream()
             .map(SyntaxLine::evaluateSyntaxErrorScoreForLine)
             .filter(evaluatedSyntaxLine -> !evaluatedSyntaxLine.second().isEmpty())
@@ -104,13 +107,11 @@ public final class Day10 {
             .toList();
 
         final List<Long> scores = new ArrayList<>(openSymbolsForIncompleteLines.size());
-        for (final Stack<Character> remainingOpenSymbolsForLine : openSymbolsForIncompleteLines) {
+        for (final Deque<Character> remainingOpenSymbolsForLine : openSymbolsForIncompleteLines) {
             long score = 0L;
 
             // Iterate over the remaining open symbols to find their required close symbol
-            // We iterate in reverse so we get the last open symbol's close symbol (since the score is order-dependent)
-            for (int i = remainingOpenSymbolsForLine.size() - 1; i >= 0; i--) {
-                final char remainingOpenSymbol = remainingOpenSymbolsForLine.get(i);
+            for (final char remainingOpenSymbol : remainingOpenSymbolsForLine) {
                 final char requiredCloseSymbol = SyntaxLine.getMatchingCloseSymbol(remainingOpenSymbol);
                 score = calculateNewCompletionScore(score, requiredCloseSymbol);
             }

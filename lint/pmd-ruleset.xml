@@ -18,10 +18,8 @@
         <exclude name="JUnitTestContainsTooManyAsserts"/>
         <!-- False positives with AssertJ using #as() to include an error message -->
         <exclude name="JUnitAssertionsShouldIncludeMessage"/>
-
-        <!-- False positives in JDK17, needs PMD 7.x release for fix -->
-        <!-- https://github.com/pmd/pmd/issues/2997 -->
-        <exclude name="SwitchStmtsShouldHaveDefault"/>
+        <!-- Mostly used for tests -->
+        <exclude name="AvoidUsingHardCodedIP"/>
     </rule>
 
     <rule ref="category/java/codestyle.xml">
@@ -86,7 +84,7 @@
     <!-- Default threshold is a bit high for some of our classes -->
     <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
-            <property name="classReportLevel" value="75"/>
+            <property name="classReportLevel" value="80"/>
             <property name="methodReportLevel" value="20"/>
         </properties>
     </rule>
@@ -105,6 +103,9 @@
     <rule ref="category/java/errorprone.xml">
         <!-- Don't agree, not worth it -->
         <exclude name="AvoidDuplicateLiterals"/>
+
+        <!-- Disagree, nicer to have getters with the field name -->
+        <exclude name="AvoidFieldNameMatchingMethodName"/>
 
         <!-- Quite a few false positives -->
         <!-- Caught by SonarQube analysis -->

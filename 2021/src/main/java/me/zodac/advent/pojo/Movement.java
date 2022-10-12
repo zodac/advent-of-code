@@ -26,6 +26,9 @@ package me.zodac.advent.pojo;
 
 /**
  * Simple POJO defining a movement in a given {@link Direction} for a number of spaces.
+ *
+ * @param direction the {@link Direction} to move in
+ * @param spaces the number of spaces to move
  */
 public record Movement(Direction direction, int spaces) {
 

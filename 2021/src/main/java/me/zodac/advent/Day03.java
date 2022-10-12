@@ -30,6 +30,8 @@ import me.zodac.advent.pojo.BitParityCount;
 import me.zodac.advent.util.BinaryConversionUtils;
 
 /**
+ * Solution for 2021, Day 3.
+ *
  * @see <a href="https://adventofcode.com/2021/day/3">AoC 2021, Day 3</a>
  */
 public final class Day03 {
@@ -42,7 +44,7 @@ public final class Day03 {
 
     /**
      * Given an input {@link List} of binary values, we calculate the most common bit and least common bit per index. We then reconstitute these
-     * most/least common bits to calculate the gamma (most common bits) and epsilon (least common bits) rates of the input.
+     * most or least common bits to calculate the gamma (the most common bits) and epsilon (the least common bits) rates of the input.
      *
      * <p>
      * For example, take the input:
@@ -72,7 +74,7 @@ public final class Day03 {
      * @param binaryValues the values to be checked
      * @return the power consumption
      * @see BinaryConversionUtils
-     * @see BitParityCount#createForIndexOfBinaryValues(List, int)
+     * @see BitParityCount#createForIndexOfBinaryValues(Iterable, int)
      */
     public static long calculatePowerConsumption(final List<String> binaryValues) {
         if (binaryValues.isEmpty()) {
@@ -103,11 +105,11 @@ public final class Day03 {
 
     /**
      * Given an input {@link List} of binary values, we calculate the most common bit and least common bit of each index, and filter out any values
-     * that do not have the corresponding most/least common bit for that index.
+     * that do not have the corresponding most or least common bit for that index.
      *
      * <p>
-     * We then recalculate the most/least common bits for the next index of the remaining binary values, and continue until there is only one binary
-     * value remaining. This value is either the oxygen rating (most common bits) or carbon dioxide rating (least common bits).
+     * We then recalculate the most or least common bits for the next index of the remaining binary values, and continue until there is only one
+     * binary value remaining. This value is either the oxygen rating (the most common bits) or carbon dioxide rating (the least common bits).
      *
      * <p>
      * For example, take the input:
@@ -145,7 +147,7 @@ public final class Day03 {
      * @param binaryValues the values to be checked
      * @return the life support rating
      * @see BinaryConversionUtils
-     * @see BitParityCount#createForIndexOfBinaryValues(List, int)
+     * @see BitParityCount#createForIndexOfBinaryValues(Iterable, int)
      */
     public static long calculateLifeSupportRating(final List<String> binaryValues) {
         if (binaryValues.isEmpty()) {

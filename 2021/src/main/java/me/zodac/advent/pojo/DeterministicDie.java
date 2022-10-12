@@ -27,9 +27,22 @@ package me.zodac.advent.pojo;
 /**
  * Simple die that returns a deterministic roll. Each roll will increment the value by 1 until it reaches {@code maxValue}.
  */
-public record DeterministicDie(long maxValue) {
+public final class DeterministicDie {
 
-    private static long counter;
+    private final long maxValue;
+
+    private long counter;
+
+    /**
+     * Creates a {@link DeterministicDie}.
+     *
+     * @param maxValue the maximum value for a die roll
+     * @param counter  the number of die rolls
+     */
+    public DeterministicDie(final long maxValue, final long counter) {
+        this.maxValue = maxValue;
+        this.counter = counter;
+    }
 
     /**
      * Creates a {@link DeterministicDie} with a maximum value.
@@ -38,7 +51,7 @@ public record DeterministicDie(long maxValue) {
      * @return the created {@link DeterministicDie}
      */
     public static DeterministicDie createWithMaxValue(final long maxValue) {
-        return new DeterministicDie(maxValue);
+        return new DeterministicDie(maxValue, 0L);
     }
 
     /**

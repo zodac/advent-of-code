@@ -25,11 +25,14 @@
 package me.zodac.advent.util;
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 /**
  * Utility class with {@link String}-based functions.
  */
 public final class StringUtils {
+
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
 
     private StringUtils() {
 
@@ -39,7 +42,7 @@ public final class StringUtils {
      * Sorts the individual characters in the given {@link String} alphabetically.
      *
      * <p>
-     * For example, <code>foobar</code> will be returned as <code>abfoor</code>
+     * For example, {@code foobar} will be returned as {@code abfoor}
      *
      * @param input the {@link String} to sort
      * @return the sorted {@link String}
@@ -57,7 +60,7 @@ public final class StringUtils {
      * @return the array of split {@link String}s
      */
     public static String[] splitOnWhitespace(final String input) {
-        return input.trim().split("\\s+");
+        return WHITESPACE_PATTERN.split(input.trim());
     }
 
     /**
@@ -65,7 +68,7 @@ public final class StringUtils {
      *
      * @param superString the {@link String} that should contain all characters in all {@code subStrings}
      * @param subStrings  the {@link String}s that should be subsets of {@code superString}
-     * @return <code>false</code> if any character in any {@code subString} is not in the {@code superString}
+     * @return {@code false} if any character in any {@code subString} is not in the {@code superString}
      */
     public static boolean containsAll(final String superString, final String... subStrings) {
         for (final String subString : subStrings) {

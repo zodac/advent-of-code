@@ -31,6 +31,9 @@ import me.zodac.advent.util.StringUtils;
 
 /**
  * Simple class defining a signal with its input values and output values.
+ *
+ * @param inputs the input values
+ * @param outputs the output values
  */
 public record Signal(List<String> inputs, List<String> outputs) {
 

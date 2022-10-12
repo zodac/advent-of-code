@@ -40,7 +40,7 @@ class Day21Test {
     void part1() {
         final int[] startPositions = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .map(string -> string.split(":", 2)[1].trim())
+            .map(input -> input.split(":", 2)[1].trim())
             .mapToInt(Integer::parseInt)
             .toArray();
 

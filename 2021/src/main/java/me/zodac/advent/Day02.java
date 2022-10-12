@@ -24,11 +24,12 @@
 
 package me.zodac.advent;
 
-import java.util.List;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Movement;
 
 /**
+ * Solution for 2021, Day 2.
+ *
  * @see <a href="https://adventofcode.com/2021/day/2">AoC 2021, Day 2</a>
  */
 public final class Day02 {
@@ -49,7 +50,7 @@ public final class Day02 {
      * @param movements the {@link Movement}s to iterate over
      * @return the magnitude of all vertical and horizontal {@link Movement}s
      */
-    public static long magnitudeOfAllMovements(final List<Movement> movements) {
+    public static long magnitudeOfAllMovements(final Iterable<Movement> movements) {
         long horizontal = 0L;
         long vertical = 0L;
 
@@ -82,7 +83,7 @@ public final class Day02 {
      * @param movements the {@link Movement}s to iterate over
      * @return the magnitude of all vertical and horizontal {@link Movement}s
      */
-    public static long magnitudeOfAllMovementsWithAim(final List<Movement> movements) {
+    public static long magnitudeOfAllMovementsWithAim(final Iterable<Movement> movements) {
         long horizontal = 0L;
         long vertical = 0L;
         long aim = 0L;

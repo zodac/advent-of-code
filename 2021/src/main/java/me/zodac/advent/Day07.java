@@ -24,11 +24,14 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import me.zodac.advent.pojo.MoveCostType;
 
 /**
+ * Solution for 2021, Day 6.
+ *
  * @see <a href="https://adventofcode.com/2021/day/7">AoC 2021, Day 7</a>
  */
 public final class Day07 {
@@ -48,7 +51,7 @@ public final class Day07 {
      * @param moveCostType the {@link MoveCostType} per move
      * @return the minimum moves required to align to the ideal vertical location
      */
-    public static long minimumMovesNeededToAlignVertically(final List<Integer> locations, final MoveCostType moveCostType) {
+    public static long minimumMovesNeededToAlignVertically(final Collection<Integer> locations, final MoveCostType moveCostType) {
         final int minValue = Collections.min(locations);
         final int maxValue = Collections.max(locations);
         long minimumNumberOfMoves = Long.MAX_VALUE;
