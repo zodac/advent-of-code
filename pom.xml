@@ -11,8 +11,9 @@
     <name>[${project.artifactId}] project</name>
 
     <modules>
-        <module>common-utils</module>
+        <module>2015</module>
         <module>2021</module>
+        <module>common-utils</module>
     </modules>
 
     <properties>
