@@ -76,9 +76,9 @@ public record GiftBox(int length, int width, int height) {
         final int sideWidthHeight = width * height;
         final int sideHeightLength = height * length;
 
-        return (sideLengthWidth < sideWidthHeight) ?
-            Math.min(sideHeightLength, sideLengthWidth) :
-            Math.min(sideWidthHeight, sideHeightLength);
+        return (sideLengthWidth < sideWidthHeight)
+            ? Math.min(sideHeightLength, sideLengthWidth)
+            : Math.min(sideWidthHeight, sideHeightLength);
     }
 
     /**

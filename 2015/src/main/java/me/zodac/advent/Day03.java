@@ -27,8 +27,9 @@ package me.zodac.advent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.util.MathUtils;
 
 /**
  * Solution for 2015, Day 3.
@@ -37,68 +38,54 @@ import me.zodac.advent.pojo.Point;
  */
 public final class Day03 {
 
-    private static final char UP_CHARACTER = '^';
-    private static final char DOWN_CHARACTER = 'v';
-    private static final char LEFT_CHARACTER = '<';
-    private static final char RIGHT_CHARACTER = '>';
-
     private Day03() {
 
     }
 
-
-    public static int countUniqueHouses(final Iterable<Character> values) {
+    /**
+     * For the given {@link Direction}s, a {@link Point} moves to a new house. Counts the number of unique houses.
+     *
+     * @param values the {@link Direction}s
+     * @return the number of unique houses
+     */
+    public static int countUniqueHouses(final Iterable<Direction> values) {
         final Collection<Point> visitedHouses = new HashSet<>();
-        Point currentPoint = new Point(0, 0);
+        Point currentPoint = Point.create();
 
         visitedHouses.add(currentPoint);
 
-        for (final char character : values) {
-            switch (character) {
-                case UP_CHARACTER -> currentPoint = new Point(currentPoint.x(), currentPoint.y() + 1);
-                case DOWN_CHARACTER -> currentPoint = new Point(currentPoint.x(), currentPoint.y() - 1);
-                case LEFT_CHARACTER -> currentPoint = new Point(currentPoint.x() - 1, currentPoint.y());
-                case RIGHT_CHARACTER -> currentPoint = new Point(currentPoint.x() + 1, currentPoint.y());
-                default -> throw new IllegalStateException(String.format("Invalid character: '%s'", character));
-            }
-
+        for (final Direction direction : values) {
+            currentPoint = currentPoint.move(direction);
             visitedHouses.add(currentPoint);
         }
 
         return visitedHouses.size();
     }
 
-    public static int countUniqueHousesTwoUsers(final List<Character> values) {
+    /**
+     * For the given {@link Direction}s, a {@link Point} moves to a new house for each even index, and another {@link Point} moves to a new house for
+     * each odd index. Counts the number of unique houses.
+     *
+     * @param values the {@link Direction}s
+     * @return the number of unique houses
+     */
+    public static int countUniqueHousesTwoUsers(final List<Direction> values) {
         final Collection<Point> visitedHouses = new HashSet<>();
-        Point currentPointUserOne = new Point(0, 0);
-        Point currentPointUserTwo = new Point(0, 0);
+        Point currentPointUserOne = Point.create();
+        Point currentPointUserTwo = Point.create();
 
         visitedHouses.add(currentPointUserOne);
         visitedHouses.add(currentPointUserTwo);
 
         final int numberOfEntries = values.size();
         for (int i = 0; i < numberOfEntries; i++) {
-            final char character = values.get(i);
+            final Direction direction = values.get(i);
 
-            if (i % 2 == 0) {
-                switch (character) {
-                    case UP_CHARACTER -> currentPointUserOne = new Point(currentPointUserOne.x(), currentPointUserOne.y() + 1);
-                    case DOWN_CHARACTER -> currentPointUserOne = new Point(currentPointUserOne.x(), currentPointUserOne.y() - 1);
-                    case LEFT_CHARACTER -> currentPointUserOne = new Point(currentPointUserOne.x() - 1, currentPointUserOne.y());
-                    case RIGHT_CHARACTER -> currentPointUserOne = new Point(currentPointUserOne.x() + 1, currentPointUserOne.y());
-                    default -> throw new IllegalStateException(String.format("Invalid character: '%s'", character));
-                }
-
+            if (MathUtils.isEven(i)) {
+                currentPointUserOne = currentPointUserOne.move(direction);
                 visitedHouses.add(currentPointUserOne);
             } else {
-                switch (character) {
-                    case UP_CHARACTER -> currentPointUserTwo = new Point(currentPointUserTwo.x(), currentPointUserTwo.y() + 1);
-                    case DOWN_CHARACTER -> currentPointUserTwo = new Point(currentPointUserTwo.x(), currentPointUserTwo.y() - 1);
-                    case LEFT_CHARACTER -> currentPointUserTwo = new Point(currentPointUserTwo.x() - 1, currentPointUserTwo.y());
-                    case RIGHT_CHARACTER -> currentPointUserTwo = new Point(currentPointUserTwo.x() + 1, currentPointUserTwo.y());
-                    default -> throw new IllegalStateException(String.format("Invalid character: '%s'", character));
-                }
-
+                currentPointUserTwo = currentPointUserTwo.move(direction);
                 visitedHouses.add(currentPointUserTwo);
             }
         }

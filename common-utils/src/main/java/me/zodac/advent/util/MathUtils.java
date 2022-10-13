@@ -62,4 +62,14 @@ public final class MathUtils {
     public static long triangularNumber(final int value) {
         return Math.round(value * (value + 1) / TRIANGULAR_NUMBER_DENOMINATOR);
     }
+
+    /**
+     * Checks if the input {@code int} is even.
+     *
+     * @param value the {@code int} to check
+     * @return {@code true} if the {@code int} is even
+     */
+    public static boolean isEven(final int value) {
+        return value % 2 == 0;
+    }
 }

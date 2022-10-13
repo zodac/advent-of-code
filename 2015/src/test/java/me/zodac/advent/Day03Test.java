@@ -27,6 +27,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -39,10 +40,11 @@ class Day03Test {
 
     @Test
     void part1() {
-        final List<Character> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Direction> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .flatMapToInt(String::chars)
-            .mapToObj(i -> (char) i)
+            .mapToObj(i -> String.valueOf((char) i))
+            .map(Direction::getByValue)
             .toList();
 
         final int floor = Day03.countUniqueHouses(values);
@@ -52,10 +54,11 @@ class Day03Test {
 
     @Test
     void part2() {
-        final List<Character> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Direction> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .flatMapToInt(String::chars)
-            .mapToObj(i -> (char) i)
+            .mapToObj(i -> String.valueOf((char) i))
+            .map(Direction::getByValue)
             .toList();
 
         final int floor = Day03.countUniqueHousesTwoUsers(values);

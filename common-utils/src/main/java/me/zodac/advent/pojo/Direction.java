@@ -25,6 +25,8 @@
 package me.zodac.advent.pojo;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -33,19 +35,24 @@ import java.util.stream.Stream;
 public enum Direction {
 
     /**
-     * A downwards vertical movement.
+     * A negative horizontal movement.
      */
-    DOWN,
+    BACKWARDS("<"),
+
+    /**
+     * A negative vertical movement.
+     */
+    DOWN("v"),
 
     /**
      * A positive horizontal movement.
      */
-    FORWARD,
+    FORWARD(">"),
 
     /**
-     * An upwards vertical movement.
+     * A positive vertical movement.
      */
-    UP,
+    UP("^"),
 
     /**
      * An invalid direction.
@@ -55,6 +62,12 @@ public enum Direction {
     private static final Collection<Direction> ALL_VALUES = Stream.of(values())
         .filter(value -> value != INVALID)
         .toList();
+
+    private final Set<String> possibleValues;
+
+    Direction(final String... possibleValues) {
+        this.possibleValues = possibleValues.length == 0 ? Collections.emptySet() : Set.of(possibleValues);
+    }
 
     /**
      * Retrieve a {@link Direction} based on the input {@link String}. The search is case-insensitive.
@@ -68,5 +81,21 @@ public enum Direction {
             .filter(direction -> direction.toString().equalsIgnoreCase(input))
             .findAny()
             .orElse(INVALID);
+    }
+
+    /**
+     * Retrieve a {@link Direction} based on the input {@link String} referring to a possible value of the {@link Direction}. The search is
+     * case-insensitive.
+     *
+     * @param input the {@link Direction} as a {@link String}
+     * @return the matching {@link Direction}
+     * @throws IllegalStateException thrown if the input {@link String} is not a valid value for any {@link Direction}
+     */
+    public static Direction getByValue(final String input) {
+        return ALL_VALUES
+            .stream()
+            .filter(direction -> direction.possibleValues.contains(input))
+            .findAny()
+            .orElseThrow(() -> new IllegalStateException(String.format("Invalid direction: '%s'", input)));
     }
 }
