@@ -130,7 +130,7 @@
                                 <version>${errorprone.version}</version>
                             </path>
                         </annotationProcessorPaths>
-                        <fork>true</fork>
+                        <fork>false</fork>
                         <compilerArgs>
                             <arg>-Xlint:all</arg>
                             <arg>-Xdoclint:all</arg>
