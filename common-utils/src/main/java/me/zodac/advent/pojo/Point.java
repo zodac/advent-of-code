@@ -37,8 +37,17 @@ public record Point(int x, int y) {
      *
      * @return the created {@link Point}
      */
-    public static Point create() {
+    public static Point atOrigin() {
         return new Point(0, 0);
+    }
+
+    /**
+     * Creates a {@link Point} starting at the provided (x, y) coordinates.
+     *
+     * @return the created {@link Point}
+     */
+    public static Point of(final int x, final int y) {
+        return new Point(x, y);
     }
 
     /**

@@ -80,32 +80,32 @@ public record CoordinateGrid(int[][] grid, AllowedLineType allowedLineType) {
     }
 
     private void addHorizontalLine(final Line line) {
-        final int start = Math.min(line.y1(), line.y2());
-        final int end = Math.max(line.y1(), line.y2());
+        final int start = Math.min(line.first().y(), line.second().y());
+        final int end = Math.max(line.first().y(), line.second().y());
 
         for (int i = start; i <= end; i++) {
-            grid[i][line.x1()] = grid[i][line.x1()] + 1;
+            grid[i][line.first().x()] = grid[i][line.first().x()] + 1;
         }
     }
 
     private void addVerticalLine(final Line line) {
-        final int start = Math.min(line.x1(), line.x2());
-        final int end = Math.max(line.x1(), line.x2());
+        final int start = Math.min(line.first().x(), line.second().x());
+        final int end = Math.max(line.first().x(), line.second().x());
 
         for (int i = start; i <= end; i++) {
-            grid[line.y1()][i] = grid[line.y1()][i] + 1;
+            grid[line.first().y()][i] = grid[line.first().y()][i] + 1;
         }
     }
 
     private void addDiagonalLine(final Line line) {
-        final int incrementForX = diagonalIncrement(line.x2() - line.x1());
-        final int incrementForY = diagonalIncrement(line.y2() - line.y1());
+        final int incrementForX = diagonalIncrement(line.second().x() - line.first().x());
+        final int incrementForY = diagonalIncrement(line.second().y() - line.first().y());
 
-        final int x2 = line.x2();
-        final int y2 = line.y2();
+        final int x2 = line.second().x();
+        final int y2 = line.second().y();
 
-        int currX = line.x1();
-        int currY = line.y1();
+        int currX = line.first().x();
+        int currY = line.first().y();
 
         while (currX != x2 && currY != y2) {
             grid[currY][currX] = grid[currY][currX] + 1;
@@ -115,7 +115,7 @@ public record CoordinateGrid(int[][] grid, AllowedLineType allowedLineType) {
         }
 
         // Get the end coordinate, as it is missed in the while loop
-        grid[line.y2()][line.x2()] = grid[line.y2()][line.x2()] + 1;
+        grid[line.second().y()][line.second().x()] = grid[line.second().y()][line.second().x()] + 1;
     }
 
     private static int diagonalIncrement(final int i) {

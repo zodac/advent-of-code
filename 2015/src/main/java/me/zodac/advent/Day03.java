@@ -50,7 +50,7 @@ public final class Day03 {
      */
     public static int countUniqueHouses(final Iterable<Direction> values) {
         final Collection<Point> visitedHouses = new HashSet<>();
-        Point currentPoint = Point.create();
+        Point currentPoint = Point.atOrigin();
 
         visitedHouses.add(currentPoint);
 
@@ -71,8 +71,8 @@ public final class Day03 {
      */
     public static int countUniqueHousesTwoUsers(final List<Direction> values) {
         final Collection<Point> visitedHouses = new HashSet<>();
-        Point currentPointUserOne = Point.create();
-        Point currentPointUserTwo = Point.create();
+        Point currentPointUserOne = Point.atOrigin();
+        Point currentPointUserTwo = Point.atOrigin();
 
         visitedHouses.add(currentPointUserOne);
         visitedHouses.add(currentPointUserTwo);

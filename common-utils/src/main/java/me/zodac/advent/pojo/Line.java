@@ -28,14 +28,12 @@ import java.util.List;
 import me.zodac.advent.util.MathUtils;
 
 /**
- * POJO defining the coordinates (x1, y1) and (x2, y2) of a line.
+ * POJO defining a line on a coordinate gird, defined by two {@link Point}s.
  *
- * @param x1 x1 coordinate
- * @param x2 x2 coordinate
- * @param y1 y1 coordinate
- * @param y2 y2 coordinate
+ * @param first  the first {@link Point}
+ * @param second the second {@link Point}
  */
-public record Line(int x1, int y1, int x2, int y2) {
+public record Line(Point first, Point second) {
 
     /**
      * Defines the number of coordinates per {@link Line}, which is <b>4</b>: (x1, y1) and (x2, y2).
@@ -64,7 +62,9 @@ public record Line(int x1, int y1, int x2, int y2) {
                 String.format("Expected %d elements, found %d", NUMBER_OF_COORDINATES_PER_LINE, coordinates.size()));
         }
 
-        return new Line(coordinates.get(0), coordinates.get(1), coordinates.get(2), coordinates.get(3));
+        final Point firstPoint = Point.of(coordinates.get(0), coordinates.get(1));
+        final Point secondPoint = Point.of(coordinates.get(2), coordinates.get(3));
+        return new Line(firstPoint, secondPoint);
     }
 
     /**
@@ -74,7 +74,7 @@ public record Line(int x1, int y1, int x2, int y2) {
      * @see MathUtils#max(int, int...)
      */
     public int maxCoordinateValue() {
-        return MathUtils.max(x1, x2, y1, y2);
+        return MathUtils.max(first.x(), second.x(), first.y(), second.y());
     }
 
     /**
@@ -83,7 +83,7 @@ public record Line(int x1, int y1, int x2, int y2) {
      * @return {@code true} if the line is horizontal
      */
     public boolean isHorizontal() {
-        return x1 == x2;
+        return first.x() == second.x();
     }
 
     /**
@@ -92,7 +92,7 @@ public record Line(int x1, int y1, int x2, int y2) {
      * @return {@code true} if the line is vertical
      */
     public boolean isVertical() {
-        return y1 == y2;
+        return first.y() == second.y();
     }
 
     /**
@@ -101,6 +101,6 @@ public record Line(int x1, int y1, int x2, int y2) {
      * @return {@code true} if the line is a 45-degree diagonal
      */
     public boolean isPerfectDiagonal() {
-        return Math.abs(x1 - x2) == Math.abs(y1 - y2);
+        return Math.abs(first.x() - second.x()) == Math.abs(first.y() - second.y());
     }
 }
