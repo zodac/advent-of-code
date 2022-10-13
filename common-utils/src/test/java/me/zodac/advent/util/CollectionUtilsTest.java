@@ -85,7 +85,7 @@ class CollectionUtilsTest {
 
     @Test
     void whenGetMiddleValueOfList_givenUnsortedListOfOddSize_thenMiddleValueOfSortedListIsReturned() {
-        final List<String> input = List.of("c", "b", "a");
+        final List<String> input = List.of("c", "a", "b");
         final String output = CollectionUtils.getMiddleValueOfList(input);
         assertThat(output)
             .isEqualTo("b");

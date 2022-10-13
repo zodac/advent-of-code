@@ -71,7 +71,7 @@ public record Line(int x1, int y1, int x2, int y2) {
      * Returns the maximum value of the x1, x2, y1, y2 coordinates.
      *
      * @return the largest value of the coordinates
-     * @see MathUtils#max(int...)
+     * @see MathUtils#max(int, int...)
      */
     public int maxCoordinateValue() {
         return MathUtils.max(x1, x2, y1, y2);
