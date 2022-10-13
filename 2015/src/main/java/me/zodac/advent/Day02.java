@@ -30,7 +30,7 @@ import me.zodac.advent.pojo.GiftBox;
 /**
  * Solution for 2015, Day 2.
  *
- * @see <a href="https://adventofcode.com/2015/day/1">AoC 2015, Day 2</a>
+ * @see <a href="https://adventofcode.com/2015/day/2">AoC 2015, Day 2</a>
  */
 public final class Day02 {
 
