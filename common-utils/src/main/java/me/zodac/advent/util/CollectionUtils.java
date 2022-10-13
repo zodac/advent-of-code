@@ -24,6 +24,7 @@
 
 package me.zodac.advent.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -67,11 +68,15 @@ public final class CollectionUtils {
      * @throws IllegalArgumentException thrown if the {@link List} has an even size
      */
     public static <E extends Comparable<E>> E getMiddleValueOfList(final List<E> list) {
-        if (list.size() % 2 == 0) {
-            throw new IllegalArgumentException("Expected list with odd size, found size: " + list.size());
+        final int listSize = list.size();
+        if (list.isEmpty() || MathUtils.isEven(listSize)) {
+            throw new IllegalArgumentException("Expected list with positive odd size, found size: " + listSize);
         }
 
-        Collections.sort(list);
-        return list.get((list.size() / 2));
+        final List<E> modifiableList = new ArrayList<>(list);
+        Collections.sort(modifiableList);
+
+        final int middleIndex = listSize / 2;
+        return modifiableList.get(middleIndex);
     }
 }

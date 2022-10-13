@@ -24,7 +24,9 @@
 
 package me.zodac.advent.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -41,11 +43,14 @@ public final class MathUtils {
     /**
      * Returns the maximum value of the provided {@code int} values.
      *
-     * @param values the {@link int}s to check
+     * @param firstValue the first {@code int}, so at least one value is provided
+     * @param values     the {@link int}s to check
      * @return the largest value
      */
-    public static int max(final int... values) {
-        return Collections.max(Arrays.stream(values).boxed().toList());
+    public static int max(final int firstValue, final int... values) {
+        final Collection<Integer> valuesAsCollection = new ArrayList<>(Arrays.stream(values).boxed().toList());
+        valuesAsCollection.add(firstValue);
+        return Collections.max(valuesAsCollection);
     }
 
     /**

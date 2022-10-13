@@ -24,22 +24,29 @@
 
 package me.zodac.advent.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
+
 /**
- * Utility class used to convert a {@link String} representing a binary value to a base-10 numeric value.
+ * Unit tests for {@link BinaryConversionUtils}.
  */
-public final class BinaryConversionUtils {
+class BinaryConversionUtilsTest {
 
-    private BinaryConversionUtils() {
-
+    @Test
+    void whenToDecimal_givenValidBinary_thenDecimalValueIsReturned() {
+        final String input = "100";
+        final long output = BinaryConversionUtils.toDecimal(input);
+        assertThat(output)
+            .isEqualTo(4);
     }
 
-    /**
-     * Converts the provided binary {@link String} into a base-10 {@code long} value.
-     *
-     * @param binaryValue the binary {@link String to convert}
-     * @return the converted base-10 value
-     */
-    public static long toDecimal(final String binaryValue) {
-        return Long.parseLong(binaryValue, 2);
+    @Test
+    void whenToDecimal_givenInvalidBinary_thenNumberFormatExceptionIsThrown() {
+        final String input = "abc";
+
+        assertThatThrownBy(() -> BinaryConversionUtils.toDecimal(input))
+            .isInstanceOf(NumberFormatException.class);
     }
 }
