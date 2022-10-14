@@ -127,7 +127,7 @@ public record CoordinateGrid(int[][] grid, AllowedLineType allowedLineType) {
      *
      * <p>
      * As a {@link Line} is drawn, each point has a counter increments if a {@link Line} passes through it. If that value is over
-     * {@link #MINIMUM_NUMBER_SIGNIFYING_OVERLAP}, the point has an overlap.
+     * {@value #MINIMUM_NUMBER_SIGNIFYING_OVERLAP}, the point has an overlap.
      *
      * @return the number of points with overlapping {@link Line}s
      */
