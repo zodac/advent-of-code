@@ -131,14 +131,14 @@ public final class SignalDecoder {
         final String valueForSeven = CollectionUtils.getKeyByValue(decoder, 7).orElseThrow();
 
         // If the input is a superset containing '1' and '7', value is '3'
-        if (StringUtils.containsAll(input, valueForOne, valueForSeven)) {
+        if (StringUtils.containsAllCharacters(input, valueForOne, valueForSeven)) {
             return 3;
         }
 
         final String valueForSix = CollectionUtils.getKeyByValue(decoder, 6).orElseThrow();
 
         // If the input is a subset of the value for '6', value is '5'
-        if (StringUtils.containsAll(valueForSix, input)) {
+        if (StringUtils.containsAllCharacters(valueForSix, input)) {
             return 5;
         }
 
@@ -152,12 +152,12 @@ public final class SignalDecoder {
         final String valueForSeven = CollectionUtils.getKeyByValue(decoder, 7).orElseThrow();
 
         // If the input is a superset containing '1', '7' and '4', value is '9'
-        if (StringUtils.containsAll(input, valueForOne, valueForFour, valueForSeven)) {
+        if (StringUtils.containsAllCharacters(input, valueForOne, valueForFour, valueForSeven)) {
             return 9;
         }
 
         // If the input is a superset containing '1', and '7', value is '0'
-        if (StringUtils.containsAll(input, valueForOne, valueForSeven)) {
+        if (StringUtils.containsAllCharacters(input, valueForOne, valueForSeven)) {
             return 0;
         }
 

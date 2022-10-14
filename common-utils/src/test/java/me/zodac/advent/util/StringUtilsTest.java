@@ -125,7 +125,7 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abc"};
 
-        final boolean result = StringUtils.containsAll(superString, subStrings);
+        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
 
         assertThat(result)
             .isTrue();
@@ -136,7 +136,7 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abc", "bcd", "def"};
 
-        final boolean result = StringUtils.containsAll(superString, subStrings);
+        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
 
         assertThat(result)
             .isTrue();
@@ -147,7 +147,7 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abcdef"};
 
-        final boolean result = StringUtils.containsAll(superString, subStrings);
+        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
 
         assertThat(result)
             .isTrue();
@@ -158,7 +158,7 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abcdefghij"};
 
-        final boolean result = StringUtils.containsAll(superString, subStrings);
+        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
 
         assertThat(result)
             .isFalse();
@@ -169,7 +169,7 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = new String[0];
 
-        final boolean result = StringUtils.containsAll(superString, subStrings);
+        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
 
         assertThat(result)
             .isTrue();
@@ -180,7 +180,7 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {""};
 
-        final boolean result = StringUtils.containsAll(superString, subStrings);
+        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
 
         assertThat(result)
             .isTrue();
@@ -191,7 +191,7 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {" "};
 
-        final boolean result = StringUtils.containsAll(superString, subStrings);
+        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
 
         assertThat(result)
             .isFalse();
@@ -202,7 +202,7 @@ class StringUtilsTest {
         final String superString = "";
         final String[] subStrings = {"abc", "def"};
 
-        final boolean result = StringUtils.containsAll(superString, subStrings);
+        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
 
         assertThat(result)
             .isFalse();
@@ -213,9 +213,381 @@ class StringUtilsTest {
         final String superString = " ";
         final String[] subStrings = {"abc", "def"};
 
-        final boolean result = StringUtils.containsAll(superString, subStrings);
+        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
 
         assertThat(result)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andOneValidSubStrings_thenTrueIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = {"abc"};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isTrue();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andMultipleValidSubStrings_thenTrueIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = {"abc", "cde", "efg"};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isTrue();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andMultipleInvalidSubStrings_andOneValidSubString_thenTrueIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = {"abc", "ghi", "jkl", "mno"};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isTrue();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andInvalidSubString_thenFalseIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = {"ghi"};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andMultipleInvalidSubStrings_thenFalseIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = {"ghi", "jkl", "mno"};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andSubStringMatchesSuperString_thenTrueIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = {"abcdef"};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isTrue();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andSubStringIsSuperStringOfSuperString_thenFalseIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = {"abcdefghij"};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andNoSubString_thenFalseIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = new String[0];
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andEmptySubString_thenTrueIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = {""};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isTrue();
+    }
+
+    @Test
+    void whenContainsAny_givenValidSuperString_andBlankSubString_thenFalseIsReturned() {
+        final String superString = "abcdef";
+        final String[] subStrings = {" "};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsAny_givenEmptySuperString_andValidSubString_thenFalseIsReturned() {
+        final String superString = "";
+        final String[] subStrings = {"abc", "def"};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsAny_givenBlankSuperString_andValidSubString_thenFalseIsReturned() {
+        final String superString = " ";
+        final String[] subStrings = {"abc", "def"};
+
+        final boolean result = StringUtils.containsAny(superString, subStrings);
+
+        assertThat(result)
+            .isFalse();
+    }
+
+    @Test
+    void whenCountVowels_givenStringWithNoVowels_thenZeroIsReturned() {
+        final String input = "bcdf";
+        final long output = StringUtils.countVowels(input);
+        assertThat(output)
+            .isZero();
+    }
+
+    @Test
+    void whenCountVowels_givenStringWithMultipleVowels_thenCountIsReturned() {
+        final String input = "abcdef";
+        final long output = StringUtils.countVowels(input);
+        assertThat(output)
+            .isEqualTo(2L);
+    }
+
+    @Test
+    void whenCountVowels_givenStringWithRepeatedVowels_thenCombinedCountIsReturned() {
+        final String input = "aabcdeef";
+        final long output = StringUtils.countVowels(input);
+        assertThat(output)
+            .isEqualTo(4L);
+    }
+
+    @Test
+    void whenCountVowels_givenEmptyString_thenZeroIsReturned() {
+        final String input = "";
+        final long output = StringUtils.countVowels(input);
+        assertThat(output)
+            .isZero();
+    }
+
+    @Test
+    void whenCountVowels_givenBlankString_thenZeroIsReturned() {
+        final String input = " ";
+        final long output = StringUtils.countVowels(input);
+        assertThat(output)
+            .isZero();
+    }
+
+    @Test
+    void whenCountVowels_givenNullString_thenZeroIsReturned() {
+        final String input = null;
+        final long output = StringUtils.countVowels(input);
+        assertThat(output)
+            .isZero();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterInOrder_givenStringWithSingleRepeat_thenTrueIsReturned() {
+        final String input = "abccdef";
+        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterInOrder_givenStringWithMultipleRepeatsOfDifferentCharacters_thenTrueIsReturned() {
+        final String input = "aabccdef";
+        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterInOrder_givenStringWithMultipleRepeatsOfSameCharacters_thenTrueIsReturned() {
+        final String input = "aabcdefaa";
+        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterInOrder_givenStringWithSingleRepeatButNotInOrder_thenFalseIsReturned() {
+        final String input = "abcdefa";
+        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterInOrder_givenStringWithNoRepeats_thenFalseIsReturned() {
+        final String input = "abcdef";
+        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterInOrder_givenEmptyString_thenFalseIsReturned() {
+        final String input = "";
+        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterInOrder_givenBlankString_thenFalseIsReturned() {
+        final String input = " ";
+        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterInOrder_givenNullStringRepeats_thenFalseIsReturned() {
+        final String input = null;
+        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasSandwichCharacters_givenStringWithSingleSandwich_thenTrueIsReturned() {
+        final String input = "aba";
+        final boolean output = StringUtils.hasSandwichCharacters(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasSandwichCharacters_givenStringWithSingleSandwichAtEndOfString_thenTrueIsReturned() {
+        final String input = "abcdefgf";
+        final boolean output = StringUtils.hasSandwichCharacters(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasSandwichCharacters_givenStringWithMultipleSandwichs_thenTrueIsReturned() {
+        final String input = "ababa";
+        final boolean output = StringUtils.hasSandwichCharacters(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasSandwichCharacters_givenStringWithSingleSandwichOfSameCharacters_thenTrueIsReturned() {
+        final String input = "aaa";
+        final boolean output = StringUtils.hasSandwichCharacters(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasSandwichCharacters_givenStringWithNoRepeats_thenFalseIsReturned() {
+        final String input = "abcdef";
+        final boolean output = StringUtils.hasSandwichCharacters(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasSandwichCharacters_givenEmptyString_thenFalseIsReturned() {
+        final String input = "";
+        final boolean output = StringUtils.hasSandwichCharacters(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasSandwichCharacters_givenBlankString_thenFalseIsReturned() {
+        final String input = " ";
+        final boolean output = StringUtils.hasSandwichCharacters(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasSandwichCharacters_givenNullString_thenFalseIsReturned() {
+        final String input = null;
+        final boolean output = StringUtils.hasSandwichCharacters(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithPairAndNoOverlap_thenTrueIsReturned() {
+        final String input = "abcdab";
+        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithPairAndNoOtherCharacters_thenTrueIsReturned() {
+        final String input = "abab";
+        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithRepeatedCharacterPairAndNoOverlap_thenTrueIsReturned() {
+        final String input = "aabcdaafgh";
+        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithWithPairOverlapping_thenFalseIsReturned() {
+        final String input = "aaa";
+        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithNoPairs_thenFalseIsReturned() {
+        final String input = "abcdef";
+        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasCharacterPairRepeatWithNoOverlap_givenEmptyString_thenFalseIsReturned() {
+        final String input = "";
+        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasCharacterPairRepeatWithNoOverlap_givenBlankString_thenFalseIsReturned() {
+        final String input = " ";
+        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasCharacterPairRepeatWithNoOverlap_givenNullString_thenFalseIsReturned() {
+        final String input = null;
+        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
+        assertThat(output)
             .isFalse();
     }
 }
