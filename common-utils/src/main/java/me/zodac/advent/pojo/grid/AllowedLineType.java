@@ -22,40 +22,20 @@
  * SOFTWARE.
  */
 
-package me.zodac.advent.pojo;
+package me.zodac.advent.pojo.grid;
 
 /**
- * Simple tuple for two objects.
- *
- * @param first  the first object
- * @param second the second object
- * @param <E1>   type of first value
- * @param <E2>   type of second value
+ * Simple enum defining whether the {@link IntegerGrid} supports diagonal lines or not.
  */
-public record Pair<E1, E2>(E1 first, E2 second) {
+public enum AllowedLineType {
 
     /**
-     * Create a {@link Pair} with two values.
-     *
-     * @param first  the first value
-     * @param second the second value
-     * @param <E1>   type of first value
-     * @param <E2>   type of second value
-     * @return the created {@link Pair}
+     * All lines (horizontal, vertical and diagonal) are supported.
      */
-    public static <E1, E2> Pair<E1, E2> of(final E1 first, final E2 second) {
-        return new Pair<>(first, second);
-    }
+    ALL_LINES,
 
     /**
-     * Create a {@link Pair} with one values, with the second value set to {@code null}.
-     *
-     * @param first the first value
-     * @param <E1>  type of first value
-     * @param <E2>  type of second value
-     * @return the created {@link Pair}
+     * Only horizontal and vertical lines as supported.
      */
-    public static <E1, E2> Pair<E1, E2> withNull(final E1 first) {
-        return of(first, null);
-    }
+    NO_DIAGONAL_LINES
 }

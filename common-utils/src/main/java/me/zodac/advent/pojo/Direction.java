@@ -55,7 +55,7 @@ public enum Direction {
     UP("^"),
 
     /**
-     * An invalid direction.
+     * An invalid {@link Direction}.
      */
     INVALID;
 

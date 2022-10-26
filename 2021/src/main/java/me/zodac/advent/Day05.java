@@ -24,11 +24,9 @@
 
 package me.zodac.advent;
 
-import static me.zodac.advent.pojo.CoordinateGrid.AllowedLineType.ALL_LINES;
-import static me.zodac.advent.pojo.CoordinateGrid.AllowedLineType.NO_DIAGONAL_LINES;
-
-import me.zodac.advent.pojo.CoordinateGrid;
 import me.zodac.advent.pojo.Line;
+import me.zodac.advent.pojo.grid.AllowedLineType;
+import me.zodac.advent.pojo.grid.IntegerGrid;
 
 /**
  * Solution for 2021, Day 5.
@@ -42,30 +40,30 @@ public final class Day05 {
     }
 
     /**
-     * Draws only the horizontal and vertical {@link Line}s in the supplied {@code coordinateLines} onto a {@link CoordinateGrid} and counts the
+     * Draws only the horizontal and vertical {@link Line}s in the supplied {@code coordinateLines} onto a {@link IntegerGrid} and counts the
      * number of points that have overlapping {@link Line}s.
      *
-     * @param coordinateLines the {@link Line}s to be drawn on the {@link CoordinateGrid}
+     * @param coordinateLines the {@link Line}s to be drawn on the {@link IntegerGrid}
      * @return the number of overlapping points
      * @see Line#isHorizontal()
      * @see Line#isVertical()
      */
     public static int addHorizontalAndVerticalLinesAndReturnOverlap(final Iterable<Line> coordinateLines) {
         final int maxGridSize = getMaxGridSize(coordinateLines);
-        final CoordinateGrid coordinateGrid = CoordinateGrid.ofSize(maxGridSize, NO_DIAGONAL_LINES);
+        final IntegerGrid integerGrid = IntegerGrid.ofSize(maxGridSize);
 
         for (final Line coordinateLine : coordinateLines) {
-            coordinateGrid.addLine(coordinateLine);
+            integerGrid.addLine(coordinateLine, AllowedLineType.NO_DIAGONAL_LINES);
         }
 
-        return coordinateGrid.numberOfOverlaps();
+        return integerGrid.numberOfOverlaps();
     }
 
     /**
-     * Draws the horizontal, vertical and 'perfect' diagonal {@link Line}s in the supplied {@code coordinateLines} onto a {@link CoordinateGrid} and
+     * Draws the horizontal, vertical and 'perfect' diagonal {@link Line}s in the supplied {@code coordinateLines} onto a {@link IntegerGrid} and
      * counts the number of points that have overlapping {@link Line}s.
      *
-     * @param coordinateLines the {@link Line}s to be drawn on the {@link CoordinateGrid}
+     * @param coordinateLines the {@link Line}s to be drawn on the {@link IntegerGrid}
      * @return the number of overlapping points
      * @see Line#isHorizontal()
      * @see Line#isVertical()
@@ -73,13 +71,13 @@ public final class Day05 {
      */
     public static int addAllLinesAndReturnOverlap(final Iterable<Line> coordinateLines) {
         final int maxGridSize = getMaxGridSize(coordinateLines);
-        final CoordinateGrid coordinateGrid = CoordinateGrid.ofSize(maxGridSize, ALL_LINES);
+        final IntegerGrid integerGrid = IntegerGrid.ofSize(maxGridSize);
 
         for (final Line coordinateLine : coordinateLines) {
-            coordinateGrid.addLine(coordinateLine);
+            integerGrid.addLine(coordinateLine, AllowedLineType.ALL_LINES);
         }
 
-        return coordinateGrid.numberOfOverlaps();
+        return integerGrid.numberOfOverlaps();
     }
 
     private static int getMaxGridSize(final Iterable<Line> coordinateLines) {
