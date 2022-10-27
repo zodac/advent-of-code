@@ -59,7 +59,7 @@ public final class Day06 {
             booleanGrid.drawBox(first.x(), first.y(), second.x(), second.y(), instructionAndPoints.first());
         }
 
-        return booleanGrid.countSwitchedOn();
+        return booleanGrid.sumValues();
     }
 
     /**

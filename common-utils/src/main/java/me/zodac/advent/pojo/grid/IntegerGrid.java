@@ -25,15 +25,18 @@
 package me.zodac.advent.pojo.grid;
 
 import me.zodac.advent.pojo.Line;
+import me.zodac.advent.pojo.Point;
 
 /**
  * Class defining a coordinate grid of points, which can have lines drawn on it.
- *
- * @param grid the coordinate grid as a 2D array of {@code int}s
  */
-public record IntegerGrid(int[][] grid) {
+public final class IntegerGrid extends CoordinateGrid<Integer> {
 
-    private static final int MINIMUM_NUMBER_SIGNIFYING_OVERLAP = 2;
+    private static final int NUMBER_SIGNIFYING_OVERLAP = 2;
+
+    private IntegerGrid(final int gridSize) {
+        super(gridSize, new Integer[gridSize][gridSize], 0, NUMBER_SIGNIFYING_OVERLAP);
+    }
 
     /**
      * Creates a {@link IntegerGrid} with the dimensions {@code gridSize}x{@code gridSize}.
@@ -47,12 +50,22 @@ public record IntegerGrid(int[][] grid) {
             throw new IllegalArgumentException("Size must be positive integer, found: " + gridSize);
         }
 
-        return new IntegerGrid(new int[gridSize][gridSize]);
+        return new IntegerGrid(gridSize);
     }
 
     /**
-     * Draws a box on the {@link IntegerGrid}, where each {@link me.zodac.advent.pojo.Point} is updated based according to the
-     * {@link GridInstruction}. All values inside the box are also updated.
+     * {@inheritDoc}
+     *
+     * <p>
+     * Uses the {@link Integer} value of the {@link Point}.
+     */
+    @Override
+    public int valueOf(final int row, final int column) {
+        return grid[row][column];
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * <pre>
      * | {@link GridInstruction}        | Action                                       |
@@ -61,115 +74,15 @@ public record IntegerGrid(int[][] grid) {
      * | {@link GridInstruction#OFF}    | Decrement the point by <b>1</b>, to a minimum of <b>0</b>  |
      * | {@link GridInstruction#TOGGLE} | Increment the point by <b>2</b>                     |
      * </pre>
-     *
-     * <p>
-     * For example, starting with a 10x10 grid:
-     * <pre>
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     * </pre>
-     *
-     * <p>
-     * Given the {@link me.zodac.advent.pojo.Point}s (0, 0) and (2, 4) with the instruction {@link GridInstruction#ON}, the updated
-     * {@link IntegerGrid} would be:
-     * <pre>
-     *     1 1 1 1 1 0 0 0 0 0
-     *     1 1 1 1 1 0 0 0 0 0
-     *     1 1 1 1 1 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     * </pre>
-     *
-     * <p>
-     * Following up with {@link me.zodac.advent.pojo.Point}s (0, 1) and (0, 9) with the instruction {@link GridInstruction#TOGGLE} would give us:
-     * <pre>
-     *     1 3 3 3 3 2 2 2 2 2
-     *     1 1 1 1 1 0 0 0 0 0
-     *     1 1 1 1 1 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     * </pre>
-     *
-     * <p>
-     * And finally with {@link me.zodac.advent.pojo.Point}s (0, 2) and (3, 3) with the instruction {@link GridInstruction#OFF} we would get:
-     * <pre>
-     *     1 3 2 2 3 2 2 2 2 2
-     *     1 1 0 0 1 0 0 0 0 0
-     *     1 1 0 0 1 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     *     0 0 0 0 0 0 0 0 0 0
-     * </pre>
-     *
-     * @param x1              the first x coordinate
-     * @param y1              the first y coordinate
-     * @param x2              the second x coordinate
-     * @param y2              the second y coordinate
-     * @param gridInstruction the {@link GridInstruction}
      */
-    public void drawBox(final int x1, final int y1, final int x2, final int y2, final GridInstruction gridInstruction) {
-        if (x1 < 0 || y1 < 0) {
-            throw new IllegalArgumentException(String.format("x1, y1 must be at least 0, found: (%s, %s)", x1, y1));
-        }
-
-        if (x2 > grid.length || y2 > grid.length) {
-            throw new IllegalArgumentException(String.format("x2, y2 must be at less than %s, found: (%s, %s)", grid.length, x2, y2));
-        }
-
-        for (int x = x1; x <= x2; x++) {
-            for (int y = y1; y <= y2; y++) {
-                updateGrid(gridInstruction, x, y);
-            }
-        }
-    }
-
-    private void updateGrid(final GridInstruction gridInstruction, final int x, final int y) {
+    @Override
+    protected void updateGrid(final GridInstruction gridInstruction, final int x, final int y) {
         switch (gridInstruction) {
             case ON -> grid[x][y] = grid[x][y] + 1;
             case OFF -> grid[x][y] = Math.max(0, grid[x][y] - 1); // Value should not be less than 0
             case TOGGLE -> grid[x][y] = grid[x][y] + 2;
             default -> throw new IllegalStateException("Cannot draw a box with instruction: " + gridInstruction);
         }
-    }
-
-    /**
-     * Sums the values of all {@link me.zodac.advent.pojo.Point}s in the {@link IntegerGrid}.
-     *
-     * @return the sum of all values in the {@link IntegerGrid}
-     */
-    public long sumValues() {
-        int count = 0;
-
-        final int gridLength = grid[0].length;
-        for (final int[] rows : grid) {
-            for (int column = 0; column < gridLength; column++) {
-                count += rows[column];
-            }
-        }
-
-        return count;
     }
 
     /**
@@ -232,28 +145,5 @@ public record IntegerGrid(int[][] grid) {
 
     private static int diagonalIncrement(final int i) {
         return Integer.compare(i, 0);
-    }
-
-    /**
-     * Returns the number of points on the {@link IntegerGrid} that have had an overlap of lines added by {@link #addLine(Line, AllowedLineType)}.
-     *
-     * <p>
-     * As a {@link Line} is drawn, each point has a counter increments if a {@link Line} passes through it. If that value is over
-     * {@value #MINIMUM_NUMBER_SIGNIFYING_OVERLAP}, the point has an overlap.
-     *
-     * @return the number of points with overlapping {@link Line}s
-     */
-    public int numberOfOverlaps() {
-        final int gridLength = grid[0].length;
-        int count = 0;
-
-        for (final int[] rows : grid) {
-            for (int column = 0; column < gridLength; column++) {
-                if (rows[column] >= MINIMUM_NUMBER_SIGNIFYING_OVERLAP) {
-                    count++;
-                }
-            }
-        }
-        return count;
     }
 }
