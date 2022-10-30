@@ -70,9 +70,9 @@ abstract class CoordinateGrid<E> {
     }
 
     /**
-     * Count any {@link Point}s in the {@link BooleanGrid} that has its value set to {@code true}.
+     * Count any {@link Point}s in the {@link CoordinateGrid}. The actual value of each {@link Point} is defined by {@link #valueOf(int, int)}.
      *
-     * @return the number of {@code true} {@link Point}s in the {@link BooleanGrid}
+     * @return the sum of all {@link Point}s in the {@link CoordinateGrid}
      * @see #valueOf(int, int)
      */
     public long sumValues() {
@@ -111,7 +111,7 @@ abstract class CoordinateGrid<E> {
     }
 
     /**
-     * Draws a box on the {@link IntegerGrid}, where each {@link Point} is updated based according to the
+     * Draws a box on the {@link CoordinateGrid}, where each {@link Point} is updated based according to the
      * {@link GridInstruction}. All values inside the box are also updated.
      *
      * <p>

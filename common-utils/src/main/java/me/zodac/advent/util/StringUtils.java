@@ -24,9 +24,14 @@
 
 package me.zodac.advent.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -35,7 +40,12 @@ import java.util.regex.Pattern;
 public final class StringUtils {
 
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
+    private static final Pattern VALID_NUMERIC_PATTERN = Pattern.compile("-?\\d{1,10}"); // 10 for Integer.MAX_VALUE
+    private static final Pattern FULLY_UPPERCASE_WORDS_PATTERN = Pattern.compile("(\\b[A-Z][A-Z]+\\b)");
+    private static final Pattern NUMBERS_PATTERN = Pattern.compile("\\b(\\d{1,10})\\b");
+
     private static final Set<Character> VOWELS = Set.of('a', 'e', 'i', 'o', 'u');
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     private StringUtils() {
 
@@ -63,6 +73,9 @@ public final class StringUtils {
      * @return the array of split {@link String}s
      */
     public static String[] splitOnWhitespace(final String input) {
+        if (input == null) {
+            return EMPTY_STRING_ARRAY;
+        }
         return WHITESPACE_PATTERN.split(input.trim());
     }
 
@@ -190,5 +203,60 @@ public final class StringUtils {
         }
 
         return false;
+    }
+
+    /**
+     * Checks if the input {@link CharSequence} is a valid {@link Integer} or {@link Long}.
+     *
+     * @param input the {@link CharSequence} to check
+     * @return {@code true} if the input is an {@link Integer} or {@link Long}
+     */
+    public static boolean isInteger(final CharSequence input) {
+        if (input == null) {
+            return false;
+        }
+        return VALID_NUMERIC_PATTERN.matcher(input).matches();
+    }
+
+    /**
+     * Returns the first fully uppercase word (a substring surrounded by whitespace) in the input {@link CharSequence}.
+     *
+     * @param input the {@link CharSequence} to check
+     * @return the first fully uppercase word
+     * @throws IllegalArgumentException thrown if the {@code input} has no uppercase word
+     */
+    public static Optional<String> findFirstFullyUpperCaseWord(final CharSequence input) {
+        if (input == null) {
+            return Optional.empty();
+        }
+
+        final Matcher matcher = FULLY_UPPERCASE_WORDS_PATTERN.matcher(input);
+
+        if (!matcher.find()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(matcher.group());
+    }
+
+    /**
+     * Parses the input {@link CharSequence} and returns any {@link Integer} values in the order provided.
+     *
+     * @param input the {@link CharSequence} to check
+     * @return the found {@link Integer}s
+     */
+    public static List<Integer> collectIntegersInOrder(final CharSequence input) {
+        if (input == null) {
+            return Collections.emptyList();
+        }
+
+        final Matcher matcher = NUMBERS_PATTERN.matcher(input);
+
+        final List<Integer> numbers = new ArrayList<>();
+        while (matcher.find()) {
+            numbers.add(Integer.parseInt(matcher.group()));
+        }
+
+        return numbers;
     }
 }

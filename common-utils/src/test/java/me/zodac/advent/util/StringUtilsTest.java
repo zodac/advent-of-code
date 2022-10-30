@@ -26,6 +26,8 @@ package me.zodac.advent.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -121,12 +123,19 @@ class StringUtilsTest {
     }
 
     @Test
+    void whenSplitOnWhitespace_givenNullString_thenEmptyStringArrayIsReturned() {
+        final String input = null;
+        final String[] output = StringUtils.splitOnWhitespace(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
     void whenContainsAll_givenValidSuperString_andValidSubString_thenTrueIsReturned() {
         final String superString = "abcdef";
         final String[] subStrings = {"abc"};
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -137,7 +146,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abc", "bcd", "def"};
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -148,7 +156,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abcdef"};
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -159,7 +166,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abcdefghij"};
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -170,7 +176,6 @@ class StringUtilsTest {
         final String[] subStrings = new String[0];
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -181,7 +186,6 @@ class StringUtilsTest {
         final String[] subStrings = {""};
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -192,7 +196,6 @@ class StringUtilsTest {
         final String[] subStrings = {" "};
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -203,7 +206,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abc", "def"};
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -214,7 +216,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abc", "def"};
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -225,7 +226,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abc"};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -236,7 +236,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abc", "cde", "efg"};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -247,7 +246,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abc", "ghi", "jkl", "mno"};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -258,7 +256,6 @@ class StringUtilsTest {
         final String[] subStrings = {"ghi"};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -269,7 +266,6 @@ class StringUtilsTest {
         final String[] subStrings = {"ghi", "jkl", "mno"};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -280,7 +276,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abcdef"};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -291,7 +286,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abcdefghij"};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -313,7 +307,6 @@ class StringUtilsTest {
         final String[] subStrings = {""};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isTrue();
     }
@@ -324,7 +317,6 @@ class StringUtilsTest {
         final String[] subStrings = {" "};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -335,7 +327,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abc", "def"};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -346,7 +337,6 @@ class StringUtilsTest {
         final String[] subStrings = {"abc", "def"};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -589,5 +579,216 @@ class StringUtilsTest {
         final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
         assertThat(output)
             .isFalse();
+    }
+
+    @Test
+    void whenIsInteger_givenValidIntegerString_thenTrueIsReturned() {
+        final String input = "123";
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsInteger_givenValidNegativeIntegerString_thenTrueIsReturned() {
+        final String input = "-123";
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsInteger_givenValidLongString_thenFalseIsReturned() {
+        final String input = "9999999999999999";
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsInteger_givenNegativeLongString_thenFalseIsReturned() {
+        final String input = "-9999999999999999";
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsInteger_givenExcessivelyLargeString_thenFalseIsReturned() {
+        final String input = "99999999999999999999999999999999";
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsInteger_givenValidFloatString_thenFalseIsReturned() {
+        final String input = "3.14";
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsInteger_givenInvalidNumericString_thenFalseIsReturned() {
+        final String input = "abc";
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsInteger_givenEmptyNumericString_thenFalseIsReturned() {
+        final String input = "";
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsInteger_givenBlankString_thenFalseIsReturned() {
+        final String input = " ";
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsNumeric_givenNullString_thenFalseIsReturned() {
+        final String input = null;
+        final boolean output = StringUtils.isInteger(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenStringWithSingleUpperCaseWord_thenWordIsReturned() {
+        final String input = "THIS is uppercase";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isPresent()
+            .hasValue("THIS");
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenOnlySingleUpperCaseWord_thenInputIsReturned() {
+        final String input = "THIS";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isPresent()
+            .hasValue(input);
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenMultipleUpperCaseWord_thenFirstWordIsReturned() {
+        final String input = "THIS is UPPERCASE";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isPresent()
+            .hasValue("THIS");
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenAllLowerCaseWord_thenEmptyOptionalIsThrown() {
+        final String input = "this is not uppercase";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenNoFullyUpperCaseWord_thenEmptyOptionalIsThrown() {
+        final String input = "This Is Not Uppercase";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenEmptyString_thenEmptyOptionalIsThrown() {
+        final String input = "";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenBlankString_thenEmptyOptionalIsThrown() {
+        final String input = " ";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenNullString_thenEmptyOptionalIsThrown() {
+        final String input = null;
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenSingleIntegerAsString_thenSingleValueIsReturned() {
+        final String input = "1";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1);
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenMultipleIntegersAsString_thenAllValuesAreReturned() {
+        final String input = "1 23 456";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1, 23, 456);
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenMultipleIntegersAndWordsAsString_thenAllIntegerValuesAreReturned() {
+        final String input = "1 and 23 and 456";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1, 23, 456);
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenMultipleIntegersAndLongAsString_thenLongValueIsNotReturned() {
+        final String input = "1 23 456 9999999999999999";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1, 23, 456);
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenNoIntegersInString_thenEmptyListIsReturned() {
+        final String input = "No numbers here!";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenEmptyString_thenEmptyListIsReturned() {
+        final String input = "";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenBlankString_thenEmptyListIsReturned() {
+        final String input = " ";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenNullString_thenEmptyListIsReturned() {
+        final String input = null;
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .isEmpty();
     }
 }

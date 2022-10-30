@@ -28,7 +28,7 @@ import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
 
 /**
- * Class defining a coordinate grid of points, which can have lines drawn on it.
+ * Class defining a {@link CoordinateGrid} of {@link Integer}s, where any point can have an {@link Integer} value.
  */
 public final class IntegerGrid extends CoordinateGrid<Integer> {
 

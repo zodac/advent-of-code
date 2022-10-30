@@ -24,10 +24,8 @@
 
 package me.zodac.advent.pojo.grid;
 
-import me.zodac.advent.pojo.Point;
-
 /**
- * Class defining a coordinate grid of points, where any point can have its value turned 'on' or 'off'.
+ * Class defining a {@link CoordinateGrid} of {@link Boolean}s, where any point can have its value turned 'on' or 'off'.
  */
 public final class BooleanGrid extends CoordinateGrid<Boolean> {
 
@@ -56,7 +54,7 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
      * {@inheritDoc}
      *
      * <p>
-     * If the value of the {@link Point} is {@code true} returns <b>1</b>, else returns <b>0</b>.
+     * If the value of the {@link me.zodac.advent.pojo.Point} is {@code true} returns <b>1</b>, else returns <b>0</b>.
      */
     @Override
     public int valueOf(final int row, final int column) {

@@ -5,3 +5,4 @@
 # Build
 target/
 pom.xml.versionsBackup
+*.log
