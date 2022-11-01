@@ -1,0 +1,131 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2021-2022 zodac.me
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package me.zodac.advent;
+
+import java.util.Collection;
+import java.util.HashSet;
+
+/**
+ * Solution for 2015, Day 11.
+ *
+ * @see <a href="https://adventofcode.com/2015/day/11">AoC 2015, Day 11</a>
+ */
+public final class Day11 {
+
+    // Excludes 'i', 'l' and 'o'
+    private static final String POSSIBLE_CHARACTERS = "abcdefghjkmnpqrstuvwxyz";
+
+    private Day11() {
+
+    }
+
+    /**
+     * Takes the input {@link String} and increments it until a valid password is found.
+     *
+     * <p>
+     * The increment works by taking the last character of the {@link String} and getting the next character from {@value #POSSIBLE_CHARACTERS}. If
+     * the last character is the last possible value, it rolls over to the first possible value, and we begin incrementing the next-left character of
+     * the {@link String}.
+     *
+     * <p>
+     * A {@link String} is considered a valid password if it meets these three criteria:
+     * <ul>
+     *     <li>It does not contain the characters <b>i</b>, <b>l</b> or <b>o</b></li>
+     *     <li>It contains two distint pairs of characters (<b>abcddee</b> is valid while <b>aabcdaa</b> is not)</li>
+     *     <li>It contains at least one run of three characters in ascending order (<b>ablmnp</b> is valid)</li>
+     * </ul>
+     *
+     * @param input the input password to be incremented
+     * @return the next valid password
+     */
+    public static String findNextValidPassword(final String input) {
+        String outputPassword = incrementPassword(input);
+
+        while (!isValidPassword(outputPassword)) {
+            outputPassword = incrementPassword(outputPassword);
+        }
+
+        return outputPassword;
+    }
+
+    private static String incrementPassword(final String input) {
+        final StringBuilder mutableInput = new StringBuilder(input);
+        int index = mutableInput.length() - 1;
+
+        while (index >= 0) {
+            final char currentChar = mutableInput.charAt(index);
+
+            // If current character is last in possible set, rollover to the first possible character, and start incrementing the next character
+            if (currentChar == POSSIBLE_CHARACTERS.charAt(POSSIBLE_CHARACTERS.length() - 1)) {
+                mutableInput.setCharAt(index, POSSIBLE_CHARACTERS.charAt(0));
+                index--;
+            } else {
+                mutableInput.setCharAt(index, getNextCharacter(currentChar));
+                return mutableInput.toString();
+            }
+        }
+
+        throw new IllegalStateException(String.format("Cannot update input '%s' from current state '%s'", input, mutableInput));
+    }
+
+    private static char getNextCharacter(final char currentChar) {
+        final int indexOfChar = POSSIBLE_CHARACTERS.indexOf(currentChar);
+        return POSSIBLE_CHARACTERS.charAt(indexOfChar + 1);
+    }
+
+    private static boolean isValidPassword(final CharSequence inputPassword) {
+        return containsThreeCharactersInAscendingOrder(inputPassword) && containsTwoDifferentPairs(inputPassword);
+    }
+
+    private static boolean containsTwoDifferentPairs(final CharSequence inputPassword) {
+        final Collection<Character> pairs = new HashSet<>();
+        for (int i = 0; i < inputPassword.length() - 1; i++) {
+            final char currentChar = inputPassword.charAt(i);
+            final char nextChar = inputPassword.charAt(i + 1);
+
+            // We could shortcut this loop by checking if another pair already exists, but as the String is only 8 chars long, probably not worth it
+            if (currentChar == nextChar) {
+                pairs.add(currentChar);
+                i++; // Skip the next character since we know it is a match for the current character
+            }
+        }
+        return pairs.size() > 1;
+    }
+
+    private static boolean containsThreeCharactersInAscendingOrder(final CharSequence inputPassword) {
+        for (int i = 0; i < inputPassword.length() - 2; i++) {
+            final char currentChar = inputPassword.charAt(i);
+            final char nextChar = inputPassword.charAt(i + 1);
+            final char nextNextChar = inputPassword.charAt(i + 2);
+
+            // Step back nextChar and nextNextChar to see if they match currentChar
+            if (currentChar == (nextChar - 1) && currentChar == (nextNextChar - 2)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

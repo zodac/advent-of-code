@@ -26,27 +26,27 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day10}.
+ * Tests to verify answers for {@link Day11}.
  */
-class Day10Test {
+class Day11Test {
 
-    private static final String PUZZLE_INPUT = "1113222113";
+    private static final String PUZZLE_INPUT_PART_1 = "hxbxwxba";
+    private static final String PUZZLE_INPUT_PART_2 = "hxbxxyzz";
 
     @Test
     void part1() {
-        final long length = Day10.performLookAndSaySequenceAndReturnLength(PUZZLE_INPUT, 40);
-        assertThat(length)
-            .isEqualTo(252_594L);
+        final String newPassword = Day11.findNextValidPassword(PUZZLE_INPUT_PART_1);
+        assertThat(newPassword)
+            .isEqualTo("hxbxxyzz");
     }
 
     @Test
     void part2() {
-        final long length = Day10.performLookAndSaySequenceAndReturnLength(PUZZLE_INPUT, 50);
-        assertThat(length)
-            .isEqualTo(3_579_328L);
+        final String newPassword = Day11.findNextValidPassword(PUZZLE_INPUT_PART_2);
+        assertThat(newPassword)
+            .isEqualTo("hxcaabcc");
     }
 }
