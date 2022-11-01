@@ -92,7 +92,7 @@ class CollectionUtilsTest {
     }
 
     @Test
-    void whenGetMiddleValueOfList_givenListOfSize1_thenOnlyValueIsReturned() {
+    void whenGetMiddleValueOfList_givenListWithSingleEntry_thenOnlyValueIsReturned() {
         final List<String> input = List.of("a");
         final String output = CollectionUtils.getMiddleValueOfList(input);
         assertThat(output)
@@ -111,5 +111,36 @@ class CollectionUtilsTest {
         final List<String> input = Collections.emptyList();
         assertThatThrownBy(() -> CollectionUtils.getMiddleValueOfList(input))
             .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void whenGeneratePermutations_givenListWithSingleEntry_thenSingleEntryIsReturned() {
+        final List<String> input = List.of("a");
+        final List<List<String>> output = CollectionUtils.generatePermutations(input);
+        assertThat(output)
+            .containsExactly(List.of("a"));
+    }
+
+    @Test
+    void whenGeneratePermutations_givenListWithMultipleEntries_thenAllPermutationsAreReturned() {
+        final List<String> input = List.of("a", "b", "c");
+        final List<List<String>> output = CollectionUtils.generatePermutations(input);
+        assertThat(output)
+            .containsExactlyInAnyOrder(
+                List.of("a", "b", "c"),
+                List.of("a", "c", "b"),
+                List.of("b", "a", "c"),
+                List.of("b", "c", "a"),
+                List.of("c", "a", "b"),
+                List.of("c", "b", "a")
+            );
+    }
+
+    @Test
+    void whenGeneratePermutations_givenEmptyList_thenEmptyListIsReturned() {
+        final List<String> input = List.of();
+        final List<List<String>> output = CollectionUtils.generatePermutations(input);
+        assertThat(output)
+            .containsExactly(List.of());
     }
 }

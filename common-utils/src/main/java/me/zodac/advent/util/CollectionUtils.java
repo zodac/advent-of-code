@@ -79,4 +79,50 @@ public final class CollectionUtils {
         final int middleIndex = listSize / 2;
         return modifiableList.get(middleIndex);
     }
+
+    /**
+     * Generates permutations based on the input {@link List}.
+     *
+     * <p>
+     * Given an input {@link List} of {@link String}s:
+     * <pre>
+     *      England
+     *      Ireland
+     *      Sweden
+     * </pre>
+     *
+     * <p>
+     * We would have 6 permutations (3!):
+     * <pre>
+     *     England, Ireland,  Sweden
+     *     England,  Sweden, Ireland
+     *     Ireland, England,  Sweden
+     *     Ireland,  Sweden, England
+     *      Sweden, England, Ireland
+     *      Sweden, Ireland, England
+     * </pre>
+     *
+     * @param input the {@link List} from which permutations should be generated
+     * @param <E>   the type of the input {@link List}
+     * @return the {@link List} of permutations
+     */
+    public static <E> List<List<E>> generatePermutations(final List<? extends E> input) {
+        if (input.isEmpty()) {
+            return List.of(List.of());
+        }
+
+        final List<? extends E> modifiableInput = new ArrayList<>(input);
+        final E firstElement = modifiableInput.remove(0);
+        final List<List<E>> returnValue = new ArrayList<>();
+        final List<List<E>> permutations = generatePermutations(modifiableInput);
+
+        for (final List<E> smallerPermutation : permutations) {
+            for (int index = 0; index <= smallerPermutation.size(); index++) {
+                final List<E> temp = new ArrayList<>(smallerPermutation);
+                temp.add(index, firstElement);
+                returnValue.add(temp);
+            }
+        }
+        return returnValue;
+    }
 }
