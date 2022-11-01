@@ -745,6 +745,14 @@ class StringUtilsTest {
     }
 
     @Test
+    void whenCollectNumbersInOrder_givenNegativeInteger_thenAllValuesIncludingNegativesAreReturned() {
+        final String input = "1 -23 456";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1, -23, 456);
+    }
+
+    @Test
     void whenCollectNumbersInOrder_givenMultipleIntegersAndWordsAsString_thenAllIntegerValuesAreReturned() {
         final String input = "1 and 23 and 456";
         final List<Integer> output = StringUtils.collectIntegersInOrder(input);

@@ -39,11 +39,13 @@ import java.util.regex.Pattern;
  */
 public final class StringUtils {
 
-    private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
-    private static final Pattern VALID_NUMERIC_PATTERN = Pattern.compile("-?\\d{1,10}"); // 10 for Integer.MAX_VALUE
-    private static final Pattern FULLY_UPPERCASE_WORDS_PATTERN = Pattern.compile("(\\b[A-Z][A-Z]+\\b)");
-    private static final Pattern NUMBERS_PATTERN = Pattern.compile("\\b(\\d{1,10})\\b");
+    /**
+     * Pattern defining a valid positive or genative {@link Integer}.
+     */
+    public static final Pattern INTEGER_PATTERN = Pattern.compile("-?\\b(\\d{1,10})\\b"); // 10 for Integer.MAX_VALUE
 
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
+    private static final Pattern FULLY_UPPERCASE_WORDS_PATTERN = Pattern.compile("(\\b[A-Z][A-Z]+\\b)");
     private static final Set<Character> VOWELS = Set.of('a', 'e', 'i', 'o', 'u');
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -206,19 +208,6 @@ public final class StringUtils {
     }
 
     /**
-     * Checks if the input {@link String} is a valid {@link Integer} or {@link Long}.
-     *
-     * @param input the {@link String} to check
-     * @return {@code true} if the input is an {@link Integer} or {@link Long}
-     */
-    public static boolean isInteger(final String input) {
-        if (input == null || input.isBlank()) {
-            return false;
-        }
-        return VALID_NUMERIC_PATTERN.matcher(input).matches();
-    }
-
-    /**
      * Returns the first fully uppercase word (a substring surrounded by whitespace) in the input {@link String}.
      *
      * @param input the {@link String} to check
@@ -240,6 +229,19 @@ public final class StringUtils {
     }
 
     /**
+     * Checks if the input {@link String} is a valid {@link Integer} or {@link Long}.
+     *
+     * @param input the {@link String} to check
+     * @return {@code true} if the input is an {@link Integer} or {@link Long}
+     */
+    public static boolean isInteger(final String input) {
+        if (input == null || input.isBlank()) {
+            return false;
+        }
+        return INTEGER_PATTERN.matcher(input).matches();
+    }
+
+    /**
      * Parses the input {@link String} and returns any {@link Integer} values in the order provided.
      *
      * @param input the {@link String} to check
@@ -250,7 +252,7 @@ public final class StringUtils {
             return Collections.emptyList();
         }
 
-        final Matcher matcher = NUMBERS_PATTERN.matcher(input);
+        final Matcher matcher = INTEGER_PATTERN.matcher(input);
 
         final List<Integer> numbers = new ArrayList<>();
         while (matcher.find()) {

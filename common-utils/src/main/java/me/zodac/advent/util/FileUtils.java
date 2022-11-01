@@ -37,6 +37,8 @@ import java.util.List;
  */
 public final class FileUtils {
 
+    private static final int SINGLE_ENTRY = 1;
+
     private FileUtils() {
 
     }
@@ -53,6 +55,22 @@ public final class FileUtils {
         } catch (final IOException | URISyntaxException e) {
             return Collections.emptyList();
         }
+    }
+
+    /**
+     * Reads the only line from a file in {@code src/main/resources}.
+     *
+     * @param filePathInResources file path to be read
+     * @return the {@link String} line from the file
+     * @throws IllegalArgumentException thrown if there is not exactly one line in the file
+     */
+    public static String readSingleLine(final String filePathInResources) {
+        final List<String> lines = readLines(filePathInResources);
+        if (lines.size() != SINGLE_ENTRY) {
+            throw new IllegalArgumentException("Expected a single line, found: " + lines.size());
+        }
+
+        return lines.get(0);
     }
 
     /**

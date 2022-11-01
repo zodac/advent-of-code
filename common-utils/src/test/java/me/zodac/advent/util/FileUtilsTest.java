@@ -25,6 +25,7 @@
 package me.zodac.advent.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collection;
 import java.util.List;
@@ -50,6 +51,30 @@ class FileUtilsTest {
         final List<String> output = FileUtils.readLines(input);
         assertThat(output)
             .isEmpty();
+    }
+
+    @Test
+    void whenReadSingleLine_givenFileWithSingleString_thenStringIsReturned() {
+        final String input = "validFileOfSingleString.txt";
+        final String output = FileUtils.readSingleLine(input);
+        assertThat(output)
+            .isEqualTo("line1");
+    }
+
+    @Test
+    void whenReadSingleLine_givenFileWithMultipleStrings_thenExceptionIsThrown() {
+        final String input = "validFileOfStrings.txt";
+        assertThatThrownBy(() -> FileUtils.readSingleLine(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Expected a single line, found: 3");
+    }
+
+    @Test
+    void whenReadSingleLine_givenEmptyFile_thenExceptionIsThrown() {
+        final String input = "emptyFile.txt";
+        assertThatThrownBy(() -> FileUtils.readSingleLine(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Expected a single line, found: 0");
     }
 
     @Test
