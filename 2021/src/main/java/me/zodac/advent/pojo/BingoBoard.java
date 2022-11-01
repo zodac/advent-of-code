@@ -36,23 +36,12 @@ public final class BingoBoard {
     // As numbers are marked on the board, this value will replace the existing value
     private static final int MARKED_VALUE = 0;
 
-    // Used to easily find the index for a given number on the board
-    private final Map<Integer, Pair<Integer, Integer>> cellsAndIndex = new HashMap<>();
-
     private final int[][] board;
+    private final Map<Integer, Pair<Integer, Integer>> cellsAndIndex; // Used to easily find the index for a given number on the board
 
-    private BingoBoard(final List<Integer> boardNumbers, final int boardSize) {
-        board = new int[boardSize][boardSize];
-
-        int index = 0;
-        for (int row = 0; row < boardSize; row++) {
-            for (int column = 0; column < boardSize; column++) {
-                final int value = boardNumbers.get(index++);
-
-                board[row][column] = value;
-                cellsAndIndex.put(value, Pair.of(row, column));
-            }
-        }
+    private BingoBoard(final int[][] board, final Map<Integer, Pair<Integer, Integer>> cellsAndIndex) {
+        this.cellsAndIndex = new HashMap<>(cellsAndIndex);
+        this.board = board.clone();
     }
 
     /**
@@ -75,7 +64,20 @@ public final class BingoBoard {
             throw new IllegalArgumentException(String.format("Expected %1$dx%1$d numbers, found %2$d", boardSize, boardNumbers.size()));
         }
 
-        return new BingoBoard(boardNumbers, boardSize);
+        final int[][] board = new int[boardSize][boardSize];
+        final Map<Integer, Pair<Integer, Integer>> cellsAndIndex = HashMap.newHashMap(boardSize * boardSize);
+
+        int index = 0;
+        for (int row = 0; row < boardSize; row++) {
+            for (int column = 0; column < boardSize; column++) {
+                final int value = boardNumbers.get(index++);
+
+                board[row][column] = value;
+                cellsAndIndex.put(value, Pair.of(row, column));
+            }
+        }
+
+        return new BingoBoard(board, cellsAndIndex);
     }
 
     /**

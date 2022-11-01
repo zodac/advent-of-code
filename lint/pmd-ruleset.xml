@@ -21,6 +21,13 @@
         <!-- Mostly used for tests -->
         <exclude name="AvoidUsingHardCodedIP"/>
     </rule>
+    <!-- When using an indexed FOR loop, certain scenarios exist where I'd like to skip the increment -->
+    <rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables">
+        <properties>
+            <property name="foreachReassign" value="deny" />
+            <property name="forReassign" value="skip" />
+        </properties>
+    </rule>
 
     <rule ref="category/java/codestyle.xml">
         <!-- Public constructors are fine in many cases -->

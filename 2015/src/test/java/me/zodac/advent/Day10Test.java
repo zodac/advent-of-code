@@ -30,23 +30,23 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day04}.
+ * Tests to verify answers for {@link Day10}.
  */
-class Day04Test {
+class Day10Test {
 
-    private static final String PUZZLE_INPUT = "yzbqklnj";
+    private static final String PUZZLE_INPUT = "1113222113";
 
     @Test
     void part1() throws NoSuchAlgorithmException {
-        final long index = Day04.iterateHashesToFindPrefix(PUZZLE_INPUT, "00000");
-        assertThat(index)
-            .isEqualTo(282_749L);
+        final long length = Day10.performLookAndSaySequenceAndReturnLength(PUZZLE_INPUT, 40);
+        assertThat(length)
+            .isEqualTo(252_594L);
     }
 
     @Test
     void part2() throws NoSuchAlgorithmException {
-        final long index = Day04.iterateHashesToFindPrefix(PUZZLE_INPUT, "000000");
-        assertThat(index)
-            .isEqualTo(9_962_624L);
+        final long length = Day10.performLookAndSaySequenceAndReturnLength(PUZZLE_INPUT, 50);
+        assertThat(length)
+            .isEqualTo(3_579_328L);
     }
 }

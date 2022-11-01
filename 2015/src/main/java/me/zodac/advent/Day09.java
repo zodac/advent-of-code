@@ -44,6 +44,7 @@ public final class Day09 {
      *
      * @param routes the {@link Route}s
      * @return the distance of the shortest path between all locations
+     * @see DistanceCalculator
      */
     public static long distanceOfShortestPath(final Collection<Route> routes) {
         final DistanceCalculator distanceCalculator = DistanceCalculator.create(routes);
@@ -55,6 +56,7 @@ public final class Day09 {
      *
      * @param routes the {@link Route}s
      * @return the distance of the longest path between all locations
+     * @see DistanceCalculator
      */
     public static long distanceOfLongestPath(final Collection<Route> routes) {
         final DistanceCalculator distanceCalculator = DistanceCalculator.create(routes);

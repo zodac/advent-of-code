@@ -79,8 +79,10 @@ public final class DistanceCalculator {
      * @return the distance of the shortest path
      */
     public int distanceOfShortestPath() {
-        int minimumDistance = Integer.MAX_VALUE;
-        for (final List<String> permutation : permutations) {
+        int minimumDistance = calculateDistance(permutations.get(0));
+
+        // First entry is used as 'baseline' distance, compare remaining entries in the subList to this value
+        for (final List<String> permutation : permutations.subList(1, permutations.size())) {
             final int distanceOfPath = calculateDistance(permutation);
             minimumDistance = Math.min(minimumDistance, distanceOfPath);
         }
@@ -94,8 +96,10 @@ public final class DistanceCalculator {
      * @return the distance of the longest path
      */
     public int distanceOfLongestPath() {
-        int maximumDistance = -Integer.MAX_VALUE;
-        for (final List<String> permutation : permutations) {
+        int maximumDistance = calculateDistance(permutations.get(0));
+
+        // First entry is used as 'baseline' distance, compare remaining entries in the subList to this value
+        for (final List<String> permutation : permutations.subList(1, permutations.size())) {
             final int distanceOfPath = calculateDistance(permutation);
             maximumDistance = Math.max(maximumDistance, distanceOfPath);
         }

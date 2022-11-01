@@ -24,29 +24,32 @@
 
 package me.zodac.advent;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.security.NoSuchAlgorithmException;
-import org.junit.jupiter.api.Test;
+import me.zodac.advent.util.StringUtils;
 
 /**
- * Tests to verify answers for {@link Day04}.
+ * Solution for 2015, Day 10.
+ *
+ * @see <a href="https://adventofcode.com/2015/day/10">AoC 2015, Day 10</a>
  */
-class Day04Test {
+public final class Day10 {
 
-    private static final String PUZZLE_INPUT = "yzbqklnj";
+    private Day10() {
 
-    @Test
-    void part1() throws NoSuchAlgorithmException {
-        final long index = Day04.iterateHashesToFindPrefix(PUZZLE_INPUT, "00000");
-        assertThat(index)
-            .isEqualTo(282_749L);
     }
 
-    @Test
-    void part2() throws NoSuchAlgorithmException {
-        final long index = Day04.iterateHashesToFindPrefix(PUZZLE_INPUT, "000000");
-        assertThat(index)
-            .isEqualTo(9_962_624L);
+    /**
+     * Performs the 'lookAndSay' sequence on the input {@code numberOfExecutions} times, and returns the length of the result.
+     *
+     * @param input              the {@link String} to perform the sequence on
+     * @param numberOfExecutions the number of times to perform the sequence
+     * @return the length of the end result after the sequence has been applied {@code numberOfExecutions} times
+     * @see StringUtils#lookAndSay(String)
+     */
+    public static long performLookAndSaySequenceAndReturnLength(final String input, final int numberOfExecutions) {
+        String output = input;
+        for (int i = 0; i < numberOfExecutions; i++) {
+            output = StringUtils.lookAndSay(output);
+        }
+        return output.length();
     }
 }

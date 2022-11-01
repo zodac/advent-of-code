@@ -791,4 +791,36 @@ class StringUtilsTest {
         assertThat(output)
             .isEmpty();
     }
+
+    @Test
+    void whenLookAndSay_givenValidInput_thenSequenceIsApplied() {
+        final String input = "132211";
+        final String output = StringUtils.lookAndSay(input);
+        assertThat(output)
+            .isEqualTo("11132221");
+    }
+
+    @Test
+    void whenLookAndSay_givenEmptyString_thenEmptyStringIsReturned() {
+        final String input = "";
+        final String output = StringUtils.lookAndSay(input);
+        assertThat(output)
+            .isEqualTo("");
+    }
+
+    @Test
+    void whenLookAndSay_givenBlankString_thenEmptyStringIsReturned() {
+        final String input = " ";
+        final String output = StringUtils.lookAndSay(input);
+        assertThat(output)
+            .isEqualTo("");
+    }
+
+    @Test
+    void whenLookAndSay_givenNullString_thenEmptyStringIsReturned() {
+        final String input = null;
+        final String output = StringUtils.lookAndSay(input);
+        assertThat(output)
+            .isEqualTo("");
+    }
 }

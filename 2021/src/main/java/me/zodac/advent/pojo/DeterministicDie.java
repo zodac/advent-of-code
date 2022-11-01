@@ -33,13 +33,7 @@ public final class DeterministicDie {
 
     private long counter;
 
-    /**
-     * Creates a {@link DeterministicDie}.
-     *
-     * @param maxValue the maximum value for a die roll
-     * @param counter  the number of die rolls
-     */
-    public DeterministicDie(final long maxValue, final long counter) {
+    private DeterministicDie(final long maxValue, final long counter) {
         this.maxValue = maxValue;
         this.counter = counter;
     }

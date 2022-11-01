@@ -106,8 +106,8 @@ public final class SignalDecoder {
     }
 
     private static Map<String, Integer> generateDecoderForSignal(final Signal signal) {
-        final Map<String, Integer> decoder = new HashMap<>();
         final List<String> inputs = sortInputsForDecoding(signal.inputs());
+        final Map<String, Integer> decoder = HashMap.newHashMap(inputs.size());
 
         for (final String input : inputs) {
             final int inputLength = input.length();

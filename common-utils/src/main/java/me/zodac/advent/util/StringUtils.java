@@ -206,27 +206,27 @@ public final class StringUtils {
     }
 
     /**
-     * Checks if the input {@link CharSequence} is a valid {@link Integer} or {@link Long}.
+     * Checks if the input {@link String} is a valid {@link Integer} or {@link Long}.
      *
-     * @param input the {@link CharSequence} to check
+     * @param input the {@link String} to check
      * @return {@code true} if the input is an {@link Integer} or {@link Long}
      */
-    public static boolean isInteger(final CharSequence input) {
-        if (input == null) {
+    public static boolean isInteger(final String input) {
+        if (input == null || input.isBlank()) {
             return false;
         }
         return VALID_NUMERIC_PATTERN.matcher(input).matches();
     }
 
     /**
-     * Returns the first fully uppercase word (a substring surrounded by whitespace) in the input {@link CharSequence}.
+     * Returns the first fully uppercase word (a substring surrounded by whitespace) in the input {@link String}.
      *
-     * @param input the {@link CharSequence} to check
+     * @param input the {@link String} to check
      * @return the first fully uppercase word
      * @throws IllegalArgumentException thrown if the {@code input} has no uppercase word
      */
-    public static Optional<String> findFirstFullyUpperCaseWord(final CharSequence input) {
-        if (input == null) {
+    public static Optional<String> findFirstFullyUpperCaseWord(final String input) {
+        if (input == null || input.isBlank()) {
             return Optional.empty();
         }
 
@@ -240,13 +240,13 @@ public final class StringUtils {
     }
 
     /**
-     * Parses the input {@link CharSequence} and returns any {@link Integer} values in the order provided.
+     * Parses the input {@link String} and returns any {@link Integer} values in the order provided.
      *
-     * @param input the {@link CharSequence} to check
+     * @param input the {@link String} to check
      * @return the found {@link Integer}s
      */
-    public static List<Integer> collectIntegersInOrder(final CharSequence input) {
-        if (input == null) {
+    public static List<Integer> collectIntegersInOrder(final String input) {
+        if (input == null || input.isBlank()) {
             return Collections.emptyList();
         }
 
@@ -258,5 +258,46 @@ public final class StringUtils {
         }
 
         return numbers;
+    }
+
+    /**
+     * Performs the 'lookAndSay' sequence on the input {@link String} of numbers.
+     *
+     * <p>
+     * The 'lookAndSay' sequence 'reads' the input aloud and creates a new output based on runs of similar numbers. For example, given the input
+     * <b>132211</b>, we can break this down as:
+     * <pre>
+     *     one one
+     *     one three
+     *     two two(s)
+     *     two one(s)
+     * </pre>
+     *
+     * <p>
+     * This would give us an output of <b>11132221</b>.
+     *
+     * @param input the {@link String} input
+     * @return the output of the 'lookAndSay' sequence, or the input if input is <b>null</b>
+     */
+    public static String lookAndSay(final String input) {
+        if (input == null || input.isBlank()) {
+            return "";
+        }
+
+        final StringBuilder output = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            int count = 1;
+            final char c = input.charAt(i);
+
+            while (i + 1 < input.length() && input.charAt(i + 1) == c) {
+                i++; // If next char is same as current, move the pointer to the next char
+                count++;
+            }
+
+            output.append(count);
+            output.append(c);
+        }
+        return output.toString();
     }
 }
