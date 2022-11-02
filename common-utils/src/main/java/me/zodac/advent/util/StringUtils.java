@@ -48,6 +48,8 @@ public final class StringUtils {
     private static final Pattern FULLY_UPPERCASE_WORDS_PATTERN = Pattern.compile("(\\b[A-Z][A-Z]+\\b)");
     private static final Set<Character> VOWELS = Set.of('a', 'e', 'i', 'o', 'u');
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final String EMPTY_STRING = "";
+    private static final int LENGTH_OF_SINGLE_CHARACTER = 1;
 
     private StringUtils() {
 
@@ -66,6 +68,41 @@ public final class StringUtils {
         final char[] chars = input.toCharArray();
         Arrays.sort(chars);
         return new String(chars);
+    }
+
+    /**
+     * Removes the last character in the {@link String}.
+     *
+     * @param input the input {@link String}
+     * @return the updated {@link String}
+     */
+    public static String removeLastCharacter(final String input) {
+        return removeLastCharacters(input, 1);
+    }
+
+    /**
+     * Removes the last {@code numberOfCharactersToRemove} characters in the {@link String}.
+     *
+     * @param input                      the input {@link String}
+     * @param numberOfCharactersToRemove the number of characters to remove
+     * @return the updated {@link String}
+     * @throws IllegalArgumentException if the {@code numberOfCharactersToRemove} is less than 1, or is greater than the length of the {@code input}
+     */
+    public static String removeLastCharacters(final String input, final int numberOfCharactersToRemove) {
+        if (input == null || input.isEmpty()) {
+            return EMPTY_STRING;
+        }
+
+        if (numberOfCharactersToRemove < LENGTH_OF_SINGLE_CHARACTER) {
+            throw new IllegalArgumentException("Must remove at least 1 character, found: " + numberOfCharactersToRemove);
+        }
+
+        if (numberOfCharactersToRemove > input.length()) {
+            throw new IllegalArgumentException(
+                String.format("Cannot remove %s characters from input of length %s", numberOfCharactersToRemove, input.length()));
+        }
+
+        return input.substring(0, input.length() - numberOfCharactersToRemove);
     }
 
     /**
@@ -283,7 +320,7 @@ public final class StringUtils {
      */
     public static String lookAndSay(final String input) {
         if (input == null || input.isBlank()) {
-            return "";
+            return EMPTY_STRING;
         }
 
         final StringBuilder output = new StringBuilder();

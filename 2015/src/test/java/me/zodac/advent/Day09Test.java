@@ -42,7 +42,7 @@ class Day09Test {
     void part1() {
         final List<Route> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .map(Route::parse)
+            .map(Route::parseSourceDestination)
             .toList();
 
         final long diff = Day09.distanceOfShortestPath(values);
@@ -54,7 +54,7 @@ class Day09Test {
     void part2() {
         final List<Route> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .map(Route::parse)
+            .map(Route::parseSourceDestination)
             .toList();
 
         final long diff = Day09.distanceOfLongestPath(values);

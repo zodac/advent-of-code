@@ -24,10 +24,12 @@
 
 package me.zodac.advent;
 
+import static me.zodac.advent.util.CollectionUtils.getFirst;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
+import me.zodac.advent.util.CollectionUtils;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +47,7 @@ class Day04Test {
             .filter(input -> !input.isBlank())
             .toList();
 
-        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.get(0).split(","))
+        final List<Integer> bingoNumbers = Arrays.stream(getFirst(bingoInput).split(","))
             .mapToInt(Integer::parseInt)
             .boxed()
             .toList();
@@ -65,7 +67,7 @@ class Day04Test {
             .filter(input -> !input.isBlank())
             .toList();
 
-        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.get(0).split(","))
+        final List<Integer> bingoNumbers = Arrays.stream(getFirst(bingoInput).split(","))
             .mapToInt(Integer::parseInt)
             .boxed()
             .toList();

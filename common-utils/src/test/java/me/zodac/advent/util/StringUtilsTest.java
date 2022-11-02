@@ -25,6 +25,7 @@
 package me.zodac.advent.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +67,96 @@ class StringUtilsTest {
         assertThat(output)
             .isEqualTo(input)
             .isBlank();
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenString_thenStringIsReturnedWithoutLastCharacter() {
+        final String input = "abc";
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEqualTo("ab");
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenBlankStringWithMultipleSpaces_thenStringIsReturnedWithoutLastCharacter() {
+        final String input = "  ";
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEqualTo(" ");
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenStringWithOneCharacter_thenEmptyStringIsReturned() {
+        final String input = "a";
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenEmptyString_thenEmptyStringIsReturned() {
+        final String input = "";
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenNullString_thenEmptyStringIsReturned() {
+        final String input = null;
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    //
+
+    @Test
+    void whenRemoveLastCharacters_givenString_andRemovingTwoCharacters_thenStringIsReturnedWithoutLastTwoCharacters() {
+        final String input = "abcd";
+        final String output = StringUtils.removeLastCharacters(input, 2);
+        assertThat(output)
+            .isEqualTo("ab");
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenStringWithBlankSpaces_andRemovingTwoCharacters_thenStringIsReturnedWithoutTwoLastCharacters() {
+        final String input = "   ";
+        final String output = StringUtils.removeLastCharacters(input, 2);
+        assertThat(output)
+            .isEqualTo(" ");
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenString_andRemovingNegativeCharacters_thenExceptionIsThrown() {
+        final String input = "   ";
+        assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, -1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Must remove at least 1 character, found: -1");
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenStringWithOneCharacter_andRemovingTwoCharacters_thenExceptionIsThrown() {
+        final String input = "a";
+        assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, 2))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Cannot remove 2 characters from input of length 1");
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenEmptyString_thenEmptyStringIsReturned() {
+        final String input = "";
+        final String output = StringUtils.removeLastCharacters(input, 2);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenNullString_thenEmptyStringIsReturned() {
+        final String input = null;
+        final String output = StringUtils.removeLastCharacters(input, 2);
+        assertThat(output)
+            .isEmpty();
     }
 
     @Test

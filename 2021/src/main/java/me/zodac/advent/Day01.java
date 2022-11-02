@@ -24,6 +24,8 @@
 
 package me.zodac.advent;
 
+import static me.zodac.advent.util.CollectionUtils.getFirst;
+
 import java.util.List;
 
 /**
@@ -52,7 +54,7 @@ public final class Day01 {
         int count = 0;
 
         // Initialise with first value, rather than assuming the value cannot be negative
-        int currentValue = values.get(0);
+        int currentValue = getFirst(values);
 
         for (final int nextValue : values) {
             if (nextValue > currentValue) {

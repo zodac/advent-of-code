@@ -47,7 +47,7 @@ public final class Day09 {
      * @see DistanceCalculator
      */
     public static long distanceOfShortestPath(final Collection<Route> routes) {
-        final DistanceCalculator distanceCalculator = DistanceCalculator.create(routes);
+        final DistanceCalculator distanceCalculator = DistanceCalculator.createBiDirectional(routes);
         return distanceCalculator.distanceOfShortestPath();
     }
 
@@ -59,7 +59,7 @@ public final class Day09 {
      * @see DistanceCalculator
      */
     public static long distanceOfLongestPath(final Collection<Route> routes) {
-        final DistanceCalculator distanceCalculator = DistanceCalculator.create(routes);
+        final DistanceCalculator distanceCalculator = DistanceCalculator.createBiDirectional(routes);
         return distanceCalculator.distanceOfLongestPath();
     }
 }

@@ -24,6 +24,9 @@
 
 package me.zodac.advent.pojo;
 
+import static me.zodac.advent.util.CollectionUtils.getFirst;
+import static me.zodac.advent.util.CollectionUtils.getLast;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
@@ -45,7 +48,7 @@ public enum BitwiseOperator {
             if (inputs.size() != TWO_INPUTS) {
                 throw new IllegalArgumentException("Expected 2 input values, found: " + inputs);
             }
-            return inputs.get(0) & inputs.get(1);
+            return getFirst(inputs) & getLast(inputs);
         }
     },
 
@@ -61,7 +64,7 @@ public enum BitwiseOperator {
             if (inputs.size() != TWO_INPUTS) {
                 throw new IllegalArgumentException("Expected 2 input values, found: " + inputs);
             }
-            return inputs.get(0) | inputs.get(1);
+            return getFirst(inputs) | getLast(inputs);
         }
     },
 
@@ -77,7 +80,7 @@ public enum BitwiseOperator {
             if (inputs.size() != TWO_INPUTS) {
                 throw new IllegalArgumentException("Expected 2 input values, found: " + inputs);
             }
-            return inputs.get(0) << inputs.get(1);
+            return getFirst(inputs) << getLast(inputs);
         }
     },
 
@@ -93,7 +96,7 @@ public enum BitwiseOperator {
             if (inputs.size() != TWO_INPUTS) {
                 throw new IllegalArgumentException("Expected 2 input values, found: " + inputs);
             }
-            return inputs.get(0) >> inputs.get(1);
+            return getFirst(inputs) >> getLast(inputs);
         }
     },
 
@@ -109,7 +112,7 @@ public enum BitwiseOperator {
             if (inputs.size() != SINGLE_INPUT) {
                 throw new IllegalArgumentException("Expected 1 input values, found: " + inputs);
             }
-            return ~inputs.get(0);
+            return ~getFirst(inputs);
         }
     },
 
@@ -122,7 +125,7 @@ public enum BitwiseOperator {
             if (inputs.size() != SINGLE_INPUT) {
                 throw new IllegalArgumentException("Expected 1 input values, found: " + inputs);
             }
-            return inputs.get(0);
+            return getFirst(inputs);
         }
     };
 

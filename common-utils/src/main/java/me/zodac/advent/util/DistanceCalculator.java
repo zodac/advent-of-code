@@ -24,6 +24,8 @@
 
 package me.zodac.advent.util;
 
+import static me.zodac.advent.util.CollectionUtils.getFirst;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,21 +42,56 @@ public final class DistanceCalculator {
 
     private final Map<String, Integer> distancesByConcatLocations;
     private final List<? extends List<String>> permutations;
+    private final boolean isDistanceUniDirectional;
 
-    private DistanceCalculator(final Map<String, Integer> distancesByConcatLocations, final List<? extends List<String>> permutations) {
+    private DistanceCalculator(final Map<String, Integer> distancesByConcatLocations,
+                               final List<? extends List<String>> permutations,
+                               final boolean isDistanceUniDirectional) {
         this.distancesByConcatLocations = distancesByConcatLocations;
         this.permutations = permutations;
+        this.isDistanceUniDirectional = isDistanceUniDirectional;
     }
 
     /**
      * Creates an instance of {@link DistanceCalculator}. We use the provided {@link Route}s to create a map of all distances by location, and also
      * all available permutations of the locations.
      *
+     * <p>
+     * Does not allow for a reverse mapping when calculating distance (a -> b != b -> a).
+     *
      * @param routes the {@link Route}s
      * @return the created {@link DistanceCalculator}
      * @see CollectionUtils#generatePermutations(List)
      */
-    public static DistanceCalculator create(final Collection<Route> routes) {
+    public static DistanceCalculator createUniDirectional(final Collection<Route> routes) {
+        return create(routes, true);
+    }
+
+    /**
+     * Creates an instance of {@link DistanceCalculator}. We use the provided {@link Route}s to create a map of all distances by location, and also
+     * all available permutations of the locations.
+     *
+     * <p>
+     * Allows for a reverse mapping when calculating distance (a -> b == b -> a).
+     *
+     * @param routes the {@link Route}s
+     * @return the created {@link DistanceCalculator}
+     * @see CollectionUtils#generatePermutations(List)
+     */
+    public static DistanceCalculator createBiDirectional(final Collection<Route> routes) {
+        return create(routes, false);
+    }
+
+    /**
+     * Creates an instance of {@link DistanceCalculator}. We use the provided {@link Route}s to create a map of all distances by location, and also
+     * all available permutations of the locations.
+     *
+     * @param routes                   the {@link Route}s
+     * @param isDistanceUniDirectional distance value between source and destination is one-way only (a -> b != b -> a)
+     * @return the created {@link DistanceCalculator}
+     * @see CollectionUtils#generatePermutations(List)
+     */
+    public static DistanceCalculator create(final Collection<Route> routes, final boolean isDistanceUniDirectional) {
         final Map<String, Integer> distancesByConcatLocations = HashMap.newHashMap(routes.size());
 
         final Set<String> locations = new HashSet<>();
@@ -70,7 +107,7 @@ public final class DistanceCalculator {
             .stream()
             .toList();
 
-        return new DistanceCalculator(distancesByConcatLocations, permutations);
+        return new DistanceCalculator(distancesByConcatLocations, permutations, isDistanceUniDirectional);
     }
 
     /**
@@ -79,7 +116,7 @@ public final class DistanceCalculator {
      * @return the distance of the shortest path
      */
     public int distanceOfShortestPath() {
-        int minimumDistance = calculateDistance(permutations.get(0));
+        int minimumDistance = calculateDistance(getFirst(permutations));
 
         // First entry is used as 'baseline' distance, compare remaining entries in the subList to this value
         for (final List<String> permutation : permutations.subList(1, permutations.size())) {
@@ -96,7 +133,7 @@ public final class DistanceCalculator {
      * @return the distance of the longest path
      */
     public int distanceOfLongestPath() {
-        int maximumDistance = calculateDistance(permutations.get(0));
+        int maximumDistance = calculateDistance(getFirst(permutations));
 
         // First entry is used as 'baseline' distance, compare remaining entries in the subList to this value
         for (final List<String> permutation : permutations.subList(1, permutations.size())) {
@@ -108,15 +145,32 @@ public final class DistanceCalculator {
     }
 
     private int calculateDistance(final List<String> permutation) {
-        int distance = 0;
+        int totalDistance = 0;
         for (int i = 0; i < permutation.size() - 1; i++) {
             final String from = permutation.get(i);
             final String to = permutation.get(i + 1);
-
-            // If we cannot find a distance for the 'from' -> 'to' route, try the reverse 'to' -> 'from' route
-            distance += distancesByConcatLocations.getOrDefault(from + to, distancesByConcatLocations.get(to + from));
-
+            totalDistance += getValue(from, to);
         }
-        return distance;
+
+        return totalDistance;
+    }
+
+    private int getValue(final String from, final String to) {
+        final String key = from + to;
+        if (distancesByConcatLocations.containsKey(key)) {
+            return distancesByConcatLocations.get(key);
+        }
+
+        if (isDistanceUniDirectional) {
+            throw new IllegalArgumentException(String.format("Unable to find a value for %s in saved values %s", key, distancesByConcatLocations));
+        }
+
+        final String reverseKey = to + from;
+        if (distancesByConcatLocations.containsKey(reverseKey)) {
+            return distancesByConcatLocations.get(reverseKey);
+        }
+
+        throw new IllegalArgumentException(
+            String.format("Unable to find a value for %s or %s in saved values %s", key, reverseKey, distancesByConcatLocations));
     }
 }

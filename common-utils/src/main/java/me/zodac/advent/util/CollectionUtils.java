@@ -25,9 +25,11 @@
 package me.zodac.advent.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -123,6 +125,40 @@ public final class CollectionUtils {
                 returnValue.add(temp);
             }
         }
+
         return returnValue;
+    }
+
+    /**
+     * Returns the first element of the {@link Collection}.
+     *
+     * @param input the {@link Collection}
+     * @param <E>   the type of the {@link Collection}
+     * @return the first element
+     * @throws NoSuchElementException thrown if the input {@link Collection} is empty
+     */
+    public static <E> E getFirst(final Collection<? extends E> input) {
+        return get(input, 0);
+    }
+
+    /**
+     * Returns the last element of the {@link Collection}.
+     *
+     * @param input the {@link Collection}
+     * @param <E>   the type of the {@link Collection}
+     * @return the last element
+     * @throws NoSuchElementException thrown if the input {@link Collection} is empty
+     */
+    public static <E> E getLast(final Collection<? extends E> input) {
+        return get(input, input.size() - 1);
+    }
+
+    private static <E> E get(final Collection<? extends E> input, final int index) {
+        if (input.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+
+        final List<E> temp = new ArrayList<>(input);
+        return temp.get(index);
     }
 }

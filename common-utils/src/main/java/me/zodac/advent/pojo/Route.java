@@ -27,7 +27,7 @@ package me.zodac.advent.pojo;
 import me.zodac.advent.util.StringUtils;
 
 /**
- * POJO defining a route between two locations, and the value of the distance between them.
+ * POJO defining a route between a source and a target, and the value of the distance between them.
  *
  * @param from  the start of the {@link Route}
  * @param to    the end of the {@link Route}
@@ -38,15 +38,40 @@ public record Route(String from, String to, int value) {
     /**
      * Creates a {@link Route} from a {@link String} in the format:
      * <pre>
-     *     source to destination = 999
+     *     [source] to [destination] = [value]
      * </pre>
      *
      * @param input the {@link String} to parse
      * @return the {@link Route}
      */
-    public static Route parse(final String input) {
+    public static Route parseSourceDestination(final String input) {
         final String[] tokens = StringUtils.splitOnWhitespace(input);
-        final int routeValue = Integer.parseInt(tokens[4]);
-        return new Route(tokens[0], tokens[2], routeValue);
+
+        final String source = tokens[0];
+        final String destination = tokens[2];
+        final int value = Integer.parseInt(tokens[4]);
+
+        return new Route(source, destination, value);
+    }
+
+    /**
+     * Creates a {@link Route} from a {@link String} in the format:
+     * <pre>
+     *     [source] would gain/lose [value] happiness units by sitting next to [destination].
+     * </pre>
+     *
+     * @param input the {@link String} to parse
+     * @return the {@link Route}
+     */
+    public static Route parseSittingNextTo(final String input) {
+        final String[] tokens = StringUtils.splitOnWhitespace(input);
+
+        final String source = tokens[0];
+        final String destination = StringUtils.removeLastCharacter(tokens[10]);
+        final int routeValue = Integer.parseInt(tokens[3]);
+        final int sign = "gain".equals(tokens[2]) ? 1 : -1;
+        final int value = sign * routeValue;
+
+        return new Route(source, destination, value);
     }
 }

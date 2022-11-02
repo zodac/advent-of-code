@@ -24,6 +24,8 @@
 
 package me.zodac.advent;
 
+import static me.zodac.advent.util.CollectionUtils.getFirst;
+
 import java.util.ArrayList;
 import java.util.List;
 import me.zodac.advent.pojo.BitParityCount;
@@ -82,7 +84,7 @@ public final class Day03 {
         }
 
         // Input should have 12 digits, but no harm being a bit flexible
-        final int lengthOfBinaryValue = binaryValues.get(0).length();
+        final int lengthOfBinaryValue = getFirst(binaryValues).length();
 
         final StringBuilder gammaRate = new StringBuilder();
         final StringBuilder epsilonRate = new StringBuilder();
@@ -169,7 +171,7 @@ public final class Day03 {
     }
 
     private static long getRating(final List<String> binaryValues, final boolean mostCommon) {
-        final int lengthOfBinaryValue = binaryValues.get(0).length();
+        final int lengthOfBinaryValue = getFirst(binaryValues).length();
         List<String> validRatings = new ArrayList<>(binaryValues);
 
         for (int i = 0; i < lengthOfBinaryValue; i++) {
@@ -194,7 +196,7 @@ public final class Day03 {
         if (validRatings.size() != EXPECTED_NUMBER_OF_VALID_RATINGS) {
             throw new IllegalStateException("Expected there to be only 1 valid rating, found: " + validRatings.size());
         }
-        return BinaryConversionUtils.toDecimal(validRatings.get(0));
+        return BinaryConversionUtils.toDecimal(getFirst(validRatings));
     }
 }
 

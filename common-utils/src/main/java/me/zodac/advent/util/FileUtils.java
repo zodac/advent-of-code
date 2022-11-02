@@ -24,6 +24,8 @@
 
 package me.zodac.advent.util;
 
+import static me.zodac.advent.util.CollectionUtils.getFirst;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -70,7 +72,7 @@ public final class FileUtils {
             throw new IllegalArgumentException("Expected a single line, found: " + lines.size());
         }
 
-        return lines.get(0);
+        return getFirst(lines);
     }
 
     /**
