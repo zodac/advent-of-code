@@ -27,7 +27,9 @@ package me.zodac.advent.util;
 import static me.zodac.advent.util.CollectionUtils.getFirst;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,16 +42,37 @@ import me.zodac.advent.pojo.Route;
  */
 public final class DistanceCalculator {
 
-    private final Map<String, Integer> distancesByConcatLocations;
+    private final Map<String, Integer> distancesBySourceAndDestination;
     private final List<? extends List<String>> permutations;
-    private final boolean isDistanceUniDirectional;
+    private final Set<Option> options;
 
-    private DistanceCalculator(final Map<String, Integer> distancesByConcatLocations,
+    private DistanceCalculator(final Map<String, Integer> distancesBySourceAndDestination,
                                final List<? extends List<String>> permutations,
-                               final boolean isDistanceUniDirectional) {
-        this.distancesByConcatLocations = distancesByConcatLocations;
+                               final Option... options) {
+        this.distancesBySourceAndDestination = distancesBySourceAndDestination;
         this.permutations = permutations;
-        this.isDistanceUniDirectional = isDistanceUniDirectional;
+        this.options = options.length > 0 ? EnumSet.copyOf(Arrays.asList(options)) : EnumSet.noneOf(Option.class);
+    }
+
+    /**
+     * Defines the various options for {@link DistanceCalculator} when calculating distances for {@link Route}s.
+     */
+    public enum Option {
+
+        /**
+         * When calculating the distances for a {@link Route}, we consider the value of both a -> b and b -> a.
+         */
+        CALCULATE_BOTH_DIRECTIONS,
+
+        /**
+         * When generating permutations, the last entry must also loop back to the first entry.
+         */
+        LOOPS_TO_START,
+
+        /**
+         * The distance from a -> b != b -> a, so we cannot simply find the reverse direction when calculating distance.
+         */
+        UNI_DIRECTIONAL_DISTANCES
     }
 
     /**
@@ -57,14 +80,15 @@ public final class DistanceCalculator {
      * all available permutations of the locations.
      *
      * <p>
-     * Does not allow for a reverse mapping when calculating distance (a -> b != b -> a).
+     * Sets all available {@link DistanceCalculator.Option}s.
      *
      * @param routes the {@link Route}s
      * @return the created {@link DistanceCalculator}
      * @see CollectionUtils#generatePermutations(List)
+     * @see #createWithOptions(Collection, Option...)
      */
-    public static DistanceCalculator createUniDirectional(final Collection<Route> routes) {
-        return create(routes, true);
+    public static DistanceCalculator createWithAllOptions(final Collection<Route> routes) {
+        return createWithOptions(routes, Option.values());
     }
 
     /**
@@ -72,42 +96,43 @@ public final class DistanceCalculator {
      * all available permutations of the locations.
      *
      * <p>
-     * Allows for a reverse mapping when calculating distance (a -> b == b -> a).
+     * Does not set any {@link DistanceCalculator.Option}s.
      *
      * @param routes the {@link Route}s
      * @return the created {@link DistanceCalculator}
      * @see CollectionUtils#generatePermutations(List)
+     * @see #createWithOptions(Collection, Option...)
      */
-    public static DistanceCalculator createBiDirectional(final Collection<Route> routes) {
-        return create(routes, false);
+    public static DistanceCalculator create(final Collection<Route> routes) {
+        return createWithOptions(routes);
     }
 
     /**
      * Creates an instance of {@link DistanceCalculator}. We use the provided {@link Route}s to create a map of all distances by location, and also
      * all available permutations of the locations.
      *
-     * @param routes                   the {@link Route}s
-     * @param isDistanceUniDirectional distance value between source and destination is one-way only (a -> b != b -> a)
+     * @param routes  the {@link Route}s
+     * @param options the {@link DistanceCalculator.Option}s to be enabled
      * @return the created {@link DistanceCalculator}
      * @see CollectionUtils#generatePermutations(List)
      */
-    public static DistanceCalculator create(final Collection<Route> routes, final boolean isDistanceUniDirectional) {
-        final Map<String, Integer> distancesByConcatLocations = HashMap.newHashMap(routes.size());
+    public static DistanceCalculator createWithOptions(final Collection<Route> routes, final Option... options) {
+        final Map<String, Integer> distancesBySourceAndDestination = HashMap.newHashMap(routes.size());
 
-        final Set<String> locations = new HashSet<>();
+        final Set<String> sources = new HashSet<>();
         for (final Route route : routes) {
-            locations.add(route.from());
-            locations.add(route.to());
+            sources.add(route.from());
+            sources.add(route.to());
 
             final String key = route.from() + route.to();
-            distancesByConcatLocations.put(key, route.value());
+            distancesBySourceAndDestination.put(key, route.value());
         }
 
-        final List<List<String>> permutations = CollectionUtils.generatePermutations(new ArrayList<>(locations))
+        final List<List<String>> permutations = CollectionUtils.generatePermutations(new ArrayList<>(sources))
             .stream()
             .toList();
 
-        return new DistanceCalculator(distancesByConcatLocations, permutations, isDistanceUniDirectional);
+        return new DistanceCalculator(distancesBySourceAndDestination, permutations, options);
     }
 
     /**
@@ -137,7 +162,13 @@ public final class DistanceCalculator {
 
         // First entry is used as 'baseline' distance, compare remaining entries in the subList to this value
         for (final List<String> permutation : permutations.subList(1, permutations.size())) {
-            final int distanceOfPath = calculateDistance(permutation);
+            final List<String> newPermutation = new ArrayList<>(permutation);
+
+            if (isEnabled(Option.LOOPS_TO_START)) {
+                newPermutation.add(getFirst(permutation));
+            }
+
+            final int distanceOfPath = calculateDistance(newPermutation);
             maximumDistance = Math.max(maximumDistance, distanceOfPath);
         }
 
@@ -150,6 +181,10 @@ public final class DistanceCalculator {
             final String from = permutation.get(i);
             final String to = permutation.get(i + 1);
             totalDistance += getValue(from, to);
+
+            if (isEnabled(Option.CALCULATE_BOTH_DIRECTIONS)) {
+                totalDistance += getValue(to, from);
+            }
         }
 
         return totalDistance;
@@ -157,20 +192,25 @@ public final class DistanceCalculator {
 
     private int getValue(final String from, final String to) {
         final String key = from + to;
-        if (distancesByConcatLocations.containsKey(key)) {
-            return distancesByConcatLocations.get(key);
+        if (distancesBySourceAndDestination.containsKey(key)) {
+            return distancesBySourceAndDestination.get(key);
         }
 
-        if (isDistanceUniDirectional) {
-            throw new IllegalArgumentException(String.format("Unable to find a value for %s in saved values %s", key, distancesByConcatLocations));
+        if (isEnabled(Option.UNI_DIRECTIONAL_DISTANCES)) {
+            throw new IllegalArgumentException(
+                String.format("Unable to find a value for %s in saved values %s", key, distancesBySourceAndDestination));
         }
 
         final String reverseKey = to + from;
-        if (distancesByConcatLocations.containsKey(reverseKey)) {
-            return distancesByConcatLocations.get(reverseKey);
+        if (distancesBySourceAndDestination.containsKey(reverseKey)) {
+            return distancesBySourceAndDestination.get(reverseKey);
         }
 
         throw new IllegalArgumentException(
-            String.format("Unable to find a value for %s or %s in saved values %s", key, reverseKey, distancesByConcatLocations));
+            String.format("Unable to find a value for %s or %s in saved values %s", key, reverseKey, distancesBySourceAndDestination));
+    }
+
+    private boolean isEnabled(final Option option) {
+        return options.contains(option);
     }
 }

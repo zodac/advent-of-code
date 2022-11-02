@@ -36,6 +36,18 @@ import me.zodac.advent.util.StringUtils;
 public record Route(String from, String to, int value) {
 
     /**
+     * Creates a {@link Route}.
+     *
+     * @param from  the start of the {@link Route}
+     * @param to    the end of the {@link Route}
+     * @param value the value of the distance between the start and end of the {@link Route}
+     * @return the created {@link Route}
+     */
+    public static Route create(final String from, final String to, final int value) {
+        return new Route(from, to, value);
+    }
+
+    /**
      * Creates a {@link Route} from a {@link String} in the format:
      * <pre>
      *     [source] to [destination] = [value]
@@ -51,7 +63,7 @@ public record Route(String from, String to, int value) {
         final String destination = tokens[2];
         final int value = Integer.parseInt(tokens[4]);
 
-        return new Route(source, destination, value);
+        return create(source, destination, value);
     }
 
     /**
@@ -72,6 +84,6 @@ public record Route(String from, String to, int value) {
         final int sign = "gain".equals(tokens[2]) ? 1 : -1;
         final int value = sign * routeValue;
 
-        return new Route(source, destination, value);
+        return create(source, destination, value);
     }
 }

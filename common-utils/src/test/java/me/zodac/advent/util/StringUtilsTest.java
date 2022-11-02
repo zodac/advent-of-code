@@ -109,8 +109,6 @@ class StringUtilsTest {
             .isEmpty();
     }
 
-    //
-
     @Test
     void whenRemoveLastCharacters_givenString_andRemovingTwoCharacters_thenStringIsReturnedWithoutLastTwoCharacters() {
         final String input = "abcd";
@@ -387,7 +385,6 @@ class StringUtilsTest {
         final String[] subStrings = new String[0];
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
-
         assertThat(result)
             .isFalse();
     }
@@ -904,7 +901,7 @@ class StringUtilsTest {
         final String input = "";
         final String output = StringUtils.lookAndSay(input);
         assertThat(output)
-            .isEqualTo("");
+            .isEmpty();
     }
 
     @Test
@@ -912,7 +909,7 @@ class StringUtilsTest {
         final String input = " ";
         final String output = StringUtils.lookAndSay(input);
         assertThat(output)
-            .isEqualTo("");
+            .isEmpty();
     }
 
     @Test
@@ -920,6 +917,6 @@ class StringUtilsTest {
         final String input = null;
         final String output = StringUtils.lookAndSay(input);
         assertThat(output)
-            .isEqualTo("");
+            .isEmpty();
     }
 }

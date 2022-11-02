@@ -24,42 +24,43 @@
 
 package me.zodac.advent;
 
-import java.util.Collection;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import me.zodac.advent.pojo.Route;
-import me.zodac.advent.util.DistanceCalculator;
+import me.zodac.advent.util.FileUtils;
+import org.junit.jupiter.api.Test;
 
 /**
- * Solution for 2015, Day 9.
- *
- * @see <a href="https://adventofcode.com/2015/day/9">AoC 2015, Day 9</a>
+ * Tests to verify answers for {@link Day13}.
  */
-public final class Day09 {
+class Day13Test {
 
-    private Day09() {
+    private static final String INPUT_FILENAME = "day13.txt";
 
+    @Test
+    void part1() {
+        final List<Route> values =
+            FileUtils.readLines(INPUT_FILENAME)
+                .stream()
+                .map(Route::parseSittingNextTo)
+                .toList();
+
+        final long diff = Day13.greatestChangeInHappiness(values);
+        assertThat(diff)
+            .isEqualTo(664L);
     }
 
-    /**
-     * Calculates the shortest path along all locations defined by the provided {@link Route}s.
-     *
-     * @param routes the {@link Route}s
-     * @return the distance of the shortest path between all locations
-     * @see DistanceCalculator
-     */
-    public static long distanceOfShortestPath(final Collection<Route> routes) {
-        final DistanceCalculator distanceCalculator = DistanceCalculator.create(routes);
-        return distanceCalculator.distanceOfShortestPath();
-    }
+    @Test
+    void part2() {
+        final List<Route> values =
+            FileUtils.readLines(INPUT_FILENAME)
+                .stream()
+                .map(Route::parseSittingNextTo)
+                .toList();
 
-    /**
-     * Calculates the longest path along all locations defined by the provided {@link Route}s.
-     *
-     * @param routes the {@link Route}s
-     * @return the distance of the longest path between all locations
-     * @see DistanceCalculator
-     */
-    public static long distanceOfLongestPath(final Collection<Route> routes) {
-        final DistanceCalculator distanceCalculator = DistanceCalculator.create(routes);
-        return distanceCalculator.distanceOfLongestPath();
+        final long diff = Day13.greatestChangeInHappinessIncludingSelf(values);
+        assertThat(diff)
+            .isEqualTo(640L);
     }
 }
