@@ -30,8 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import me.zodac.advent.pojo.Reindeer;
 
 /**
@@ -76,35 +74,38 @@ public final class Day14 {
      */
     public static long calculateTheHighestScore(final Collection<Reindeer> reindeers, final Duration travelDuration) {
         final long secondsToTravel = travelDuration.toSeconds();
-        final Set<String> reindeerNames = reindeers.stream().map(Reindeer::name).collect(Collectors.toSet());
 
-        final Map<String, Integer> scoresByName = HashMap.newHashMap(reindeerNames.size());
-        for (final String reindeerName : reindeerNames) {
-            scoresByName.put(reindeerName, STARTING_POINTS);
+        final Map<Reindeer, Integer> scoresByReindeer = HashMap.newHashMap(reindeers.size());
+        for (final Reindeer reindeer : reindeers) {
+            scoresByReindeer.put(reindeer, STARTING_POINTS);
         }
 
-        for (int i = 1; i <= secondsToTravel; i++) {
-            final Collection<String> nameOfFurthestReindeers = new HashSet<>();
-            long distanceOfFurthestReindeer = Long.MIN_VALUE;
+        for (int travelTime = 1; travelTime <= secondsToTravel; travelTime++) {
+            final Collection<Reindeer> furthestReindeers = getFurthestReindeerForTime(reindeers, travelTime);
 
-            for (final Reindeer reindeer : reindeers) {
-                final long distanceAtTime = reindeer.calculateDistance(Duration.ofSeconds(i));
-
-                if (distanceAtTime > distanceOfFurthestReindeer) {
-                    distanceOfFurthestReindeer = distanceAtTime;
-                    nameOfFurthestReindeers.clear();
-                    nameOfFurthestReindeers.add(reindeer.name());
-                } else if (distanceAtTime == distanceOfFurthestReindeer) {
-                    nameOfFurthestReindeers.add(reindeer.name());
-                }
-            }
-
-            for (final String nameOfFurthestReindeer : nameOfFurthestReindeers) {
-                final int currentScore = scoresByName.get(nameOfFurthestReindeer);
-                scoresByName.put(nameOfFurthestReindeer, currentScore + POINTS_FOR_BEING_IN_THE_LEAD);
+            for (final Reindeer furthestReindeer : furthestReindeers) {
+                scoresByReindeer.computeIfPresent(furthestReindeer, (key, value) -> value + POINTS_FOR_BEING_IN_THE_LEAD);
             }
         }
 
-        return Collections.max(scoresByName.values());
+        return Collections.max(scoresByReindeer.values());
+    }
+
+    private static Collection<Reindeer> getFurthestReindeerForTime(final Iterable<Reindeer> reindeers, final int travelTime) {
+        final Collection<Reindeer> furthestReindeers = new HashSet<>();
+        long distanceOfFurthestReindeer = Long.MIN_VALUE;
+
+        for (final Reindeer reindeer : reindeers) {
+            final long distanceAtTime = reindeer.calculateDistance(Duration.ofSeconds(travelTime));
+
+            if (distanceAtTime > distanceOfFurthestReindeer) {
+                distanceOfFurthestReindeer = distanceAtTime;
+                furthestReindeers.clear();
+                furthestReindeers.add(reindeer);
+            } else if (distanceAtTime == distanceOfFurthestReindeer) {
+                furthestReindeers.add(reindeer);
+            }
+        }
+        return furthestReindeers;
     }
 }

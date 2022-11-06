@@ -32,15 +32,15 @@ import java.util.regex.Pattern;
  * Simple class representing a reindeer that can fly at a known velocity (in km/s) for a given {@link Duration}, then must rest (and not fly) for
  * another {@link Duration}.
  *
- * @param name           the name of the {@link Reindeer}
  * @param flyingVelocity the velocity of the {@link Reindeer} in km/s, when not resting
  * @param flyingDuration the {@link Duration} that the {@link Reindeer} can fly before resting
  * @param restDuration   the {@link Duration} that the {@link Reindeer} must rest before flying again
  */
-public record Reindeer(String name, int flyingVelocity, Duration flyingDuration, Duration restDuration) {
+public record Reindeer(int flyingVelocity, Duration flyingDuration, Duration restDuration) {
 
-    private static final Pattern REINDEER_PATTERN =
-        Pattern.compile("([A-Za-z]+) can fly (\\d+) km/s for (\\d+) seconds, but then must rest for (\\d+) seconds.");
+    // Regex pattern with named capture group
+    private static final Pattern REINDEER_PATTERN = Pattern.compile(
+        ".* can fly (?<velocity>\\d+) km/s for (?<flyingDuration>\\d+) seconds, but then must rest for (?<restDuration>\\d+) seconds.");
 
     /**
      * Creates a {@link Reindeer} from a {@link CharSequence} in the format:
@@ -58,12 +58,11 @@ public record Reindeer(String name, int flyingVelocity, Duration flyingDuration,
             throw new IllegalStateException("Unable to find match in input string: " + input);
         }
 
-        final String name = matcher.group(1);
-        final int flyingVelocity = Integer.parseInt(matcher.group(2));
-        final Duration flyingDuration = Duration.ofSeconds(Integer.parseInt(matcher.group(3)));
-        final Duration restDuration = Duration.ofSeconds(Integer.parseInt(matcher.group(4)));
+        final int flyingVelocity = Integer.parseInt(matcher.group("velocity"));
+        final Duration flyingDuration = Duration.ofSeconds(Integer.parseInt(matcher.group("flyingDuration")));
+        final Duration restDuration = Duration.ofSeconds(Integer.parseInt(matcher.group("restDuration")));
 
-        return new Reindeer(name, flyingVelocity, flyingDuration, restDuration);
+        return new Reindeer(flyingVelocity, flyingDuration, restDuration);
     }
 
     /**
