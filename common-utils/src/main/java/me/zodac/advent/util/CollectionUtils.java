@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Utility functions for {@link java.util.Collection}s.
@@ -160,5 +161,22 @@ public final class CollectionUtils {
 
         final List<E> temp = new ArrayList<>(input);
         return temp.get(index);
+    }
+
+    /**
+     * Extracts a value from the {@link Collection} of {@code elements}, based on the provided {@link Function}. The {@link Function} will be used to
+     * map a new value for each element.
+     *
+     * @param elements           the {@link Collection} to be mapped
+     * @param extractionFunction the {@link Function} used to extract a value
+     * @param <I>                the type of the input {@link Collection} of {@code elements}
+     * @param <O>                the type of the output values which will be mapped by the {@link Function}
+     * @return the updated {@link Collection}
+     */
+    public static <I, O> List<O> extractValuesAsList(final Collection<I> elements, final Function<? super I, O> extractionFunction) {
+        return elements
+            .stream()
+            .map(extractionFunction)
+            .toList();
     }
 }

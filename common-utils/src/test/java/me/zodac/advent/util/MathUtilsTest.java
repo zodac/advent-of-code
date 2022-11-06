@@ -25,7 +25,9 @@
 package me.zodac.advent.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -95,5 +97,113 @@ class MathUtilsTest {
         final boolean output = MathUtils.isEven(input);
         assertThat(output)
             .isFalse();
+    }
+
+    @Test
+    void whenIsAnyLessThan_givenPositiveValue_andNoValuesLessThan_thenFalseIsReturned() {
+        final long input = 1L;
+        final long[] values = {1L, 2L, 3L};
+        final boolean output = MathUtils.isAnyLessThan(input, values);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsAnyLessThan_givenPositiveValue_andPositiveValuesLessThan_thenTrueIsReturned() {
+        final long input = 1L;
+        final long[] values = {0L, 3L, 4L};
+        final boolean output = MathUtils.isAnyLessThan(input, values);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsAnyLessThan_givenPositiveValue_andNegativeValuesLessThan_thenTrueIsReturned() {
+        final long input = 1L;
+        final long[] values = {-2L, 3L, 4L};
+        final boolean output = MathUtils.isAnyLessThan(input, values);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsAnyLessThan_givenNegativeValue_andNoValuesLessThan_thenFalseIsReturned() {
+        final long input = -2L;
+        final long[] values = {-1L, 3L, 4L};
+        final boolean output = MathUtils.isAnyLessThan(input, values);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsAnyLessThan_givenNegativeValue_andNegativeValuesLessThan_thenTrueIsReturned() {
+        final long input = -1L;
+        final long[] values = {-2L, 3L, 4L};
+        final boolean output = MathUtils.isAnyLessThan(input, values);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsAnyLessThan_givenValue_andNoInputValue_thenFalseIsReturned() {
+        final long input = -2L;
+        final long[] values = {};
+        final boolean output = MathUtils.isAnyLessThan(input, values);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenMultiplyElementsThenSum_givenAllPositiveValues_thenValueIsReturned() {
+        final List<Integer> first = List.of(1, 2, 3);
+        final List<Integer> second = List.of(4, 5, 6);
+        final long output = MathUtils.multiplyElementsThenSum(first, second);
+        assertThat(output)
+            .isEqualTo(32L);
+    }
+
+    @Test
+    void whenMultiplyElementsThenSum_givenValuesIncludingNegativeValue_thenValueIsReturned() {
+        final List<Integer> first = List.of(-1, 2, 3);
+        final List<Integer> second = List.of(4, 5, 6);
+        final long output = MathUtils.multiplyElementsThenSum(first, second);
+        assertThat(output)
+            .isEqualTo(24L);
+    }
+
+    @Test
+    void whenMultiplyElementsThenSum_givenFirstValuesAllNegative_thenValueIsReturned() {
+        final List<Integer> first = List.of(-1, -2, -3);
+        final List<Integer> second = List.of(4, 5, 6);
+        final long output = MathUtils.multiplyElementsThenSum(first, second);
+        assertThat(output)
+            .isEqualTo(-32L);
+    }
+
+    @Test
+    void whenMultiplyElementsThenSum_givenValuesIncludingZero_thenValueIsReturned() {
+        final List<Integer> first = List.of(0, 2, 3);
+        final List<Integer> second = List.of(4, 5, 6);
+        final long output = MathUtils.multiplyElementsThenSum(first, second);
+        assertThat(output)
+            .isEqualTo(28L);
+    }
+
+    @Test
+    void whenMultiplyElementsThenSum_givenEmptyValues_thenZeroIsReturned() {
+        final List<Integer> first = List.of();
+        final List<Integer> second = List.of();
+        final long output = MathUtils.multiplyElementsThenSum(first, second);
+        assertThat(output)
+            .isZero();
+    }
+
+    @Test
+    void whenMultiplyElementsThenSum_givenFirstValuesNotEqualSizeToSecondValues_thenExceptionIsThrown() {
+        final List<Integer> first = List.of(1, 2, 3);
+        final List<Integer> second = List.of(4);
+        assertThatThrownBy(() -> MathUtils.multiplyElementsThenSum(first, second))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Inputs must be of same length, found: 3 and 1");
     }
 }

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Utility class with {@link Math}-based functions.
@@ -76,5 +77,47 @@ public final class MathUtils {
      */
     public static boolean isEven(final int value) {
         return value % 2 == 0;
+    }
+
+    /**
+     * Checks if any of the input {@code values} are less than the provided {@code lessThanValue}.
+     *
+     * @param lessThanValue the value to compare against
+     * @param values        the values to check
+     * @return {@code true} if any of the input {@code values} are less than the provided {@code lessThanValue}
+     */
+    public static boolean isAnyLessThan(final long lessThanValue, final long... values) {
+        for (final long value : values) {
+            if (value < lessThanValue) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Given two {@link List}s, the elements in both lists at the same index are multiplied, and the total values are summed.
+     *
+     * <p>
+     * For example, take the {@link List}s {@code [1, 2, 3]} and {@code [4, 5, 6]}. The values at index 0, 1 and 2 are multiplied to give
+     * {@code [4, 10, 18]}. These values are then summed to give the result {@code 32}.
+     *
+     * @param first  the first {@link List} of elements
+     * @param second the second {@link List} of elements
+     * @return the sum of the multiplied elements
+     * @throws IllegalArgumentException if the two {@link List}s don't have an equal size
+     */
+    public static long multiplyElementsThenSum(final List<Integer> first, final List<Integer> second) {
+        if (first.size() != second.size()) {
+            throw new IllegalArgumentException(String.format("Inputs must be of same length, found: %s and %s", first.size(), second.size()));
+        }
+
+        long total = 0L;
+        for (int i = 0; i < first.size(); i++) {
+            total += ((long) first.get(i) * second.get(i));
+        }
+
+        return total;
     }
 }

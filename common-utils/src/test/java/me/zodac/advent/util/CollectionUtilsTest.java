@@ -174,4 +174,20 @@ class CollectionUtilsTest {
         assertThatThrownBy(() -> CollectionUtils.getLast(input))
             .isInstanceOf(NoSuchElementException.class);
     }
+
+    @Test
+    void whenExtractValuesAsList_givenCollection_thenElementsAreExtractedAndReturnedAsList() {
+        final List<Long> input = List.of(1L, 2L, 3L);
+        final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
+        assertThat(output)
+            .containsExactly(1, 2, 3);
+    }
+
+    @Test
+    void whenExtractValuesAsList_givenEmptyCollection_thenEmptyListIsReturned() {
+        final List<Long> input = List.of();
+        final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
+        assertThat(output)
+            .isEmpty();
+    }
 }
