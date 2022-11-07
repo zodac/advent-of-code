@@ -45,6 +45,7 @@ public final class StringUtils {
     public static final Pattern INTEGER_PATTERN = Pattern.compile("-?\\b(\\d{1,10})\\b"); // 10 for Integer.MAX_VALUE
 
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
+    private static final Pattern NEW_LINE_PATTERN = Pattern.compile("\\r?\\n");
     private static final Pattern FULLY_UPPERCASE_WORDS_PATTERN = Pattern.compile("(\\b[A-Z][A-Z]+\\b)");
     private static final Set<Character> VOWELS = Set.of('a', 'e', 'i', 'o', 'u');
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
@@ -116,6 +117,19 @@ public final class StringUtils {
             return EMPTY_STRING_ARRAY;
         }
         return WHITESPACE_PATTERN.split(input.trim());
+    }
+
+    /**
+     * Splits the given {@link String} on any new lines.
+     *
+     * @param input the {@link String} to split
+     * @return the array of split {@link String}s
+     */
+    public static String[] splitLines(final CharSequence input) {
+        if (input == null) {
+            return EMPTY_STRING_ARRAY;
+        }
+        return NEW_LINE_PATTERN.split(input);
     }
 
     /**

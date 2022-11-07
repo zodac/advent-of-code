@@ -43,10 +43,10 @@ public final class Day03 {
     }
 
     /**
-     * For the given {@link Direction}s, a {@link Point} moves to a new house. Counts the number of unique houses.
+     * For the given {@link Direction}s, a {@link Point} moves to a new house. Counts the id of unique houses.
      *
      * @param values the {@link Direction}s
-     * @return the number of unique houses
+     * @return the id of unique houses
      */
     public static int countUniqueHouses(final Iterable<Direction> values) {
         final Collection<Point> visitedHouses = new HashSet<>();
@@ -64,10 +64,10 @@ public final class Day03 {
 
     /**
      * For the given {@link Direction}s, a {@link Point} moves to a new house for each even index, and another {@link Point} moves to a new house for
-     * each odd index. Counts the number of unique houses.
+     * each odd index. Counts the id of unique houses.
      *
      * @param values the {@link Direction}s
-     * @return the number of unique houses
+     * @return the id of unique houses
      */
     public static int countUniqueHousesTwoUsers(final List<Direction> values) {
         final Collection<Point> visitedHouses = new HashSet<>();

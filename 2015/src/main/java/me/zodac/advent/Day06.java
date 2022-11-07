@@ -47,7 +47,7 @@ public final class Day06 {
      * Creates a {@link BooleanGrid} and sets {@link Point} based on the input {@link GridInstruction}.
      *
      * @param instructionsAndPoints the {@link Point}s defining a box on the {@link BooleanGrid}, with the {@link GridInstruction}
-     * @return the number of {@link BooleanGrid} {@link Point}s that have been turned on
+     * @return the id of {@link BooleanGrid} {@link Point}s that have been turned on
      */
     public static long countSwitchedOnLights(final Iterable<Triple<GridInstruction, Point, Point>> instructionsAndPoints) {
         final BooleanGrid booleanGrid = BooleanGrid.ofSize(GRID_SIZE);

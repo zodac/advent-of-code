@@ -24,32 +24,44 @@
 
 package me.zodac.advent;
 
-import me.zodac.advent.util.StringUtils;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+import me.zodac.advent.pojo.Ingredient;
+import me.zodac.advent.pojo.Sue;
+import me.zodac.advent.util.FileUtils;
+import org.junit.jupiter.api.Test;
 
 /**
- * Solution for 2015, Day 10.
- *
- * @see <a href="https://adventofcode.com/2015/day/10">AoC 2015, Day 10</a>
+ * Tests to verify answers for {@link Day16}.
  */
-public final class Day10 {
+class Day16Test {
 
-    private Day10() {
+    private static final String INPUT_FILENAME = "day16.txt";
 
+    @Test
+    void part1() {
+        final List<Sue> values =
+            FileUtils.readLines(INPUT_FILENAME)
+                .stream()
+                .map(Sue::parseThreeAttributes)
+                .toList();
+
+        final int matchingId = Day16.findIdOfMatchingSue(values);
+        assertThat(matchingId)
+            .isEqualTo(373);
     }
 
-    /**
-     * Performs the 'lookAndSay' sequence on the input {@code numberOfExecutions} times, and returns the length of the result.
-     *
-     * @param input              the {@link String} to perform the sequence on
-     * @param numberOfExecutions the id of times to perform the sequence
-     * @return the length of the end result after the sequence has been applied {@code numberOfExecutions} times
-     * @see StringUtils#lookAndSay(String)
-     */
-    public static long performLookAndSaySequenceAndReturnLength(final String input, final int numberOfExecutions) {
-        String output = input;
-        for (int i = 0; i < numberOfExecutions; i++) {
-            output = StringUtils.lookAndSay(output);
-        }
-        return output.length();
+    @Test
+    void part2() {
+        final List<Sue> values =
+            FileUtils.readLines(INPUT_FILENAME)
+                .stream()
+                .map(Sue::parseThreeAttributes)
+                .toList();
+
+        final int matchingId = Day16.findIdOfMatchingSueWithRanges(values);
+        assertThat(matchingId)
+            .isEqualTo(260);
     }
 }

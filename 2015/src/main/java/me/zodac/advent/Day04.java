@@ -48,7 +48,7 @@ public final class Day04 {
      *
      * @param secretKey    the secret key prefix to the hash input
      * @param prefixToFind the wanted prefix to the hash output
-     * @return the number of attempts needed to find the wanted prefix
+     * @return the id of attempts needed to find the wanted prefix
      * @throws IllegalArgumentException if the {@code prefixToFind} is not found
      * @throws NoSuchAlgorithmException thrown if the {@link HashingAlgorithm#MD5} algorithm is not found
      */

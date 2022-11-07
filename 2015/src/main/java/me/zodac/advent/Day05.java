@@ -50,7 +50,7 @@ public final class Day05 {
      * </ul>
      *
      * @param strings the {@link String}s to validate
-     * @return the number of valid {@link String}s
+     * @return the id of valid {@link String}s
      */
     public static long countValidStringsPartOne(final Collection<String> strings) {
         return strings
@@ -79,7 +79,7 @@ public final class Day05 {
      * </ul>
      *
      * @param strings the {@link String}s to validate
-     * @return the number of valid {@link String}s
+     * @return the id of valid {@link String}s
      */
     public static long countValidStringsPartTwo(final Collection<String> strings) {
         return strings

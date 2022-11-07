@@ -194,7 +194,7 @@ class StringUtilsTest {
     }
 
     @Test
-    void whenSplitOnWhitespace_givenEmptyString_thenStringIsReturned() {
+    void whenSplitOnWhitespace_givenEmptyString_thenEmptyStringIsReturned() {
         final String input = "";
         final String[] output = StringUtils.splitOnWhitespace(input);
         assertThat(output)
@@ -215,6 +215,53 @@ class StringUtilsTest {
     void whenSplitOnWhitespace_givenNullString_thenEmptyStringArrayIsReturned() {
         final String input = null;
         final String[] output = StringUtils.splitOnWhitespace(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenSplitLines_givenStringWithThreeLines_thenThreeStringsAreReturned() {
+        final String input = """
+            line1
+            line2
+            line3""";
+        final String[] output = StringUtils.splitLines(input);
+        assertThat(output)
+            .hasSize(3)
+            .containsExactly("line1", "line2", "line3");
+    }
+
+    @Test
+    void whenSplitLines_givenStringWith1Line_thenInputStringIsReturned() {
+        final String input = "line1";
+        final String[] output = StringUtils.splitLines(input);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly(input);
+    }
+
+    @Test
+    void whenSplitLines_givenEmptyString_thenEmptyStringIsReturned() {
+        final String input = "";
+        final String[] output = StringUtils.splitLines(input);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly(input);
+    }
+
+    @Test
+    void whenSplitLines_givenBlankString_thenBlankStringIsReturned() {
+        final String input = " ";
+        final String[] output = StringUtils.splitLines(input);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly(" ");
+    }
+
+    @Test
+    void whenSplitLines_givenNullString_thenEmptyStringArrayIsReturned() {
+        final String input = null;
+        final String[] output = StringUtils.splitLines(input);
         assertThat(output)
             .isEmpty();
     }
