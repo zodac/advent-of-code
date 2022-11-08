@@ -20,12 +20,22 @@
         <!-- Project Properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-release>19</java-release>
+
+        <!-- License Properties -->
         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
         <license-file>${project.parent.basedir}/lint/license-template.txt</license-file>
         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
         <license-header-definition-file>${project.parent.basedir}/lint/license-header-definition.txt</license-header-definition-file>
+
+        <!-- Lint Properties -->
+        <!-- All disabled by default, activated through profiles -->
         <skip-linters>true</skip-linters>
+
+        <!-- Test Properties -->
+        <!-- All disabled by default, activated through profiles -->
         <skip-tests>true</skip-tests>
+        <!-- Adding so Maven plugins will not copy/compile test resources -->
+        <maven.test.skip>${skip-tests}</maven.test.skip>
 
         <!-- Test 3PP Versions -->
         <assertj-core.version>3.23.1</assertj-core.version>
@@ -36,25 +46,25 @@
         <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <maven-install-plugin.version>3.0.1</maven-install-plugin.version>
-        <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M6</maven-surefire-plugin.version>
-        <versions-maven-plugin.version>2.10.0</versions-maven-plugin.version>
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <versions-maven-plugin.version>2.13.0</versions-maven-plugin.version>
 
         <!-- Linter 3PP Versions -->
-        <checkstyle.version>10.3.4</checkstyle.version>
-        <errorprone.version>2.15.0</errorprone.version>
+        <checkstyle.version>10.4</checkstyle.version>
+        <errorprone.version>2.16</errorprone.version>
         <licenses.version>1</licenses.version>
         <pitest-junit5-plugin.version>1.1.0</pitest-junit5-plugin.version>
-        <pmd.version>6.50.0</pmd.version>
-        <spotbugs.version>4.7.2</spotbugs.version>
+        <pmd.version>6.51.0</pmd.version>
+        <spotbugs.version>4.7.3</spotbugs.version>
 
         <!-- Linter Plugin Versions -->
         <license-maven-plugin.version>4.2.rc3</license-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.2.0</maven-checkstyle-plugin.version>
-        <maven-javadoc-plugin.version>3.4.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
         <maven-pmd-plugin.version>3.19.0</maven-pmd-plugin.version>
-        <pitest-maven.version>1.9.5</pitest-maven.version>
-        <spotbugs-maven-plugin.version>4.7.2.0</spotbugs-maven-plugin.version>
+        <pitest-maven.version>1.9.9</pitest-maven.version>
+        <spotbugs-maven-plugin.version>4.7.2.2</spotbugs-maven-plugin.version>
 
         <!-- Linter Properties -->
         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
