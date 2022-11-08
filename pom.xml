@@ -22,6 +22,8 @@
         <java-release>19</java-release>
         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
         <license-file>${project.parent.basedir}/lint/license-template.txt</license-file>
+        <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
+        <license-header-definition-file>${project.parent.basedir}/lint/license-header-definition.txt</license-header-definition-file>
         <skip-linters>true</skip-linters>
         <skip-tests>true</skip-tests>
 
@@ -183,12 +185,21 @@
                 </plugin>
 
                 <!-- Linters -->
+                <!-- Manual execution: -->
+                <!-- mvn license:check -Dlint -->
+                <!-- To fix missing/invalid licences, run the following in each module: mvn license:format -Dlint -Dyear="2022" -->
                 <plugin>
                     <groupId>com.mycila</groupId>
                     <artifactId>license-maven-plugin</artifactId>
                     <version>${license-maven-plugin.version}</version>
                     <configuration>
                         <header>${license-file}</header>
+                        <headerDefinitions>
+                            <headerDefinition>${license-header-definition-file}</headerDefinition>
+                        </headerDefinitions>
+                        <mapping>
+                            <java>JavaPackage</java>
+                        </mapping>
                         <properties>
                             <initial-year>2021</initial-year>
                             <!--suppress UnresolvedMavenProperty, defined by build-helper-maven-plugin -->
