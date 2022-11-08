@@ -20,10 +20,12 @@ package me.zodac.advent.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -171,5 +173,96 @@ public final class CollectionUtils {
             .stream()
             .map(extractionFunction)
             .toList();
+    }
+
+    /**
+     * Generates the power-set of the input {@link Set}. The power-set is the {@link Set} that contains all possible combinations of the input
+     * {@link Set}.
+     *
+     * <p>
+     * For example, given an input of {@code {1, 2, 3}}, the power-set would be:
+     * <pre>
+     *     {
+     *       {},
+     *       {1},
+     *       {2},
+     *       {3},
+     *       {1, 2},
+     *       {1, 3},
+     *       {2, 3},
+     *       {1, 2, 3}
+     *     }
+     * </pre>
+     *
+     * @param input the input {@link Set}
+     * @param <T>   the type of the {@link Set}
+     * @return the power-set of the input, with 2^n entries
+     * @see #getPowerList(List)
+     */
+    public static <T> Set<Set<T>> getPowerSet(final Set<? extends T> input) {
+        final Set<Set<T>> powerSet = new HashSet<>();
+        if (input.isEmpty()) {
+            powerSet.add(new HashSet<>(0));
+            return powerSet;
+        }
+
+        final List<T> list = new ArrayList<>(input);
+        final T head = list.remove(0);
+        final Set<T> remainder = new HashSet<>(list);
+
+        for (final Set<T> subSet : getPowerSet(remainder)) {
+            final Set<T> newSet = new HashSet<>();
+            newSet.add(head);
+            newSet.addAll(subSet);
+            powerSet.add(newSet);
+            powerSet.add(subSet);
+        }
+        return powerSet;
+    }
+
+    /**
+     * Generates the power-list of the input with duplicates. The power-list is a made up term for the {@link Set} that contains all possible
+     * combinations of the input {@link List}. Since a {@link Set} cannot contain duplicates, we will use {@link List}s as inputs and
+     * outputs instead.
+     *
+     * <p>
+     * For example, given an input of {@code {1, 1, 3}}, the power-set would be:
+     * <pre>
+     *     {
+     *       {},
+     *       {1},
+     *       {1},
+     *       {3},
+     *       {1, 1},
+     *       {1, 3},
+     *       {1, 3},
+     *       {1, 1, 3}
+     *     }
+     * </pre>
+     *
+     * @param input the input {@link List}
+     * @param <T>   the type of the {@link List}
+     * @return the power-set of the input, with 2^n entries
+     * @see #getPowerSet(Set)
+     */
+    public static <T> List<List<T>> getPowerList(final List<? extends T> input) {
+        final List<List<T>> powerList = new ArrayList<>();
+        if (input.isEmpty()) {
+            powerList.add(new ArrayList<>(0));
+            return powerList;
+        }
+
+        final List<T> list = new ArrayList<>(input);
+        final T head = list.remove(0);
+        final List<T> remainder = new ArrayList<>(list);
+
+        for (final List<T> subList : getPowerList(remainder)) {
+            final List<T> newList = new ArrayList<>();
+            newList.add(head);
+            newList.addAll(subList);
+            powerList.add(newList);
+            powerList.add(subList);
+        }
+        return powerList;
     }
 }
