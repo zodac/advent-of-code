@@ -1,5 +1,5 @@
 /*
- * Zero-Clause BSD License
+ * BSD Zero Clause License
  *
  * Copyright (c) 2021-2022 zodac.me
  *

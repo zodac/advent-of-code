@@ -1,4 +1,4 @@
-Zero-Clause BSD License
+BSD Zero Clause License
 
 Copyright (c) ${initial-year}-${year} ${website}
 

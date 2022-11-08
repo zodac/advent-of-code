@@ -26,4 +26,4 @@ The result from the solution is then asserted in the unit test, for both part 1 
 
 ## License
 
-The source code is released under the [Zero-Clause BSD License](https://opensource.org/licenses/0BSD).
+The source code is released under the [BSD Zero Clause License](https://opensource.org/licenses/0BSD).
