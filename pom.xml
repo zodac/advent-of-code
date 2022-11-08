@@ -197,6 +197,10 @@
                         <headerDefinitions>
                             <headerDefinition>${license-header-definition-file}</headerDefinition>
                         </headerDefinitions>
+                        <includes>
+                            <include>src/main/java/**</include>
+                            <include>src/test/java/**</include>
+                        </includes>
                         <mapping>
                             <java>JavaPackage</java>
                         </mapping>
@@ -206,10 +210,6 @@
                             <year>${current-year}</year>
                             <website>zodac.me</website>
                         </properties>
-                        <includes>
-                            <include>src/main/java/**</include>
-                            <include>src/test/java/**</include>
-                        </includes>
                         <skip>${skip-linters}</skip>
                     </configuration>
                     <dependencies>
@@ -228,6 +228,9 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <!-- Manual execution: -->
+                <!-- mvn checkstyle:checkstyle -Dlint -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
@@ -258,6 +261,9 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+
+                <!-- Manual execution: -->
+                <!-- mvn javadoc:javadoc -Dlint -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
