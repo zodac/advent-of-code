@@ -19,6 +19,7 @@ package me.zodac.advent;
 
 import static me.zodac.advent.util.CollectionUtils.getFirst;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public final class Day01 {
      * @param values the {@link List} of {@link Integer}s to be checked
      * @return the count of the values higher than their predecessor
      */
-    public static int countValuesHigherThanPreviousValue(final List<Integer> values) {
+    public static int countValuesHigherThanPreviousValue(final Collection<Integer> values) {
         if (values.isEmpty()) {
             return 0;
         }

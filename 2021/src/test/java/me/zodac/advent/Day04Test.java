@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
-import me.zodac.advent.util.CollectionUtils;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 

@@ -19,7 +19,6 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.Test;
 
 /**

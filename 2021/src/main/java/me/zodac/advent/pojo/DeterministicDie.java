@@ -26,9 +26,8 @@ public final class DeterministicDie {
 
     private long counter;
 
-    private DeterministicDie(final long maxValue, final long counter) {
+    private DeterministicDie(final long maxValue) {
         this.maxValue = maxValue;
-        this.counter = counter;
     }
 
     /**
@@ -38,7 +37,7 @@ public final class DeterministicDie {
      * @return the created {@link DeterministicDie}
      */
     public static DeterministicDie createWithMaxValue(final long maxValue) {
-        return new DeterministicDie(maxValue, 0L);
+        return new DeterministicDie(maxValue);
     }
 
     /**

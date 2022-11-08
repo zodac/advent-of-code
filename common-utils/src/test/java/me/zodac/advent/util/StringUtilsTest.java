@@ -302,7 +302,7 @@ class StringUtilsTest {
     @Test
     void whenContainsAll_givenValidSuperString_andNoSubString_thenTrueIsReturned() {
         final String superString = "abcdef";
-        final String[] subStrings = new String[0];
+        final String[] subStrings = {};
 
         final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
         assertThat(result)
@@ -422,7 +422,7 @@ class StringUtilsTest {
     @Test
     void whenContainsAny_givenValidSuperString_andNoSubString_thenFalseIsReturned() {
         final String superString = "abcdef";
-        final String[] subStrings = new String[0];
+        final String[] subStrings = {};
 
         final boolean result = StringUtils.containsAny(superString, subStrings);
         assertThat(result)

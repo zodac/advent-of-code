@@ -20,6 +20,7 @@ package me.zodac.advent;
 import static me.zodac.advent.util.CollectionUtils.getFirst;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import me.zodac.advent.pojo.BitParityCount;
 import me.zodac.advent.util.BinaryConversionUtils;
@@ -71,7 +72,7 @@ public final class Day03 {
      * @see BinaryConversionUtils
      * @see BitParityCount#createForIndexOfBinaryValues(Iterable, int)
      */
-    public static long calculatePowerConsumption(final List<String> binaryValues) {
+    public static long calculatePowerConsumption(final Collection<String> binaryValues) {
         if (binaryValues.isEmpty()) {
             return 0L;
         }
