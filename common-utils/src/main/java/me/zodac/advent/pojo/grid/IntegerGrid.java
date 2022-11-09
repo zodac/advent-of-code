@@ -53,7 +53,7 @@ public final class IntegerGrid extends CoordinateGrid<Integer> {
      * Uses the {@link Integer} value of the {@link Point}.
      */
     @Override
-    public int valueOf(final int row, final int column) {
+    public int valueAt(final int row, final int column) {
         return grid[row][column];
     }
 
@@ -69,11 +69,11 @@ public final class IntegerGrid extends CoordinateGrid<Integer> {
      * </pre>
      */
     @Override
-    protected void updateGrid(final GridInstruction gridInstruction, final int x, final int y) {
+    protected void updateGrid(final GridInstruction gridInstruction, final int row, final int column) {
         switch (gridInstruction) {
-            case ON -> grid[x][y] = grid[x][y] + 1;
-            case OFF -> grid[x][y] = Math.max(0, grid[x][y] - 1); // Value should not be less than 0
-            case TOGGLE -> grid[x][y] = grid[x][y] + 2;
+            case ON -> grid[row][column] = grid[row][column] + 1;
+            case OFF -> grid[row][column] = Math.max(0, grid[row][column] - 1); // Value should not be less than 0
+            case TOGGLE -> grid[row][column] = grid[row][column] + 2;
             default -> throw new IllegalStateException("Cannot draw a box with instruction: " + gridInstruction);
         }
     }

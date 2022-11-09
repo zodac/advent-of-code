@@ -33,6 +33,8 @@ import java.util.function.Function;
  */
 public final class CollectionUtils {
 
+    private static final Boolean[] EMPTY_BOOLEAN_ARRAY = new Boolean[0];
+
     private CollectionUtils() {
 
     }
@@ -264,5 +266,22 @@ public final class CollectionUtils {
             powerList.add(subList);
         }
         return powerList;
+    }
+
+    /**
+     * Converts the provided {@link Collection} of {@link List}s of {@link Boolean}s to a 2D array.
+     *
+     * @param input the input {@link Collection} of {@link List}s
+     * @return the 2D {@link Boolean} array
+     */
+    public static Boolean[][] convertToArrayOfArrays(final Collection<? extends List<Boolean>> input) {
+        final Boolean[][] array = new Boolean[input.size()][];
+
+        int i = 0;
+        for (final List<Boolean> row : input) {
+            array[i++] = row.toArray(EMPTY_BOOLEAN_ARRAY);
+        }
+
+        return array;
     }
 }

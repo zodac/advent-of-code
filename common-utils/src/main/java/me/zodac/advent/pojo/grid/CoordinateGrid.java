@@ -17,6 +17,8 @@
 
 package me.zodac.advent.pojo.grid;
 
+import java.util.HashSet;
+import java.util.Set;
 import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
 
@@ -43,7 +45,7 @@ abstract class CoordinateGrid<E> {
     protected final int valueSignifyingOverlap;
 
     /**
-     * Default constructor, to be called by subclasses.
+     * Constructor that creates the internal {@code grid} and initialises the data.
      *
      * @param gridSize               the size of the {@link CoordinateGrid}.
      * @param grid                   the actual {@link CoordinateGrid} represented as a 2D array.
@@ -57,23 +59,35 @@ abstract class CoordinateGrid<E> {
 
         for (int row = 0; row < gridSize; row++) {
             for (int column = 0; column < gridSize; column++) {
-                grid[row][column] = initialValue;
+                this.grid[row][column] = initialValue;
             }
         }
     }
 
     /**
-     * Count any {@link Point}s in the {@link CoordinateGrid}. The actual value of each {@link Point} is defined by {@link #valueOf(int, int)}.
+     * Default constructor.
+     *
+     * @param grid                   the actual {@link CoordinateGrid} represented as a 2D array.
+     * @param valueSignifyingOverlap when counting how many overlaps has occurred, this is the minimum value required to be considered an overlap
+     */
+    CoordinateGrid(final E[][] grid, final int valueSignifyingOverlap) {
+        gridSize = grid.length;
+        this.grid = grid.clone();
+        this.valueSignifyingOverlap = valueSignifyingOverlap;
+    }
+
+    /**
+     * Count any {@link Point}s in the {@link CoordinateGrid}. The actual value of each {@link Point} is defined by {@link #valueAt(int, int)}.
      *
      * @return the sum of all {@link Point}s in the {@link CoordinateGrid}
-     * @see #valueOf(int, int)
+     * @see #valueAt(int, int)
      */
     public long sumValues() {
         int count = 0;
 
         for (int row = 0; row < gridSize; row++) {
             for (int column = 0; column < gridSize; column++) {
-                count += valueOf(row, column);
+                count += valueAt(row, column);
             }
         }
 
@@ -95,12 +109,43 @@ abstract class CoordinateGrid<E> {
 
         for (int row = 0; row < gridSize; row++) {
             for (int column = 0; column < gridSize; column++) {
-                if (valueOf(row, column) >= valueSignifyingOverlap) {
+                if (valueAt(row, column) >= valueSignifyingOverlap) {
                     count++;
                 }
             }
         }
         return count;
+    }
+
+    /**
+     * Returns a {@link Set} of the neighbours for a {@link Point}. Can return up to 8 neighbours, depending on where the input is located.
+     *
+     * @param row    the x coordinate
+     * @param column the y coordinate
+     * @return the neighbouring {@link Point}s
+     */
+    protected Set<Point> getNeighbours(final int row, final int column) {
+        final Set<Point> neighbours = new HashSet<>();
+        neighbours.add(Point.of(next(row), column));
+        neighbours.add(Point.of(previous(row), column));
+        neighbours.add(Point.of(row, next(column)));
+        neighbours.add(Point.of(row, previous(column)));
+        neighbours.add(Point.of(next(row), next(column)));
+        neighbours.add(Point.of(previous(row), previous(column)));
+        neighbours.add(Point.of(next(row), previous(column)));
+        neighbours.add(Point.of(previous(row), next(column)));
+
+        // Remove current point, in case it was added in above calculations
+        neighbours.remove(Point.of(row, column));
+        return neighbours;
+    }
+
+    private int next(final int rowOrColumn) {
+        return Math.min(rowOrColumn + 1, (gridSize - 1));
+    }
+
+    private static int previous(final int rowOrColumn) {
+        return Math.max(rowOrColumn - 1, 0);
     }
 
     /**
@@ -194,18 +239,58 @@ abstract class CoordinateGrid<E> {
     /**
      * Calculates the value at a specific {@link Point}.
      *
+     * @param point the {@link Point}
+     * @return the value
+     * @see #valueAt(int, int)
+     */
+    protected int valueAt(final Point point) {
+        return valueAt(point.x(), point.y());
+    }
+
+    /**
+     * Calculates the value at a specific {@link Point}.
+     *
      * @param row    the x coordinate
      * @param column the y coordinate
      * @return the value
      */
-    protected abstract int valueOf(int row, int column);
+    protected abstract int valueAt(int row, int column);
 
     /**
      * Updates the {@link CoordinateGrid} at the provided {@link Point}.
      *
      * @param gridInstruction the {@link GridInstruction}
-     * @param x               the x coordinate
-     * @param y               the y coordinate
+     * @param row             the x coordinate
+     * @param column          the y coordinate
      */
-    protected abstract void updateGrid(GridInstruction gridInstruction, int x, int y);
+    protected abstract void updateGrid(GridInstruction gridInstruction, int row, int column);
+
+    /**
+     * Sets the corners of the {@link CoordinateGrid} to the input {@code newValue}.
+     *
+     * @param newValue the new value for the corners
+     * @return the updated {@code grid}
+     */
+    protected E[][] updateCornersToValue(final E newValue) {
+        grid[0][0] = newValue;
+        grid[0][gridSize - 1] = newValue;
+        grid[gridSize - 1][0] = newValue;
+        grid[gridSize - 1][gridSize - 1] = newValue;
+
+        return grid.clone();
+    }
+
+    /**
+     * Checks if the input {@link Point} is one of the corners of the {@link CoordinateGrid}.
+     *
+     * @param row    the x coordinate
+     * @param column the y coordinate
+     * @return {@code true} if the input {@link Point} is a corner of the {@link CoordinateGrid}
+     */
+    protected boolean isCorner(final int row, final int column) {
+        return (row == 0 && column == 0)
+            || (row == gridSize - 1 && column == gridSize - 1)
+            || (row == 0 && column == gridSize - 1)
+            || (row == gridSize - 1 && column == 0);
+    }
 }

@@ -20,7 +20,5 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**.pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: Run lints with Maven
-        run: mvn clean install -Dlint
-      - name: Run tests with Maven
-        run: mvn clean install -Dtests
+      - name: Run lints and test with Maven
+        run: mvn clean install -Dall

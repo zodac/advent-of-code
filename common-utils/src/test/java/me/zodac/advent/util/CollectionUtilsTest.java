@@ -19,6 +19,7 @@ package me.zodac.advent.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.atIndex;
 
 import java.util.Collections;
 import java.util.List;
@@ -259,5 +260,28 @@ class CollectionUtilsTest {
             .containsExactlyInAnyOrder(
                 List.of()
             );
+    }
+
+    @Test
+    void whenConvertToArrayOfArrays_givenListOfListOfBooleans_thenArrayOfArraysOfBooleansReturned() {
+        final List<List<Boolean>> input = List.of(
+            List.of(false, false, true),
+            List.of(false, true, false),
+            List.of(true, false, false)
+        );
+        final Boolean[][] output = CollectionUtils.convertToArrayOfArrays(input);
+        assertThat(output)
+            .hasDimensions(3, 3)
+            .contains(new Boolean[] {false, false, true}, atIndex(0))
+            .contains(new Boolean[] {false, true, false}, atIndex(1))
+            .contains(new Boolean[] {true, false, false}, atIndex(2));
+    }
+
+    @Test
+    void whenConvertToArrayOfArrays_givenEmptyList_thenEmptyArrayOfBooleansReturned() {
+        final List<List<Boolean>> input = List.of();
+        final Boolean[][] output = CollectionUtils.convertToArrayOfArrays(input);
+        assertThat(output)
+            .isEmpty();
     }
 }
