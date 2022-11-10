@@ -959,4 +959,84 @@ class StringUtilsTest {
         assertThat(output)
             .isEmpty();
     }
+
+    @Test
+    void whenReplaceAtIndex_givenStringWithSingleSubString_andSubStringPositionIsKnown_thenSubStringIsReplaced() {
+        final String input = "abcdef";
+        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
+        assertThat(output)
+            .isEqualTo("abcxxx");
+    }
+
+    @Test
+    void whenReplaceAtIndex_givenStringWithMultipleSubString_andFirstSubStringPositionIsKnown_thenSubStringIsReplaced() {
+        final String input = "abcdefghidefjkl";
+        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
+        assertThat(output)
+            .isEqualTo("abcxxxghidefjkl");
+    }
+
+    @Test
+    void whenReplaceAtIndex_givenStringWithMultipleSubString_andSecondSubStringPositionIsKnown_thenSubStringIsReplaced() {
+        final String input = "abcdefghidefjkl";
+        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 9);
+        assertThat(output)
+            .isEqualTo("abcdefghixxxjkl");
+    }
+
+    @Test
+    void whenReplaceAtIndex_givenNegativeIndex_thenExceptionIsThrown() {
+        final String input = "abcdefghi";
+        assertThatThrownBy(() -> StringUtils.replaceAtIndex(input, "def", "xxx", -1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Expected index to be between 0 and 6, found: -1");
+    }
+
+    @Test
+    void whenReplaceAtIndex_givenOutOfBoundsIndex_thenExceptionIsThrown() {
+        final String input = "abcdefghi";
+        assertThatThrownBy(() -> StringUtils.replaceAtIndex(input, "def", "xxx", 7))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Expected index to be between 0 and 6, found: 7");
+    }
+
+    @Test
+    void whenReplaceAtIndex_givenIncorrectIndex_thenExceptionIsThrown() {
+        final String input = "abcdefghi";
+        assertThatThrownBy(() -> StringUtils.replaceAtIndex(input, "def", "xxx", 0))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Expected to find subString 'def' at index 0, instead found: 'abc'");
+    }
+
+    @Test
+    void whenReplaceAtIndex_givenSubStringDoesNotExist_thenExceptionIsThrown() {
+        final String input = "abcdefghi";
+        assertThatThrownBy(() -> StringUtils.replaceAtIndex(input, "yyy", "xxx", 3))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Expected to find subString 'yyy' at index 3, instead found: 'def'");
+    }
+
+    @Test
+    void whenReplaceAtIndex_givenEmptyString_thenEmptyStringIsReturned() {
+        final String input = "";
+        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenReplaceAtIndex_givenBlankString_thenEmptyStringIsReturned() {
+        final String input = " ";
+        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenReplaceAtIndex_givenNullString_thenEmptyStringIsReturned() {
+        final String input = null;
+        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
+        assertThat(output)
+            .isEmpty();
+    }
 }

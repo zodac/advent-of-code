@@ -346,4 +346,34 @@ public final class StringUtils {
         }
         return output.toString();
     }
+
+    /**
+     * Replaces a sub-string in the input {@link String}, where the position of the sub-string is known. This is useful for the scenario where we only
+     * want to replace a specific sub-string where multiples of that sub-string may exist in the input.
+     *
+     * @param input            the input {@link String}
+     * @param subString        the sub-string to find
+     * @param replacement      the sub-string replacement
+     * @param indexOfSubString the known index of the sub-string
+     * @return the replaced {@link String}
+     * @throws IllegalArgumentException thrown if the index is invalid or the sub-string does not exist at that index
+     */
+    public static String replaceAtIndex(final String input, final CharSequence subString, final String replacement, final int indexOfSubString) {
+        if (input == null || input.isBlank()) {
+            return EMPTY_STRING;
+        }
+
+        final int maxIndexPosition = input.length() - subString.length();
+        if (indexOfSubString < 0 || indexOfSubString > maxIndexPosition) {
+            throw new IllegalArgumentException(String.format("Expected index to be between 0 and %s, found: %s", maxIndexPosition, indexOfSubString));
+        }
+
+        final String actualSubString = input.substring(indexOfSubString, indexOfSubString + subString.length());
+        if (!actualSubString.contentEquals(subString)) {
+            throw new IllegalArgumentException(
+                String.format("Expected to find subString '%s' at index %s, instead found: '%s'", subString, indexOfSubString, actualSubString));
+        }
+
+        return input.substring(0, indexOfSubString) + replacement + input.substring(indexOfSubString + subString.length());
+    }
 }
