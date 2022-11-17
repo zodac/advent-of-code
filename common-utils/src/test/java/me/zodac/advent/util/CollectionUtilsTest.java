@@ -284,4 +284,44 @@ class CollectionUtilsTest {
         assertThat(output)
             .isEmpty();
     }
+
+    @Test
+    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithOneValueAboveThreshold_thenCorrectIndexIsReturned() {
+        final int[] input = {1, 2, 3};
+        final int output = CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 2);
+        assertThat(output)
+            .isEqualTo(2);
+    }
+
+    @Test
+    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithMultipleValuesAboveThreshold_thenSmallestIndexIsReturned() {
+        final int[] input = {1, 2, 3};
+        final int output = CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 1);
+        assertThat(output)
+            .isEqualTo(1);
+    }
+
+    @Test
+    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithMultipleUnorderedValuesAboveThreshold_thenSmallestIndexIsReturned() {
+        final int[] input = {2, 3, 1};
+        final int output = CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 1);
+        assertThat(output)
+            .isEqualTo(0);
+    }
+
+    @Test
+    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithNoValuesAboveThreshold_thenExceptionIsThrown() {
+        final int[] input = {1, 2, 3};
+        assertThatThrownBy(() -> CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 3))
+            .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("No value in input is greater than 3");
+    }
+
+    @Test
+    void whenFindSmallestIndexGreaterThanThreshold_givenEmptyInput_thenExceptionIsThrown() {
+        final int[] input = {};
+        assertThatThrownBy(() -> CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 0))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Input cannot be null or empty");
+    }
 }

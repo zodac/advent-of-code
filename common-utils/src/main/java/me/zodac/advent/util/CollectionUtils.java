@@ -284,4 +284,28 @@ public final class CollectionUtils {
 
         return array;
     }
+
+    /**
+     * Given an unsorted {@code int} array, finds the smallest index that has a value greater than the {@code thresholdValue}.
+     *
+     * @param input          the input to check
+     * @param thresholdValue the threshold value that any array entry must be greater than
+     * @return the smallest index in the {@code int} array
+     * @throws IllegalArgumentException thrown if the input is {@code null}, empty or does not have any value greater than the {@code thresholdValue}
+     */
+    public static int findSmallestIndexGreaterThanThreshold(final int[] input, final int thresholdValue) {
+        if (input == null || input.length == 0) {
+            throw new IllegalArgumentException("Input cannot be null or empty");
+        }
+
+        for (int i = 0; i < input.length; i++) {
+            final int houseValue = input[i];
+
+            if (houseValue > thresholdValue) {
+                return i;
+            }
+        }
+
+        throw new IllegalArgumentException(String.format("No value in input is greater than %s", thresholdValue));
+    }
 }
