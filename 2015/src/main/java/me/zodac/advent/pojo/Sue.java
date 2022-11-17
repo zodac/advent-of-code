@@ -65,7 +65,7 @@ public record Sue(int id, Map<String, Integer> attributes) {
         final Matcher matcher = SUE_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input string: " + input);
+            throw new IllegalStateException("Unable to find match in input: " + input);
         }
 
         final int id = Integer.parseInt(matcher.group(1));
@@ -100,7 +100,7 @@ public record Sue(int id, Map<String, Integer> attributes) {
             final Matcher matcher = ATTRIBUTE_PATTERN.matcher(line);
 
             if (!matcher.find()) {
-                throw new IllegalStateException("Unable to find match in input string: " + input);
+                throw new IllegalStateException("Unable to find match in input: " + input);
             }
 
             final String attributeName = matcher.group(1);

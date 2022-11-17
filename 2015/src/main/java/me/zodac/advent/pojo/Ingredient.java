@@ -48,7 +48,7 @@ public record Ingredient(String name, int capacity, int durability, int flavour,
         final Matcher matcher = INGREDIENT_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input string: " + input);
+            throw new IllegalStateException("Unable to find match in input: " + input);
         }
 
         final String name = matcher.group(1);

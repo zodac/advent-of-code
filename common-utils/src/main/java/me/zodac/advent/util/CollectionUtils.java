@@ -308,4 +308,15 @@ public final class CollectionUtils {
 
         throw new IllegalArgumentException(String.format("No value in input is greater than %s", thresholdValue));
     }
+
+    /**
+     * Checks whether the input {@link Collection} has any duplicates.
+     *
+     * @param input the input {@link Collection} to check
+     * @param <T>   the type of the {@link Collection}
+     * @return {@code true} if the {@link Collection} contains at least one duplicate
+     */
+    public static <T> boolean containsDuplicates(final Collection<T> input) {
+        return new HashSet<>(input).size() != input.size();
+    }
 }

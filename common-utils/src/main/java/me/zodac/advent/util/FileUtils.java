@@ -33,6 +33,7 @@ import java.util.List;
 public final class FileUtils {
 
     private static final int SINGLE_ENTRY = 1;
+    private static final String NEW_LINE = "\n";
 
     private FileUtils() {
 
@@ -50,6 +51,18 @@ public final class FileUtils {
         } catch (final IOException | URISyntaxException e) {
             return Collections.emptyList();
         }
+    }
+
+    /**
+     * Reads all lines from a file in {@code src/main/resources}, then concatenates them into a single {@link String}, with the delimiter as
+     * {@value #NEW_LINE}.
+     *
+     * @param filePathInResources file path to be read
+     * @return the {@link String} lines from the file
+     * @see #readLines(String)
+     */
+    public static String readLinesAsSingleString(final String filePathInResources) {
+        return String.join(NEW_LINE, readLines(filePathInResources));
     }
 
     /**

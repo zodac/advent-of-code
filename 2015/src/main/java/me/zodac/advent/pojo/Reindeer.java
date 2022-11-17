@@ -48,7 +48,7 @@ public record Reindeer(int flyingVelocity, Duration flyingDuration, Duration res
         final Matcher matcher = REINDEER_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input string: " + input);
+            throw new IllegalStateException("Unable to find match in input: " + input);
         }
 
         final int flyingVelocity = Integer.parseInt(matcher.group("velocity"));

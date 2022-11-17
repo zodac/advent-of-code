@@ -324,4 +324,36 @@ class CollectionUtilsTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Input cannot be null or empty");
     }
+
+    @Test
+    void whenContainsDuplicates_givenInputWithDuplicates_thenTrueIsReturned() {
+        final List<Integer> input = List.of(1, 2, 2);
+        final boolean output = CollectionUtils.containsDuplicates(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenInputWithMultipleDuplicates_thenTrueIsReturned() {
+        final List<Integer> input = List.of(1, 1, 2, 2);
+        final boolean output = CollectionUtils.containsDuplicates(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenInputWithNoDuplicates_thenFalseIsReturned() {
+        final List<Integer> input = List.of(1, 2, 3);
+        final boolean output = CollectionUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenEmptyInput_thenFalseIsReturned() {
+        final List<Integer> input = List.of();
+        final boolean output = CollectionUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
 }

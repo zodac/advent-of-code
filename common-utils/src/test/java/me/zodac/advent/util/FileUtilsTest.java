@@ -47,6 +47,25 @@ class FileUtilsTest {
     }
 
     @Test
+    void whenReadLinesAsSingleString_givenValidFileOfStrings_thenListOfStringsIsReturned() {
+        final String input = "validFileOfStrings.txt";
+        final String output = FileUtils.readLinesAsSingleString(input);
+        assertThat(output)
+            .isEqualTo("""
+                line1
+                line2
+                line3""");
+    }
+
+    @Test
+    void whenReadLinesAsSingleString_givenEmptyFile_thenEmptyListIsReturned() {
+        final String input = "emptyFile.txt";
+        final String output = FileUtils.readLinesAsSingleString(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
     void whenReadSingleLine_givenFileWithSingleString_thenStringIsReturned() {
         final String input = "validFileOfSingleString.txt";
         final String output = FileUtils.readSingleLine(input);

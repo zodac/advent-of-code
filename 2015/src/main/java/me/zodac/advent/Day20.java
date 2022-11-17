@@ -48,9 +48,9 @@ public final class Day20 {
      */
     public static long deliverToHouses(final int wantedNumberOfItemsDelivered, final int itemsPerDelivery) {
         final int[] houses = new int[wantedNumberOfItemsDelivered / itemsPerDelivery];
-        for (int i = 1; i < houses.length; i++) {
-            for (int j = i; j < houses.length; j += i) {
-                houses[j] += (i * itemsPerDelivery);
+        for (int deliverer = 1; deliverer < houses.length; deliverer++) {
+            for (int houseNumber = deliverer; houseNumber < houses.length; houseNumber += deliverer) {
+                houses[houseNumber] += (deliverer * itemsPerDelivery);
             }
         }
 
@@ -79,14 +79,14 @@ public final class Day20 {
      */
     public static long deliverToHouses(final int wantedNumberOfItemsDelivered, final int itemsPerDelivery, final int maxDeliveriesPerDeliverer) {
         final int[] houses = new int[wantedNumberOfItemsDelivered / itemsPerDelivery];
-        for (int i = 1; i < houses.length; i++) {
+        for (int deliverer = 1; deliverer < houses.length; deliverer++) {
             int numberOfHousesDelivered = 0; //
-            for (int j = i; j < houses.length; j += i) {
+            for (int houseNumber = deliverer; houseNumber < houses.length; houseNumber += deliverer) {
                 if (numberOfHousesDelivered >= maxDeliveriesPerDeliverer) {
                     break; // Deliverer cannot deliver to any more houses
                 }
 
-                houses[j] += (i * itemsPerDelivery);
+                houses[houseNumber] += (deliverer * itemsPerDelivery);
                 numberOfHousesDelivered++;
             }
         }
