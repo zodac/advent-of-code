@@ -17,7 +17,9 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.List;
+import me.zodac.advent.pojo.Triple;
 import me.zodac.advent.pojo.rpg.Equipment;
 import me.zodac.advent.pojo.rpg.Fighter;
 
@@ -39,11 +41,11 @@ public final class Day21 {
      * the {@link Equipment} combinations that can defeat the {@link Fighter}, we return the lowest cost.
      *
      * @param equipmentCombinations the {@link Equipment} combinations
-     * @param bossToDefeat          the boss {@link Fighter} to defeat
+     * @param boss                  the boss {@link Fighter} to defeat
      * @return the cost of the cheapest {@link Equipment} combination that successfully defeats the {@link Fighter}
      */
     public static long costOfCheapestEquipmentThatDefeatsBoss(final Iterable<? extends List<Equipment>> equipmentCombinations,
-                                                              final Fighter bossToDefeat) {
+                                                              final Fighter boss) {
         int lowestCost = Integer.MAX_VALUE;
 
         for (final List<Equipment> equipmentCombination : equipmentCombinations) {
@@ -61,9 +63,9 @@ public final class Day21 {
                 continue;
             }
 
-            final Fighter me = Fighter.create(PLAYER_HITPOINTS, totalAttack, totalDefence);
+            final Fighter me = Fighter.create(PLAYER_HITPOINTS, totalCost, totalAttack, totalDefence);
 
-            if (me.canWinFightAgainst(bossToDefeat)) {
+            if (me.canWinFightAgainst(boss)) {
                 lowestCost = totalCost;
             }
         }
@@ -76,35 +78,31 @@ public final class Day21 {
      * the {@link Equipment} combinations that cannotdefeat the {@link Fighter}, we return the highest cost.
      *
      * @param equipmentCombinations the {@link Equipment} combinations
-     * @param bossToDefeat          the boss {@link Fighter} to defeat
+     * @param boss                  the boss {@link Fighter} to defeat
      * @return the cost of the most expensive {@link Equipment} combination that cannot successfully defeat the {@link Fighter}
      */
-    public static long costOfMostExpensiveArmourThatLosesToBoss(
-        final Iterable<? extends List<Equipment>> equipmentCombinations, final Fighter bossToDefeat) {
-        int highestCost = Integer.MIN_VALUE;
+    public static long costOfPriciestArmourThatLosesToBoss(final Collection<? extends List<Equipment>> equipmentCombinations, final Fighter boss) {
+        return equipmentCombinations
+            .stream()
+            .map(Day21::getTotalEquipmentStats)
+            .map(triple -> Fighter.create(PLAYER_HITPOINTS, triple.first(), triple.second(), triple.third()))
+            .filter(fighter -> !fighter.canWinFightAgainst(boss))
+            .mapToLong(Fighter::equipmentCost)
+            .max()
+            .orElse(0L);
+    }
 
-        for (final List<Equipment> equipmentCombination : equipmentCombinations) {
-            int totalCost = 0;
-            int totalAttack = 0;
-            int totalDefence = 0;
+    private static Triple<Integer, Integer, Integer> getTotalEquipmentStats(final Iterable<? extends Equipment> equipments) {
+        int totalCost = 0;
+        int totalAttack = 0;
+        int totalDefence = 0;
 
-            for (final Equipment equipment : equipmentCombination) {
-                totalCost += equipment.cost();
-                totalAttack += equipment.attack();
-                totalDefence += equipment.defence();
-            }
-
-            if (totalCost < highestCost) {
-                continue;
-            }
-
-            final Fighter me = Fighter.create(PLAYER_HITPOINTS, totalAttack, totalDefence);
-
-            if (!me.canWinFightAgainst(bossToDefeat)) {
-                highestCost = totalCost;
-            }
+        for (final Equipment equipment : equipments) {
+            totalCost += equipment.cost();
+            totalAttack += equipment.attack();
+            totalDefence += equipment.defence();
         }
 
-        return highestCost;
+        return Triple.of(totalCost, totalAttack, totalDefence);
     }
 }

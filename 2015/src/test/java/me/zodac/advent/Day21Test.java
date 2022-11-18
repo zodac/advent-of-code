@@ -19,14 +19,15 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import me.zodac.advent.pojo.rpg.Armour;
 import me.zodac.advent.pojo.rpg.Equipment;
-import me.zodac.advent.pojo.rpg.EquipmentType;
 import me.zodac.advent.pojo.rpg.Fighter;
-import me.zodac.advent.util.CollectionUtils;
+import me.zodac.advent.pojo.rpg.Ring;
+import me.zodac.advent.pojo.rpg.Weapon;
 import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.util.PowerSetFilter;
+import me.zodac.advent.util.PowerSetUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -35,9 +36,12 @@ import org.junit.jupiter.api.Test;
 class Day21Test {
 
     private static final String INPUT_FILENAME = "day21.txt";
-    private static final int REQUIRED_AMOUNT_OF_WEAPONS = 1;
-    private static final int REQUIRED_AMOUNT_OF_ARMOURS = 1;
-    private static final int MAX_AMOUNT_OF_RINGS = 2;
+
+    private static final List<PowerSetFilter<? extends Equipment>> FILTER_RULES = List.of(
+        new PowerSetFilter<>(Armour.class, 1, 1, true),
+        new PowerSetFilter<>(Ring.class, 0, 2, false),
+        new PowerSetFilter<>(Weapon.class, 1, 1, true)
+    );
     private static final List<List<Equipment>> EQUIPMENT_COMBINATIONS = getEquipmentCombinations();
 
     @Test
@@ -55,74 +59,46 @@ class Day21Test {
         final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
         final Fighter boss = Fighter.parse(value);
 
-        final long part1 = Day21.costOfMostExpensiveArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);
+        final long part1 = Day21.costOfPriciestArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);
         assertThat(part1)
             .isEqualTo(158L);
     }
 
     private static List<List<Equipment>> getEquipmentCombinations() {
         final List<Equipment> equipment = generateEquipment();
-        return CollectionUtils.getPowerList(equipment)
-            .stream()
-            .filter(Day21Test::isValidCombination)
-            .toList();
-    }
-
-    private static boolean isValidCombination(final Iterable<Equipment> equipmentCombination) {
-        int numberOfWeapons = 0;
-        int numberOfArmours = 0;
-        final Collection<Equipment> rings = new ArrayList<>();
-
-        for (final Equipment equipment : equipmentCombination) {
-            switch (equipment.type()) {
-                case ARMOUR -> numberOfArmours++;
-                case RING -> rings.add(equipment);
-                case WEAPON -> numberOfWeapons++;
-                default -> throw new IllegalStateException(String.format("Cannot handle input: %s", equipment.type()));
-            }
-        }
-
-        if (numberOfWeapons != REQUIRED_AMOUNT_OF_WEAPONS || numberOfArmours != REQUIRED_AMOUNT_OF_ARMOURS || rings.size() > MAX_AMOUNT_OF_RINGS) {
-            return false;
-        }
-
-        if (MAX_AMOUNT_OF_RINGS == 2) {
-            return !CollectionUtils.containsDuplicates(rings);
-        }
-
-        return true;
+        return PowerSetUtils.getFilteredPowerList(equipment, FILTER_RULES);
     }
 
     private static List<Equipment> generateEquipment() {
         return List.of(
             // Weapons
-            Equipment.create(EquipmentType.WEAPON, "Dagger", 8, 4, 0),
-            Equipment.create(EquipmentType.WEAPON, "Shortsword", 10, 5, 0),
-            Equipment.create(EquipmentType.WEAPON, "Warhammer", 25, 6, 0),
-            Equipment.create(EquipmentType.WEAPON, "Longsword", 40, 7, 0),
-            Equipment.create(EquipmentType.WEAPON, "Greataxe", 74, 8, 0),
+            Weapon.create("Dagger", 8, 4, 0),
+            Weapon.create("Shortsword", 10, 5, 0),
+            Weapon.create("Warhammer", 25, 6, 0),
+            Weapon.create("Longsword", 40, 7, 0),
+            Weapon.create("Greataxe", 74, 8, 0),
 
             // Armour, including blank entry to simulate no armour being chosen
-            Equipment.empty(EquipmentType.ARMOUR),
-            Equipment.create(EquipmentType.ARMOUR, "Leather", 13, 0, 1),
-            Equipment.create(EquipmentType.ARMOUR, "Chainmail", 31, 0, 2),
-            Equipment.create(EquipmentType.ARMOUR, "Splintmail", 53, 0, 3),
-            Equipment.create(EquipmentType.ARMOUR, "Bandedmail", 75, 0, 4),
-            Equipment.create(EquipmentType.ARMOUR, "Platemail", 102, 0, 5),
+            Armour.create("None", 0, 0, 0),
+            Armour.create("Leather", 13, 0, 1),
+            Armour.create("Chainmail", 31, 0, 2),
+            Armour.create("Splintmail", 53, 0, 3),
+            Armour.create("Bandedmail", 75, 0, 4),
+            Armour.create("Platemail", 102, 0, 5),
 
             // Rings, duplicated to simulate two rings being chosen
-            Equipment.create(EquipmentType.RING, "Damage +1", 25, 1, 0),
-            Equipment.create(EquipmentType.RING, "Damage +1", 25, 1, 0),
-            Equipment.create(EquipmentType.RING, "Damage +2", 50, 2, 0),
-            Equipment.create(EquipmentType.RING, "Damage +2", 50, 2, 0),
-            Equipment.create(EquipmentType.RING, "Damage +3", 100, 3, 0),
-            Equipment.create(EquipmentType.RING, "Damage +3", 100, 3, 0),
-            Equipment.create(EquipmentType.RING, "Defence +1", 20, 0, 1),
-            Equipment.create(EquipmentType.RING, "Defence +1", 20, 0, 1),
-            Equipment.create(EquipmentType.RING, "Defence +2", 40, 0, 2),
-            Equipment.create(EquipmentType.RING, "Defence +2", 40, 0, 2),
-            Equipment.create(EquipmentType.RING, "Defence +3", 80, 0, 3),
-            Equipment.create(EquipmentType.RING, "Defence +3", 80, 0, 3)
+            Ring.create("Damage +1", 25, 1, 0),
+            Ring.create("Damage +1", 25, 1, 0),
+            Ring.create("Damage +2", 50, 2, 0),
+            Ring.create("Damage +2", 50, 2, 0),
+            Ring.create("Damage +3", 100, 3, 0),
+            Ring.create("Damage +3", 100, 3, 0),
+            Ring.create("Defence +1", 20, 0, 1),
+            Ring.create("Defence +1", 20, 0, 1),
+            Ring.create("Defence +2", 40, 0, 2),
+            Ring.create("Defence +2", 40, 0, 2),
+            Ring.create("Defence +3", 80, 0, 3),
+            Ring.create("Defence +3", 80, 0, 3)
         );
     }
 }

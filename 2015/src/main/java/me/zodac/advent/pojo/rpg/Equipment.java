@@ -17,61 +17,90 @@
 
 package me.zodac.advent.pojo.rpg;
 
-/**
- * POJO defining a piece of {@link Equipment} to be used in an RPG.
- *
- * @param type    the {@link EquipmentType}
- * @param name    the name of the {@link Equipment}
- * @param cost    the cost of the {@link Equipment}
- * @param attack  the attack stats of the {@link Equipment}
- * @param defence the defence stats of the {@link Equipment}
- */
-public record Equipment(EquipmentType type, String name, int cost, int attack, int defence) {
+import java.util.Objects;
 
-    private static final String DEFAULT_NAME = "None";
-    private static final int MINIMUM_COST_VALUE = 0;
-    private static final int MINIMUM_ATTACK_VALUE = 0;
-    private static final int MINIMUM_DEFENCE_VALUE = 0;
+/**
+ * POJO defining a piece of {@link Equipment} to be used by a {@link Fighter}.
+ */
+public sealed class Equipment permits Armour, Ring, Weapon {
 
     /**
-     * Creates an {@link Equipment}.
+     * The minimum permitted 'attack' value for an {@link Equipment}.
+     */
+    protected static final int MINIMUM_ATTACK_VALUE = 0;
+
+    /**
+     * The minimum permitted 'cost' value for an {@link Equipment}.
+     */
+    protected static final int MINIMUM_COST_VALUE = 0;
+
+    /**
+     * The minimum permitted 'defence' value for an {@link Equipment}.
+     */
+    protected static final int MINIMUM_DEFENCE_VALUE = 0;
+
+    private final String name;
+    private final int cost;
+    private final int attack;
+    private final int defence;
+
+    /**
+     * Default constructor.
      *
-     * @param type    the {@link EquipmentType}
      * @param name    the name of the {@link Equipment}
      * @param cost    the cost of the {@link Equipment}
      * @param attack  the attack stats of the {@link Equipment}
      * @param defence the defence stats of the {@link Equipment}
-     * @return the created {@link Equipment}
-     * @throws IllegalArgumentException if the {@code name} is null or blank, or if the input stats are invalid
      */
-    public static Equipment create(final EquipmentType type, final String name, final int cost, final int attack, final int defence) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("'name' cannot be null or blank");
-        }
-
-        if (cost < MINIMUM_COST_VALUE) {
-            throw new IllegalArgumentException(String.format("'cost' must be greater than %s, found: %s", MINIMUM_COST_VALUE, cost));
-        }
-
-        if (attack < MINIMUM_ATTACK_VALUE) {
-            throw new IllegalArgumentException(String.format("'attack' must be greater than %s, found: %s", MINIMUM_ATTACK_VALUE, attack));
-        }
-
-        if (defence < MINIMUM_DEFENCE_VALUE) {
-            throw new IllegalArgumentException(String.format("'defence' must be greater than %s, found: %s", MINIMUM_DEFENCE_VALUE, defence));
-        }
-
-        return new Equipment(type, name, cost, attack, defence);
+    protected Equipment(final String name, final int cost, final int attack, final int defence) {
+        this.name = name;
+        this.cost = cost;
+        this.attack = attack;
+        this.defence = defence;
     }
 
     /**
-     * Creates an 'empty' {@link Equipment} with no stats.
+     * Retrieve the {@link Equipment} cost.
      *
-     * @param type the {@link EquipmentType}
-     * @return the created {@link Equipment} with no stats
-     * @throws IllegalArgumentException if the {@code name} is null or blank, or if the input stats are invalid
+     * @return the {@link Equipment} cost
      */
-    public static Equipment empty(final EquipmentType type) {
-        return create(type, DEFAULT_NAME, MINIMUM_COST_VALUE, MINIMUM_ATTACK_VALUE, MINIMUM_DEFENCE_VALUE);
+    public int cost() {
+        return cost;
+    }
+
+    /**
+     * Retrieve the {@link Equipment} attack.
+     *
+     * @return the {@link Equipment} attack
+     */
+    public int attack() {
+        return attack;
+    }
+
+    /**
+     * Retrieve the {@link Equipment} defence.
+     *
+     * @return the {@link Equipment} defence
+     */
+    public int defence() {
+        return defence;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Equipment equipment)) {
+            return false;
+        }
+
+        return cost == equipment.cost && attack == equipment.attack && defence == equipment.defence && Objects.equals(name, equipment.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, cost, attack, defence);
     }
 }

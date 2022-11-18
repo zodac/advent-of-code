@@ -23,11 +23,12 @@ import java.util.regex.Pattern;
 /**
  * POJO defining a {@link Fighter} with health, attack and defence, which can fight against other {@link Fighter}s.
  *
- * @param hitPoints the {@link Fighter}'s hit points
- * @param attack    the {@link Fighter}'s attack stats
- * @param defence   the {@link Fighter}'s defence stats
+ * @param hitPoints     the {@link Fighter}'s hit points
+ * @param equipmentCost the cost of all {@link Equipment} for the {@link Fighter}
+ * @param attack        the {@link Fighter}'s attack stats
+ * @param defence       the {@link Fighter}'s defence stats
  */
-public record Fighter(long hitPoints, int attack, int defence) {
+public record Fighter(long hitPoints, int equipmentCost, int attack, int defence) {
 
     private static final int MINIMUM_HITPOINTS_VALUE = 0;
     private static final int MINIMUM_ATTACK_VALUE = 0;
@@ -53,12 +54,13 @@ public record Fighter(long hitPoints, int attack, int defence) {
     /**
      * Creates a {@link Fighter}.
      *
-     * @param hitPoints the {@link Fighter}'s hit points
-     * @param attack    the {@link Fighter}'s attack stats
-     * @param defence   the {@link Fighter}'s defence stats
+     * @param hitPoints     the {@link Fighter}'s hit points
+     * @param equipmentCost the cost of all {@link Equipment} for the {@link Fighter}
+     * @param attack        the {@link Fighter}'s attack stats
+     * @param defence       the {@link Fighter}'s defence stats
      * @return the created {@link Fighter}
      */
-    public static Fighter create(final int hitPoints, final int attack, final int defence) {
+    public static Fighter create(final int hitPoints, final int equipmentCost, final int attack, final int defence) {
         if (hitPoints < MINIMUM_HITPOINTS_VALUE) {
             throw new IllegalArgumentException(String.format("'hitPoints' must be greater than %s, found: %s", MINIMUM_HITPOINTS_VALUE, hitPoints));
         }
@@ -71,7 +73,7 @@ public record Fighter(long hitPoints, int attack, int defence) {
             throw new IllegalArgumentException(String.format("'defence' must be greater than %s, found: %s", MINIMUM_DEFENCE_VALUE, defence));
         }
 
-        return new Fighter(hitPoints, attack, defence);
+        return new Fighter(hitPoints, equipmentCost, attack, defence);
     }
 
     /**
@@ -96,6 +98,6 @@ public record Fighter(long hitPoints, int attack, int defence) {
         final int damage = Integer.parseInt(matcher.group(2));
         final int armour = Integer.parseInt(matcher.group(3));
 
-        return create(hitPoints, damage, armour);
+        return create(hitPoints, 0, damage, armour);
     }
 }

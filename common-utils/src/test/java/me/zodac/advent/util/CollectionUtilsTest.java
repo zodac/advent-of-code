@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -187,82 +186,6 @@ class CollectionUtilsTest {
     }
 
     @Test
-    void whenGetPowerSet_givenThreeElements_thenPowerSetIsReturned() {
-        final Set<Integer> input = Set.of(1, 2, 3);
-        final Set<Set<Integer>> output = CollectionUtils.getPowerSet(input);
-        assertThat(output)
-            .hasSize(8)
-            .containsExactlyInAnyOrder(
-                Set.of(),
-                Set.of(1),
-                Set.of(2),
-                Set.of(3),
-                Set.of(1, 2),
-                Set.of(1, 3),
-                Set.of(2, 3),
-                Set.of(1, 2, 3)
-            );
-    }
-
-    @Test
-    void whenGetPowerSet_givenEmptySet_thenEmptySetIsReturned() {
-        final Set<Integer> input = Set.of();
-        final Set<Set<Integer>> output = CollectionUtils.getPowerSet(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactlyInAnyOrder(
-                Set.of()
-            );
-    }
-
-    @Test
-    void whenGetPowerSetWithDuplicates_givenThreeElements_thenPowerSetIsReturned() {
-        final List<Integer> input = List.of(1, 2, 3);
-        final List<List<Integer>> output = CollectionUtils.getPowerList(input);
-        assertThat(output)
-            .hasSize(8)
-            .containsExactlyInAnyOrder(
-                List.of(),
-                List.of(1),
-                List.of(2),
-                List.of(3),
-                List.of(1, 2),
-                List.of(1, 3),
-                List.of(2, 3),
-                List.of(1, 2, 3)
-            );
-    }
-
-    @Test
-    void whenGetPowerSetWithDuplicates_givenThreeElementsWithDuplicate_thenPowerSetIsReturned() {
-        final List<Integer> input = List.of(1, 1, 3);
-        final List<List<Integer>> output = CollectionUtils.getPowerList(input);
-        assertThat(output)
-            .hasSize(8)
-            .containsExactlyInAnyOrder(
-                List.of(),
-                List.of(1),
-                List.of(1),
-                List.of(3),
-                List.of(1, 1),
-                List.of(1, 3),
-                List.of(1, 3),
-                List.of(1, 1, 3)
-            );
-    }
-
-    @Test
-    void whenGetPowerSetWithDuplicates_givenEmptySet_thenEmptySetIsReturned() {
-        final List<Integer> input = List.of();
-        final List<List<Integer>> output = CollectionUtils.getPowerList(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactlyInAnyOrder(
-                List.of()
-            );
-    }
-
-    @Test
     void whenConvertToArrayOfArrays_givenListOfListOfBooleans_thenArrayOfArraysOfBooleansReturned() {
         final List<List<Boolean>> input = List.of(
             List.of(false, false, true),
@@ -352,6 +275,14 @@ class CollectionUtilsTest {
     @Test
     void whenContainsDuplicates_givenEmptyInput_thenFalseIsReturned() {
         final List<Integer> input = List.of();
+        final boolean output = CollectionUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenNullInput_thenFalseIsReturned() {
+        final List<Integer> input = null;
         final boolean output = CollectionUtils.containsDuplicates(input);
         assertThat(output)
             .isFalse();

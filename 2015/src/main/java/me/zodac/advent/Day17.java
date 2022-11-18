@@ -19,7 +19,7 @@ package me.zodac.advent;
 
 import java.util.Collection;
 import java.util.List;
-import me.zodac.advent.util.CollectionUtils;
+import me.zodac.advent.util.PowerSetUtils;
 
 /**
  * Solution for 2015, Day 17.
@@ -41,7 +41,7 @@ public final class Day17 {
      * @return the number of matching combinations
      */
     public static long numberOfCombinationsMatchingWantedValue(final List<Integer> values, final int wantedValue) {
-        final List<List<Integer>> powerList = CollectionUtils.getPowerList(values);
+        final List<List<Integer>> powerList = PowerSetUtils.getPowerList(values);
         int numberOfMatchingCombinations = 0;
 
         for (final List<Integer> combination : powerList) {
@@ -67,7 +67,7 @@ public final class Day17 {
      * @return the number of matching combinations with the smallest possible size
      */
     public static long numberOfSmallestSizeCombinationsMatchingWantedValue(final List<Integer> values, final int wantedValue) {
-        final List<List<Integer>> powerList = CollectionUtils.getPowerList(values);
+        final List<List<Integer>> powerList = PowerSetUtils.getPowerList(values);
         int numberOfSmallestSizeMatchingCombinations = 0;
         int currentSmallestSize = Integer.MAX_VALUE;
 
