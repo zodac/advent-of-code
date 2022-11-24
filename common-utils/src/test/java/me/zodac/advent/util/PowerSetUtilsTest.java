@@ -20,6 +20,7 @@ package me.zodac.advent.util;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -58,17 +59,27 @@ class PowerSetUtilsTest {
     }
 
     @Test
-    void whenGetFilteredPowerSet_givenTwoElements_thenPowerSetIsReturned() {
+    void whenGetFilteredPowerSet_givenTwoElements_andFilters_thenFilteredPowerSetIsReturned() {
         final Set<BaseFilterable> input = Set.of(
             FirstFilterable.INSTANCE,
             SecondFilterable.INSTANCE
         );
-        final List<PowerSetFilter<? extends BaseFilterable>> filters = List.of(
-            new PowerSetFilter<>(FirstFilterable.class, 1, 2, false),
-            new PowerSetFilter<>(SecondFilterable.class, 1, 2, true)
+
+        final PowerSetFilter<Class<? extends BaseFilterable>, BaseFilterable> powerSetFilter = new PowerSetFilter<>(
+            BaseFilterable::getClass,
+            Map.of(
+                FirstFilterable.class, filterables -> {
+                    final int count = filterables == null ? 0 : filterables.size();
+                    return count >= 1 && count <= 2;
+                },
+                SecondFilterable.class, filterables -> {
+                    final int count = filterables == null ? 0 : filterables.size();
+                    return count >= 1 && count <= 2;
+                }
+            )
         );
 
-        final Set<Set<BaseFilterable>> output = PowerSetUtils.getFilteredPowerSet(input, filters);
+        final Set<Set<BaseFilterable>> output = PowerSetUtils.getFilteredPowerSet(input, powerSetFilter);
         assertThat(output)
             .hasSize(1)
             .containsExactlyInAnyOrder(
@@ -77,19 +88,88 @@ class PowerSetUtilsTest {
     }
 
     @Test
-    void whenGetFilteredPowerSet_givenEmptyInput_andFiltersAllowEmpty_thenEmptyListIsReturned() {
-        final Set<BaseFilterable> input = Set.of();
-        final List<PowerSetFilter<? extends BaseFilterable>> filters = List.of(
-            new PowerSetFilter<>(FirstFilterable.class, 0, 2, false),
-            new PowerSetFilter<>(SecondFilterable.class, 0, 2, true)
+    void whenGetFilteredPowerSet_givenTwoElements_andMultiplicationBasedFilter_thenFilteredPowerSetIsReturned() {
+        final Set<Integer> input = Set.of(
+            1, 5, 25, 500
         );
 
-        final Set<Set<BaseFilterable>> output = PowerSetUtils.getFilteredPowerSet(input, filters);
+        // Group combination values into units/tens/hundreds, and only allow combos where units equal 6 (contain 5 and 1)
+        final PowerSetFilter<Integer, Integer> powerSetFilter = new PowerSetFilter<>(
+            i -> i / 10,
+            Map.of(
+                0, zeros -> zeros != null && zeros.stream().mapToInt(i -> i).sum() == 6
+            )
+        );
+
+        final Set<Set<Integer>> output = PowerSetUtils.getFilteredPowerSet(input, powerSetFilter);
+        assertThat(output)
+            .hasSize(4)
+            .containsExactlyInAnyOrder(
+                Set.of(1, 5),
+                Set.of(1, 5, 25),
+                Set.of(1, 5, 500),
+                Set.of(1, 5, 25, 500)
+            );
+    }
+
+    @Test
+    void whenGetFilteredPowerSet_givenTwoElements_andNoFilter_thenFullPowerSetIsReturned() {
+        final Set<BaseFilterable> input = Set.of(
+            FirstFilterable.INSTANCE,
+            SecondFilterable.INSTANCE
+        );
+
+        final PowerSetFilter<Class<? extends BaseFilterable>, BaseFilterable> powerSetFilter = new PowerSetFilter<>(
+            BaseFilterable::getClass, Map.of()
+        );
+
+        final Set<Set<BaseFilterable>> output = PowerSetUtils.getFilteredPowerSet(input, powerSetFilter);
+        assertThat(output)
+            .hasSize(4)
+            .containsExactlyInAnyOrder(
+                Set.of(),
+                Set.of(FirstFilterable.INSTANCE),
+                Set.of(SecondFilterable.INSTANCE),
+                Set.of(FirstFilterable.INSTANCE, SecondFilterable.INSTANCE)
+            );
+    }
+
+    @Test
+    void whenGetFilteredPowerSet_givenEmptyInput_andNoFilters_thenEmptySetIsReturned() {
+        final Set<BaseFilterable> input = Set.of();
+        final PowerSetFilter<Class<? extends BaseFilterable>, BaseFilterable> powerSetFilter = new PowerSetFilter<>(
+            BaseFilterable::getClass, Map.of()
+        );
+
+        final Set<Set<BaseFilterable>> output = PowerSetUtils.getFilteredPowerSet(input, powerSetFilter);
         assertThat(output)
             .hasSize(1)
             .containsExactlyInAnyOrder(
                 Set.of()
             );
+    }
+
+    @Test
+    void whenGetFilteredPowerSet_givenEmptyInput_andFilters_thenNoCombinationsAreReturned() {
+        final Set<BaseFilterable> input = Set.of();
+
+        final PowerSetFilter<Class<? extends BaseFilterable>, BaseFilterable> powerSetFilter = new PowerSetFilter<>(
+            BaseFilterable::getClass,
+            Map.of(
+                FirstFilterable.class, filterables -> {
+                    final int count = filterables == null ? 0 : filterables.size();
+                    return count >= 1 && count <= 2;
+                },
+                SecondFilterable.class, filterables -> {
+                    final int count = filterables == null ? 0 : filterables.size();
+                    return count >= 1 && count <= 2;
+                }
+            )
+        );
+
+        final Set<Set<BaseFilterable>> output = PowerSetUtils.getFilteredPowerSet(input, powerSetFilter);
+        assertThat(output)
+            .isEmpty();
     }
 
     @Test
@@ -140,18 +220,28 @@ class PowerSetUtilsTest {
     }
 
     @Test
-    void whenGetFilteredPowerList_givenThreeElements_andSomeCombinationFailsFilter_thenPowerListIsReturnedWithoutFailingCombinations() {
+    void whenGetFilteredPowerList_givenThreeElements_andFilterIsClassBased_andSomeCombinationsFailFilter_thenFilteredPowerListIsReturned() {
         final List<BaseFilterable> input = List.of(
             FirstFilterable.INSTANCE,
             FirstFilterable.INSTANCE,
             SecondFilterable.INSTANCE
         );
-        final List<PowerSetFilter<? extends BaseFilterable>> filters = List.of(
-            new PowerSetFilter<>(FirstFilterable.class, 1, 2, true),
-            new PowerSetFilter<>(SecondFilterable.class, 1, 2, true)
+
+        final PowerSetFilter<Class<? extends BaseFilterable>, BaseFilterable> powerSetFilter = new PowerSetFilter<>(
+            BaseFilterable::getClass,
+            Map.of(
+                FirstFilterable.class, filterables -> {
+                    final int count = filterables == null ? 0 : filterables.size();
+                    return count >= 1 && count <= 2;
+                },
+                SecondFilterable.class, filterables -> {
+                    final int count = filterables == null ? 0 : filterables.size();
+                    return count >= 1 && count <= 2;
+                }
+            )
         );
 
-        final List<List<BaseFilterable>> output = PowerSetUtils.getFilteredPowerList(input, filters);
+        final List<List<BaseFilterable>> output = PowerSetUtils.getFilteredPowerList(input, powerSetFilter);
         assertThat(output)
             .hasSize(3)
             .containsExactlyInAnyOrder(
@@ -162,35 +252,98 @@ class PowerSetUtilsTest {
     }
 
     @Test
-    void whenGetFilteredPowerList_givenThreeElementsAndDisallowDuplicates_thenPowerListIsReturnedWithoutDuplicatesCombinations() {
+    void whenGetFilteredPowerList_givenThreeElements_andFilterIsValueBased_andSomeCombinationsFailFilter_thenFilteredPowerListIsReturned() {
+        final List<Integer> input = List.of(1, 2, 3);
+
+        // Filter allowing only combinations with even numbers
+        final PowerSetFilter<Boolean, Integer> powerSetFilter = new PowerSetFilter<>(
+            i -> i % 2 != 0,
+            Map.of(
+                Boolean.TRUE, oddNumbers -> oddNumbers == null || oddNumbers.isEmpty(),
+                Boolean.FALSE, evenNumbers -> evenNumbers != null && !evenNumbers.isEmpty()
+            )
+        );
+
+        final List<List<Integer>> output = PowerSetUtils.getFilteredPowerList(input, powerSetFilter);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactlyInAnyOrder(
+                List.of(2)
+            );
+    }
+
+    @Test
+    void whenGetFilteredPowerList_givenThreeElements_andAllCombinationsFailFilter_thenNoCombinationIsReturned() {
         final List<BaseFilterable> input = List.of(
             FirstFilterable.INSTANCE,
             FirstFilterable.INSTANCE,
             SecondFilterable.INSTANCE
         );
-        final List<PowerSetFilter<? extends BaseFilterable>> filters = List.of(
-            new PowerSetFilter<>(FirstFilterable.class, 1, 2, false),
-            new PowerSetFilter<>(SecondFilterable.class, 1, 2, true)
+
+        final PowerSetFilter<Class<? extends BaseFilterable>, BaseFilterable> powerSetFilter = new PowerSetFilter<>(
+            BaseFilterable::getClass,
+            Map.of(
+                FirstFilterable.class, filterables -> filterables != null && filterables.size() > 5,
+                SecondFilterable.class, filterables -> filterables != null && filterables.size() > 5
+            )
         );
 
-        final List<List<BaseFilterable>> output = PowerSetUtils.getFilteredPowerList(input, filters);
+        final List<List<BaseFilterable>> output = PowerSetUtils.getFilteredPowerList(input, powerSetFilter);
         assertThat(output)
-            .hasSize(2)
+            .isEmpty();
+    }
+
+    @Test
+    void whenGetFilteredPowerList_givenThreeElements_andNoFilter_thenFullPowerListIsReturned() {
+        final List<BaseFilterable> input = List.of(
+            FirstFilterable.INSTANCE,
+            FirstFilterable.INSTANCE,
+            SecondFilterable.INSTANCE
+        );
+
+        final PowerSetFilter<Class<? extends BaseFilterable>, BaseFilterable> powerSetFilter = new PowerSetFilter<>(
+            BaseFilterable::getClass, Map.of()
+        );
+
+        final List<List<BaseFilterable>> output = PowerSetUtils.getFilteredPowerList(input, powerSetFilter);
+        assertThat(output)
+            .hasSize(8)
             .containsExactlyInAnyOrder(
+                List.of(),
+                List.of(FirstFilterable.INSTANCE),
+                List.of(FirstFilterable.INSTANCE),
+                List.of(SecondFilterable.INSTANCE),
+                List.of(FirstFilterable.INSTANCE, FirstFilterable.INSTANCE),
                 List.of(FirstFilterable.INSTANCE, SecondFilterable.INSTANCE),
-                List.of(FirstFilterable.INSTANCE, SecondFilterable.INSTANCE)
+                List.of(FirstFilterable.INSTANCE, SecondFilterable.INSTANCE),
+                List.of(FirstFilterable.INSTANCE, FirstFilterable.INSTANCE, SecondFilterable.INSTANCE)
             );
     }
 
     @Test
-    void whenGetFilteredPowerList_givenEmptyInput_andFiltersAllowEmpty_thenEmptyListIsReturned() {
+    void whenGetFilteredPowerList_givenEmptyInput_andFilters_thenNoCombinationsAreReturned() {
         final List<BaseFilterable> input = List.of();
-        final List<PowerSetFilter<? extends BaseFilterable>> filters = List.of(
-            new PowerSetFilter<>(FirstFilterable.class, 0, 3, false),
-            new PowerSetFilter<>(SecondFilterable.class, 0, 3, true)
+        final PowerSetFilter<Class<? extends BaseFilterable>, BaseFilterable> powerSetFilter = new PowerSetFilter<>(
+            BaseFilterable::getClass,
+            Map.of(
+                FirstFilterable.class, filterables -> filterables != null && !filterables.isEmpty(),
+                SecondFilterable.class, filterables -> filterables != null && !filterables.isEmpty()
+            )
         );
 
-        final List<List<BaseFilterable>> output = PowerSetUtils.getFilteredPowerList(input, filters);
+        final List<List<BaseFilterable>> output = PowerSetUtils.getFilteredPowerList(input, powerSetFilter);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenGetFilteredPowerList_givenEmptyInput_andNoFilters_thenEmptyCombinationIsReturned() {
+        final List<BaseFilterable> input = List.of();
+        final PowerSetFilter<Class<? extends BaseFilterable>, BaseFilterable> powerSetFilter = new PowerSetFilter<>(
+            BaseFilterable::getClass, Map.of()
+        );
+
+        final List<List<BaseFilterable>> output = PowerSetUtils.getFilteredPowerList(input, powerSetFilter);
         assertThat(output)
             .hasSize(1)
             .containsExactlyInAnyOrder(

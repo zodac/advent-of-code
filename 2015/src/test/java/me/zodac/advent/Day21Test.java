@@ -20,11 +20,14 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 import me.zodac.advent.pojo.rpg.Armour;
 import me.zodac.advent.pojo.rpg.Equipment;
 import me.zodac.advent.pojo.rpg.Fighter;
 import me.zodac.advent.pojo.rpg.Ring;
 import me.zodac.advent.pojo.rpg.Weapon;
+import me.zodac.advent.util.CollectionUtils;
 import me.zodac.advent.util.FileUtils;
 import me.zodac.advent.util.PowerSetFilter;
 import me.zodac.advent.util.PowerSetUtils;
@@ -36,12 +39,6 @@ import org.junit.jupiter.api.Test;
 class Day21Test {
 
     private static final String INPUT_FILENAME = "day21.txt";
-
-    private static final List<PowerSetFilter<? extends Equipment>> FILTER_RULES = List.of(
-        new PowerSetFilter<>(Armour.class, 1, 1, true),
-        new PowerSetFilter<>(Ring.class, 0, 2, false),
-        new PowerSetFilter<>(Weapon.class, 1, 1, true)
-    );
     private static final List<List<Equipment>> EQUIPMENT_COMBINATIONS = getEquipmentCombinations();
 
     @Test
@@ -66,7 +63,22 @@ class Day21Test {
 
     private static List<List<Equipment>> getEquipmentCombinations() {
         final List<Equipment> equipment = generateEquipment();
-        return PowerSetUtils.getFilteredPowerList(equipment, FILTER_RULES);
+
+        final Map<Class<? extends Equipment>, Predicate<List<Equipment>>> predicates = Map.of(
+            Armour.class, equipments -> equipments != null && equipments.size() == 1,
+            Ring.class, equipments -> {
+                final int count = equipments == null ? 0 : equipments.size();
+                return count >= 0 && count <= 2 && !CollectionUtils.containsDuplicates(equipments);
+            },
+            Weapon.class, equipments -> equipments != null && equipments.size() == 1
+        );
+
+        final PowerSetFilter<Class<? extends Equipment>, Equipment> powerSetFilter = new PowerSetFilter<>(
+            Equipment::getClass,
+            predicates
+        );
+
+        return PowerSetUtils.getFilteredPowerList(equipment, powerSetFilter);
     }
 
     private static List<Equipment> generateEquipment() {

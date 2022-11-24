@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -42,13 +43,13 @@ public final class PowerSetUtils {
      * For example, given an input of {@code {1, 2, 3}}, the power-set would be:
      * <pre>
      *     {
-     *       {},
-     *       {1},
-     *       {2},
-     *       {3},
-     *       {1, 2},
-     *       {1, 3},
-     *       {2, 3},
+     *       {}
+     *       {1}
+     *       {2}
+     *       {3}
+     *       {1, 2}
+     *       {1, 3}
+     *       {2, 3}
      *       {1, 2, 3}
      *     }
      * </pre>
@@ -80,18 +81,71 @@ public final class PowerSetUtils {
     }
 
     /**
-     * Generates a power-set of the input, then filters based on the provided {@link PowerSetFilter}s.
+     * Generates a power-set of the input with duplicates, then filters based on the provided {@link PowerSetFilter}.
      *
-     * @param input           the input {@link Set}
-     * @param powerSetFilters the {@link PowerSetFilter}s to filter the available combinations
-     * @param <T>             the type of the {@link Set}
-     * @return the filtered power-set of the input
-     * @see #getPowerSet(Set)
+     * <p>
+     * For an example, take the input {@link Set}: [1, 5, 25, 500]. Suppose we wanted a power-set, but only combinations where the sum of numbers
+     * less than <b>10</b> are equal to <b>6</b>. The full power-set would be:
+     *
+     * <pre>
+     *     {
+     *       {}
+     *       {1}
+     *       {5}
+     *       {25}
+     *       {500}
+     *       {1, 5}
+     *       {1, 25}
+     *       {1, 500}
+     *       {5, 25}
+     *       {5, 500}
+     *       {25, 500}
+     *       {1, 5, 25}
+     *       {1, 5, 500}
+     *       {1, 25, 500}
+     *       {5, 25, 500}
+     *       {1, 5, 25, 500}
+     *     }
+     * </pre>
+     *
+     * <p>
+     * Of these, the valid ones would be:
+     *
+     * <pre>
+     *     {
+     *       {1, 5}
+     *       {1, 5, 25}
+     *       {1, 5, 500}
+     *       {1, 5, 25, 500}
+     *     }
+     * </pre>
+     *
+     * <p>
+     * We would define a {@link PowerSetFilter} to represent this as follows:
+     *
+     * <pre>
+     *     {@code
+     *     // Group combination values into units/tens/hundreds, and only allow combos where units equal 6 (contain 5 and 1)
+     *     final PowerSetFilter<Integer, Integer> powerSetFilter = new PowerSetFilter<>(
+     *         i -> i / 10,
+     *         Map.of(
+     *             0, zeros -> zeros != null && zeros.stream().mapToInt(i -> i).sum() == 6
+     *         )
+     *     );
+     *     }
+     * </pre>
+     *
+     * @param input          the input {@link List}
+     * @param powerSetFilter the {@link PowerSetFilter}s to filter the available combinations
+     * @param <T>            the type of the {@link List}
+     * @param <G>            the key type of the groups of the input {@link List}
+     * @return the filtered power-list of the input
+     * @see #getPowerList(List)
      */
-    public static <T> Set<Set<T>> getFilteredPowerSet(final Set<T> input, final Iterable<? extends PowerSetFilter<? extends T>> powerSetFilters) {
+    public static <T, G> Set<Set<T>> getFilteredPowerSet(final Set<T> input, final PowerSetFilter<G, ? super T> powerSetFilter) {
         return getPowerSet(input)
             .stream()
-            .filter(combinations -> isValidCombination(combinations, powerSetFilters))
+            .filter(combinations -> isValidCombination(combinations, powerSetFilter))
             .collect(Collectors.toSet());
     }
 
@@ -105,12 +159,12 @@ public final class PowerSetUtils {
      * <pre>
      *     {
      *       {},
-     *       {1},
-     *       {1},
-     *       {3},
-     *       {1, 1},
-     *       {1, 3},
-     *       {1, 3},
+     *       {1}
+     *       {1}
+     *       {3}
+     *       {1, 1}
+     *       {1, 3}
+     *       {1, 3}
      *       {1, 1, 3}
      *     }
      * </pre>
@@ -142,48 +196,90 @@ public final class PowerSetUtils {
     }
 
     /**
-     * Generates a power-list of the input with duplicates, then filters based on the provided {@link PowerSetFilter}s.
+     * Generates a power-list of the input with duplicates, then filters based on the provided {@link PowerSetFilter}.
      *
-     * @param input           the input {@link List}
-     * @param powerSetFilters the {@link PowerSetFilter}s to filter the available combinations
-     * @param <T>             the type of the {@link List}
+     * <p>
+     * For an example, take the input {@link List}: [1, 5, 25, 500]. Suppose we wanted a power-list, but only combinations where the sum of numbers
+     * less than <b>10</b> are equal to <b>6</b>. The full power-list would be:
+     *
+     * <pre>
+     *     {
+     *       {}
+     *       {1}
+     *       {5}
+     *       {25}
+     *       {500}
+     *       {1, 5}
+     *       {1, 25}
+     *       {1, 500}
+     *       {5, 25}
+     *       {5, 500}
+     *       {25, 500}
+     *       {1, 5, 25}
+     *       {1, 5, 500}
+     *       {1, 25, 500}
+     *       {5, 25, 500}
+     *       {1, 5, 25, 500}
+     *     }
+     * </pre>
+     *
+     * <p>
+     * Of these, the valid ones would be:
+     *
+     * <pre>
+     *     {
+     *       {1, 5}
+     *       {1, 5, 25}
+     *       {1, 5, 500}
+     *       {1, 5, 25, 500}
+     *     }
+     * </pre>
+     *
+     * <p>
+     * We would define a {@link PowerSetFilter} to represent this as follows:
+     *
+     * <pre>
+     *     {@code
+     *     // Group combination values into units/tens/hundreds, and only allow combos where units equal 6 (contain 5 and 1)
+     *     final PowerSetFilter<Integer, Integer> powerSetFilter = new PowerSetFilter<>(
+     *         i -> i / 10,
+     *         Map.of(
+     *             0, zeros -> zeros != null && zeros.stream().mapToInt(i -> i).sum() == 6
+     *         )
+     *     );
+     *     }
+     * </pre>
+     *
+     * @param input          the input {@link List}
+     * @param powerSetFilter the {@link PowerSetFilter}s to filter the available combinations
+     * @param <T>            the type of the {@link List}
+     * @param <G>            the key type of the groups of the input {@link List}
      * @return the filtered power-list of the input
      * @see #getPowerList(List)
      */
-    public static <T> List<List<T>> getFilteredPowerList(final List<T> input, final Iterable<? extends PowerSetFilter<? extends T>> powerSetFilters) {
+    public static <T, G> List<List<T>> getFilteredPowerList(final List<T> input, final PowerSetFilter<G, ? super T> powerSetFilter) {
         return getPowerList(input)
             .stream()
-            .filter(combinations -> isValidCombination(combinations, powerSetFilters))
+            .filter(combinations -> isValidCombination(combinations, powerSetFilter))
             .toList();
     }
 
-    private static <T> boolean isValidCombination(final Collection<? extends T> powerSetCombinations,
-                                                  final Iterable<? extends PowerSetFilter<? extends T>> powerSetRules) {
-        final Map<Class<?>, List<T>> combinationsByClass = powerSetCombinations
+    private static <T, G> boolean isValidCombination(final Collection<? extends T> powerSetCombinations, final PowerSetFilter<G, T> powerSetFilter) {
+        final Map<G, List<T>> combinationsByGroup = powerSetCombinations
             .stream()
-            .collect(Collectors.groupingBy(T::getClass));
+            .collect(Collectors.groupingBy(powerSetFilter.groupingFunction()));
 
-        for (final PowerSetFilter<? extends T> powerSetFilter : powerSetRules) {
-            final Class<? extends T> powerSetRuleClass = powerSetFilter.subClass();
-            final int count = safeCountByKey(combinationsByClass, powerSetRuleClass);
+        final Map<G, Predicate<List<T>>> predicates = powerSetFilter.predicates();
+        for (final Map.Entry<G, Predicate<List<T>>> predicateEntry : predicates.entrySet()) {
+            final G group = predicateEntry.getKey();
+            final List<T> combinations = combinationsByGroup.get(group);
+            final Predicate<List<T>> predicateForGroup = predicateEntry.getValue();
 
-            if (count < powerSetFilter.minimumEntriesRequired() || count > powerSetFilter.maximumEntriesRequired()) {
-                return false;
-            }
-
-            if (!powerSetFilter.allowDuplicates() && CollectionUtils.containsDuplicates(combinationsByClass.get(powerSetRuleClass))) {
+            if (!predicateForGroup.test(combinations)) {
                 return false;
             }
         }
 
         return true;
-    }
-
-    private static <K, V> int safeCountByKey(final Map<K, ? extends Collection<V>> map, final K key) {
-        if (!map.containsKey(key)) {
-            return 0;
-        }
-
-        return map.get(key).size();
     }
 }
