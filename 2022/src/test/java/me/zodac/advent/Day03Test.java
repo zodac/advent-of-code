@@ -20,7 +20,6 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import java.util.Map;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +34,7 @@ class Day03Test {
     void part1() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final long count = Day03.part1(values);
+        final long count = Day03.sumCommonCharacterValuesInStringHalves(values);
         assertThat(count)
             .isEqualTo(7_824L);
     }
@@ -44,7 +43,7 @@ class Day03Test {
     void part2() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final long count = Day03.part2(values);
+        final long count = Day03.sumCommonCharacterValuesInGroupedStrings(values, 3);
         assertThat(count)
             .isEqualTo(2_798L);
     }

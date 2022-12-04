@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.Triple;
 import me.zodac.advent.pojo.grid.GridInstruction;
+import me.zodac.advent.pojo.tuple.Triple;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 

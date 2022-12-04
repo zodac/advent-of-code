@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import me.zodac.advent.pojo.BingoBoard;
-import me.zodac.advent.pojo.Pair;
+import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.StringUtils;
 
 /**

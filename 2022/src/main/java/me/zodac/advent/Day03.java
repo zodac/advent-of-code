@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import me.zodac.advent.pojo.Pair;
+import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.CollectionUtils;
 
 /**
@@ -32,18 +32,44 @@ import me.zodac.advent.util.CollectionUtils;
  */
 public final class Day03 {
 
+    // Add a meaningless first character, so we can use a String#indexOf() call without any offset
     private static final String VALUES = "*abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     private Day03() {
 
     }
 
-    public static long part1(final Iterable<String> values) {
+    /**
+     * Given an input of {@link String}s, where each {@link String} has an even number of characters, we can split the {@link String} into two. We
+     * then search for the common {@link Character}s between the two {@link String} half. We assume there is only 1 single common {@link Character}.
+     *
+     * <p>
+     * We then give each common {@link Character} a value based on:
+     * <pre>
+     *     a: 1
+     *     b: 2
+     *     ...
+     *     y: 25
+     *     z: 26
+     *     A: 27
+     *     B: 28
+     *     ...
+     *     Y: 51
+     *     Z: 52
+     * </pre>
+     *
+     * <p>
+     * Finally, we sum all the values of the common {@link Character} per {@link String}
+     *
+     * @param values the input {@link String}s
+     * @return the sum of all common {@link Character} values
+     */
+    public static long sumCommonCharacterValuesInStringHalves(final Iterable<String> values) {
         long total = 0L;
 
         for (final String value : values) {
             final Pair<String, String> bisectedString = bisect(value);
-            final Set<Character> commonCharacters = commonChars(bisectedString);
+            final Set<Character> commonCharacters = commonChars(bisectedString.first(), bisectedString.second());
             final Character commonCharacter = CollectionUtils.getFirst(commonCharacters); // Assuming only one common char
             total += VALUES.indexOf(commonCharacter);
         }
@@ -51,13 +77,40 @@ public final class Day03 {
         return total;
     }
 
-    public static long part2(final Iterable<String> values) {
+    /**
+     * Given an input of {@link String}s, we group them together into groups of {@code amountPerGroup}, then find the common {@link Character} in all
+     * {@link String}s within a group. We assume there is only 1 single common {@link Character}.
+     *
+     * <p>
+     * We then give each common {@link Character} a value based on:
+     * <pre>
+     *     a: 1
+     *     b: 2
+     *     ...
+     *     y: 25
+     *     z: 26
+     *     A: 27
+     *     B: 28
+     *     ...
+     *     Y: 51
+     *     Z: 52
+     * </pre>
+     *
+     * <p>
+     * Finally, we sum all the values of the common {@link Character} per {@link String}
+     *
+     * @param values         the input {@link String}s
+     * @param amountPerGroup the number of entries per group of {@link String}s
+     * @return the sum of all common {@link Character} values
+     */
+    public static long sumCommonCharacterValuesInGroupedStrings(final Iterable<String> values, final int amountPerGroup) {
         long total = 0L;
 
-        final Collection<Collection<String>> groupedValues = groupEntries(values, 3);
+        final Collection<Collection<String>> groupedValues = groupEntries(values, amountPerGroup);
 
         for (final Collection<String> groupedValue : groupedValues) {
-            final Set<Character> commonCharacters = commonChars(groupedValue);
+            final List<String> groupAsList = new ArrayList<>(groupedValue);
+            final Set<Character> commonCharacters = commonChars(groupAsList.get(0), groupAsList.get(1), groupAsList.get(2));
             final Character commonCharacter = CollectionUtils.getFirst(commonCharacters); // Assuming only one common char
             total += VALUES.indexOf(commonCharacter);
         }
@@ -65,13 +118,13 @@ public final class Day03 {
         return total;
     }
 
-    public static Collection<Collection<String>> groupEntries(final Iterable<String> values, final int amountInEachGroup) {
+    private static Collection<Collection<String>> groupEntries(final Iterable<String> values, final int amountPerGroup) {
         final Collection<Collection<String>> groups = new ArrayList<>();
 
         Collection<String> group = new ArrayList<>();
         int counter = 0;
         for (final String value : values) {
-            if (counter == amountInEachGroup) {
+            if (counter == amountPerGroup) {
                 groups.add(group);
                 group = new ArrayList<>();
                 counter = 0;
@@ -88,21 +141,12 @@ public final class Day03 {
         return groups;
     }
 
-    public static Pair<String, String> bisect(final String input) {
+    private static Pair<String, String> bisect(final String input) {
         final int middleIndex = input.length() / 2;
         return Pair.of(input.substring(0, middleIndex), input.substring(middleIndex));
     }
 
-    public static Set<Character> commonChars(final Pair<String, String> pair) {
-        return commonChars(pair.first(), pair.second());
-    }
-
-    public static Set<Character> commonChars(final Collection<String> strings) {
-        final List<String> stringsAsList = new ArrayList<>(strings);
-        return commonChars(stringsAsList.get(0), stringsAsList.get(1), stringsAsList.get(2));
-    }
-
-    public static Set<Character> commonChars(final String first, final String... others) {
+    private static Set<Character> commonChars(final String first, final String... others) {
         final Set<Character> firstChars = new HashSet<>();
         for (final char firstChar : first.toCharArray()) {
             firstChars.add(firstChar);
@@ -118,8 +162,7 @@ public final class Day03 {
             allOtherChars.add(otherChars);
         }
 
-
-        for(final Set<Character> otherChars : allOtherChars){
+        for (final Set<Character> otherChars : allOtherChars) {
             firstChars.retainAll(otherChars);
         }
 

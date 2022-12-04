@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.zodac.advent.pojo.Quadruple;
+import me.zodac.advent.pojo.tuple.Quadruple;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +41,7 @@ class Day04Test {
             .map(Day04Test::convert)
             .toList();
 
-        final long count = Day04.part1(values);
+        final long count = Day04.countCompleteOverlaps(values);
         assertThat(count)
             .isEqualTo(560L);
     }
@@ -53,7 +53,7 @@ class Day04Test {
             .map(Day04Test::convert)
             .toList();
 
-        final long count = Day04.part2(values);
+        final long count = Day04.countPartialOverlaps(values);
         assertThat(count)
             .isEqualTo(839L);
     }

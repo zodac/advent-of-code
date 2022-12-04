@@ -22,6 +22,7 @@ import java.util.Deque;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * POJO defining a line of syntax characters.

@@ -22,8 +22,8 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import me.zodac.advent.pojo.Pair;
 import me.zodac.advent.pojo.SyntaxLine;
+import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.CollectionUtils;
 
 /**

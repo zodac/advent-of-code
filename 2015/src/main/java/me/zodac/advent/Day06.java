@@ -18,10 +18,10 @@
 package me.zodac.advent;
 
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.Triple;
 import me.zodac.advent.pojo.grid.BooleanGrid;
 import me.zodac.advent.pojo.grid.GridInstruction;
 import me.zodac.advent.pojo.grid.IntegerGrid;
+import me.zodac.advent.pojo.tuple.Triple;
 
 /**
  * Solution for 2015, Day 6.

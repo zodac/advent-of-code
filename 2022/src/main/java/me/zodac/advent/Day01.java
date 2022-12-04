@@ -17,16 +17,9 @@
 
 package me.zodac.advent;
 
-import java.io.File;
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import me.zodac.advent.pojo.Elf;
-import me.zodac.advent.util.StringUtils;
 
 /**
  * Solution for 2022, Day 1.
@@ -39,26 +32,78 @@ public final class Day01 {
 
     }
 
-    public static long part1(final Iterable<String> values) {
-        final Collection<Elf> elves = getElves(values);
-        return elves.stream().mapToLong(Elf::getTotalCalories).max().orElse(0L);
+    /**
+     * Given an input of calories, each group of calories is delimited by a blank line. For example:
+     *
+     * <pre>
+     *     100
+     *     224
+     *     500
+     *
+     *     65
+     *
+     *     123
+     *     1098
+     *     738
+     * </pre>
+     *
+     * <p>
+     * Given these groups, we find the group with the most calories by value and return that sum. For the above example, it would be group 3 with a
+     * value of <b>1,959</b>.
+     *
+     * @param values the input calorie values
+     * @return the sum of the calories in the largest group (by value, not size)
+     */
+    public static long valueOfLargestGroupOfCalories(final Iterable<String> values) {
+        return getCalorieTotals(values)
+            .stream()
+            .mapToLong(l -> l)
+            .max()
+            .orElse(0L);
     }
 
-    public static long part2(final Iterable<String> values) {
-        final Collection<Elf> elves = getElves(values);
-        return elves.stream().map(Elf::getTotalCalories).sorted(Collections.reverseOrder()).mapToLong(l -> l).limit(3).sum();
+    /**
+     * Given an input of calories, each group of calories is delimited by a blank line. For example:
+     *
+     * <pre>
+     *     100
+     *     224
+     *     500
+     *
+     *     65
+     *
+     *     123
+     *     1098
+     *     738
+     * </pre>
+     *
+     * <p>
+     * Given these groups, we find the top groups with the most calories by value and return the sum of those groups. For the above example, given a
+     * {@code numberOfGroups} value of 2, it would be group 1 and 3 with a value of <b>2,783</b>.
+     *
+     * @param values         the input calorie values
+     * @param numberOfGroups the number of largest groups to count
+     * @return the sum of the calories in the largest {@code numberOfGroups} groups (by value, not size)
+     */
+    public static long valueOfLargestGroupsOfCalories(final Iterable<String> values, final int numberOfGroups) {
+        return getCalorieTotals(values)
+            .stream()
+            .sorted(Collections.reverseOrder())
+            .mapToLong(l -> l)
+            .limit(numberOfGroups)
+            .sum();
     }
 
-    private static Collection<Elf> getElves(final Iterable<String> values) {
-        final Collection<Elf> elves = new ArrayList<>();
+    private static Collection<Long> getCalorieTotals(final Iterable<String> values) {
+        final Collection<Long> elves = new ArrayList<>();
 
-        Elf currentElf = new Elf();
+        long currentTotal = 0L;
         for (final String value : values) {
             if (value.isBlank()) {
-                elves.add(currentElf);
-                currentElf = new Elf();
+                elves.add(currentTotal);
+                currentTotal = 0L;
             } else {
-                currentElf.addCalorie(Integer.parseInt(value));
+                currentTotal += Integer.parseInt(value);
             }
         }
 

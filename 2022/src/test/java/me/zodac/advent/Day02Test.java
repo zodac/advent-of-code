@@ -20,7 +20,6 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import java.util.Map;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -35,19 +34,7 @@ class Day02Test {
     void part1() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final Map<String, Integer> codes = Map.of(
-            "A X", 4,
-            "A Y", 8,
-            "A Z", 3,
-            "B X", 1,
-            "B Y", 5,
-            "B Z", 9,
-            "C X", 7,
-            "C Y", 2,
-            "C Z", 6
-        );
-
-        final long count = Day02.part1(values, codes);
+        final long count = Day02.finalScoreFollowingGuideWithMoves(values);
         assertThat(count)
             .isEqualTo(13_052L);
     }
@@ -56,19 +43,7 @@ class Day02Test {
     void part2() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final Map<String, Integer> codes = Map.of(
-            "A X", 3,
-            "A Y", 4,
-            "A Z", 8,
-            "B X", 1,
-            "B Y", 5,
-            "B Z", 9,
-            "C X", 2,
-            "C Y", 6,
-            "C Z", 7
-        );
-
-        final long count = Day02.part2(values, codes);
+        final long count = Day02.finalScoreFollowingGuideWithResults(values);
         assertThat(count)
             .isEqualTo(13_693L);
     }

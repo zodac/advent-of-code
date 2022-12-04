@@ -19,9 +19,9 @@ package me.zodac.advent;
 
 import java.util.Collection;
 import java.util.List;
-import me.zodac.advent.pojo.Triple;
 import me.zodac.advent.pojo.rpg.Equipment;
 import me.zodac.advent.pojo.rpg.Fighter;
+import me.zodac.advent.pojo.tuple.Triple;
 
 /**
  * Solution for 2015, Day 21.

@@ -20,6 +20,7 @@ package me.zodac.advent.pojo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * Class defining a bingo board.

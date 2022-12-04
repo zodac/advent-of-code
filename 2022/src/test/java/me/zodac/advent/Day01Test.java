@@ -34,7 +34,7 @@ class Day01Test {
     void part1() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final long count = Day01.part1(values);
+        final long count = Day01.valueOfLargestGroupOfCalories(values);
         assertThat(count)
             .isEqualTo(68_802L);
     }
@@ -43,7 +43,7 @@ class Day01Test {
     void part2() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final long count = Day01.part2(values);
+        final long count = Day01.valueOfLargestGroupsOfCalories(values, 3);
         assertThat(count)
             .isEqualTo(205_370L);
     }
