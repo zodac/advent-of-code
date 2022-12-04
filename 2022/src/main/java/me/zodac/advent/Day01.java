@@ -17,6 +17,17 @@
 
 package me.zodac.advent;
 
+import java.io.File;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import me.zodac.advent.pojo.Elf;
+import me.zodac.advent.util.StringUtils;
+
 /**
  * Solution for 2022, Day 1.
  *
@@ -28,11 +39,29 @@ public final class Day01 {
 
     }
 
-    public static long part1() {
-        return 0L;
+    public static long part1(final Iterable<String> values) {
+        final Collection<Elf> elves = getElves(values);
+        return elves.stream().mapToLong(Elf::getTotalCalories).max().orElse(0L);
     }
 
-    public static long part2() {
-        return 0L;
+    public static long part2(final Iterable<String> values) {
+        final Collection<Elf> elves = getElves(values);
+        return elves.stream().map(Elf::getTotalCalories).sorted(Collections.reverseOrder()).mapToLong(l -> l).limit(3).sum();
+    }
+
+    private static Collection<Elf> getElves(final Iterable<String> values) {
+        final Collection<Elf> elves = new ArrayList<>();
+
+        Elf currentElf = new Elf();
+        for (final String value : values) {
+            if (value.isBlank()) {
+                elves.add(currentElf);
+                currentElf = new Elf();
+            } else {
+                currentElf.addCalorie(Integer.parseInt(value));
+            }
+        }
+
+        return elves;
     }
 }

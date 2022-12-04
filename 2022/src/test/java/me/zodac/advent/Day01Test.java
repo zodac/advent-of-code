@@ -19,6 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -26,17 +28,23 @@ import org.junit.jupiter.api.Test;
  */
 class Day01Test {
 
+    private static final String INPUT_FILENAME = "day01.txt";
+
     @Test
     void part1() {
-        final long count = Day01.part1();
+        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+
+        final long count = Day01.part1(values);
         assertThat(count)
-            .isEqualTo(0L);
+            .isEqualTo(68_802L);
     }
 
     @Test
     void part2() {
-        final long count = Day01.part2();
+        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+
+        final long count = Day01.part2(values);
         assertThat(count)
-            .isEqualTo(0L);
+            .isEqualTo(205_370L);
     }
 }
