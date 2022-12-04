@@ -17,7 +17,8 @@
 
 package me.zodac.advent;
 
-import me.zodac.advent.pojo.tuple.Quadruple;
+import me.zodac.advent.pojo.Range;
+import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * Solution for 2022, Day 4.
@@ -31,25 +32,17 @@ public final class Day04 {
     }
 
     /**
-     * Given an input of {@link Quadruple}s, where each {@link Quadruple} defines two numerical ranges, counts how many ranges are completely
-     * overlapped by their pair. For example, given:
-     * <pre>
-     *     1-5,2-6
-     *     1-9,2-3
-     * </pre>
+     * Given an input of {@link Pair}s of {@link Range}s, we count how many {@link Range}s are completely overlapped by their pair.
      *
-     * <p>
-     * The second value has a complete overlap, where {@code 2-3} is completely overlapped by {@code 1-9}.
-     *
-     * @param values the {@link Quadruple}s
+     * @param values the {@link Range}s
      * @return the number of complete overlaps
+     * @see Range#hasCompleteOverlap(Range)
      */
-    public static long countCompleteOverlaps(final Iterable<Quadruple<Integer, Integer, Integer, Integer>> values) {
+    public static long countCompleteOverlaps(final Iterable<Pair<Range, Range>> values) {
         int count = 0;
 
-        for (final Quadruple<Integer, Integer, Integer, Integer> value : values) {
-            if (value.first() >= value.third() && value.second() <= value.fourth()
-                || value.third() >= value.first() && value.fourth() <= value.second()) {
+        for (final Pair<Range, Range> value : values) {
+            if (value.first().hasCompleteOverlap(value.second())) {
                 count++;
             }
         }
@@ -58,36 +51,21 @@ public final class Day04 {
     }
 
     /**
-     * Given an input of {@link Quadruple}s, where each {@link Quadruple} defines two numerical ranges, counts how many ranges are partially
-     * overlapped by their pair. For example, given:
-     * <pre>
-     *     1-5,2-6
-     *     1-9,2-3
-     * </pre>
+     * Given an input of {@link Pair}s of {@link Range}s, we count how many ranges are partially overlapped by their pair.
      *
-     * <p>
-     * Both values have a partial overlap, where {@code 1-5} and {@code 2-6} partiall overlap, and where {@code 2-3} is completely overlapped by
-     * {@code 1-9}.
-     *
-     * @param values the {@link Quadruple}s
+     * @param values the {@link Range}s
      * @return the number of partial overlaps
+     * @see Range#hasPartialOverlap(Range)
      */
-    public static long countPartialOverlaps(final Iterable<Quadruple<Integer, Integer, Integer, Integer>> values) {
+    public static long countPartialOverlaps(final Iterable<Pair<Range, Range>> values) {
         int count = 0;
 
-        for (final Quadruple<Integer, Integer, Integer, Integer> value : values) {
-            if (isBetween(value.first(), value.second(), value.third())
-                || isBetween(value.first(), value.second(), value.fourth())
-                || isBetween(value.third(), value.fourth(), value.first())
-                || isBetween(value.third(), value.fourth(), value.second())) {
+        for (final Pair<Range, Range> value : values) {
+            if (value.first().hasPartialOverlap(value.second())) {
                 count++;
             }
         }
 
         return count;
-    }
-
-    private static boolean isBetween(final int first, final int second, final int input) {
-        return input >= first && input <= second;
     }
 }

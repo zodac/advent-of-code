@@ -22,7 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.zodac.advent.pojo.tuple.Quadruple;
+import me.zodac.advent.pojo.Range;
+import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,7 @@ class Day04Test {
 
     @Test
     void part1() {
-        final Collection<Quadruple<Integer, Integer, Integer, Integer>> values = FileUtils.readLines(INPUT_FILENAME)
+        final Collection<Pair<Range, Range>> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .map(Day04Test::convert)
             .toList();
@@ -48,7 +49,7 @@ class Day04Test {
 
     @Test
     void part2() {
-        final Collection<Quadruple<Integer, Integer, Integer, Integer>> values = FileUtils.readLines(INPUT_FILENAME)
+        final Collection<Pair<Range, Range>> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
             .map(Day04Test::convert)
             .toList();
@@ -58,18 +59,22 @@ class Day04Test {
             .isEqualTo(839L);
     }
 
-    private static Quadruple<Integer, Integer, Integer, Integer> convert(final String input) {
+    private static Pair<Range, Range> convert(final String input) {
         final Matcher matcher = INPUT_PATTERN.matcher(input);
 
         if (!matcher.find()) {
             throw new IllegalStateException("Unable to find match in input: " + input);
         }
 
-        return Quadruple.of(
-            Integer.parseInt(matcher.group(1)),
-            Integer.parseInt(matcher.group(2)),
-            Integer.parseInt(matcher.group(3)),
-            Integer.parseInt(matcher.group(4))
+        return Pair.of(
+            Range.of(
+                Integer.parseInt(matcher.group(1)),
+                Integer.parseInt(matcher.group(2))
+            ),
+            Range.of(
+                Integer.parseInt(matcher.group(3)),
+                Integer.parseInt(matcher.group(4))
+            )
         );
     }
 }
