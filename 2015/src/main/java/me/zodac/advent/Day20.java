@@ -17,7 +17,7 @@
 
 package me.zodac.advent;
 
-import me.zodac.advent.util.CollectionUtils;
+import me.zodac.advent.util.ArrayUtils;
 
 /**
  * Solution for 2015, Day 20.
@@ -54,7 +54,7 @@ public final class Day20 {
             }
         }
 
-        return CollectionUtils.findSmallestIndexGreaterThanThreshold(houses, wantedNumberOfItemsDelivered);
+        return ArrayUtils.findSmallestIndexGreaterThanThreshold(houses, wantedNumberOfItemsDelivered);
     }
 
     /**
@@ -91,6 +91,6 @@ public final class Day20 {
             }
         }
 
-        return CollectionUtils.findSmallestIndexGreaterThanThreshold(houses, wantedNumberOfItemsDelivered);
+        return ArrayUtils.findSmallestIndexGreaterThanThreshold(houses, wantedNumberOfItemsDelivered);
     }
 }

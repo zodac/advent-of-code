@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.util.ArrayUtils;
 import me.zodac.advent.util.CollectionUtils;
 
 /**
@@ -74,7 +75,7 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
                 String.format("Outer size must match inner size, found outer: %s, inner: %s", grid.size(), firstElement.size()));
         }
 
-        return new BooleanGrid(CollectionUtils.convertToArrayOfArrays(grid));
+        return new BooleanGrid(ArrayUtils.convertToArrayOfArrays(grid));
     }
 
     /**

@@ -19,7 +19,6 @@ package me.zodac.advent.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.atIndex;
 
 import java.util.Collections;
 import java.util.List;
@@ -183,69 +182,6 @@ class CollectionUtilsTest {
         final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
         assertThat(output)
             .isEmpty();
-    }
-
-    @Test
-    void whenConvertToArrayOfArrays_givenListOfListOfBooleans_thenArrayOfArraysOfBooleansReturned() {
-        final List<List<Boolean>> input = List.of(
-            List.of(false, false, true),
-            List.of(false, true, false),
-            List.of(true, false, false)
-        );
-        final Boolean[][] output = CollectionUtils.convertToArrayOfArrays(input);
-        assertThat(output)
-            .hasDimensions(3, 3)
-            .contains(new Boolean[] {false, false, true}, atIndex(0))
-            .contains(new Boolean[] {false, true, false}, atIndex(1))
-            .contains(new Boolean[] {true, false, false}, atIndex(2));
-    }
-
-    @Test
-    void whenConvertToArrayOfArrays_givenEmptyList_thenEmptyArrayOfBooleansReturned() {
-        final List<List<Boolean>> input = List.of();
-        final Boolean[][] output = CollectionUtils.convertToArrayOfArrays(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithOneValueAboveThreshold_thenCorrectIndexIsReturned() {
-        final int[] input = {1, 2, 3};
-        final int output = CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 2);
-        assertThat(output)
-            .isEqualTo(2);
-    }
-
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithMultipleValuesAboveThreshold_thenSmallestIndexIsReturned() {
-        final int[] input = {1, 2, 3};
-        final int output = CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 1);
-        assertThat(output)
-            .isEqualTo(1);
-    }
-
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithMultipleUnorderedValuesAboveThreshold_thenSmallestIndexIsReturned() {
-        final int[] input = {2, 3, 1};
-        final int output = CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 1);
-        assertThat(output)
-            .isEqualTo(0);
-    }
-
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithNoValuesAboveThreshold_thenExceptionIsThrown() {
-        final int[] input = {1, 2, 3};
-        assertThatThrownBy(() -> CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 3))
-            .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("No value in input is greater than 3");
-    }
-
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenEmptyInput_thenExceptionIsThrown() {
-        final int[] input = {};
-        assertThatThrownBy(() -> CollectionUtils.findSmallestIndexGreaterThanThreshold(input, 0))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Input cannot be null or empty");
     }
 
     @Test

@@ -32,8 +32,6 @@ import java.util.function.Function;
  */
 public final class CollectionUtils {
 
-    private static final Boolean[] EMPTY_BOOLEAN_ARRAY = new Boolean[0];
-
     private CollectionUtils() {
 
     }
@@ -174,47 +172,6 @@ public final class CollectionUtils {
             .stream()
             .map(extractionFunction)
             .toList();
-    }
-
-    /**
-     * Converts the provided {@link Collection} of {@link List}s of {@link Boolean}s to a 2D array.
-     *
-     * @param input the input {@link Collection} of {@link List}s
-     * @return the 2D {@link Boolean} array
-     */
-    public static Boolean[][] convertToArrayOfArrays(final Collection<? extends List<Boolean>> input) {
-        final Boolean[][] array = new Boolean[input.size()][];
-
-        int i = 0;
-        for (final List<Boolean> row : input) {
-            array[i++] = row.toArray(EMPTY_BOOLEAN_ARRAY);
-        }
-
-        return array;
-    }
-
-    /**
-     * Given an unsorted {@code int} array, finds the smallest index that has a value greater than the {@code thresholdValue}.
-     *
-     * @param input          the input to check
-     * @param thresholdValue the threshold value that any array entry must be greater than
-     * @return the smallest index in the {@code int} array
-     * @throws IllegalArgumentException thrown if the input is {@code null}, empty or does not have any value greater than the {@code thresholdValue}
-     */
-    public static int findSmallestIndexGreaterThanThreshold(final int[] input, final int thresholdValue) {
-        if (input == null || input.length == 0) {
-            throw new IllegalArgumentException("Input cannot be null or empty");
-        }
-
-        for (int i = 0; i < input.length; i++) {
-            final int houseValue = input[i];
-
-            if (houseValue > thresholdValue) {
-                return i;
-            }
-        }
-
-        throw new IllegalArgumentException(String.format("No value in input is greater than %s", thresholdValue));
     }
 
     /**
