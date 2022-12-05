@@ -22,6 +22,11 @@ The solutions are written in Java.
 <!--- advent_readme_stars_2021 --->
 
 <!--- advent_readme_stars_2020 --->
+## 2020 Results
+
+| Day | Part 1 | Part 2 |
+| :---: | :---: | :---: |
+<!--- advent_readme_stars_2020 --->
 
 <!--- advent_readme_stars_2019 --->
 
