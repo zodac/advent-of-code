@@ -123,8 +123,7 @@
         <exclude name="AvoidFieldNameMatchingMethodName"/>
 
         <!-- Quite a few false positives -->
-        <!-- Caught by SonarQube analysis -->
-        <exclude name="BeanMembersShouldSerialize"/>
+        <exclude name="NonSerializableClass"/>
 
         <!-- Helper classes can cause this to fail, not worth changing them -->
         <exclude name="TestClassWithoutTestCases"/>
