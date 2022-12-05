@@ -16,3 +16,94 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update README stars for 2022
+  update-readme-2021:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: k2bd/advent-readme-stars@v1
+        with:
+          userId: 34827
+          year: 2021
+          tableMarker: <!--- advent_readme_stars_2021 --->
+          sessionCookie: ${{ secrets.AOC_SESSION_COOKIE }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update README stars for 2021
+  update-readme-2020:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: k2bd/advent-readme-stars@v1
+        with:
+          userId: 34827
+          year: 2020
+          tableMarker: <!--- advent_readme_stars_2020 --->
+          sessionCookie: ${{ secrets.AOC_SESSION_COOKIE }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update README stars for 2020
+  update-readme-2019:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: k2bd/advent-readme-stars@v1
+        with:
+          userId: 34827
+          year: 2019
+          tableMarker: <!--- advent_readme_stars_2019 --->
+          sessionCookie: ${{ secrets.AOC_SESSION_COOKIE }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update README stars for 2019
+  update-readme-2018:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: k2bd/advent-readme-stars@v1
+        with:
+          userId: 34827
+          year: 2018
+          tableMarker: <!--- advent_readme_stars_2018 --->
+          sessionCookie: ${{ secrets.AOC_SESSION_COOKIE }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update README stars for 2018
+  update-readme-2017:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: k2bd/advent-readme-stars@v1
+        with:
+          userId: 34827
+          year: 2017
+          tableMarker: <!--- advent_readme_stars_2017 --->
+          sessionCookie: ${{ secrets.AOC_SESSION_COOKIE }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update README stars for 2017
+  update-readme-2016:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: k2bd/advent-readme-stars@v1
+        with:
+          userId: 34827
+          year: 2016
+          tableMarker: <!--- advent_readme_stars_2016 --->
+          sessionCookie: ${{ secrets.AOC_SESSION_COOKIE }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update README stars for 2016
+  update-readme-2015:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: k2bd/advent-readme-stars@v1
+        with:
+          userId: 34827
+          year: 2015
+          tableMarker: <!--- advent_readme_stars_2015 --->
+          sessionCookie: ${{ secrets.AOC_SESSION_COOKIE }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update README stars for 2015
