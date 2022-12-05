@@ -5,6 +5,24 @@
 This project includes solutions to the [Advent of Code](https://adventofcode.com/) programming challenges.
 The solutions are written in Java.
 
+## Progress
+
+<!--- advent_readme_stars_2022 --->
+
+<!--- advent_readme_stars_2021 --->
+
+<!--- advent_readme_stars_2020 --->
+
+<!--- advent_readme_stars_2019 --->
+
+<!--- advent_readme_stars_2018 --->
+
+<!--- advent_readme_stars_2017 --->
+
+<!--- advent_readme_stars_2016 --->
+
+<!--- advent_readme_stars_2015 --->
+
 ## Purpose
 
 This is not an attempt to '[code golf](https://en.wikipedia.org/wiki/Code_golf)' solutions; Java is a verbose enough language, so it's not the right
