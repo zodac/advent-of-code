@@ -188,4 +188,47 @@ public final class CollectionUtils {
 
         return new HashSet<>(input).size() != input.size();
     }
+
+    /**
+     * Given a {@link Collection}, groups all entries into sub-{@link Collection}s where each group is of size {@code amountPerGroup}.
+     *
+     * @param values         the input {@link Collection} to group
+     * @param amountPerGroup the number of entries wanted per group
+     * @param <T>            the type of the input {@link Collection}
+     * @return the grouped {@link Collection} of {@link Collection}s
+     * @throws IllegalArgumentException thrown if the input {@link Collection} cannot be split into exactly {@code amountPerGroup} groups, or if
+     *                                  {@code amountPerGroup} is less than <b>1</b>.
+     */
+    public static <T> Collection<Collection<T>> group(final Collection<? extends T> values, final int amountPerGroup) {
+        if (amountPerGroup <= 0) {
+            throw new IllegalArgumentException(String.format("amountPerGroup must be at least 1, found: %s", amountPerGroup));
+        }
+
+        if (values.isEmpty()) {
+            return List.of(List.of());
+        }
+
+        if (values.size() % amountPerGroup != 0) {
+            throw new IllegalArgumentException(
+                String.format("Expected number of entries to be divisible by %s, found: %s", amountPerGroup, values.size()));
+        }
+
+        final Collection<Collection<T>> groups = new ArrayList<>();
+
+        Collection<T> group = new ArrayList<>();
+        int counter = 0;
+        for (final T value : values) {
+            if (counter == amountPerGroup) {
+                groups.add(group);
+                group = new ArrayList<>();
+                counter = 0;
+            }
+
+            group.add(value);
+            counter++;
+        }
+        groups.add(group);
+
+        return groups;
+    }
 }

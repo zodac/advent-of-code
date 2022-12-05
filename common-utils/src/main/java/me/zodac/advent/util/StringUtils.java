@@ -19,13 +19,16 @@ package me.zodac.advent.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * Utility class with {@link String}-based functions.
@@ -93,7 +96,7 @@ public final class StringUtils {
 
         if (numberOfCharactersToRemove > input.length()) {
             throw new IllegalArgumentException(
-                String.format("Cannot remove %s characters from input of length %s", numberOfCharactersToRemove, input.length()));
+                String.format("Cannot remove %s characters from input of length: %s", numberOfCharactersToRemove, input.length()));
         }
 
         return input.substring(0, input.length() - numberOfCharactersToRemove);
@@ -375,5 +378,69 @@ public final class StringUtils {
         }
 
         return input.substring(0, indexOfSubString) + replacement + input.substring(indexOfSubString + subString.length());
+    }
+
+    /**
+     * Bisects the given {@link String} and returns both halfs as a {@link Pair} of {@link String}s.
+     *
+     * @param input the {@link String} to split in half
+     * @return the {@link String} halves as a {@link Pair}
+     * @throws IllegalArgumentException thrown if the input {@link String} does not have an even length, or if the input is {@code null}
+     */
+    public static Pair<String, String> bisect(final String input) {
+        if (input == null || input.isEmpty()) {
+            throw new IllegalArgumentException("Input cannot be null or empty");
+        }
+
+        if (MathUtils.isOdd(input.length())) {
+            throw new IllegalArgumentException(String.format("Cannot bisect input of length: %s", input.length()));
+        }
+
+        final int middleIndex = input.length() / 2;
+        return Pair.of(input.substring(0, middleIndex), input.substring(middleIndex));
+    }
+
+    /**
+     * Compares the provided {@link String}s and returns the common {@link Character}s in all {@link String}s.
+     *
+     * @param first  the first {@link String}
+     * @param others any additional {@link String}s
+     * @return a {@link Set} of the common {@link Character}s in all {@link String}s
+     * @throws IllegalArgumentException thrown if any input {@link String} is null or blank, or no vararg {@link String}s are provided
+     */
+    public static Set<Character> commonChars(final String first, final String... others) {
+        if (others.length == 0) {
+            throw new IllegalArgumentException("Must have at least two strings to compare");
+        }
+
+        if (first == null || first.isBlank()) {
+            throw new IllegalArgumentException("Input cannot be null or blank");
+        }
+
+        for (final String other : others) {
+            if (other == null || other.isBlank()) {
+                throw new IllegalArgumentException("Input cannot be null or blank");
+            }
+        }
+
+        final Set<Character> firstChars = new HashSet<>();
+        for (final char firstChar : first.toCharArray()) {
+            firstChars.add(firstChar);
+        }
+
+        final Collection<Set<Character>> allOtherChars = new HashSet<>();
+        for (final String other : others) {
+            final Set<Character> otherChars = new HashSet<>();
+            for (final char otherChar : other.toCharArray()) {
+                otherChars.add(otherChar);
+            }
+            allOtherChars.add(otherChars);
+        }
+
+        for (final Set<Character> otherChars : allOtherChars) {
+            firstChars.retainAll(otherChars);
+        }
+
+        return firstChars;
     }
 }

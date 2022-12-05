@@ -22,6 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import me.zodac.advent.pojo.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -131,7 +133,7 @@ class StringUtilsTest {
         final String input = "a";
         assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, 2))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Cannot remove 2 characters from input of length 1");
+            .hasMessageContaining("Cannot remove 2 characters from input of length: 1");
     }
 
     @Test
@@ -1038,5 +1040,147 @@ class StringUtilsTest {
         final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
         assertThat(output)
             .isEmpty();
+    }
+
+    @Test
+    void whenBisect_givenStringOfEvenLength_thenPairOfHalvesIsReturned() {
+        final String input = "abcdef";
+        final Pair<String, String> output = StringUtils.bisect(input);
+        assertThat(output)
+            .isEqualTo(Pair.of("abc", "def"));
+    }
+
+    @Test
+    void whenBisect_givenBlankStringOfEvenLength_thenPairOfHalvesIsReturned() {
+        final String input = "    ";
+        final Pair<String, String> output = StringUtils.bisect(input);
+        assertThat(output)
+            .isEqualTo(Pair.of("  ", "  "));
+    }
+
+    @Test
+    void whenBisect_givenStringOfOddLength_thenExceptionIsThrown() {
+        final String input = "abcdefg";
+        assertThatThrownBy(() -> StringUtils.bisect(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Cannot bisect input of length: 7");
+    }
+
+    @Test
+    void whenBisect_givenEmptyStringOfOddLength_thenExceptionIsThrown() {
+        final String input = "     ";
+        assertThatThrownBy(() -> StringUtils.bisect(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Cannot bisect input of length: 5");
+    }
+
+    @Test
+    void whenBisect_givenEmptyString_thenExceptionIsThrown() {
+        final String input = "";
+        assertThatThrownBy(() -> StringUtils.bisect(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Input cannot be null or empty");
+    }
+
+    @Test
+    void whenBisect_givenNullString_thenExceptionIsThrown() {
+        final String input = null;
+        assertThatThrownBy(() -> StringUtils.bisect(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Input cannot be null or empty");
+    }
+
+    @Test
+    void whenCommonChars_givenTwoStrings_andBothHasSingleCommonCharacter_thenCommonCharacterIsReturned() {
+        final String first = "abcd";
+        final String second = "aefg";
+
+        final Set<Character> output = StringUtils.commonChars(first, second);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactlyInAnyOrder('a');
+    }
+
+    @Test
+    void whenCommonChars_givenThreeStrings_andEachHasSingleCommonCharacter_thenCommonCharacterIsReturned() {
+        final String first = "abcd";
+        final String second = "aefg";
+        final String third = "ahij";
+
+        final Set<Character> output = StringUtils.commonChars(first, second, third);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactlyInAnyOrder('a');
+    }
+
+    @Test
+    void whenCommonChars_givenThreeStrings_andEachHasMultipleCommonCharacters_thenCommonCharactersAreReturned() {
+        final String first = "abcdz";
+        final String second = "aefgz";
+        final String third = "ahijz";
+
+        final Set<Character> output = StringUtils.commonChars(first, second, third);
+        assertThat(output)
+            .hasSize(2)
+            .containsExactlyInAnyOrder('a', 'z');
+    }
+
+    @Test
+    void whenCommonChars_givenThreeStrings_andThereAreNoCommonCharacters_thenEmptySetIsReturned() {
+        final String first = "abc";
+        final String second = "def";
+        final String third = "ghi";
+
+        final Set<Character> output = StringUtils.commonChars(first, second, third);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenCommonChars_givenOneString_thenExceptionIsThrownReturned() {
+        final String first = "abc";
+
+        assertThatThrownBy(() -> StringUtils.commonChars(first))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Must have at least two strings to compare");
+    }
+
+    @Test
+    void whenCommonChars_givenEmptyStringInput_thenExceptionIsThrown() {
+        final String first = "abc";
+        final String second = "def";
+        final String third = "ghi";
+        final String fourth = "";
+        final String fifth = "jkl";
+
+        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Input cannot be null or blank");
+    }
+
+    @Test
+    void whenCommonChars_givenBlankStringInput_thenExceptionIsThrown() {
+        final String first = "abc";
+        final String second = "def";
+        final String third = "ghi";
+        final String fourth = " ";
+        final String fifth = "jkl";
+
+        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Input cannot be null or blank");
+    }
+
+    @Test
+    void whenCommonChars_givenNullStringInput_thenExceptionIsThrown() {
+        final String first = "abc";
+        final String second = "def";
+        final String third = "ghi";
+        final String fourth = null;
+        final String fifth = "jkl";
+
+        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Input cannot be null or blank");
     }
 }

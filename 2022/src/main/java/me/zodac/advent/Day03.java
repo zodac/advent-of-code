@@ -19,11 +19,11 @@ package me.zodac.advent;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.CollectionUtils;
+import me.zodac.advent.util.StringUtils;
 
 /**
  * Solution for 2022, Day 3.
@@ -68,8 +68,8 @@ public final class Day03 {
         long total = 0L;
 
         for (final String value : values) {
-            final Pair<String, String> bisectedString = bisect(value);
-            final Set<Character> commonCharacters = commonChars(bisectedString.first(), bisectedString.second());
+            final Pair<String, String> bisectedString = StringUtils.bisect(value);
+            final Set<Character> commonCharacters = StringUtils.commonChars(bisectedString.first(), bisectedString.second());
             final Character commonCharacter = CollectionUtils.getFirst(commonCharacters); // Assuming only one common char
             total += VALUES.indexOf(commonCharacter);
         }
@@ -103,69 +103,18 @@ public final class Day03 {
      * @param amountPerGroup the number of entries per group of {@link String}s
      * @return the sum of all common {@link Character} values
      */
-    public static long sumCommonCharacterValuesInGroupedStrings(final Iterable<String> values, final int amountPerGroup) {
+    public static long sumCommonCharacterValuesInGroupedStrings(final Collection<String> values, final int amountPerGroup) {
         long total = 0L;
 
-        final Collection<Collection<String>> groupedValues = groupEntries(values, amountPerGroup);
+        final Collection<Collection<String>> groupedValues = CollectionUtils.group(values, amountPerGroup);
 
         for (final Collection<String> groupedValue : groupedValues) {
             final List<String> groupAsList = new ArrayList<>(groupedValue);
-            final Set<Character> commonCharacters = commonChars(groupAsList.get(0), groupAsList.get(1), groupAsList.get(2));
+            final Set<Character> commonCharacters = StringUtils.commonChars(groupAsList.get(0), groupAsList.get(1), groupAsList.get(2));
             final Character commonCharacter = CollectionUtils.getFirst(commonCharacters); // Assuming only one common char
             total += VALUES.indexOf(commonCharacter);
         }
 
         return total;
-    }
-
-    private static Collection<Collection<String>> groupEntries(final Iterable<String> values, final int amountPerGroup) {
-        final Collection<Collection<String>> groups = new ArrayList<>();
-
-        Collection<String> group = new ArrayList<>();
-        int counter = 0;
-        for (final String value : values) {
-            if (counter == amountPerGroup) {
-                groups.add(group);
-                group = new ArrayList<>();
-                counter = 0;
-            }
-
-            group.add(value);
-            counter++;
-        }
-
-        if (!group.isEmpty()) {
-            groups.add(group);
-        }
-
-        return groups;
-    }
-
-    private static Pair<String, String> bisect(final String input) {
-        final int middleIndex = input.length() / 2;
-        return Pair.of(input.substring(0, middleIndex), input.substring(middleIndex));
-    }
-
-    private static Set<Character> commonChars(final String first, final String... others) {
-        final Set<Character> firstChars = new HashSet<>();
-        for (final char firstChar : first.toCharArray()) {
-            firstChars.add(firstChar);
-        }
-
-        final Collection<Set<Character>> allOtherChars = new HashSet<>();
-
-        for (final String other : others) {
-            final Set<Character> otherChars = new HashSet<>();
-            for (final char otherChar : other.toCharArray()) {
-                otherChars.add(otherChar);
-            }
-            allOtherChars.add(otherChars);
-        }
-
-        for (final Set<Character> otherChars : allOtherChars) {
-            firstChars.retainAll(otherChars);
-        }
-
-        return firstChars;
     }
 }

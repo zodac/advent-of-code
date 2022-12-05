@@ -20,6 +20,7 @@ package me.zodac.advent.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -222,5 +223,51 @@ class CollectionUtilsTest {
         final boolean output = CollectionUtils.containsDuplicates(input);
         assertThat(output)
             .isFalse();
+    }
+
+    @Test
+    void whenGroup_givenValidCollection_thenGroupedCollectionsAreReturned() {
+        final List<String> input = List.of("a", "b", "c", "d");
+        final Collection<Collection<String>> output = CollectionUtils.group(input, 2);
+        assertThat(output)
+            .hasSize(2)
+            .containsExactly(
+                List.of("a", "b"),
+                List.of("c", "d")
+            );
+    }
+
+    @Test
+    void whenGroup_givenEmptyCollection_thenEmptyGroupIsReturned() {
+        final List<String> input = List.of();
+        final Collection<Collection<String>> output = CollectionUtils.group(input, 2);
+
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly(List.of());
+    }
+
+    @Test
+    void whenGroup_givenCollectionWithInvalidNumberOfEntries_thenExceptionIsThrown() {
+        final List<String> input = List.of("a");
+        assertThatThrownBy(() -> CollectionUtils.group(input, 2))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Expected number of entries to be divisible by 2, found: 1");
+    }
+
+    @Test
+    void whenGroup_givenCollection_andZeroAmountPerGroup_thenExceptionIsThrown() {
+        final List<String> input = List.of("a");
+        assertThatThrownBy(() -> CollectionUtils.group(input, 0))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("amountPerGroup must be at least 1, found: 0");
+    }
+
+    @Test
+    void whenGroup_givenCollection_andNegativeAmountPerGroup_thenExceptionIsThrown() {
+        final List<String> input = List.of("a");
+        assertThatThrownBy(() -> CollectionUtils.group(input, -2))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("amountPerGroup must be at least 1, found: -2");
     }
 }

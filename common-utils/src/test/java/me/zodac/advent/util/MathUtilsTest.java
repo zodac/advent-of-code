@@ -61,7 +61,7 @@ class MathUtilsTest {
     }
 
     @Test
-    void whenIsEven_givenEvenNnumber_thenTrueIsReturned() {
+    void whenIsEven_givenEvenNumber_thenTrueIsReturned() {
         final int input = 2;
         final boolean output = MathUtils.isEven(input);
         assertThat(output)
@@ -69,7 +69,7 @@ class MathUtilsTest {
     }
 
     @Test
-    void whenIsEven_givenOddNnumber_thenFalseIsReturned() {
+    void whenIsEven_givenOddNumber_thenFalseIsReturned() {
         final int input = 3;
         final boolean output = MathUtils.isEven(input);
         assertThat(output)
@@ -77,7 +77,7 @@ class MathUtilsTest {
     }
 
     @Test
-    void whenIsEven_givenEvenNegativeNnumber_thenTrueIsReturned() {
+    void whenIsEven_givenEvenNegativeNumber_thenTrueIsReturned() {
         final int input = -2;
         final boolean output = MathUtils.isEven(input);
         assertThat(output)
@@ -85,9 +85,41 @@ class MathUtilsTest {
     }
 
     @Test
-    void whenIsEven_givenOddNegativeNnumber_thenFalseIsReturned() {
+    void whenIsEven_givenOddNegativeNumber_thenFalseIsReturned() {
         final int input = -3;
         final boolean output = MathUtils.isEven(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsOdd_givenOddNumber_thenTrueIsReturned() {
+        final int input = 3;
+        final boolean output = MathUtils.isOdd(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsOdd_givenEvenNumber_thenFalseIsReturned() {
+        final int input = 2;
+        final boolean output = MathUtils.isOdd(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsOdd_givenOddNegativeNumber_thenTrueIsReturned() {
+        final int input = -3;
+        final boolean output = MathUtils.isOdd(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsOdd_givenEvenNegativeNumber_thenFalseIsReturned() {
+        final int input = -2;
+        final boolean output = MathUtils.isOdd(input);
         assertThat(output)
             .isFalse();
     }
@@ -198,5 +230,68 @@ class MathUtilsTest {
         assertThatThrownBy(() -> MathUtils.multiplyElementsThenSum(first, second))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Inputs must be of same length, found: 3 and 1");
+    }
+
+    @Test
+    void whenIsBetween_givenInputBetweenRange_thenTrueIsReturned() {
+        final int input = 3;
+        final boolean output = MathUtils.isBetween(1, 5, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenInputEqualToStart_thenTrueIsReturned() {
+        final int input = 3;
+        final boolean output = MathUtils.isBetween(3, 5, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenInputEqualToEnd_thenTrueIsReturned() {
+        final int input = 3;
+        final boolean output = MathUtils.isBetween(1, 3, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenRangeAndInputEqual_thenTrueIsReturned() {
+        final int input = 1;
+        final boolean output = MathUtils.isBetween(1, 1, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenNegativeValues_andInputBetweenRange_thenTrueIsReturned() {
+        final int input = -3;
+        final boolean output = MathUtils.isBetween(-5, -1, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenInputNotBetweenRange_thenFalseIsReturned() {
+        final int input = 9;
+        final boolean output = MathUtils.isBetween(1, 5, input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsBetween_givenNegativeValues_andInputNotBetweenRange_thenFalseIsReturned() {
+        final int input = -9;
+        final boolean output = MathUtils.isBetween(-5, -1, input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsBetween_givenRangeEndIsLessThanRangeStart_thenExceptionIsThrown() {
+        assertThatThrownBy(() -> MathUtils.isBetween(1, 0, 2))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Cannot have end 0 less than start 1");
     }
 }

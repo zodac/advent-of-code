@@ -73,6 +73,17 @@ public final class MathUtils {
     }
 
     /**
+     * Checks if the input {@code int} is odd.
+     *
+     * @param value the {@code int} to check
+     * @return {@code true} if the {@code int} is odd
+     * @see #isEven(int)
+     */
+    public static boolean isOdd(final int value) {
+        return !isEven(value);
+    }
+
+    /**
      * Checks if any of the input {@code values} are less than the provided {@code lessThanValue}.
      *
      * @param lessThanValue the value to compare against
@@ -112,5 +123,22 @@ public final class MathUtils {
         }
 
         return total;
+    }
+
+    /**
+     * Checks if the given {@link Integer} is between two other {@link Integer}s.
+     *
+     * @param start the start of the {@link Integer} range
+     * @param end   the end of the {@link Integer} range
+     * @param input the value to check
+     * @return {@code true} if the input is within the {@link Integer} range
+     * @throws IllegalArgumentException thrown if the {@code end} value is less than the {@code start} value
+     */
+    public static boolean isBetween(final int start, final int end, final int input) {
+        if (end < start) {
+            throw new IllegalArgumentException(String.format("Cannot have end %s less than start %s", end, start));
+        }
+
+        return input >= start && input <= end;
     }
 }

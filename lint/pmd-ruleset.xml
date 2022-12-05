@@ -21,13 +21,13 @@
         <!-- False positives with AssertJ using #as() to include an error message -->
         <exclude name="JUnitAssertionsShouldIncludeMessage"/>
         <!-- False positives when using 2D arrays -->
-        <exclude name="UseVarargs" />
+        <exclude name="UseVarargs"/>
     </rule>
     <!-- When using an indexed FOR loop, certain scenarios exist where I'd like to skip the increment -->
     <rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables">
         <properties>
-            <property name="foreachReassign" value="deny" />
-            <property name="forReassign" value="skip" />
+            <property name="foreachReassign" value="deny"/>
+            <property name="forReassign" value="skip"/>
         </properties>
     </rule>
 
@@ -93,8 +93,8 @@
     <!-- Default threshold is a bit high for some of our classes -->
     <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
-            <property name="classReportLevel" value="80"/>
-            <property name="methodReportLevel" value="20"/>
+            <property name="classReportLevel" value="200"/>
+            <property name="methodReportLevel" value="200"/>
         </properties>
     </rule>
     <!-- Default threshold is a bit high for some of our classes -->
@@ -103,6 +103,12 @@
             <property name="methodReportLevel" value="70"/>
             <property name="classReportLevel" value="1500"/>
             <property name="ncssOptions" value=""/>
+        </properties>
+    </rule>
+    <!-- Default threshold is a bit high for some of our classes -->
+    <rule ref="category/java/design.xml/NPathComplexity">
+        <properties>
+            <property name="reportLevel" value="1000"/>
         </properties>
     </rule>
 
@@ -121,7 +127,7 @@
         <exclude name="BeanMembersShouldSerialize"/>
 
         <!-- Helper classes can cause this to fail, not worth changing them -->
-        <exclude name="TestClassWithoutTestCases" />
+        <exclude name="TestClassWithoutTestCases"/>
     </rule>
 
     <rule ref="category/java/multithreading.xml">

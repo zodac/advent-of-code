@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.ArrayUtils;
-import me.zodac.advent.util.CollectionUtils;
 
 /**
  * Class defining a {@link CoordinateGrid} of {@link Boolean}s, where any point can have its value turned 'on' or 'off'.

@@ -17,6 +17,8 @@
 
 package me.zodac.advent.pojo;
 
+import me.zodac.advent.util.MathUtils;
+
 /**
  * Simple class defining a numeric {@link Range} of {@link Integer}s.
  *
@@ -26,7 +28,7 @@ package me.zodac.advent.pojo;
 public record Range(int start, int end) {
 
     /**
-     * Creates a {@link Range}
+     * Creates a {@link Range}.
      *
      * @param start the start of the {@link Range}
      * @param end   the end of the {@link Range}
@@ -73,13 +75,9 @@ public record Range(int start, int end) {
      * @return {@code true} if there is a partial overlap of either {@link Range}
      */
     public boolean hasPartialOverlap(final Range other) {
-        return isBetween(start, end, other.start)
-            || isBetween(start, end, other.end)
-            || isBetween(other.start, other.end, start)
-            || isBetween(other.start, other.end, end);
-    }
-
-    private static boolean isBetween(final int first, final int second, final int input) {
-        return input >= first && input <= second;
+        return MathUtils.isBetween(start, end, other.start)
+            || MathUtils.isBetween(start, end, other.end)
+            || MathUtils.isBetween(other.start, other.end, start)
+            || MathUtils.isBetween(other.start, other.end, end);
     }
 }
