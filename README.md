@@ -1,6 +1,6 @@
 # Advent Of Code: Java Edition
 
-![](https://img.shields.io/badge/2022%20⭐-10-yellow)
+![](https://img.shields.io/badge/2022%20⭐-12-yellow)
 ![](https://img.shields.io/badge/2021%20⭐-19-orange)
 ![](https://img.shields.io/badge/2020%20⭐-0-red)
 ![](https://img.shields.io/badge/2019%20⭐-0-red)
@@ -49,6 +49,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 3](https://adventofcode.com/2022/day/3) |   ⭐    |   ⭐    |
 | [Day 4](https://adventofcode.com/2022/day/4) |   ⭐    |   ⭐    |
 | [Day 5](https://adventofcode.com/2022/day/5) |   ⭐    |   ⭐    |
+| [Day 6](https://adventofcode.com/2022/day/6) |   ⭐    |   ⭐    |
 
 </details>
 
