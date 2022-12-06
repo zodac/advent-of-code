@@ -129,6 +129,16 @@ public final class StringUtils {
     }
 
     /**
+     * Checks whether the input {@link String} has any duplicate characters.
+     *
+     * @param input the input {@link String} to check
+     * @return {@code true} if the {@link String} contains at least one duplicate character
+     */
+    public static boolean containsDuplicates(final CharSequence input) {
+        return input != null && input.length() != input.chars().distinct().count();
+    }
+
+    /**
      * Checks if the characters in the provided {@code superString} is a superset for all provided {@code subStrings}.
      *
      * @param superString the {@link String} that should contain all characters in all {@code subStrings}

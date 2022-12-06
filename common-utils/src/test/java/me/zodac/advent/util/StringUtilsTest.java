@@ -262,12 +262,52 @@ class StringUtilsTest {
     }
 
     @Test
+    void whenContainsDuplicates_givenStringWithDuplicates_thenTrueIsReturned() {
+        final String input = "abca";
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenStringWithNoDuplicates_thenFalseIsReturned() {
+        final String input = "abc";
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenEmptyString_thenFalseIsReturned() {
+        final String input = "";
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenBlankString_thenFalseIsReturned() {
+        final String input = " ";
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenNullString_thenFalseIsReturned() {
+        final String input = null;
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
     void whenContainsAll_givenValidSuperString_andValidSubString_thenTrueIsReturned() {
         final String superString = "abcdef";
         final String[] subStrings = {"abc"};
 
-        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -276,8 +316,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abc", "bcd", "def"};
 
-        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -286,8 +326,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abcdef"};
 
-        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -296,8 +336,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abcdefghij"};
 
-        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -306,8 +346,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {};
 
-        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -316,8 +356,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {""};
 
-        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -326,8 +366,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {" "};
 
-        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -336,8 +376,8 @@ class StringUtilsTest {
         final String superString = "";
         final String[] subStrings = {"abc", "def"};
 
-        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -346,8 +386,8 @@ class StringUtilsTest {
         final String superString = " ";
         final String[] subStrings = {"abc", "def"};
 
-        final boolean result = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -356,8 +396,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abc"};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -366,8 +406,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abc", "cde", "efg"};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -376,8 +416,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abc", "ghi", "jkl", "mno"};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -386,8 +426,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"ghi"};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -396,8 +436,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"ghi", "jkl", "mno"};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -406,8 +446,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abcdef"};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -416,8 +456,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {"abcdefghij"};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -426,8 +466,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -436,8 +476,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {""};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isTrue();
     }
 
@@ -446,8 +486,8 @@ class StringUtilsTest {
         final String superString = "abcdef";
         final String[] subStrings = {" "};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -456,8 +496,8 @@ class StringUtilsTest {
         final String superString = "";
         final String[] subStrings = {"abc", "def"};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 
@@ -466,8 +506,8 @@ class StringUtilsTest {
         final String superString = " ";
         final String[] subStrings = {"abc", "def"};
 
-        final boolean result = StringUtils.containsAny(superString, subStrings);
-        assertThat(result)
+        final boolean output = StringUtils.containsAny(superString, subStrings);
+        assertThat(output)
             .isFalse();
     }
 

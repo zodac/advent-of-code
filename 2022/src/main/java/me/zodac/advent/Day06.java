@@ -17,9 +17,7 @@
 
 package me.zodac.advent;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import me.zodac.advent.util.CollectionUtils;
+import me.zodac.advent.util.StringUtils;
 
 /**
  * Solution for 2022, Day 6.
@@ -33,28 +31,27 @@ public final class Day06 {
     }
 
     /**
-     * Given a {@link String} input, we look for the first sequence of {@code numberOfCharactersNeeded} unique characters, beginning at the start of
-     * the {@link String}. We then return the location (index + 1) of the {@code numberOfCharactersNeeded}-th character in that sequence.
+     * Given a {@link String} input, we look for the first sequence of {@code numberOfUniqueCharactersNeeded} unique characters, beginning at the
+     * start of the {@link String}. We then return the location (index + 1) of the {@code numberOfUniqueCharactersNeeded}-th character in that
+     * sequence.
      *
      * <p>
      * For example, given the {@link String} {@code nppdvjthqldpwncqszvftbrmjlhg}, the first sequence of <b>4</b> unique characters it at index 5, so
      * we return the value of the location, 6.
      *
-     * @param input                    the input {@link String}
-     * @param numberOfCharactersNeeded the number of unique characters in sequence to be found
-     * @return the first location (index + 1) signifying at least {@code numberOfCharactersNeeded} unique characters exist in a sequence
-     * @throws IllegalArgumentException if {@code numberOfCharactersNeeded} unique characters cannot be found in sequence
+     * @param input                          the input {@link String}
+     * @param numberOfUniqueCharactersNeeded the number of unique characters in sequence to be found
+     * @return the first location (index + 1) signifying at least {@code numberOfUniqueCharactersNeeded} unique characters exist in a sequence
+     * @throws IllegalArgumentException if {@code numberOfUniqueCharactersNeeded} unique characters cannot be found in sequence
      */
-    public static long findSequenceOfUniqueCharactersAndReturnLastIndex(final String input, final int numberOfCharactersNeeded) {
-        for (int firstIndexInSequence = 0; firstIndexInSequence < input.length() - numberOfCharactersNeeded; firstIndexInSequence++) {
-            final Collection<Character> charactersInSequence = new ArrayList<>();
+    public static long findSequenceOfUniqueCharactersAndReturnLastIndex(final String input, final int numberOfUniqueCharactersNeeded) {
+        for (int i = 0; i < input.length() - numberOfUniqueCharactersNeeded; i++) {
 
-            for (int i = 0; i < numberOfCharactersNeeded; i++) {
-                charactersInSequence.add(input.charAt(firstIndexInSequence + i));
-            }
+            // 'Window' the string from index to the wanted number of unique characters, then check for duplicates
+            final String subStringToCheck = input.substring(i, i + numberOfUniqueCharactersNeeded);
 
-            if (!CollectionUtils.containsDuplicates(charactersInSequence)) {
-                return firstIndexInSequence + numberOfCharactersNeeded;
+            if (!StringUtils.containsDuplicates(subStringToCheck)) {
+                return i + numberOfUniqueCharactersNeeded;
             }
         }
 
