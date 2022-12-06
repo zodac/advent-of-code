@@ -34,12 +34,36 @@ public final class ArrayUtils {
     }
 
     /**
-     * Converts the provided {@link Collection} of {@link List}s of {@link Boolean}s to a 2D array.
+     * For a 2D char array, checks whether that the length of each of the inner arrays are different.
+     *
+     * @param input the input 2D char array to check
+     * @return {@code true} if any of the inner array lengths differ
+     */
+    public static boolean areColumnLengthsDifferent(final char[][] input) {
+        if (input.length == 0) {
+            return false;
+        }
+
+        final int firstLength = input[0].length;
+
+        for (int i = 1; i < input.length; i++) {
+            final char[] element = input[i];
+
+            if (element.length != firstLength) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Converts the provided {@link Collection} of {@link List}s of {@link Boolean}s to a 2D {@link Boolean} array.
      *
      * @param input the input {@link Collection} of {@link List}s
      * @return the 2D {@link Boolean} array
      */
-    public static Boolean[][] convertToArrayOfArrays(final Collection<? extends List<Boolean>> input) {
+    public static Boolean[][] convertToArrayOfBooleanArrays(final Collection<? extends List<Boolean>> input) {
         final Boolean[][] array = new Boolean[input.size()][];
 
         int i = 0;
@@ -48,6 +72,56 @@ public final class ArrayUtils {
         }
 
         return array;
+    }
+
+    /**
+     * Converts the provided {@link List} of {@link String}s into a 2D char array.
+     *
+     * <p>
+     * Given a {@link List} as follows:
+     * <pre>
+     *     [
+     *      "abcd",
+     *      "efg",
+     *      "hi",
+     *      "jkl"
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * The result will be:
+     * <pre>
+     *     [
+     *      ['a', 'b', 'c', 'd'],
+     *      ['e', 'f', 'g'],
+     *      ['h', 'i'],
+     *      ['j, 'k', 'l']
+     *     ]
+     * </pre>
+     *
+     * @param input the input {@link List} of {@link String}s
+     * @return the 2D char array
+     */
+    public static char[][] convertToArrayOfCharArrays(final List<String> input) {
+        if (input.isEmpty() || input.get(0).isEmpty()) {
+            return EMPTY_2D_CHAR_ARRAY.clone();
+        }
+
+        final int outerLength = input.size();
+        final int innerLength = input
+            .stream()
+            .mapToInt(String::length)
+            .max()
+            .orElse(outerLength);
+
+        final char[][] arrayOfCharArrays = new char[outerLength][innerLength];
+
+        for (int i = 0; i < input.size(); i++) {
+            final String line = input.get(i);
+            arrayOfCharArrays[i] = line.toCharArray();
+        }
+
+        return arrayOfCharArrays;
     }
 
     /**
@@ -72,56 +146,6 @@ public final class ArrayUtils {
         }
 
         throw new IllegalArgumentException(String.format("No value in input is greater than %s", thresholdValue));
-    }
-
-    /**
-     * Parses the input {@link List} of {@link String}s, and returns it as a 2D char[][].
-     *
-     * <p>
-     * Given a {@link List} as follows:
-     * <pre>
-     *     [
-     *      "abcd",
-     *      "efg",
-     *      "hi",
-     *      "jkl"
-     *     ]
-     * </pre>
-     *
-     * <p>
-     * The result will be:
-     * <pre>
-     *     [
-     *      ['a', 'b', 'c', 'd'],
-     *      ['e', 'f', 'g'],
-     *      ['h', 'i'],
-     *      ['j, 'k', 'l']
-     *     ]
-     * </pre>
-     *
-     * @param input the input {@link String}
-     * @return the parsed char[][]
-     */
-    public static char[][] parseList(final List<String> input) {
-        if (input.isEmpty() || input.get(0).isEmpty()) {
-            return EMPTY_2D_CHAR_ARRAY.clone();
-        }
-
-        final int outerLength = input.size();
-        final int innerLength = input
-            .stream()
-            .mapToInt(String::length)
-            .max()
-            .orElse(outerLength);
-
-        final char[][] arrayOfCharArrays = new char[outerLength][innerLength];
-
-        for (int i = 0; i < input.size(); i++) {
-            final String line = input.get(i);
-            arrayOfCharArrays[i] = line.toCharArray();
-        }
-
-        return arrayOfCharArrays;
     }
 
     /**
@@ -214,29 +238,5 @@ public final class ArrayUtils {
         }
 
         return transposedArray;
-    }
-
-    /**
-     * For a 2D char array, checks whether that the length of each of the inner arrays are different.
-     *
-     * @param input the input 2D char array to check
-     * @return {@code true} if any of the inner array lengths differ
-     */
-    public static boolean areColumnLengthsDifferent(final char[][] input) {
-        if (input.length == 0) {
-            return false;
-        }
-
-        final int firstLength = input[0].length;
-
-        for (int i = 1; i < input.length; i++) {
-            final char[] element = input[i];
-
-            if (element.length != firstLength) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

@@ -61,7 +61,7 @@ class Day05Test {
 
     private static Map<Integer, Deque<String>> getStacksById(final Pair<? extends List<String>, List<String>> values) {
         final List<String> input = values.first();
-        final char[][] arrayOfCharArrays = ArrayUtils.parseList(input);
+        final char[][] arrayOfCharArrays = ArrayUtils.convertToArrayOfCharArrays(input);
         final char[][] reversedArrayOfCharArrays = ArrayUtils.reverseRows(arrayOfCharArrays);
         final char[][] transposedArrayOfCharArrays = ArrayUtils.transpose(reversedArrayOfCharArrays);
 

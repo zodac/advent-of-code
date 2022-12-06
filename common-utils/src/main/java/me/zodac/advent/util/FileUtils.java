@@ -31,7 +31,7 @@ import java.util.function.Predicate;
 import me.zodac.advent.pojo.tuple.Pair;
 
 /**
- * Utility class with functions for accessing files.
+ * Utility class with functions for reading {@link String}s from files.
  */
 public final class FileUtils {
 
@@ -54,6 +54,51 @@ public final class FileUtils {
         } catch (final IOException | URISyntaxException e) {
             return Collections.emptyList();
         }
+    }
+
+    /**
+     * Reads all lines from a file in {@code src/main/resources}, then splits the {@link List} in two, with the split occurring when the provided
+     * {@link Predicate} is met.
+     *
+     * <ul>
+     *     <li>The line which matches the {@link Predicate} is discarded and not included in the output</li>
+     *     <li>Even if the {@link Predicate} can be met multiple times, only the first will be considered</li>
+     *     <li>If the {@link Predicate} is not met, we return a {@link Pair} of the full {@link List} and an empty {@link List}</li>
+     * </ul>
+     *
+     * @param filePathInResources file path to be read
+     * @param predicate           the {@link Predicate} defining where the {@link List} is to be split
+     * @return a {@link Pair} of {@link List}s of {@link String} lines
+     * @see #readLines(String)
+     */
+    public static Pair<List<String>, List<String>> readLinesAndSplit(final String filePathInResources, final Predicate<? super String> predicate) {
+        final List<String> lines = readLines(filePathInResources);
+
+        if (lines.isEmpty()) {
+            return Pair.of(List.of(), List.of());
+        }
+
+        final List<String> first = new ArrayList<>();
+
+        boolean lookingForPredicateMatch = true;
+        int index = 0;
+        while (lookingForPredicateMatch && index < lines.size()) {
+            final String line = lines.get(index);
+            if (predicate.test(line)) {
+                lookingForPredicateMatch = false;
+            } else {
+                first.add(line);
+            }
+
+            index++;
+        }
+
+        if (lookingForPredicateMatch) {
+            return Pair.of(first, List.of());
+        }
+
+        final List<String> second = lines.subList(index, lines.size());
+        return Pair.of(first, second);
     }
 
     /**
@@ -85,61 +130,21 @@ public final class FileUtils {
     }
 
     /**
-     * Reads all lines from a file in {@code src/main/resources}, then splits the {@link List} in two, with the split occurring when the provided
-     * {@link Predicate} is met.
-     *
-     * <ul>
-     *     <li>The line which matches the {@link Predicate} is discarded and not included in the output</li>
-     *     <li>Even if the {@link Predicate} can be met multiple times, only the first will be considered</li>
-     *     <li>If the {@link Predicate} is not met, we return a {@link Pair} of the full {@link List} and an empty {@link List}</li>
-     * </ul>
-     *
-     * @param filePathInResources file path to be read
-     * @param predicate           the {@link Predicate} defining where the {@link List} is to be split
-     * @return a {@link Pair} of {@link List}s of {@link String} lines
-     * @see #readLines(String)
-     */
-    public static Pair<List<String>, List<String>> readLinesAndSplit(final String filePathInResources, final Predicate<? super String> predicate) {
-        final List<String> lines = readLines(filePathInResources);
-
-        if (lines.isEmpty()) {
-            return Pair.of(List.of(), List.of());
-        }
-
-        final List<String> first = new ArrayList<>();
-
-        boolean lookingForDelimiter = true;
-        int index = 0;
-        while (lookingForDelimiter && index < lines.size()) {
-            final String line = lines.get(index);
-            if (predicate.test(line)) {
-                lookingForDelimiter = false;
-            } else {
-                first.add(line);
-            }
-
-            index++;
-        }
-
-        if (lookingForDelimiter) {
-            return Pair.of(first, List.of());
-        }
-
-        final List<String> second = lines.subList(index, lines.size());
-        return Pair.of(first, second);
-    }
-
-    /**
      * Reads all lines from a file in {@code src/main/resources} where each line is a row of comma-separated {@link Integer}s.
      *
      * @param filePathInResources file path to be read
      * @return a {@link List} of each line from the file as a {@link List} of {@link Integer}s, or {@link Collections#emptyList()} if an error occurs
+     * @throws IllegalArgumentException thrown if any value is not a valid {@link Integer} separated by commas
      */
-    public static List<List<Integer>> readCommaSeparatedIntegers(final String filePathInResources) {
-        return readLines(filePathInResources)
-            .stream()
-            .map(input -> Arrays.asList(input.split(",")))
-            .map(listOfStrings -> listOfStrings.stream().mapToInt(Integer::parseInt).boxed().toList())
-            .toList();
+    public static List<List<Integer>> readSingleLineOfCommaSeparatedIntegers(final String filePathInResources) {
+        try {
+            return readLines(filePathInResources)
+                .stream()
+                .map(input -> Arrays.asList(input.split(",")))
+                .map(listOfStrings -> listOfStrings.stream().mapToInt(Integer::parseInt).boxed().toList())
+                .toList();
+        } catch (final NumberFormatException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

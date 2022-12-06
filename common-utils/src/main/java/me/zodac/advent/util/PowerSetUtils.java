@@ -36,48 +36,72 @@ public final class PowerSetUtils {
     }
 
     /**
-     * Generates the power-set of the input {@link Set}. The power-set is the {@link Set} that contains all possible combinations of the input
-     * {@link Set}.
+     * Generates a power-list of the input with duplicates, then filters based on the provided {@link PowerSetFilter}.
      *
      * <p>
-     * For example, given an input of {@code {1, 2, 3}}, the power-set would be:
+     * For an example, take the input {@link List}: [1, 5, 25, 500]. Suppose we wanted a power-list, but only combinations where the sum of numbers
+     * less than <b>10</b> are equal to <b>6</b>. The full power-list would be:
+     *
      * <pre>
      *     {
      *       {}
      *       {1}
-     *       {2}
-     *       {3}
-     *       {1, 2}
-     *       {1, 3}
-     *       {2, 3}
-     *       {1, 2, 3}
+     *       {5}
+     *       {25}
+     *       {500}
+     *       {1, 5}
+     *       {1, 25}
+     *       {1, 500}
+     *       {5, 25}
+     *       {5, 500}
+     *       {25, 500}
+     *       {1, 5, 25}
+     *       {1, 5, 500}
+     *       {1, 25, 500}
+     *       {5, 25, 500}
+     *       {1, 5, 25, 500}
      *     }
      * </pre>
      *
-     * @param input the input {@link Set}
-     * @param <T>   the type of the {@link Set}
-     * @return the power-set of the input, with 2^n entries
+     * <p>
+     * Of these, the valid ones would be:
+     *
+     * <pre>
+     *     {
+     *       {1, 5}
+     *       {1, 5, 25}
+     *       {1, 5, 500}
+     *       {1, 5, 25, 500}
+     *     }
+     * </pre>
+     *
+     * <p>
+     * We would define a {@link PowerSetFilter} to represent this as follows:
+     *
+     * <pre>
+     *     {@code
+     *     // Group combination values into units/tens/hundreds, and only allow combos where units equal 6 (contain 5 and 1)
+     *     final PowerSetFilter<Integer, Integer> powerSetFilter = new PowerSetFilter<>(
+     *         i -> i / 10,
+     *         Map.of(
+     *             0, zeros -> zeros != null && zeros.stream().mapToInt(i -> i).sum() == 6
+     *         )
+     *     );
+     *     }
+     * </pre>
+     *
+     * @param input          the input {@link List}
+     * @param powerSetFilter the {@link PowerSetFilter}s to filter the available combinations
+     * @param <T>            the type of the {@link List}
+     * @param <G>            the key type of the groups of the input {@link List}
+     * @return the filtered power-list of the input
      * @see #getPowerList(List)
      */
-    public static <T> Set<Set<T>> getPowerSet(final Set<? extends T> input) {
-        final Set<Set<T>> powerSet = new HashSet<>();
-        if (input.isEmpty()) {
-            powerSet.add(new HashSet<>(0));
-            return powerSet;
-        }
-
-        final List<T> list = new ArrayList<>(input);
-        final T head = list.remove(0);
-        final Set<T> remainder = new HashSet<>(list);
-
-        for (final Set<T> subSet : getPowerSet(remainder)) {
-            final Set<T> newSet = new HashSet<>();
-            newSet.add(head);
-            newSet.addAll(subSet);
-            powerSet.add(newSet);
-            powerSet.add(subSet);
-        }
-        return powerSet;
+    public static <T, G> List<List<T>> getFilteredPowerList(final List<T> input, final PowerSetFilter<G, ? super T> powerSetFilter) {
+        return getPowerList(input)
+            .stream()
+            .filter(combinations -> isValidCombination(combinations, powerSetFilter))
+            .toList();
     }
 
     /**
@@ -196,72 +220,48 @@ public final class PowerSetUtils {
     }
 
     /**
-     * Generates a power-list of the input with duplicates, then filters based on the provided {@link PowerSetFilter}.
+     * Generates the power-set of the input {@link Set}. The power-set is the {@link Set} that contains all possible combinations of the input
+     * {@link Set}.
      *
      * <p>
-     * For an example, take the input {@link List}: [1, 5, 25, 500]. Suppose we wanted a power-list, but only combinations where the sum of numbers
-     * less than <b>10</b> are equal to <b>6</b>. The full power-list would be:
-     *
+     * For example, given an input of {@code {1, 2, 3}}, the power-set would be:
      * <pre>
      *     {
      *       {}
      *       {1}
-     *       {5}
-     *       {25}
-     *       {500}
-     *       {1, 5}
-     *       {1, 25}
-     *       {1, 500}
-     *       {5, 25}
-     *       {5, 500}
-     *       {25, 500}
-     *       {1, 5, 25}
-     *       {1, 5, 500}
-     *       {1, 25, 500}
-     *       {5, 25, 500}
-     *       {1, 5, 25, 500}
+     *       {2}
+     *       {3}
+     *       {1, 2}
+     *       {1, 3}
+     *       {2, 3}
+     *       {1, 2, 3}
      *     }
      * </pre>
      *
-     * <p>
-     * Of these, the valid ones would be:
-     *
-     * <pre>
-     *     {
-     *       {1, 5}
-     *       {1, 5, 25}
-     *       {1, 5, 500}
-     *       {1, 5, 25, 500}
-     *     }
-     * </pre>
-     *
-     * <p>
-     * We would define a {@link PowerSetFilter} to represent this as follows:
-     *
-     * <pre>
-     *     {@code
-     *     // Group combination values into units/tens/hundreds, and only allow combos where units equal 6 (contain 5 and 1)
-     *     final PowerSetFilter<Integer, Integer> powerSetFilter = new PowerSetFilter<>(
-     *         i -> i / 10,
-     *         Map.of(
-     *             0, zeros -> zeros != null && zeros.stream().mapToInt(i -> i).sum() == 6
-     *         )
-     *     );
-     *     }
-     * </pre>
-     *
-     * @param input          the input {@link List}
-     * @param powerSetFilter the {@link PowerSetFilter}s to filter the available combinations
-     * @param <T>            the type of the {@link List}
-     * @param <G>            the key type of the groups of the input {@link List}
-     * @return the filtered power-list of the input
+     * @param input the input {@link Set}
+     * @param <T>   the type of the {@link Set}
+     * @return the power-set of the input, with 2^n entries
      * @see #getPowerList(List)
      */
-    public static <T, G> List<List<T>> getFilteredPowerList(final List<T> input, final PowerSetFilter<G, ? super T> powerSetFilter) {
-        return getPowerList(input)
-            .stream()
-            .filter(combinations -> isValidCombination(combinations, powerSetFilter))
-            .toList();
+    public static <T> Set<Set<T>> getPowerSet(final Set<? extends T> input) {
+        final Set<Set<T>> powerSet = new HashSet<>();
+        if (input.isEmpty()) {
+            powerSet.add(new HashSet<>(0));
+            return powerSet;
+        }
+
+        final List<T> list = new ArrayList<>(input);
+        final T head = list.remove(0);
+        final Set<T> remainder = new HashSet<>(list);
+
+        for (final Set<T> subSet : getPowerSet(remainder)) {
+            final Set<T> newSet = new HashSet<>();
+            newSet.add(head);
+            newSet.addAll(subSet);
+            powerSet.add(newSet);
+            powerSet.add(subSet);
+        }
+        return powerSet;
     }
 
     private static <T, G> boolean isValidCombination(final Collection<? extends T> powerSetCombinations, final PowerSetFilter<G, T> powerSetFilter) {

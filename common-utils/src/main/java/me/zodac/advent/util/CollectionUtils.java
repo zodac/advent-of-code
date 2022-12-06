@@ -36,44 +36,35 @@ public final class CollectionUtils {
     }
 
     /**
-     * For cases when the value of a {@link Map} might be known, but the key is not. We iterate over all {@link Map.Entry}s and check the value. If it
-     * matches the input, then the key for that {@link Map.Entry} is returned.
+     * Checks whether the input {@link Collection} has any duplicates.
      *
-     * @param map   the {@link Map} to be searched
-     * @param value the value whose key is to be found
-     * @param <K>   the type of the key
-     * @param <V>   the type of the value
-     * @return an {@link Optional} of the found key
+     * @param input the input {@link Collection} to check
+     * @param <T>   the type of the {@link Collection}
+     * @return {@code true} if the {@link Collection} contains at least one duplicate
      */
-    public static <K, V> Optional<K> getKeyByValue(final Map<K, V> map, final V value) {
-        for (final Map.Entry<K, V> entry : map.entrySet()) {
-            if (entry.getValue().equals(value)) {
-                return Optional.of(entry.getKey());
-            }
+    public static <T> boolean containsDuplicates(final Collection<T> input) {
+        if (input == null || input.isEmpty()) {
+            return false;
         }
 
-        return Optional.empty();
+        return input.stream().distinct().count() != input.size();
     }
 
     /**
-     * Returns the value at the middle index of a {@link List}. The {@link List} is sorted then the middle index is returned.
+     * Extracts a value from the {@link Collection} of {@code elements}, based on the provided {@link Function}. The {@link Function} will be used to
+     * map a new value for each element.
      *
-     * @param list the {@link List} whose middle index is to be found
-     * @param <E>  the type of the {@link List}, must extend {@link Comparable}
-     * @return the value at the middle of the sorted {@link List}
-     * @throws IllegalArgumentException thrown if the {@link List} has an even size
+     * @param elements           the {@link Collection} to be mapped
+     * @param extractionFunction the {@link Function} used to extract a value
+     * @param <I>                the type of the input {@link Collection} of {@code elements}
+     * @param <O>                the type of the output values which will be mapped by the {@link Function}
+     * @return the updated {@link Collection}
      */
-    public static <E extends Comparable<E>> E getMiddleValueOfList(final List<E> list) {
-        final int listSize = list.size();
-        if (list.isEmpty() || MathUtils.isEven(listSize)) {
-            throw new IllegalArgumentException("Expected list with positive odd size, found size: " + listSize);
-        }
-
-        final List<E> modifiableList = new ArrayList<>(list);
-        Collections.sort(modifiableList);
-
-        final int middleIndex = listSize / 2;
-        return modifiableList.get(middleIndex);
+    public static <I, O> List<O> extractValuesAsList(final Collection<I> elements, final Function<? super I, O> extractionFunction) {
+        return elements
+            .stream()
+            .map(extractionFunction)
+            .toList();
     }
 
     /**
@@ -136,6 +127,26 @@ public final class CollectionUtils {
     }
 
     /**
+     * For cases when the value of a {@link Map} might be known, but the key is not. We iterate over all {@link Map.Entry}s and check the value. If it
+     * matches the input, then the key for that {@link Map.Entry} is returned.
+     *
+     * @param map   the {@link Map} to be searched
+     * @param value the value whose key is to be found
+     * @param <K>   the type of the key
+     * @param <V>   the type of the value
+     * @return an {@link Optional} of the found key
+     */
+    public static <K, V> Optional<K> getKeyByValue(final Map<K, V> map, final V value) {
+        for (final Map.Entry<K, V> entry : map.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                return Optional.of(entry.getKey());
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
      * Returns the last element of the {@link Collection}.
      *
      * @param input the {@link Collection}
@@ -147,45 +158,25 @@ public final class CollectionUtils {
         return get(input, input.size() - 1);
     }
 
-    private static <E> E get(final Collection<? extends E> input, final int index) {
-        if (input.isEmpty()) {
-            throw new NoSuchElementException();
+    /**
+     * Returns the value at the middle index of a {@link List}. The {@link List} is sorted then the middle index is returned.
+     *
+     * @param list the {@link List} whose middle index is to be found
+     * @param <E>  the type of the {@link List}, must extend {@link Comparable}
+     * @return the value at the middle of the sorted {@link List}
+     * @throws IllegalArgumentException thrown if the {@link List} has an even size
+     */
+    public static <E extends Comparable<E>> E getMiddleValueOfList(final List<E> list) {
+        final int listSize = list.size();
+        if (list.isEmpty() || MathUtils.isEven(listSize)) {
+            throw new IllegalArgumentException("Expected list with positive odd size, found size: " + listSize);
         }
 
-        final List<E> temp = new ArrayList<>(input);
-        return temp.get(index);
-    }
+        final List<E> modifiableList = new ArrayList<>(list);
+        Collections.sort(modifiableList);
 
-    /**
-     * Extracts a value from the {@link Collection} of {@code elements}, based on the provided {@link Function}. The {@link Function} will be used to
-     * map a new value for each element.
-     *
-     * @param elements           the {@link Collection} to be mapped
-     * @param extractionFunction the {@link Function} used to extract a value
-     * @param <I>                the type of the input {@link Collection} of {@code elements}
-     * @param <O>                the type of the output values which will be mapped by the {@link Function}
-     * @return the updated {@link Collection}
-     */
-    public static <I, O> List<O> extractValuesAsList(final Collection<I> elements, final Function<? super I, O> extractionFunction) {
-        return elements
-            .stream()
-            .map(extractionFunction)
-            .toList();
-    }
-
-    /**
-     * Checks whether the input {@link Collection} has any duplicates.
-     *
-     * @param input the input {@link Collection} to check
-     * @param <T>   the type of the {@link Collection}
-     * @return {@code true} if the {@link Collection} contains at least one duplicate
-     */
-    public static <T> boolean containsDuplicates(final Collection<T> input) {
-        if (input == null || input.isEmpty()) {
-            return false;
-        }
-
-        return input.stream().distinct().count() != input.size();
+        final int middleIndex = listSize / 2;
+        return modifiableList.get(middleIndex);
     }
 
     /**
@@ -198,7 +189,7 @@ public final class CollectionUtils {
      * @throws IllegalArgumentException thrown if the input {@link Collection} cannot be split into exactly {@code amountPerGroup} groups, or if
      *                                  {@code amountPerGroup} is less than <b>1</b>.
      */
-    public static <T> Collection<Collection<T>> group(final Collection<? extends T> values, final int amountPerGroup) {
+    public static <T> Collection<Collection<T>> groupBySize(final Collection<? extends T> values, final int amountPerGroup) {
         if (amountPerGroup <= 0) {
             throw new IllegalArgumentException(String.format("amountPerGroup must be at least 1, found: %s", amountPerGroup));
         }
@@ -229,5 +220,14 @@ public final class CollectionUtils {
         groups.add(group);
 
         return groups;
+    }
+
+    private static <E> E get(final Collection<? extends E> input, final int index) {
+        if (input.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+
+        final List<E> temp = new ArrayList<>(input);
+        return temp.get(index);
     }
 }

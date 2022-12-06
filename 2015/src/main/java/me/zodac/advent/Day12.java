@@ -67,13 +67,7 @@ public final class Day12 {
 
         while (jsonMatcher.find()) {
             // Process JSON subString
-            int sumOfSubString = 0;
-            if (isValidJsonAndDoesNotIncludeInvalidLabel(invalidLabel, jsonMatcher)) {
-                final Matcher integerMatcher = StringUtils.INTEGER_PATTERN.matcher(jsonMatcher.group(0));
-                while (integerMatcher.find()) {
-                    sumOfSubString += Integer.parseInt(integerMatcher.group(0));
-                }
-            }
+            final int sumOfSubString = calculateSumOfSubString(invalidLabel, jsonMatcher);
 
             // Strip the String of processed JSON, update matcher to use remainder of the String while including the sum
             output = output.substring(0, jsonMatcher.start()) + sumOfSubString + output.substring(jsonMatcher.end());
@@ -81,6 +75,21 @@ public final class Day12 {
         }
 
         return Long.parseLong(output);
+    }
+
+    private static int calculateSumOfSubString(final String invalidLabel, final MatchResult jsonMatcher) {
+        int sumOfSubString = 0;
+        if (isValidJsonAndDoesNotIncludeInvalidLabel(invalidLabel, jsonMatcher)) {
+            final Matcher integerMatcher = StringUtils.NUMBER_PATTERN.matcher(jsonMatcher.group(0));
+            while (integerMatcher.find()) {
+                final String value = integerMatcher.group(0);
+
+                if (StringUtils.isInteger(value)) {
+                    sumOfSubString += Integer.parseInt(value);
+                }
+            }
+        }
+        return sumOfSubString;
     }
 
     private static boolean isValidJsonAndDoesNotIncludeInvalidLabel(final String invalidLabel, final MatchResult jsonMatcher) {

@@ -74,7 +74,7 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
                 String.format("Outer size must match inner size, found outer: %s, inner: %s", grid.size(), firstElement.size()));
         }
 
-        return new BooleanGrid(ArrayUtils.convertToArrayOfArrays(grid));
+        return new BooleanGrid(ArrayUtils.convertToArrayOfBooleanArrays(grid));
     }
 
     /**

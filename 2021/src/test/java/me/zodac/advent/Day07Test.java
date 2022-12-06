@@ -34,7 +34,7 @@ class Day07Test {
 
     @Test
     void part1() {
-        final List<Integer> verticalLocations = FileUtils.readCommaSeparatedIntegers(INPUT_FILENAME)
+        final List<Integer> verticalLocations = FileUtils.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
             .stream()
             .flatMap(List::stream)
             .toList();
@@ -46,7 +46,7 @@ class Day07Test {
 
     @Test
     void part2() {
-        final List<Integer> verticalLocations = FileUtils.readCommaSeparatedIntegers(INPUT_FILENAME)
+        final List<Integer> verticalLocations = FileUtils.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
             .stream()
             .flatMap(List::stream)
             .toList();

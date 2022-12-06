@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 class Day12Test {
 
     private static final String INPUT_FILENAME = "day12.txt";
-    private static final String INVALID_LABEL = "red";
 
     @Test
     void part1() {
@@ -43,7 +42,7 @@ class Day12Test {
     void part2() {
         final String value = FileUtils.readSingleLine(INPUT_FILENAME);
 
-        final long sum = Day12.sumOfAllNumbersWithNoInvalidLabel(value, INVALID_LABEL);
+        final long sum = Day12.sumOfAllNumbersWithNoInvalidLabel(value, "red");
         assertThat(sum)
             .isEqualTo(96_852L);
     }

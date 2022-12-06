@@ -130,7 +130,7 @@ public final class Day15 {
                         continue;
                     }
 
-                    if (MathUtils.isAnyLessThan(0L, totalCapacity, totalDurability, totalFlavour, totalTexture)) {
+                    if (MathUtils.areAnyLessThan(0L, totalCapacity, totalDurability, totalFlavour, totalTexture)) {
                         continue;
                     }
 

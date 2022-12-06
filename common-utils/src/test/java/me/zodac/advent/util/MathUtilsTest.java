@@ -29,35 +29,120 @@ import org.junit.jupiter.api.Test;
 class MathUtilsTest {
 
     @Test
-    void whenMax_givenPositiveNumbers_thenLargestPositiveNumberIsReturned() {
-        final int[] input = {2, 3};
-        final int max = MathUtils.max(1, input);
-        assertThat(max)
-            .isEqualTo(3);
+    void whenAreAnyLessThan_givenPositiveValue_andNoValuesLessThan_thenFalseIsReturned() {
+        final long input = 1L;
+        final long[] values = {1L, 2L, 3L};
+        final boolean output = MathUtils.areAnyLessThan(input, values);
+        assertThat(output)
+            .isFalse();
     }
 
     @Test
-    void whenMax_givenNegativeNumbers_thenLargestPositiveNumberIsReturned() {
-        final int[] input = {-2, -3};
-        final int max = MathUtils.max(-1, input);
-        assertThat(max)
-            .isEqualTo(-1);
+    void whenAreAnyLessThan_givenPositiveValue_andPositiveValuesLessThan_thenTrueIsReturned() {
+        final long input = 1L;
+        final long[] values = {0L, 3L, 4L};
+        final boolean output = MathUtils.areAnyLessThan(input, values);
+        assertThat(output)
+            .isTrue();
     }
 
     @Test
-    void whenTriangularNumber_givenPositiveNumber_thenCorrectValueIsReturned() {
-        final int input = 6;
-        final long triangularNumber = MathUtils.triangularNumber(input);
-        assertThat(triangularNumber)
-            .isEqualTo(21L);
+    void whenAreAnyLessThan_givenPositiveValue_andNegativeValuesLessThan_thenTrueIsReturned() {
+        final long input = 1L;
+        final long[] values = {-2L, 3L, 4L};
+        final boolean output = MathUtils.areAnyLessThan(input, values);
+        assertThat(output)
+            .isTrue();
     }
 
     @Test
-    void whenTriangularNumber_givenNegativeNumber_thenCorrectValueIsReturned() {
-        final int input = -6;
-        final long triangularNumber = MathUtils.triangularNumber(input);
-        assertThat(triangularNumber)
-            .isEqualTo(15L);
+    void whenAreAnyLessThan_givenNegativeValue_andNoValuesLessThan_thenFalseIsReturned() {
+        final long input = -2L;
+        final long[] values = {-1L, 3L, 4L};
+        final boolean output = MathUtils.areAnyLessThan(input, values);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenAreAnyLessThan_givenNegativeValue_andNegativeValuesLessThan_thenTrueIsReturned() {
+        final long input = -1L;
+        final long[] values = {-2L, 3L, 4L};
+        final boolean output = MathUtils.areAnyLessThan(input, values);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenAreAnyLessThan_givenValue_andNoInputValue_thenFalseIsReturned() {
+        final long input = -2L;
+        final long[] values = {};
+        final boolean output = MathUtils.areAnyLessThan(input, values);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsBetween_givenInputBetweenRange_thenTrueIsReturned() {
+        final int input = 3;
+        final boolean output = MathUtils.isBetween(1, 5, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenInputEqualToStart_thenTrueIsReturned() {
+        final int input = 3;
+        final boolean output = MathUtils.isBetween(3, 5, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenInputEqualToEnd_thenTrueIsReturned() {
+        final int input = 3;
+        final boolean output = MathUtils.isBetween(1, 3, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenRangeAndInputEqual_thenTrueIsReturned() {
+        final int input = 1;
+        final boolean output = MathUtils.isBetween(1, 1, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenNegativeValues_andInputBetweenRange_thenTrueIsReturned() {
+        final int input = -3;
+        final boolean output = MathUtils.isBetween(-5, -1, input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenIsBetween_givenInputNotBetweenRange_thenFalseIsReturned() {
+        final int input = 9;
+        final boolean output = MathUtils.isBetween(1, 5, input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsBetween_givenNegativeValues_andInputNotBetweenRange_thenFalseIsReturned() {
+        final int input = -9;
+        final boolean output = MathUtils.isBetween(-5, -1, input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenIsBetween_givenRangeEndIsLessThanRangeStart_thenExceptionIsThrown() {
+        assertThatThrownBy(() -> MathUtils.isBetween(1, 0, 2))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Cannot have end 0 less than start 1");
     }
 
     @Test
@@ -125,57 +210,19 @@ class MathUtilsTest {
     }
 
     @Test
-    void whenIsAnyLessThan_givenPositiveValue_andNoValuesLessThan_thenFalseIsReturned() {
-        final long input = 1L;
-        final long[] values = {1L, 2L, 3L};
-        final boolean output = MathUtils.isAnyLessThan(input, values);
-        assertThat(output)
-            .isFalse();
+    void whenMax_givenPositiveNumbers_thenLargestPositiveNumberIsReturned() {
+        final int[] input = {2, 3};
+        final int max = MathUtils.max(1, input);
+        assertThat(max)
+            .isEqualTo(3);
     }
 
     @Test
-    void whenIsAnyLessThan_givenPositiveValue_andPositiveValuesLessThan_thenTrueIsReturned() {
-        final long input = 1L;
-        final long[] values = {0L, 3L, 4L};
-        final boolean output = MathUtils.isAnyLessThan(input, values);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsAnyLessThan_givenPositiveValue_andNegativeValuesLessThan_thenTrueIsReturned() {
-        final long input = 1L;
-        final long[] values = {-2L, 3L, 4L};
-        final boolean output = MathUtils.isAnyLessThan(input, values);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsAnyLessThan_givenNegativeValue_andNoValuesLessThan_thenFalseIsReturned() {
-        final long input = -2L;
-        final long[] values = {-1L, 3L, 4L};
-        final boolean output = MathUtils.isAnyLessThan(input, values);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsAnyLessThan_givenNegativeValue_andNegativeValuesLessThan_thenTrueIsReturned() {
-        final long input = -1L;
-        final long[] values = {-2L, 3L, 4L};
-        final boolean output = MathUtils.isAnyLessThan(input, values);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsAnyLessThan_givenValue_andNoInputValue_thenFalseIsReturned() {
-        final long input = -2L;
-        final long[] values = {};
-        final boolean output = MathUtils.isAnyLessThan(input, values);
-        assertThat(output)
-            .isFalse();
+    void whenMax_givenNegativeNumbers_thenLargestPositiveNumberIsReturned() {
+        final int[] input = {-2, -3};
+        final int max = MathUtils.max(-1, input);
+        assertThat(max)
+            .isEqualTo(-1);
     }
 
     @Test
@@ -233,65 +280,18 @@ class MathUtilsTest {
     }
 
     @Test
-    void whenIsBetween_givenInputBetweenRange_thenTrueIsReturned() {
-        final int input = 3;
-        final boolean output = MathUtils.isBetween(1, 5, input);
-        assertThat(output)
-            .isTrue();
+    void whenTriangularNumber_givenPositiveNumber_thenCorrectValueIsReturned() {
+        final int input = 6;
+        final long triangularNumber = MathUtils.triangularNumber(input);
+        assertThat(triangularNumber)
+            .isEqualTo(21L);
     }
 
     @Test
-    void whenIsBetween_givenInputEqualToStart_thenTrueIsReturned() {
-        final int input = 3;
-        final boolean output = MathUtils.isBetween(3, 5, input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsBetween_givenInputEqualToEnd_thenTrueIsReturned() {
-        final int input = 3;
-        final boolean output = MathUtils.isBetween(1, 3, input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsBetween_givenRangeAndInputEqual_thenTrueIsReturned() {
-        final int input = 1;
-        final boolean output = MathUtils.isBetween(1, 1, input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsBetween_givenNegativeValues_andInputBetweenRange_thenTrueIsReturned() {
-        final int input = -3;
-        final boolean output = MathUtils.isBetween(-5, -1, input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsBetween_givenInputNotBetweenRange_thenFalseIsReturned() {
-        final int input = 9;
-        final boolean output = MathUtils.isBetween(1, 5, input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsBetween_givenNegativeValues_andInputNotBetweenRange_thenFalseIsReturned() {
-        final int input = -9;
-        final boolean output = MathUtils.isBetween(-5, -1, input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsBetween_givenRangeEndIsLessThanRangeStart_thenExceptionIsThrown() {
-        assertThatThrownBy(() -> MathUtils.isBetween(1, 0, 2))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Cannot have end 0 less than start 1");
+    void whenTriangularNumber_givenNegativeNumber_thenCorrectValueIsReturned() {
+        final int input = -6;
+        final long triangularNumber = MathUtils.triangularNumber(input);
+        assertThat(triangularNumber)
+            .isEqualTo(15L);
     }
 }

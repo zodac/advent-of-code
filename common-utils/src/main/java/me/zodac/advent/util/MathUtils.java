@@ -35,31 +35,37 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the maximum value of the provided {@code int} values.
+     * Checks if any of the input {@code values} are less than the provided {@code lessThanValue}.
      *
-     * @param firstValue the first {@code int}, so at least one value is provided
-     * @param values     the {@link int}s to check
-     * @return the largest value
+     * @param lessThanValue the value to compare against
+     * @param values        the values to check
+     * @return {@code true} if any of the input {@code values} are less than the provided {@code lessThanValue}
      */
-    public static int max(final int firstValue, final int... values) {
-        final Collection<Integer> valuesAsCollection = new ArrayList<>(Arrays.stream(values).boxed().toList());
-        valuesAsCollection.add(firstValue);
-        return Collections.max(valuesAsCollection);
+    public static boolean areAnyLessThan(final long lessThanValue, final long... values) {
+        for (final long value : values) {
+            if (value < lessThanValue) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * Similar to a factorial, but using addition instead of multiplication. The equation 1 + 2 + 3 ... + n can be simplified to:
-     * <pre>
-     *     n*(n+1)/2
-     * </pre>
-     * We then round to the nearest whole number.
+     * Checks if the given {@link Integer} is between two other {@link Integer}s.
      *
-     * @param value the value whose triangular number is to be found
-     * @return the triangular number for the input
-     * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
+     * @param start the start of the {@link Integer} range
+     * @param end   the end of the {@link Integer} range
+     * @param input the value to check
+     * @return {@code true} if the input is within the {@link Integer} range
+     * @throws IllegalArgumentException thrown if the {@code end} value is less than the {@code start} value
      */
-    public static long triangularNumber(final int value) {
-        return Math.round(value * (value + 1) / TRIANGULAR_NUMBER_DENOMINATOR);
+    public static boolean isBetween(final int start, final int end, final int input) {
+        if (end < start) {
+            throw new IllegalArgumentException(String.format("Cannot have end %s less than start %s", end, start));
+        }
+
+        return input >= start && input <= end;
     }
 
     /**
@@ -84,20 +90,16 @@ public final class MathUtils {
     }
 
     /**
-     * Checks if any of the input {@code values} are less than the provided {@code lessThanValue}.
+     * Returns the maximum value of the provided {@code int} values.
      *
-     * @param lessThanValue the value to compare against
-     * @param values        the values to check
-     * @return {@code true} if any of the input {@code values} are less than the provided {@code lessThanValue}
+     * @param firstValue the first {@code int}, so at least one value is provided
+     * @param values     the {@link int}s to check
+     * @return the largest value
      */
-    public static boolean isAnyLessThan(final long lessThanValue, final long... values) {
-        for (final long value : values) {
-            if (value < lessThanValue) {
-                return true;
-            }
-        }
-
-        return false;
+    public static int max(final int firstValue, final int... values) {
+        final Collection<Integer> valuesAsCollection = new ArrayList<>(Arrays.stream(values).boxed().toList());
+        valuesAsCollection.add(firstValue);
+        return Collections.max(valuesAsCollection);
     }
 
     /**
@@ -126,19 +128,17 @@ public final class MathUtils {
     }
 
     /**
-     * Checks if the given {@link Integer} is between two other {@link Integer}s.
+     * Similar to a factorial, but using addition instead of multiplication. The equation 1 + 2 + 3 ... + n can be simplified to:
+     * <pre>
+     *     n*(n+1)/2
+     * </pre>
+     * We then round to the nearest whole number.
      *
-     * @param start the start of the {@link Integer} range
-     * @param end   the end of the {@link Integer} range
-     * @param input the value to check
-     * @return {@code true} if the input is within the {@link Integer} range
-     * @throws IllegalArgumentException thrown if the {@code end} value is less than the {@code start} value
+     * @param value the value whose triangular number is to be found
+     * @return the triangular number for the input
+     * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
      */
-    public static boolean isBetween(final int start, final int end, final int input) {
-        if (end < start) {
-            throw new IllegalArgumentException(String.format("Cannot have end %s less than start %s", end, start));
-        }
-
-        return input >= start && input <= end;
+    public static long triangularNumber(final int value) {
+        return Math.round(value * (value + 1) / TRIANGULAR_NUMBER_DENOMINATOR);
     }
 }

@@ -93,7 +93,7 @@ public record Sue(int id, Map<String, Integer> attributes) {
      * @throws IllegalArgumentException thrown if the input does not contain {@value #MAXIMUM_NUMBER_OF_ATTRIBUTES} attributes
      */
     public static Sue parseAllAttributes(final CharSequence input) {
-        final String[] lines = StringUtils.splitLines(input);
+        final String[] lines = StringUtils.splitOnNewLines(input);
         final Map<String, Integer> attributes = HashMap.newHashMap(lines.length);
 
         for (final String line : lines) {

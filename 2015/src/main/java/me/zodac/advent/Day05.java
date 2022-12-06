@@ -82,6 +82,6 @@ public final class Day05 {
     }
 
     private static boolean isValidForPartTwo(final String input) {
-        return StringUtils.hasSandwichCharacters(input) && StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
+        return StringUtils.hasSandwichCharacters(input) && StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
     }
 }

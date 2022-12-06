@@ -34,78 +34,59 @@ import org.junit.jupiter.api.Test;
 class CollectionUtilsTest {
 
     @Test
-    void whenGetKeyByValue_givenValueDoesExist_thenKeyIsReturned() {
-        final Map<String, String> inputMap = Map.of(
-            "key1", "value1",
-            "key2", "value2"
-        );
-        final String inputValue = "value2";
-
-        final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
+    void whenContainsDuplicates_givenInputWithDuplicates_thenTrueIsReturned() {
+        final List<Integer> input = List.of(1, 2, 2);
+        final boolean output = CollectionUtils.containsDuplicates(input);
         assertThat(output)
-            .isPresent()
-            .hasValue("key2");
+            .isTrue();
     }
 
     @Test
-    void whenGetKeyByValue_givenValueDoesNotExist_thenEmptyOptionalIsReturned() {
-        final Map<String, String> inputMap = Map.of(
-            "key1", "value1",
-            "key2", "value2"
-        );
-        final String inputValue = "value3";
+    void whenContainsDuplicates_givenInputWithMultipleDuplicates_thenTrueIsReturned() {
+        final List<Integer> input = List.of(1, 1, 2, 2);
+        final boolean output = CollectionUtils.containsDuplicates(input);
+        assertThat(output)
+            .isTrue();
+    }
 
-        final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
+    @Test
+    void whenContainsDuplicates_givenInputWithNoDuplicates_thenFalseIsReturned() {
+        final List<Integer> input = List.of(1, 2, 3);
+        final boolean output = CollectionUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenEmptyInput_thenFalseIsReturned() {
+        final List<Integer> input = List.of();
+        final boolean output = CollectionUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenNullInput_thenFalseIsReturned() {
+        final List<Integer> input = null;
+        final boolean output = CollectionUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenExtractValuesAsList_givenCollection_thenElementsAreExtractedAndReturnedAsList() {
+        final List<Long> input = List.of(1L, 2L, 3L);
+        final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
+        assertThat(output)
+            .containsExactly(1, 2, 3);
+    }
+
+    @Test
+    void whenExtractValuesAsList_givenEmptyCollection_thenEmptyListIsReturned() {
+        final List<Long> input = List.of();
+        final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
         assertThat(output)
             .isEmpty();
-    }
-
-    @Test
-    void whenGetKeyByValue_givenEmptyMap_thenEmptyOptionalIsReturned() {
-        final Map<String, String> inputMap = Collections.emptyMap();
-        final String inputValue = "value1";
-
-        final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenGetMiddleValueOfList_givenListOfOddSize_thenMiddleValueIsReturned() {
-        final List<String> input = List.of("a", "b", "c");
-        final String output = CollectionUtils.getMiddleValueOfList(input);
-        assertThat(output)
-            .isEqualTo("b");
-    }
-
-    @Test
-    void whenGetMiddleValueOfList_givenUnsortedListOfOddSize_thenMiddleValueOfSortedListIsReturned() {
-        final List<String> input = List.of("c", "a", "b");
-        final String output = CollectionUtils.getMiddleValueOfList(input);
-        assertThat(output)
-            .isEqualTo("b");
-    }
-
-    @Test
-    void whenGetMiddleValueOfList_givenListWithSingleEntry_thenOnlyValueIsReturned() {
-        final List<String> input = List.of("a");
-        final String output = CollectionUtils.getMiddleValueOfList(input);
-        assertThat(output)
-            .isEqualTo("a");
-    }
-
-    @Test
-    void whenGetMiddleValueOfList_givenListOfEvenSize_thenIllegalArgumentExceptionIsThrown() {
-        final List<String> input = List.of("a", "b");
-        assertThatThrownBy(() -> CollectionUtils.getMiddleValueOfList(input))
-            .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void whenGetMiddleValueOfList_givenEmptyList_thenIllegalArgumentExceptionIsThrown() {
-        final List<String> input = Collections.emptyList();
-        assertThatThrownBy(() -> CollectionUtils.getMiddleValueOfList(input))
-            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -155,6 +136,43 @@ class CollectionUtilsTest {
     }
 
     @Test
+    void whenGetKeyByValue_givenValueDoesExist_thenKeyIsReturned() {
+        final Map<String, String> inputMap = Map.of(
+            "key1", "value1",
+            "key2", "value2"
+        );
+        final String inputValue = "value2";
+
+        final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
+        assertThat(output)
+            .isPresent()
+            .hasValue("key2");
+    }
+
+    @Test
+    void whenGetKeyByValue_givenValueDoesNotExist_thenEmptyOptionalIsReturned() {
+        final Map<String, String> inputMap = Map.of(
+            "key1", "value1",
+            "key2", "value2"
+        );
+        final String inputValue = "value3";
+
+        final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenGetKeyByValue_givenEmptyMap_thenEmptyOptionalIsReturned() {
+        final Map<String, String> inputMap = Collections.emptyMap();
+        final String inputValue = "value1";
+
+        final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
     void whenGetLast_givenCollection_thenLastElementIsReturned() {
         final List<String> input = List.of("a", "b", "c");
         final String output = CollectionUtils.getLast(input);
@@ -170,65 +188,47 @@ class CollectionUtilsTest {
     }
 
     @Test
-    void whenExtractValuesAsList_givenCollection_thenElementsAreExtractedAndReturnedAsList() {
-        final List<Long> input = List.of(1L, 2L, 3L);
-        final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
+    void whenGetMiddleValueOfList_givenListOfOddSize_thenMiddleValueIsReturned() {
+        final List<String> input = List.of("a", "b", "c");
+        final String output = CollectionUtils.getMiddleValueOfList(input);
         assertThat(output)
-            .containsExactly(1, 2, 3);
+            .isEqualTo("b");
     }
 
     @Test
-    void whenExtractValuesAsList_givenEmptyCollection_thenEmptyListIsReturned() {
-        final List<Long> input = List.of();
-        final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
+    void whenGetMiddleValueOfList_givenUnsortedListOfOddSize_thenMiddleValueOfSortedListIsReturned() {
+        final List<String> input = List.of("c", "a", "b");
+        final String output = CollectionUtils.getMiddleValueOfList(input);
         assertThat(output)
-            .isEmpty();
+            .isEqualTo("b");
     }
 
     @Test
-    void whenContainsDuplicates_givenInputWithDuplicates_thenTrueIsReturned() {
-        final List<Integer> input = List.of(1, 2, 2);
-        final boolean output = CollectionUtils.containsDuplicates(input);
+    void whenGetMiddleValueOfList_givenListWithSingleEntry_thenOnlyValueIsReturned() {
+        final List<String> input = List.of("a");
+        final String output = CollectionUtils.getMiddleValueOfList(input);
         assertThat(output)
-            .isTrue();
+            .isEqualTo("a");
     }
 
     @Test
-    void whenContainsDuplicates_givenInputWithMultipleDuplicates_thenTrueIsReturned() {
-        final List<Integer> input = List.of(1, 1, 2, 2);
-        final boolean output = CollectionUtils.containsDuplicates(input);
-        assertThat(output)
-            .isTrue();
+    void whenGetMiddleValueOfList_givenListOfEvenSize_thenIllegalArgumentExceptionIsThrown() {
+        final List<String> input = List.of("a", "b");
+        assertThatThrownBy(() -> CollectionUtils.getMiddleValueOfList(input))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void whenContainsDuplicates_givenInputWithNoDuplicates_thenFalseIsReturned() {
-        final List<Integer> input = List.of(1, 2, 3);
-        final boolean output = CollectionUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
+    void whenGetMiddleValueOfList_givenEmptyList_thenIllegalArgumentExceptionIsThrown() {
+        final List<String> input = Collections.emptyList();
+        assertThatThrownBy(() -> CollectionUtils.getMiddleValueOfList(input))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void whenContainsDuplicates_givenEmptyInput_thenFalseIsReturned() {
-        final List<Integer> input = List.of();
-        final boolean output = CollectionUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenNullInput_thenFalseIsReturned() {
-        final List<Integer> input = null;
-        final boolean output = CollectionUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenGroup_givenValidCollection_thenGroupedCollectionsAreReturned() {
+    void whenGroupBySize_givenValidCollection_thenGroupedCollectionsAreReturned() {
         final List<String> input = List.of("a", "b", "c", "d");
-        final Collection<Collection<String>> output = CollectionUtils.group(input, 2);
+        final Collection<Collection<String>> output = CollectionUtils.groupBySize(input, 2);
         assertThat(output)
             .hasSize(2)
             .containsExactly(
@@ -238,9 +238,9 @@ class CollectionUtilsTest {
     }
 
     @Test
-    void whenGroup_givenEmptyCollection_thenEmptyGroupIsReturned() {
+    void whenGroupBySize_givenEmptyCollection_thenEmptyGroupIsReturned() {
         final List<String> input = List.of();
-        final Collection<Collection<String>> output = CollectionUtils.group(input, 2);
+        final Collection<Collection<String>> output = CollectionUtils.groupBySize(input, 2);
 
         assertThat(output)
             .hasSize(1)
@@ -248,25 +248,25 @@ class CollectionUtilsTest {
     }
 
     @Test
-    void whenGroup_givenCollectionWithInvalidNumberOfEntries_thenExceptionIsThrown() {
+    void whenGroupBySize_givenCollectionWithInvalidNumberOfEntries_thenExceptionIsThrown() {
         final List<String> input = List.of("a");
-        assertThatThrownBy(() -> CollectionUtils.group(input, 2))
+        assertThatThrownBy(() -> CollectionUtils.groupBySize(input, 2))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Expected number of entries to be divisible by 2, found: 1");
     }
 
     @Test
-    void whenGroup_givenCollection_andZeroAmountPerGroup_thenExceptionIsThrown() {
+    void whenGroupBySize_givenCollection_andZeroAmountPerGroup_thenExceptionIsThrown() {
         final List<String> input = List.of("a");
-        assertThatThrownBy(() -> CollectionUtils.group(input, 0))
+        assertThatThrownBy(() -> CollectionUtils.groupBySize(input, 0))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("amountPerGroup must be at least 1, found: 0");
     }
 
     @Test
-    void whenGroup_givenCollection_andNegativeAmountPerGroup_thenExceptionIsThrown() {
+    void whenGroupBySize_givenCollection_andNegativeAmountPerGroup_thenExceptionIsThrown() {
         final List<String> input = List.of("a");
-        assertThatThrownBy(() -> CollectionUtils.group(input, -2))
+        assertThatThrownBy(() -> CollectionUtils.groupBySize(input, -2))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("amountPerGroup must be at least 1, found: -2");
     }

@@ -33,7 +33,7 @@ class Day06Test {
 
     @Test
     void part1() {
-        final List<Integer> lanternValues = FileUtils.readCommaSeparatedIntegers(INPUT_FILENAME)
+        final List<Integer> lanternValues = FileUtils.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
             .stream()
             .flatMap(List::stream)
             .toList();
@@ -45,7 +45,7 @@ class Day06Test {
 
     @Test
     void part2() {
-        final List<Integer> lanternValues = FileUtils.readCommaSeparatedIntegers(INPUT_FILENAME)
+        final List<Integer> lanternValues = FileUtils.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
             .stream()
             .flatMap(List::stream)
             .toList();

@@ -30,13 +30,45 @@ import org.junit.jupiter.api.Test;
 class ArrayUtilsTest {
 
     @Test
-    void whenConvertToArrayOfArrays_givenListOfListOfBooleans_thenArrayOfArraysOfBooleansReturned() {
+    void whenAreColumnLengthsDifferent_givenArrayWithDifferentColumnLengths_thenTrueIsReturned() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e'}};
+        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenAreColumnLengthsDifferent_givenArrayWithConstantColumnLength_thenFalseIsReturned() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}};
+        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenAreColumnLengthsDifferent_givenEmptyArray_thenFalseIsReturned() {
+        final char[][] input = {};
+        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenAreColumnLengthsDifferent_givenArrayOfEmptyArrays_thenFalseIsReturned() {
+        final char[][] input = {{}, {}};
+        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenConvertToArrayOfBooleanArrays_givenListOfListOfBooleans_thenArrayOfBooleanArraysReturned() {
         final List<List<Boolean>> input = List.of(
             List.of(false, false, true),
             List.of(false, true, false),
             List.of(true, false, false)
         );
-        final Boolean[][] output = ArrayUtils.convertToArrayOfArrays(input);
+        final Boolean[][] output = ArrayUtils.convertToArrayOfBooleanArrays(input);
         assertThat(output)
             .hasDimensions(3, 3)
             .contains(new Boolean[] {false, false, true}, atIndex(0))
@@ -45,9 +77,46 @@ class ArrayUtilsTest {
     }
 
     @Test
-    void whenConvertToArrayOfArrays_givenEmptyList_thenEmptyArrayOfBooleansReturned() {
+    void whenConvertToArrayOfBooleanArrays_givenEmptyList_thenEmptyArrayOfBooleansReturned() {
         final List<List<Boolean>> input = List.of();
-        final Boolean[][] output = ArrayUtils.convertToArrayOfArrays(input);
+        final Boolean[][] output = ArrayUtils.convertToArrayOfBooleanArrays(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenConvertToArrayOfCharArrays_givenValidListOfStrings_thenArrayOfCharArraysIsReturned() {
+        final List<String> input = List.of("abc", "def", "ghi");
+        final char[][] output = ArrayUtils.convertToArrayOfCharArrays(input);
+        assertThat(output)
+            .contains(new char[] {'a', 'b', 'c'}, atIndex(0))
+            .contains(new char[] {'d', 'e', 'f'}, atIndex(1))
+            .contains(new char[] {'g', 'h', 'i'}, atIndex(2));
+    }
+
+    @Test
+    void whenConvertToArrayOfCharArrays_givenValidListOfStrings_andLongestStringIsNotFirstString_thenArrayOfCharArraysIsReturned() {
+        final List<String> input = List.of("abc", "defg", "hij");
+        final char[][] output = ArrayUtils.convertToArrayOfCharArrays(input);
+        assertThat(output)
+            .hasNumberOfRows(3)
+            .contains(new char[] {'a', 'b', 'c'}, atIndex(0))
+            .contains(new char[] {'d', 'e', 'f', 'g'}, atIndex(1))
+            .contains(new char[] {'h', 'i', 'j'}, atIndex(2));
+    }
+
+    @Test
+    void whenConvertToArrayOfCharArrays_givenEmptyList_thenArrayOfCharArraysIsReturned() {
+        final List<String> input = List.of();
+        final char[][] output = ArrayUtils.convertToArrayOfCharArrays(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenConvertToArrayOfCharArrays_givenListOfEmptyString_thenArrayOfCharArraysIsReturned() {
+        final List<String> input = List.of("");
+        final char[][] output = ArrayUtils.convertToArrayOfCharArrays(input);
         assertThat(output)
             .isEmpty();
     }
@@ -90,43 +159,6 @@ class ArrayUtilsTest {
         assertThatThrownBy(() -> ArrayUtils.findSmallestIndexGreaterThanThreshold(input, 0))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Input cannot be null or empty");
-    }
-
-    @Test
-    void whenParseList_givenValidListOfStrings_thenArrayOfCharArraysIsReturned() {
-        final List<String> input = List.of("abc", "def", "ghi");
-        final char[][] output = ArrayUtils.parseList(input);
-        assertThat(output)
-            .contains(new char[] {'a', 'b', 'c'}, atIndex(0))
-            .contains(new char[] {'d', 'e', 'f'}, atIndex(1))
-            .contains(new char[] {'g', 'h', 'i'}, atIndex(2));
-    }
-
-    @Test
-    void whenParseList_givenValidListOfStrings_andLongestStringIsNotFirstString_thenArrayOfCharArraysIsReturned() {
-        final List<String> input = List.of("abc", "defg", "hij");
-        final char[][] output = ArrayUtils.parseList(input);
-        assertThat(output)
-            .hasNumberOfRows(3)
-            .contains(new char[] {'a', 'b', 'c'}, atIndex(0))
-            .contains(new char[] {'d', 'e', 'f', 'g'}, atIndex(1))
-            .contains(new char[] {'h', 'i', 'j'}, atIndex(2));
-    }
-
-    @Test
-    void whenParseList_givenEmptyList_thenArrayOfCharArraysIsReturned() {
-        final List<String> input = List.of();
-        final char[][] output = ArrayUtils.parseList(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenParseList_givenListOfEmptyString_thenArrayOfCharArraysIsReturned() {
-        final List<String> input = List.of("");
-        final char[][] output = ArrayUtils.parseList(input);
-        assertThat(output)
-            .isEmpty();
     }
 
     @Test
@@ -195,37 +227,5 @@ class ArrayUtilsTest {
         final char[][] output = ArrayUtils.transpose(input);
         assertThat(output)
             .isEmpty();
-    }
-
-    @Test
-    void whenAreColumnLengthsDifferent_givenArrayWithDifferentColumnLengths_thenTrueIsReturned() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e'}};
-        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenAreColumnLengthsDifferent_givenArrayWithConstantColumnLength_thenFalseIsReturned() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}};
-        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenAreColumnLengthsDifferent_givenEmptyArray_thenFalseIsReturned() {
-        final char[][] input = {};
-        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenAreColumnLengthsDifferent_givenArrayOfEmptyArrays_thenFalseIsReturned() {
-        final char[][] input = {{}, {}};
-        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
-        assertThat(output)
-            .isFalse();
     }
 }

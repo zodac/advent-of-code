@@ -32,273 +32,217 @@ import org.junit.jupiter.api.Test;
 class StringUtilsTest {
 
     @Test
-    void whenSort_givenUnsortedString_thenSortedStringIsReturned() {
-        final String input = "fedcba";
-        final String output = StringUtils.sort(input);
-        assertThat(output)
-            .isEqualTo("abcdef");
-    }
-
-    @Test
-    void whenSort_givenSortedString_thenStringIsReturnedWithoutChange() {
+    void whenBisect_givenStringOfEvenLength_thenPairOfHalvesIsReturned() {
         final String input = "abcdef";
-        final String output = StringUtils.sort(input);
+        final Pair<String, String> output = StringUtils.bisect(input);
         assertThat(output)
-            .isEqualTo(input);
+            .isEqualTo(Pair.of("abc", "def"));
     }
 
     @Test
-    void whenSort_givenEmptyString_thenEmptyStringIsReturned() {
+    void whenBisect_givenBlankStringOfEvenLength_thenPairOfHalvesIsReturned() {
+        final String input = "    ";
+        final Pair<String, String> output = StringUtils.bisect(input);
+        assertThat(output)
+            .isEqualTo(Pair.of("  ", "  "));
+    }
+
+    @Test
+    void whenBisect_givenStringOfOddLength_thenExceptionIsThrown() {
+        final String input = "abcdefg";
+        assertThatThrownBy(() -> StringUtils.bisect(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Cannot bisect input of length: 7");
+    }
+
+    @Test
+    void whenBisect_givenEmptyStringOfOddLength_thenExceptionIsThrown() {
+        final String input = "     ";
+        assertThatThrownBy(() -> StringUtils.bisect(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Cannot bisect input of length: 5");
+    }
+
+    @Test
+    void whenBisect_givenEmptyString_thenExceptionIsThrown() {
         final String input = "";
-        final String output = StringUtils.sort(input);
+        assertThatThrownBy(() -> StringUtils.bisect(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Input cannot be null or empty");
+    }
+
+    @Test
+    void whenBisect_givenNullString_thenExceptionIsThrown() {
+        final String input = null;
+        assertThatThrownBy(() -> StringUtils.bisect(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Input cannot be null or empty");
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenSingleIntegerAsString_thenSingleValueIsReturned() {
+        final String input = "1";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1);
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenMultipleIntegersAsString_thenAllValuesAreReturned() {
+        final String input = "1 23 456";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1, 23, 456);
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenNegativeInteger_thenAllValuesIncludingNegativesAreReturned() {
+        final String input = "1 -23 456";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1, -23, 456);
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenMultipleIntegersAndWordsAsString_thenAllIntegerValuesAreReturned() {
+        final String input = "1 and 23 and 456";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1, 23, 456);
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenMultipleIntegersAndLongAsString_thenLongValueIsNotReturned() {
+        final String input = "1 23 456 9999999999999999";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .containsExactly(1, 23, 456);
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenNoIntegersInString_thenEmptyListIsReturned() {
+        final String input = "No numbers here!";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
         assertThat(output)
             .isEmpty();
     }
 
     @Test
-    void whenSort_givenBlankString_thenEmptyStringIsReturned() {
+    void whenCollectNumbersInOrder_givenEmptyString_thenEmptyListIsReturned() {
+        final String input = "";
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenCollectNumbersInOrder_givenBlankString_thenEmptyListIsReturned() {
         final String input = " ";
-        final String output = StringUtils.sort(input);
-        assertThat(output)
-            .isEqualTo(input)
-            .isBlank();
-    }
-
-    @Test
-    void whenRemoveLastCharacter_givenString_thenStringIsReturnedWithoutLastCharacter() {
-        final String input = "abc";
-        final String output = StringUtils.removeLastCharacter(input);
-        assertThat(output)
-            .isEqualTo("ab");
-    }
-
-    @Test
-    void whenRemoveLastCharacter_givenBlankStringWithMultipleSpaces_thenStringIsReturnedWithoutLastCharacter() {
-        final String input = "  ";
-        final String output = StringUtils.removeLastCharacter(input);
-        assertThat(output)
-            .isEqualTo(" ");
-    }
-
-    @Test
-    void whenRemoveLastCharacter_givenStringWithOneCharacter_thenEmptyStringIsReturned() {
-        final String input = "a";
-        final String output = StringUtils.removeLastCharacter(input);
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
         assertThat(output)
             .isEmpty();
     }
 
     @Test
-    void whenRemoveLastCharacter_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String output = StringUtils.removeLastCharacter(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveLastCharacter_givenNullString_thenEmptyStringIsReturned() {
+    void whenCollectNumbersInOrder_givenNullString_thenEmptyListIsReturned() {
         final String input = null;
-        final String output = StringUtils.removeLastCharacter(input);
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
         assertThat(output)
             .isEmpty();
     }
 
     @Test
-    void whenRemoveLastCharacters_givenString_andRemovingTwoCharacters_thenStringIsReturnedWithoutLastTwoCharacters() {
-        final String input = "abcd";
-        final String output = StringUtils.removeLastCharacters(input, 2);
-        assertThat(output)
-            .isEqualTo("ab");
-    }
+    void whenCommonChars_givenTwoStrings_andBothHasSingleCommonCharacter_thenCommonCharacterIsReturned() {
+        final String first = "abcd";
+        final String second = "aefg";
 
-    @Test
-    void whenRemoveLastCharacters_givenStringWithBlankSpaces_andRemovingTwoCharacters_thenStringIsReturnedWithoutTwoLastCharacters() {
-        final String input = "   ";
-        final String output = StringUtils.removeLastCharacters(input, 2);
-        assertThat(output)
-            .isEqualTo(" ");
-    }
-
-    @Test
-    void whenRemoveLastCharacters_givenString_andRemovingNegativeCharacters_thenExceptionIsThrown() {
-        final String input = "   ";
-        assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, -1))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Must remove at least 1 character, found: -1");
-    }
-
-    @Test
-    void whenRemoveLastCharacters_givenStringWithOneCharacter_andRemovingTwoCharacters_thenExceptionIsThrown() {
-        final String input = "a";
-        assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, 2))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Cannot remove 2 characters from input of length: 1");
-    }
-
-    @Test
-    void whenRemoveLastCharacters_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String output = StringUtils.removeLastCharacters(input, 2);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveLastCharacters_givenNullString_thenEmptyStringIsReturned() {
-        final String input = null;
-        final String output = StringUtils.removeLastCharacters(input, 2);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenStringWithoutWhitespace_thenStringIsReturned() {
-        final String input = "abc";
-        final String[] output = StringUtils.splitOnWhitespace(input);
+        final Set<Character> output = StringUtils.commonChars(first, second);
         assertThat(output)
             .hasSize(1)
-            .containsExactly(input);
+            .containsExactlyInAnyOrder('a');
     }
 
     @Test
-    void whenSplitOnWhitespace_givenStringWithOneWhitespace_thenTwoStringsAreReturned() {
-        final String input = "abc def";
-        final String[] output = StringUtils.splitOnWhitespace(input);
+    void whenCommonChars_givenThreeStrings_andEachHasSingleCommonCharacter_thenCommonCharacterIsReturned() {
+        final String first = "abcd";
+        final String second = "aefg";
+        final String third = "ahij";
+
+        final Set<Character> output = StringUtils.commonChars(first, second, third);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactlyInAnyOrder('a');
+    }
+
+    @Test
+    void whenCommonChars_givenThreeStrings_andEachHasMultipleCommonCharacters_thenCommonCharactersAreReturned() {
+        final String first = "abcdz";
+        final String second = "aefgz";
+        final String third = "ahijz";
+
+        final Set<Character> output = StringUtils.commonChars(first, second, third);
         assertThat(output)
             .hasSize(2)
-            .containsExactly("abc", "def");
+            .containsExactlyInAnyOrder('a', 'z');
     }
 
     @Test
-    void whenSplitOnWhitespace_givenStringWithOneWhitespaceOfMultipleSpaces_thenTwoStringsAreReturned() {
-        final String input = "abc   def";
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .hasSize(2)
-            .containsExactly("abc", "def");
-    }
+    void whenCommonChars_givenThreeStrings_andThereAreNoCommonCharacters_thenEmptySetIsReturned() {
+        final String first = "abc";
+        final String second = "def";
+        final String third = "ghi";
 
-    @Test
-    void whenSplitOnWhitespace_givenStringWithMultipleWhitespace_thenMultipleStringsAreReturned() {
-        final String input = "a bc def ghij";
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .hasSize(4)
-            .containsExactly("a", "bc", "def", "ghij");
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly(input);
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenBlankString_thenEmptyStringIsReturned() {
-        final String input = " ";
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly("");
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenNullString_thenEmptyStringArrayIsReturned() {
-        final String input = null;
-        final String[] output = StringUtils.splitOnWhitespace(input);
+        final Set<Character> output = StringUtils.commonChars(first, second, third);
         assertThat(output)
             .isEmpty();
     }
 
     @Test
-    void whenSplitLines_givenStringWithThreeLines_thenThreeStringsAreReturned() {
-        final String input = """
-            line1
-            line2
-            line3""";
-        final String[] output = StringUtils.splitLines(input);
-        assertThat(output)
-            .hasSize(3)
-            .containsExactly("line1", "line2", "line3");
+    void whenCommonChars_givenOneString_thenExceptionIsThrownReturned() {
+        final String first = "abc";
+
+        assertThatThrownBy(() -> StringUtils.commonChars(first))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Must have at least two strings to compare");
     }
 
     @Test
-    void whenSplitLines_givenStringWith1Line_thenInputStringIsReturned() {
-        final String input = "line1";
-        final String[] output = StringUtils.splitLines(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly(input);
+    void whenCommonChars_givenEmptyStringInput_thenExceptionIsThrown() {
+        final String first = "abc";
+        final String second = "def";
+        final String third = "ghi";
+        final String fourth = "";
+        final String fifth = "jkl";
+
+        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Input cannot be null or blank");
     }
 
     @Test
-    void whenSplitLines_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String[] output = StringUtils.splitLines(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly(input);
+    void whenCommonChars_givenBlankStringInput_thenExceptionIsThrown() {
+        final String first = "abc";
+        final String second = "def";
+        final String third = "ghi";
+        final String fourth = " ";
+        final String fifth = "jkl";
+
+        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Input cannot be null or blank");
     }
 
     @Test
-    void whenSplitLines_givenBlankString_thenBlankStringIsReturned() {
-        final String input = " ";
-        final String[] output = StringUtils.splitLines(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly(" ");
-    }
+    void whenCommonChars_givenNullStringInput_thenExceptionIsThrown() {
+        final String first = "abc";
+        final String second = "def";
+        final String third = "ghi";
+        final String fourth = null;
+        final String fifth = "jkl";
 
-    @Test
-    void whenSplitLines_givenNullString_thenEmptyStringArrayIsReturned() {
-        final String input = null;
-        final String[] output = StringUtils.splitLines(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenStringWithDuplicates_thenTrueIsReturned() {
-        final String input = "abca";
-        final boolean output = StringUtils.containsDuplicates(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenStringWithNoDuplicates_thenFalseIsReturned() {
-        final String input = "abc";
-        final boolean output = StringUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenEmptyString_thenFalseIsReturned() {
-        final String input = "";
-        final boolean output = StringUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenBlankString_thenFalseIsReturned() {
-        final String input = " ";
-        final boolean output = StringUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenNullString_thenFalseIsReturned() {
-        final String input = null;
-        final boolean output = StringUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
+        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Input cannot be null or blank");
     }
 
     @Test
@@ -512,6 +456,46 @@ class StringUtilsTest {
     }
 
     @Test
+    void whenContainsDuplicates_givenStringWithDuplicates_thenTrueIsReturned() {
+        final String input = "abca";
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenStringWithNoDuplicates_thenFalseIsReturned() {
+        final String input = "abc";
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenEmptyString_thenFalseIsReturned() {
+        final String input = "";
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenBlankString_thenFalseIsReturned() {
+        final String input = " ";
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenContainsDuplicates_givenNullString_thenFalseIsReturned() {
+        final String input = null;
+        final boolean output = StringUtils.containsDuplicates(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
     void whenCountVowels_givenStringWithNoVowels_thenZeroIsReturned() {
         final String input = "bcdf";
         final long output = StringUtils.countVowels(input);
@@ -557,6 +541,73 @@ class StringUtilsTest {
         final long output = StringUtils.countVowels(input);
         assertThat(output)
             .isZero();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenStringWithSingleUpperCaseWord_thenWordIsReturned() {
+        final String input = "THIS is uppercase";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isPresent()
+            .hasValue("THIS");
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenOnlySingleUpperCaseWord_thenInputIsReturned() {
+        final String input = "THIS";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isPresent()
+            .hasValue(input);
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenMultipleUpperCaseWord_thenFirstWordIsReturned() {
+        final String input = "THIS is UPPERCASE";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isPresent()
+            .hasValue("THIS");
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenAllLowerCaseWord_thenEmptyOptionalIsThrown() {
+        final String input = "this is not uppercase";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenNoFullyUpperCaseWord_thenEmptyOptionalIsThrown() {
+        final String input = "This Is Not Uppercase";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenEmptyString_thenEmptyOptionalIsThrown() {
+        final String input = "";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenBlankString_thenEmptyOptionalIsThrown() {
+        final String input = " ";
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFindFullyFirstUpperCaseWord_givenNullString_thenEmptyOptionalIsThrown() {
+        final String input = null;
+        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+        assertThat(output)
+            .isEmpty();
     }
 
     @Test
@@ -624,6 +675,70 @@ class StringUtilsTest {
     }
 
     @Test
+    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithPairAndNoOverlap_thenTrueIsReturned() {
+        final String input = "abcdab";
+        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithPairAndNoOtherCharacters_thenTrueIsReturned() {
+        final String input = "abab";
+        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithRepeatedCharacterPairAndNoOverlap_thenTrueIsReturned() {
+        final String input = "aabcdaafgh";
+        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithWithPairOverlapping_thenFalseIsReturned() {
+        final String input = "aaa";
+        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithNoPairs_thenFalseIsReturned() {
+        final String input = "abcdef";
+        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterPairWithNoOverlap_givenEmptyString_thenFalseIsReturned() {
+        final String input = "";
+        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterPairWithNoOverlap_givenBlankString_thenFalseIsReturned() {
+        final String input = " ";
+        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenHasRepeatedCharacterPairWithNoOverlap_givenNullString_thenFalseIsReturned() {
+        final String input = null;
+        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
     void whenHasSandwichCharacters_givenStringWithSingleSandwich_thenTrueIsReturned() {
         final String input = "aba";
         final boolean output = StringUtils.hasSandwichCharacters(input);
@@ -683,70 +798,6 @@ class StringUtilsTest {
     void whenHasSandwichCharacters_givenNullString_thenFalseIsReturned() {
         final String input = null;
         final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithPairAndNoOverlap_thenTrueIsReturned() {
-        final String input = "abcdab";
-        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithPairAndNoOtherCharacters_thenTrueIsReturned() {
-        final String input = "abab";
-        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithRepeatedCharacterPairAndNoOverlap_thenTrueIsReturned() {
-        final String input = "aabcdaafgh";
-        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithWithPairOverlapping_thenFalseIsReturned() {
-        final String input = "aaa";
-        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasCharacterPairRepeatWithNoOverlap_givenStringWithNoPairs_thenFalseIsReturned() {
-        final String input = "abcdef";
-        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasCharacterPairRepeatWithNoOverlap_givenEmptyString_thenFalseIsReturned() {
-        final String input = "";
-        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasCharacterPairRepeatWithNoOverlap_givenBlankString_thenFalseIsReturned() {
-        final String input = " ";
-        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasCharacterPairRepeatWithNoOverlap_givenNullString_thenFalseIsReturned() {
-        final String input = null;
-        final boolean output = StringUtils.hasCharacterPairRepeatWithNoOverlap(input);
         assertThat(output)
             .isFalse();
     }
@@ -824,150 +875,11 @@ class StringUtilsTest {
     }
 
     @Test
-    void whenIsNumeric_givenNullString_thenFalseIsReturned() {
+    void whenIsInteger_givenNullString_thenFalseIsReturned() {
         final String input = null;
         final boolean output = StringUtils.isInteger(input);
         assertThat(output)
             .isFalse();
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenStringWithSingleUpperCaseWord_thenWordIsReturned() {
-        final String input = "THIS is uppercase";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isPresent()
-            .hasValue("THIS");
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenOnlySingleUpperCaseWord_thenInputIsReturned() {
-        final String input = "THIS";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isPresent()
-            .hasValue(input);
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenMultipleUpperCaseWord_thenFirstWordIsReturned() {
-        final String input = "THIS is UPPERCASE";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isPresent()
-            .hasValue("THIS");
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenAllLowerCaseWord_thenEmptyOptionalIsThrown() {
-        final String input = "this is not uppercase";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenNoFullyUpperCaseWord_thenEmptyOptionalIsThrown() {
-        final String input = "This Is Not Uppercase";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenEmptyString_thenEmptyOptionalIsThrown() {
-        final String input = "";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenBlankString_thenEmptyOptionalIsThrown() {
-        final String input = " ";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenNullString_thenEmptyOptionalIsThrown() {
-        final String input = null;
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenSingleIntegerAsString_thenSingleValueIsReturned() {
-        final String input = "1";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .containsExactly(1);
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenMultipleIntegersAsString_thenAllValuesAreReturned() {
-        final String input = "1 23 456";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .containsExactly(1, 23, 456);
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenNegativeInteger_thenAllValuesIncludingNegativesAreReturned() {
-        final String input = "1 -23 456";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .containsExactly(1, -23, 456);
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenMultipleIntegersAndWordsAsString_thenAllIntegerValuesAreReturned() {
-        final String input = "1 and 23 and 456";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .containsExactly(1, 23, 456);
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenMultipleIntegersAndLongAsString_thenLongValueIsNotReturned() {
-        final String input = "1 23 456 9999999999999999";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .containsExactly(1, 23, 456);
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenNoIntegersInString_thenEmptyListIsReturned() {
-        final String input = "No numbers here!";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenEmptyString_thenEmptyListIsReturned() {
-        final String input = "";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenBlankString_thenEmptyListIsReturned() {
-        final String input = " ";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenNullString_thenEmptyListIsReturned() {
-        final String input = null;
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .isEmpty();
     }
 
     @Test
@@ -998,6 +910,94 @@ class StringUtilsTest {
     void whenLookAndSay_givenNullString_thenEmptyStringIsReturned() {
         final String input = null;
         final String output = StringUtils.lookAndSay(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenString_thenStringIsReturnedWithoutLastCharacter() {
+        final String input = "abc";
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEqualTo("ab");
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenBlankStringWithMultipleSpaces_thenStringIsReturnedWithoutLastCharacter() {
+        final String input = "  ";
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEqualTo(" ");
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenStringWithOneCharacter_thenEmptyStringIsReturned() {
+        final String input = "a";
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenEmptyString_thenEmptyStringIsReturned() {
+        final String input = "";
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveLastCharacter_givenNullString_thenEmptyStringIsReturned() {
+        final String input = null;
+        final String output = StringUtils.removeLastCharacter(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenString_andRemovingTwoCharacters_thenStringIsReturnedWithoutLastTwoCharacters() {
+        final String input = "abcd";
+        final String output = StringUtils.removeLastCharacters(input, 2);
+        assertThat(output)
+            .isEqualTo("ab");
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenStringWithBlankSpaces_andRemovingTwoCharacters_thenStringIsReturnedWithoutTwoLastCharacters() {
+        final String input = "   ";
+        final String output = StringUtils.removeLastCharacters(input, 2);
+        assertThat(output)
+            .isEqualTo(" ");
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenString_andRemovingNegativeCharacters_thenExceptionIsThrown() {
+        final String input = "   ";
+        assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, -1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Must remove at least 1 character, found: -1");
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenStringWithOneCharacter_andRemovingTwoCharacters_thenExceptionIsThrown() {
+        final String input = "a";
+        assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, 2))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Cannot remove 2 characters from input of length: 1");
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenEmptyString_thenEmptyStringIsReturned() {
+        final String input = "";
+        final String output = StringUtils.removeLastCharacters(input, 2);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveLastCharacters_givenNullString_thenEmptyStringIsReturned() {
+        final String input = null;
+        final String output = StringUtils.removeLastCharacters(input, 2);
         assertThat(output)
             .isEmpty();
     }
@@ -1083,144 +1083,144 @@ class StringUtilsTest {
     }
 
     @Test
-    void whenBisect_givenStringOfEvenLength_thenPairOfHalvesIsReturned() {
+    void whenSort_givenUnsortedString_thenSortedStringIsReturned() {
+        final String input = "fedcba";
+        final String output = StringUtils.sort(input);
+        assertThat(output)
+            .isEqualTo("abcdef");
+    }
+
+    @Test
+    void whenSort_givenSortedString_thenStringIsReturnedWithoutChange() {
         final String input = "abcdef";
-        final Pair<String, String> output = StringUtils.bisect(input);
+        final String output = StringUtils.sort(input);
         assertThat(output)
-            .isEqualTo(Pair.of("abc", "def"));
+            .isEqualTo(input);
     }
 
     @Test
-    void whenBisect_givenBlankStringOfEvenLength_thenPairOfHalvesIsReturned() {
-        final String input = "    ";
-        final Pair<String, String> output = StringUtils.bisect(input);
-        assertThat(output)
-            .isEqualTo(Pair.of("  ", "  "));
-    }
-
-    @Test
-    void whenBisect_givenStringOfOddLength_thenExceptionIsThrown() {
-        final String input = "abcdefg";
-        assertThatThrownBy(() -> StringUtils.bisect(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Cannot bisect input of length: 7");
-    }
-
-    @Test
-    void whenBisect_givenEmptyStringOfOddLength_thenExceptionIsThrown() {
-        final String input = "     ";
-        assertThatThrownBy(() -> StringUtils.bisect(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Cannot bisect input of length: 5");
-    }
-
-    @Test
-    void whenBisect_givenEmptyString_thenExceptionIsThrown() {
+    void whenSort_givenEmptyString_thenEmptyStringIsReturned() {
         final String input = "";
-        assertThatThrownBy(() -> StringUtils.bisect(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Input cannot be null or empty");
-    }
-
-    @Test
-    void whenBisect_givenNullString_thenExceptionIsThrown() {
-        final String input = null;
-        assertThatThrownBy(() -> StringUtils.bisect(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Input cannot be null or empty");
-    }
-
-    @Test
-    void whenCommonChars_givenTwoStrings_andBothHasSingleCommonCharacter_thenCommonCharacterIsReturned() {
-        final String first = "abcd";
-        final String second = "aefg";
-
-        final Set<Character> output = StringUtils.commonChars(first, second);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactlyInAnyOrder('a');
-    }
-
-    @Test
-    void whenCommonChars_givenThreeStrings_andEachHasSingleCommonCharacter_thenCommonCharacterIsReturned() {
-        final String first = "abcd";
-        final String second = "aefg";
-        final String third = "ahij";
-
-        final Set<Character> output = StringUtils.commonChars(first, second, third);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactlyInAnyOrder('a');
-    }
-
-    @Test
-    void whenCommonChars_givenThreeStrings_andEachHasMultipleCommonCharacters_thenCommonCharactersAreReturned() {
-        final String first = "abcdz";
-        final String second = "aefgz";
-        final String third = "ahijz";
-
-        final Set<Character> output = StringUtils.commonChars(first, second, third);
-        assertThat(output)
-            .hasSize(2)
-            .containsExactlyInAnyOrder('a', 'z');
-    }
-
-    @Test
-    void whenCommonChars_givenThreeStrings_andThereAreNoCommonCharacters_thenEmptySetIsReturned() {
-        final String first = "abc";
-        final String second = "def";
-        final String third = "ghi";
-
-        final Set<Character> output = StringUtils.commonChars(first, second, third);
+        final String output = StringUtils.sort(input);
         assertThat(output)
             .isEmpty();
     }
 
     @Test
-    void whenCommonChars_givenOneString_thenExceptionIsThrownReturned() {
-        final String first = "abc";
-
-        assertThatThrownBy(() -> StringUtils.commonChars(first))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Must have at least two strings to compare");
+    void whenSort_givenBlankString_thenEmptyStringIsReturned() {
+        final String input = " ";
+        final String output = StringUtils.sort(input);
+        assertThat(output)
+            .isEqualTo(input)
+            .isBlank();
     }
 
     @Test
-    void whenCommonChars_givenEmptyStringInput_thenExceptionIsThrown() {
-        final String first = "abc";
-        final String second = "def";
-        final String third = "ghi";
-        final String fourth = "";
-        final String fifth = "jkl";
-
-        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input cannot be null or blank");
+    void whenSplitOnNewLines_givenStringWithThreeLines_thenThreeStringsAreReturned() {
+        final String input = """
+            line1
+            line2
+            line3""";
+        final String[] output = StringUtils.splitOnNewLines(input);
+        assertThat(output)
+            .hasSize(3)
+            .containsExactly("line1", "line2", "line3");
     }
 
     @Test
-    void whenCommonChars_givenBlankStringInput_thenExceptionIsThrown() {
-        final String first = "abc";
-        final String second = "def";
-        final String third = "ghi";
-        final String fourth = " ";
-        final String fifth = "jkl";
-
-        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input cannot be null or blank");
+    void whenSplitOnNewLines_givenStringWith1Line_thenInputStringIsReturned() {
+        final String input = "line1";
+        final String[] output = StringUtils.splitOnNewLines(input);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly(input);
     }
 
     @Test
-    void whenCommonChars_givenNullStringInput_thenExceptionIsThrown() {
-        final String first = "abc";
-        final String second = "def";
-        final String third = "ghi";
-        final String fourth = null;
-        final String fifth = "jkl";
+    void whenSplitOnNewLines_givenEmptyString_thenEmptyStringIsReturned() {
+        final String input = "";
+        final String[] output = StringUtils.splitOnNewLines(input);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly(input);
+    }
 
-        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input cannot be null or blank");
+    @Test
+    void whenSplitOnNewLines_givenBlankString_thenBlankStringIsReturned() {
+        final String input = " ";
+        final String[] output = StringUtils.splitOnNewLines(input);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly(" ");
+    }
+
+    @Test
+    void whenSplitOnNewLines_givenNullString_thenEmptyStringArrayIsReturned() {
+        final String input = null;
+        final String[] output = StringUtils.splitOnNewLines(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenSplitOnWhitespace_givenStringWithoutWhitespace_thenStringIsReturned() {
+        final String input = "abc";
+        final String[] output = StringUtils.splitOnWhitespace(input);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly(input);
+    }
+
+    @Test
+    void whenSplitOnWhitespace_givenStringWithOneWhitespace_thenTwoStringsAreReturned() {
+        final String input = "abc def";
+        final String[] output = StringUtils.splitOnWhitespace(input);
+        assertThat(output)
+            .hasSize(2)
+            .containsExactly("abc", "def");
+    }
+
+    @Test
+    void whenSplitOnWhitespace_givenStringWithOneWhitespaceOfMultipleSpaces_thenTwoStringsAreReturned() {
+        final String input = "abc   def";
+        final String[] output = StringUtils.splitOnWhitespace(input);
+        assertThat(output)
+            .hasSize(2)
+            .containsExactly("abc", "def");
+    }
+
+    @Test
+    void whenSplitOnWhitespace_givenStringWithMultipleWhitespace_thenMultipleStringsAreReturned() {
+        final String input = "a bc def ghij";
+        final String[] output = StringUtils.splitOnWhitespace(input);
+        assertThat(output)
+            .hasSize(4)
+            .containsExactly("a", "bc", "def", "ghij");
+    }
+
+    @Test
+    void whenSplitOnWhitespace_givenEmptyString_thenEmptyStringIsReturned() {
+        final String input = "";
+        final String[] output = StringUtils.splitOnWhitespace(input);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly(input);
+    }
+
+    @Test
+    void whenSplitOnWhitespace_givenBlankString_thenEmptyStringIsReturned() {
+        final String input = " ";
+        final String[] output = StringUtils.splitOnWhitespace(input);
+        assertThat(output)
+            .hasSize(1)
+            .containsExactly("");
+    }
+
+    @Test
+    void whenSplitOnWhitespace_givenNullString_thenEmptyStringArrayIsReturned() {
+        final String input = null;
+        final String[] output = StringUtils.splitOnWhitespace(input);
+        assertThat(output)
+            .isEmpty();
     }
 }
