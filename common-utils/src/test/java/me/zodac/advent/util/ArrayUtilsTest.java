@@ -91,4 +91,141 @@ class ArrayUtilsTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Input cannot be null or empty");
     }
+
+    @Test
+    void whenParseList_givenValidListOfStrings_thenArrayOfCharArraysIsReturned() {
+        final List<String> input = List.of("abc", "def", "ghi");
+        final char[][] output = ArrayUtils.parseList(input);
+        assertThat(output)
+            .contains(new char[] {'a', 'b', 'c'}, atIndex(0))
+            .contains(new char[] {'d', 'e', 'f'}, atIndex(1))
+            .contains(new char[] {'g', 'h', 'i'}, atIndex(2));
+    }
+
+    @Test
+    void whenParseList_givenValidListOfStrings_andLongestStringIsNotFirstString_thenArrayOfCharArraysIsReturned() {
+        final List<String> input = List.of("abc", "defg", "hij");
+        final char[][] output = ArrayUtils.parseList(input);
+        assertThat(output)
+            .hasNumberOfRows(3)
+            .contains(new char[] {'a', 'b', 'c'}, atIndex(0))
+            .contains(new char[] {'d', 'e', 'f', 'g'}, atIndex(1))
+            .contains(new char[] {'h', 'i', 'j'}, atIndex(2));
+    }
+
+    @Test
+    void whenParseList_givenEmptyList_thenArrayOfCharArraysIsReturned() {
+        final List<String> input = List.of();
+        final char[][] output = ArrayUtils.parseList(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenParseList_givenListOfEmptyString_thenArrayOfCharArraysIsReturned() {
+        final List<String> input = List.of("");
+        final char[][] output = ArrayUtils.parseList(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenReverseColumns_givenValidInput_thenReversedArrayIsReturned() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}};
+        final char[][] output = ArrayUtils.reverseRows(input);
+        assertThat(output)
+            .contains(new char[] {'g', 'h', 'i'}, atIndex(0))
+            .contains(new char[] {'d', 'e', 'f'}, atIndex(1))
+            .contains(new char[] {'a', 'b', 'c'}, atIndex(2));
+    }
+
+    @Test
+    void whenReverseColumns_givenInputWithColumnsOfDifferentLengths_thenExceptionIsThrown() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e'}, {'f', 'g', 'h', 'i'}};
+        assertThatThrownBy(() -> ArrayUtils.reverseRows(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Column lengths must be the same in all rows, found: ");
+    }
+
+    @Test
+    void whenReverseColumns_givenEmptyArray_thenInputIsReturned() {
+        final char[][] input = {};
+        final char[][] output = ArrayUtils.reverseRows(input);
+        assertThat(output)
+            .isEqualTo(input);
+    }
+
+    @Test
+    void whenReverseColumns_givenArrayOfEmptyArray_thenInputIsReturned() {
+        final char[][] input = {{}, {}};
+        final char[][] output = ArrayUtils.reverseRows(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenTranspose_givenValidInput_thenReversedArrayIsReturned() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, {'j', 'k', 'l'}};
+        final char[][] output = ArrayUtils.transpose(input);
+        assertThat(output)
+            .contains(new char[] {'a', 'd', 'g', 'j'}, atIndex(0))
+            .contains(new char[] {'b', 'e', 'h', 'k'}, atIndex(1))
+            .contains(new char[] {'c', 'f', 'i', 'l'}, atIndex(2));
+    }
+
+    @Test
+    void whenTranspose_givenInputWithColumnsOfDifferentLengths_thenExceptionIsThrown() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i', 'j'}};
+        assertThatThrownBy(() -> ArrayUtils.transpose(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Column lengths must be the same in all rows, found: ");
+    }
+
+    @Test
+    void whenTranspose_givenEmptyArray_thenInputIsReturned() {
+        final char[][] input = {};
+        final char[][] output = ArrayUtils.transpose(input);
+        assertThat(output)
+            .isEqualTo(input);
+    }
+
+    @Test
+    void whenTranspose_givenArrayOfEmptyArray_thenInputIsReturned() {
+        final char[][] input = {{}, {}};
+        final char[][] output = ArrayUtils.transpose(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenAreColumnLengthsDifferent_givenArrayWithDifferentColumnLengths_thenTrueIsReturned() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e'}};
+        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
+        assertThat(output)
+            .isTrue();
+    }
+
+    @Test
+    void whenAreColumnLengthsDifferent_givenArrayWithConstantColumnLength_thenFalseIsReturned() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}};
+        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenAreColumnLengthsDifferent_givenEmptyArray_thenFalseIsReturned() {
+        final char[][] input = {};
+        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
+        assertThat(output)
+            .isFalse();
+    }
+
+    @Test
+    void whenAreColumnLengthsDifferent_givenArrayOfEmptyArrays_thenFalseIsReturned() {
+        final char[][] input = {{}, {}};
+        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
+        assertThat(output)
+            .isFalse();
+    }
 }

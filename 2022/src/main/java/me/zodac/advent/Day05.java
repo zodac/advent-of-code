@@ -17,13 +17,10 @@
 
 package me.zodac.advent;
 
-import java.util.Collection;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Map;
-import java.util.Stack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import me.zodac.advent.pojo.Range;
-import me.zodac.advent.pojo.tuple.Pair;
+import me.zodac.advent.pojo.StackInstruction;
 
 /**
  * Solution for 2022, Day 5.
@@ -36,61 +33,116 @@ public final class Day05 {
 
     }
 
-    private static final Pattern PATTERN =Pattern.compile("move (\\d+) from (\\d+) to (\\d+)");
-
-    public static String part1(final Map<Integer, Stack<String>> stackById, final Collection<String> instructions) {
-        for(final String instruction : instructions){
-            final Matcher matcher = PATTERN.matcher(instruction);
-
-            if (!matcher.find()) {
-                throw new IllegalStateException("Unable to find match in input: " + instruction);
-            }
-
-            final Stack<String> src = stackById.get(Integer.parseInt(matcher.group(2)));
-            final Stack<String> des = stackById.get(Integer.parseInt(matcher.group(3)));
-            final int amount = Integer.parseInt(matcher.group(1));
-
-            for(int i = 0; i < amount; i++){
-                des.push(src.pop());
-            }
-        }
-
-        final StringBuilder stringBuilder = new StringBuilder();
-
-        for(int i = 1; i <= stackById.size(); i++){
-            stringBuilder.append(stackById.get(i).pop());
-        }
-
-        return stringBuilder.toString();
+    /**
+     * Moves elements between stacks according to the provided {@link StackInstruction}s. The stacks are provided as a {@link Map} where the key is
+     * the ID of the stack. When multiple elements are moved, they are moved one-by-one in standard 'Last-In, First-Out' order. For example, given the
+     * stacks {@code 1, 2 and 3}:
+     *
+     * <pre>
+     *     1    2    3
+     *    [A]  [B]  [C]
+     *    [D]  [G]  [F]
+     *    [E]       [H]
+     *              [I]
+     * </pre>
+     *
+     * <p>
+     * Given the {@link StackInstruction} to move <b>3</b> elements from {@code 3} to {@code 1}, our result is:
+     * <pre>
+     *     1    2    3
+     *    [A]  [B]  [C]
+     *    [D]  [G]
+     *    [E]
+     *    [I]
+     *    [H]
+     *    [F]
+     * </pre>
+     *
+     * <p>
+     * When all {@link StackInstruction}s have been applied, we take the top {@link String} from each stack (in ascending order of IDs), then combine
+     * them into a new {@link String} code which is returned.
+     *
+     * @param stacksById        the {@link Deque} stacked, keyed by ID
+     * @param stackInstructions the {@link StackInstruction}s to be applied
+     * @return the final constructed {@link String} code
+     */
+    public static String moveElementsBetweenStacksLastInFirstOutOrderAndCreateCode(final Map<Integer, ? extends Deque<String>> stacksById,
+                                                                                   final Iterable<StackInstruction> stackInstructions) {
+        return moveElementsBetweenStacks(stacksById, stackInstructions, false);
     }
 
-    public static String part2(final Map<Integer, Stack<String>> stackById, final Collection<String> instructions) {
-        for(final String instruction : instructions){
-            final Matcher matcher = PATTERN.matcher(instruction);
+    /**
+     * Moves elements between stacks according to the provided {@link StackInstruction}s. The stacks are provided as a {@link Map} where the key is
+     * the ID of the stack. When multiple elements are moved, they are moved as a whole, retaining their order from their original stack. For example,
+     * given the stacks {@code 1, 2 and 3}:
+     *
+     * <pre>
+     *     1    2    3
+     *    [A]  [B]  [C]
+     *    [D]  [G]  [F]
+     *    [E]       [H]
+     *              [I]
+     * </pre>
+     *
+     * <p>
+     * Given the {@link StackInstruction} to move <b>3</b> elements from {@code 3} to {@code 1}, our result is:
+     * <pre>
+     *     1    2    3
+     *    [A]  [B]  [C]
+     *    [D]  [G]
+     *    [E]
+     *    [F]
+     *    [H]
+     *    [I]
+     * </pre>
+     *
+     * <p>
+     * When all {@link StackInstruction}s have been applied, we take the top {@link String} from each stack (in ascending order of IDs), then combine
+     * them into a new {@link String} code which is returned.
+     *
+     * @param stacksById        the {@link Deque} stacked, keyed by ID
+     * @param stackInstructions the {@link StackInstruction}s to be applied
+     * @return the final constructed {@link String} code
+     */
+    public static String moveElementsBetweenStacksRetainingOrderAndCreateCode(final Map<Integer, ? extends Deque<String>> stacksById,
+                                                                              final Iterable<StackInstruction> stackInstructions) {
+        return moveElementsBetweenStacks(stacksById, stackInstructions, true);
+    }
 
-            if (!matcher.find()) {
-                throw new IllegalStateException("Unable to find match in input: " + instruction);
-            }
+    private static String moveElementsBetweenStacks(final Map<Integer, ? extends Deque<String>> stacksById,
+                                                    final Iterable<StackInstruction> stackInstructions,
+                                                    final boolean retainOrderOfMultipleElements
+    ) {
+        for (final StackInstruction stackInstruction : stackInstructions) {
+            final Deque<String> src = stacksById.get(stackInstruction.sourceStackId());
+            final Deque<String> des = stacksById.get(stackInstruction.destinationStackId());
+            final int numberOfElementsToMove = stackInstruction.numberOfElementsToMove();
 
-            final Stack<String> src = stackById.get(Integer.parseInt(matcher.group(2)));
-            final Stack<String> des = stackById.get(Integer.parseInt(matcher.group(3)));
-            final int amount = Integer.parseInt(matcher.group(1));
+            if (retainOrderOfMultipleElements) {
+                final Deque<String> buffer = new ArrayDeque<>();
+                for (int i = 0; i < numberOfElementsToMove; i++) {
+                    buffer.push(src.pop());
+                }
 
-            final Stack<String> buffer = new Stack<>();
-
-            for(int i = 0; i < amount; i++){
-                buffer.push(src.pop());
-            }
-
-            for(int i = 0; i < amount; i++){
-                des.push(buffer.pop());
+                for (int i = 0; i < numberOfElementsToMove; i++) {
+                    des.push(buffer.pop());
+                }
+            } else {
+                for (int i = 0; i < numberOfElementsToMove; i++) {
+                    des.push(src.pop());
+                }
             }
         }
 
+        return buildStringFromFirstElements(stacksById);
+    }
+
+    private static String buildStringFromFirstElements(final Map<Integer, ? extends Deque<String>> stacksById) {
         final StringBuilder stringBuilder = new StringBuilder();
 
-        for(int i = 1; i <= stackById.size(); i++){
-            stringBuilder.append(stackById.get(i).pop());
+        for (int i = 1; i <= stacksById.size(); i++) {
+            final Deque<String> stack = stacksById.get(i);
+            stringBuilder.append(stack.pop());
         }
 
         return stringBuilder.toString();

@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collection;
 import java.util.List;
+import me.zodac.advent.pojo.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -87,6 +88,72 @@ class FileUtilsTest {
         assertThatThrownBy(() -> FileUtils.readSingleLine(input))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Expected a single line, found: 0");
+    }
+
+    @Test
+    void whenReadLinesSplitByDelimiter_givenValidFileOfStringsWithDelimiter_thenPairOfListOfStringsIsReturned() {
+        final String input = "validFileOfStringsWithDelimiter.txt";
+        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        assertThat(output)
+            .isEqualTo(Pair.of(
+                List.of("line1", "line2"),
+                List.of("line3")
+            ));
+    }
+
+    @Test
+    void whenReadLinesSplitByDelimiter_givenValidFileOfStringsWithDelimiterOnFirstLine_thenPairOfListOfStringsIsReturned() {
+        final String input = "validFileOfStringsWithDelimiterOnFirstLine.txt";
+        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        assertThat(output)
+            .isEqualTo(Pair.of(
+                List.of(),
+                List.of("line1", "line2", "line3")
+            ));
+    }
+
+    @Test
+    void whenReadLinesSplitByDelimiter_givenValidFileOfStringsWithCustomDelimiter_thenOnlyFirstDelimiterIsConsideredAndPairIsReturned() {
+        final String input = "validFileOfStringsWithCustomDelimiter.txt";
+        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, s -> s.startsWith("Can"));
+        assertThat(output)
+            .isEqualTo(Pair.of(
+                List.of("line1", "line2"),
+                List.of("line3")
+            ));
+    }
+
+    @Test
+    void whenReadLinesSplitByDelimiter_givenValidFileOfStringsWithMultipleDelimiters_thenOnlyFirstDelimiterIsConsideredAndPairIsReturned() {
+        final String input = "validFileOfStringsWithMultipleDelimiters.txt";
+        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        assertThat(output)
+            .isEqualTo(Pair.of(
+                List.of("line1"),
+                List.of("line2", "", "line3")
+            ));
+    }
+
+    @Test
+    void whenReadLinesSplitByDelimiter_givenValidFileOfStringsWithoutDelimiter_thenPairOfListOfStringsIsReturned() {
+        final String input = "validFileOfStringsWithoutDelimiter.txt";
+        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        assertThat(output)
+            .isEqualTo(Pair.of(
+                List.of("line1", "line2", "line3"),
+                List.of()
+            ));
+    }
+
+    @Test
+    void whenReadLinesSplitByDelimiter_givenEmptyFile_thenEmptyListIsReturned() {
+        final String input = "emptyFile.txt";
+        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        assertThat(output)
+            .isEqualTo(Pair.of(
+                List.of(),
+                List.of()
+            ));
     }
 
     @Test

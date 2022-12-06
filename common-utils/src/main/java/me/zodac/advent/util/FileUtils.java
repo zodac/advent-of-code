@@ -23,9 +23,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
+import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * Utility class with functions for accessing files.
@@ -79,6 +82,51 @@ public final class FileUtils {
         }
 
         return getFirst(lines);
+    }
+
+    /**
+     * Reads all lines from a file in {@code src/main/resources}, then splits the {@link List} in two, with the split occurring when the provided
+     * {@link Predicate} is met.
+     *
+     * <ul>
+     *     <li>The line which matches the {@link Predicate} is discarded and not included in the output</li>
+     *     <li>Even if the {@link Predicate} can be met multiple times, only the first will be considered</li>
+     *     <li>If the {@link Predicate} is not met, we return a {@link Pair} of the full {@link List} and an empty {@link List}</li>
+     * </ul>
+     *
+     * @param filePathInResources file path to be read
+     * @param predicate           the {@link Predicate} defining where the {@link List} is to be split
+     * @return a {@link Pair} of {@link List}s of {@link String} lines
+     * @see #readLines(String)
+     */
+    public static Pair<List<String>, List<String>> readLinesAndSplit(final String filePathInResources, final Predicate<? super String> predicate) {
+        final List<String> lines = readLines(filePathInResources);
+
+        if (lines.isEmpty()) {
+            return Pair.of(List.of(), List.of());
+        }
+
+        final List<String> first = new ArrayList<>();
+
+        boolean lookingForDelimiter = true;
+        int index = 0;
+        while (lookingForDelimiter && index < lines.size()) {
+            final String line = lines.get(index);
+            if (predicate.test(line)) {
+                lookingForDelimiter = false;
+            } else {
+                first.add(line);
+            }
+
+            index++;
+        }
+
+        if (lookingForDelimiter) {
+            return Pair.of(first, List.of());
+        }
+
+        final List<String> second = lines.subList(index, lines.size());
+        return Pair.of(first, second);
     }
 
     /**
