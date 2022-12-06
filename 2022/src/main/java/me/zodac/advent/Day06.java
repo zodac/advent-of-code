@@ -19,7 +19,6 @@ package me.zodac.advent;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import me.zodac.advent.util.CollectionUtils;
 
 /**
@@ -33,39 +32,32 @@ public final class Day06 {
 
     }
 
-    public static long part1(final String value) {
-        for (int i = 0; i < value.length() - 4; i++) {
+    /**
+     * Given a {@link String} input, we look for the first sequence of {@code numberOfCharactersNeeded} unique characters, beginning at the start of
+     * the {@link String}. We then return the location (index + 1) of the {@code numberOfCharactersNeeded}-th character in that sequence.
+     *
+     * <p>
+     * For example, given the {@link String} {@code nppdvjthqldpwncqszvftbrmjlhg}, the first sequence of <b>4</b> unique characters it at index 5, so
+     * we return the value of the location, 6.
+     *
+     * @param input                    the input {@link String}
+     * @param numberOfCharactersNeeded the number of unique characters in sequence to be found
+     * @return the first location (index + 1) signifying at least {@code numberOfCharactersNeeded} unique characters exist in a sequence
+     * @throws IllegalArgumentException if {@code numberOfCharactersNeeded} unique characters cannot be found in sequence
+     */
+    public static long findSequenceOfUniqueCharactersAndReturnLastIndex(final String input, final int numberOfCharactersNeeded) {
+        for (int firstIndexInSequence = 0; firstIndexInSequence < input.length() - numberOfCharactersNeeded; firstIndexInSequence++) {
+            final Collection<Character> charactersInSequence = new ArrayList<>();
 
-            char c1 = value.charAt(i);
-            char c2 = value.charAt(i + 1);
-            char c3 = value.charAt(i + 2);
-            char c4 = value.charAt(i + 3);
-
-            if(c1 != c2 && c1 != c3 && c1 != c4 && c2 != c3 && c2 != c4 && c3 != c4){
-                return i+4;
+            for (int i = 0; i < numberOfCharactersNeeded; i++) {
+                charactersInSequence.add(input.charAt(firstIndexInSequence + i));
             }
 
+            if (!CollectionUtils.containsDuplicates(charactersInSequence)) {
+                return firstIndexInSequence + numberOfCharactersNeeded;
+            }
         }
 
-        return 0L;
-    }
-
-    public static long part2(final String value) {
-        for (int i = 0; i < value.length() - 14; i++) {
-
-
-            final List<Character> toCheck = new ArrayList<>();
-
-            for(int j =0; j < 14; j++){
-                toCheck.add(value.charAt(i + j));
-            }
-
-            if(!CollectionUtils.containsDuplicates(toCheck)){
-                return i+14;
-            }
-
-        }
-
-        return 0L;
+        throw new IllegalArgumentException("Could not find %s unique characters in sequence for input: " + input);
     }
 }

@@ -19,7 +19,6 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +33,7 @@ class Day06Test {
     void part1() {
         final String value = FileUtils.readSingleLine(INPUT_FILENAME);
 
-        final long result = Day06.part1(value);
+        final long result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 4);
         assertThat(result)
             .isEqualTo(1_093L);
     }
@@ -43,7 +42,7 @@ class Day06Test {
     void part2() {
         final String value = FileUtils.readSingleLine(INPUT_FILENAME);
 
-        final long result = Day06.part2(value);
+        final long result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 14);
         assertThat(result)
             .isEqualTo(3_534L);
     }
