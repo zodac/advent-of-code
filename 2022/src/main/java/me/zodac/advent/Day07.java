@@ -17,12 +17,11 @@
 
 package me.zodac.advent;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.nio.file.Files;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import me.zodac.advent.filesystem.Directory;
+import me.zodac.advent.filesystem.File;
 import me.zodac.advent.util.StringUtils;
 
 /**
@@ -32,161 +31,114 @@ import me.zodac.advent.util.StringUtils;
  */
 public final class Day07 {
 
-    private static final String ROOT_DIRECTORY = "/";
+    private static final long DIRECTORY_SIZE_THRESHOLD = 100_000L;
+    private static final long TOTAL_DISK_SPACE = 70_000_000L;
+    private static final long REQUIRED_DISK_SPACE = 30_000_000L;
+
+    private static final String CD_ROOT_COMMAND = "$ cd /";
+    private static final String CD_PREVIOUS_DIRECTORY_COMMAND = "$ cd ..";
+    private static final String CD_COMMAND_PREFIX = "$ cd";
+    private static final String DIRECTORY_PREFIX = "dir";
+    private static final String LS_COMMAND = "$ ls";
 
     private Day07() {
 
     }
 
-    private static final class Directory {
-        final Directory parent;
-        final String path;
-        final String name;
-        final List<Directory> dirs;
-        final List<MyFile> files;
-
-        private Directory(final Directory parent, final String name, final List<Directory> dirs, final List<MyFile> files) {
-            this.parent = parent;
-            this.name = name;
-            this.dirs = dirs;
-            this.files = files;
-            path = parent == null ? name : parent.path + File.pathSeparator + name;
-        }
-
-        private Directory(final Directory parent, final String name) {
-            this(parent, name, new ArrayList<>(), new ArrayList<>());
-        }
-    }
-
-    private record MyFile(String name, long size) {
-    }
-
     /**
-     * Part 1.
+     * Iterates over the input {@link String} commands and builds a filesystem of {@link Directory}s and {@link Files}. Finds all {@link Directory}s
+     * with a total size (including child {@link Directory}s) under {@value #DIRECTORY_SIZE_THRESHOLD}, then sums up their values.
      *
-     * @param values the input {@link String}s
-     * @return the result
+     * @param commands the input {@link String}s
+     * @return the total size of all valid {@link Directory}s
      */
-    public static long part1(final Iterable<String> values) {
-        final Map<String, Directory> dirsByPath = new HashMap<>();
-        Directory currentDir = new Directory(null, ROOT_DIRECTORY);
-        dirsByPath.put(currentDir.path, currentDir);
-
-        final Map<String, Long> sizeByDirPath = new HashMap<>();
-        sizeByDirPath.put(currentDir.path, 0L);
-
-        for (final String command : values) {
-            if ("$ ls".equals(command) || "$ cd /".equals(command)) {
-                continue;
-            }
-
-            if (command.startsWith("$ cd")) {
-                final String newDirName = StringUtils.splitOnWhitespace(command)[2];
-
-                if ("..".equals(newDirName)) {
-                    currentDir = currentDir.parent;
-                } else {
-                    currentDir = dirsByPath.get(currentDir.path + File.pathSeparator + newDirName);
-                }
-            } else if (command.startsWith("dir")) {
-                final String dirName = StringUtils.splitOnWhitespace(command)[1];
-                final Directory newDir = new Directory(currentDir, dirName);
-                currentDir.dirs.add(newDir);
-                dirsByPath.put(newDir.path, newDir);
-
-                if (!sizeByDirPath.containsKey(newDir.path)) {
-                    sizeByDirPath.put(newDir.path, 0L);
-                }
-            } else {
-                // File
-                final String[] tokens = StringUtils.splitOnWhitespace(command);
-                final long size = Long.parseLong(tokens[0]);
-                final String fileName = tokens[1];
-                final MyFile file = new MyFile(fileName, size);
-
-                currentDir.files.add(file);
-
-                Directory curr = currentDir;
-                while (curr != null) {
-                    final long currVal = sizeByDirPath.getOrDefault(curr.path, 0L);
-                    final long newVal = currVal + file.size;
-                    sizeByDirPath.put(curr.path, newVal);
-
-                    curr = curr.parent;
-                }
-
-            }
-        }
-
-        return sizeByDirPath.values().stream().filter(aLong -> aLong < 100_000L).mapToLong(Long::longValue).sum();
-    }
-
-    /**
-     * Part 2.
-     *
-     * @param values the input {@link String}s
-     * @return the result
-     */
-    public static long part2(final Iterable<String> values) {
-        final Map<String, Directory> dirsByPath = new HashMap<>();
-        Directory currentDir = new Directory(null, ROOT_DIRECTORY);
-        dirsByPath.put(currentDir.path, currentDir);
-
-        final Map<String, Long> sizeByDirPath = new HashMap<>();
-        sizeByDirPath.put(currentDir.path, 0L);
-
-        for (final String command : values) {
-            if ("$ ls".equals(command) || "$ cd /".equals(command)) {
-                continue;
-            }
-
-            if (command.startsWith("$ cd")) {
-                final String newDirName = StringUtils.splitOnWhitespace(command)[2];
-
-                if ("..".equals(newDirName)) {
-                    currentDir = currentDir.parent;
-                } else {
-                    currentDir = dirsByPath.get(currentDir.path + File.pathSeparator + newDirName);
-                }
-            } else if (command.startsWith("dir")) {
-                final String dirName = StringUtils.splitOnWhitespace(command)[1];
-                final Directory newDir = new Directory(currentDir, dirName);
-                currentDir.dirs.add(newDir);
-                dirsByPath.put(newDir.path, newDir);
-
-                if (!sizeByDirPath.containsKey(newDir.path)) {
-                    sizeByDirPath.put(newDir.path, 0L);
-                }
-            } else {
-                // File
-                final String[] tokens = StringUtils.splitOnWhitespace(command);
-                final long size = Long.parseLong(tokens[0]);
-                final String fileName = tokens[1];
-                final MyFile file = new MyFile(fileName, size);
-
-                currentDir.files.add(file);
-
-                Directory curr = currentDir;
-                while (curr != null) {
-                    final long currVal = sizeByDirPath.getOrDefault(curr.path, 0L);
-                    final long newVal = currVal + file.size;
-                    sizeByDirPath.put(curr.path, newVal);
-
-                    curr = curr.parent;
-                }
-
-            }
-        }
-
-        final long unusedSpace = 70000000 - sizeByDirPath.get(ROOT_DIRECTORY);
-        final long spaceToFind = 30000000 - unusedSpace;
-
+    public static long totalSizeOfDirectoriesOverThreshold(final Iterable<String> commands) {
+        final Map<String, Long> sizeByDirPath = getDirectorySizesByDirectoryPath(commands);
         return sizeByDirPath
             .values()
             .stream()
-            .filter(aLong -> aLong > spaceToFind)
+            .filter(directorySize -> directorySize < DIRECTORY_SIZE_THRESHOLD)
+            .mapToLong(Long::longValue)
+            .sum();
+    }
+
+    /**
+     * Iterates over the input {@link String} commands and builds a filesystem of {@link Directory}s and {@link Files}. Based on the total used disk
+     * space, a total disk space of {@value #TOTAL_DISK_SPACE}, and a required unused disk space of {@value #REQUIRED_DISK_SPACE}, we find the size
+     * of the smallest {@link Directory} that can be deleted to free enough space on the filesystem.
+     *
+     * @param commands the input {@link String}s
+     * @return the size of the smallest {@link Directory} that can be deleted to free enough disk space
+     */
+    public static long smallestDirectorySizeToDeleteToMeetSpaceRequirepments(final Iterable<String> commands) {
+        final Map<String, Long> directorySizeByPath = getDirectorySizesByDirectoryPath(commands);
+
+        final long totalUsedSpace = directorySizeByPath.get(Directory.ROOT_DIRECTORY_PATH);
+        final long unusedSpace = TOTAL_DISK_SPACE - totalUsedSpace;
+        final long spaceToFind = REQUIRED_DISK_SPACE - unusedSpace;
+
+        return directorySizeByPath
+            .values()
+            .stream()
+            .filter(directorySize -> directorySize >= spaceToFind)
             .mapToLong(l -> l)
             .min()
             .orElse(0L);
+    }
+
+    private static Map<String, Long> getDirectorySizesByDirectoryPath(final Iterable<String> commands) {
+        final Map<String, Directory> dirsByPath = parseDirectoryStructure(commands);
+
+        final Map<String, Long> directorySizeByPath = new HashMap<>();
+        for (final Map.Entry<String, Directory> entry : dirsByPath.entrySet()) {
+            directorySizeByPath.put(entry.getKey(), entry.getValue().calculateSizeInBytes());
+        }
+
+        return directorySizeByPath;
+    }
+
+    private static Map<String, Directory> parseDirectoryStructure(final Iterable<String> commands) {
+        final Map<String, Directory> directoriesByPath = new HashMap<>();
+        final Directory rootDirectory = Directory.createRoot();
+
+        // Start with root directory
+        Directory currentDirectory = rootDirectory;
+        directoriesByPath.put(currentDirectory.path(), currentDirectory);
+
+        for (final String value : commands) {
+            if (LS_COMMAND.equals(value)) {
+                // No action needed
+                continue;
+            }
+
+            if (CD_ROOT_COMMAND.equals(value)) {
+                currentDirectory = rootDirectory;
+            } else if (CD_PREVIOUS_DIRECTORY_COMMAND.equals(value)) {
+                if (currentDirectory.parent() != null) {
+                    currentDirectory = currentDirectory.parent();
+                }
+            } else if (value.startsWith(CD_COMMAND_PREFIX)) {
+                final String childDirectoryName = StringUtils.splitOnWhitespace(value)[2];
+                final Directory childDirectory = Directory.create(currentDirectory, childDirectoryName);
+
+                if (directoriesByPath.containsKey(childDirectory.path())) {
+                    currentDirectory = directoriesByPath.get(childDirectory.path());
+                }
+            } else if (value.startsWith(DIRECTORY_PREFIX)) {
+                final String childDirectoryName = StringUtils.splitOnWhitespace(value)[1];
+                final Directory childDirectory = Directory.create(currentDirectory, childDirectoryName);
+                currentDirectory.addChildDirectory(childDirectory);
+
+                directoriesByPath.put(childDirectory.path(), childDirectory);
+            } else {
+                final String[] tokens = StringUtils.splitOnWhitespace(value);
+                final long fileSize = Long.parseLong(tokens[0]);
+                final String fileName = tokens[1];
+
+                final File file = File.create(currentDirectory, fileName, fileSize);
+                currentDirectory.addFile(file);
+            }
+        }
+        return directoriesByPath;
     }
 }

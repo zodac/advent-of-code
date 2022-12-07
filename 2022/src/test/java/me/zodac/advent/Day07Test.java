@@ -34,7 +34,7 @@ class Day07Test {
     void part1() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final long result = Day07.part1(values);
+        final long result = Day07.totalSizeOfDirectoriesOverThreshold(values);
         assertThat(result)
             .isEqualTo(1_648_397L);
     }
@@ -43,7 +43,7 @@ class Day07Test {
     void part2() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final long result = Day07.part2(values);
+        final long result = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirepments(values);
         assertThat(result)
             .isEqualTo(1_815_525L);
     }
