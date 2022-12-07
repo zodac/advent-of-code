@@ -57,7 +57,7 @@ public final class Dijkstra {
             neighbouringNodes.addAll(validNeighbouringNodes);
         }
 
-        throw new IllegalStateException("Unable to find endstate with provided input node");
+        throw new IllegalStateException("Unable to find endState with provided input node");
     }
 
     private static Queue<SearchNode> getValidNeighbouringNodes(final SearchNode closestNeighbour) {
