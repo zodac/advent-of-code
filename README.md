@@ -7,7 +7,7 @@
 ![](https://img.shields.io/badge/2018%20⭐-2-orange)
 ![](https://img.shields.io/badge/2017%20⭐-0-red)
 ![](https://img.shields.io/badge/2016%20⭐-0-red)
-![](https://img.shields.io/badge/2015%20⭐-42-yellow)
+![](https://img.shields.io/badge/2015%20⭐-44-yellow)
 
 ## Overview
 
@@ -84,6 +84,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 23](https://adventofcode.com/2021/day/23) |        |        |
 | [Day 24](https://adventofcode.com/2021/day/24) |        |        |
 | [Day 25](https://adventofcode.com/2021/day/25) |        |        |
+
 </details>
 
 <details>
@@ -116,6 +117,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 23](https://adventofcode.com/2020/day/23) |        |        |
 | [Day 24](https://adventofcode.com/2020/day/24) |        |        |
 | [Day 25](https://adventofcode.com/2020/day/25) |        |        |
+
 </details>
 
 <details>
@@ -148,6 +150,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 23](https://adventofcode.com/2019/day/23) |        |        |
 | [Day 24](https://adventofcode.com/2019/day/24) |        |        |
 | [Day 25](https://adventofcode.com/2019/day/25) |        |        |
+
 </details>
 
 <details>
@@ -180,6 +183,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 23](https://adventofcode.com/2018/day/23) |        |        |
 | [Day 24](https://adventofcode.com/2018/day/24) |        |        |
 | [Day 25](https://adventofcode.com/2018/day/25) |        |        |
+
 </details>
 
 <details>
@@ -212,6 +216,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 23](https://adventofcode.com/2017/day/23) |        |        |
 | [Day 24](https://adventofcode.com/2017/day/24) |        |        |
 | [Day 25](https://adventofcode.com/2017/day/25) |        |        |
+
 </details>
 
 <details>
@@ -244,6 +249,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 23](https://adventofcode.com/2016/day/23) |        |        |
 | [Day 24](https://adventofcode.com/2016/day/24) |        |        |
 | [Day 25](https://adventofcode.com/2016/day/25) |        |        |
+
 </details>
 
 <details>
@@ -272,8 +278,9 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 19](https://adventofcode.com/2015/day/19) |   ⭐    |   ⭐    |
 | [Day 20](https://adventofcode.com/2015/day/20) |   ⭐    |   ⭐    |
 | [Day 21](https://adventofcode.com/2015/day/21) |   ⭐    |   ⭐    |
-| [Day 22](https://adventofcode.com/2015/day/22) |        |        |
+| [Day 22](https://adventofcode.com/2015/day/22) |   ⭐    |   ⭐    |
 | [Day 23](https://adventofcode.com/2015/day/23) |        |        |
 | [Day 24](https://adventofcode.com/2015/day/24) |        |        |
 | [Day 25](https://adventofcode.com/2015/day/25) |        |        |
+
 </details>

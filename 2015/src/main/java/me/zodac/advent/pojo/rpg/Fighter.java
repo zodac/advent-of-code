@@ -95,9 +95,9 @@ public record Fighter(long hitPoints, int equipmentCost, int attack, int defence
         }
 
         final int hitPoints = Integer.parseInt(matcher.group(1));
-        final int damage = Integer.parseInt(matcher.group(2));
+        final int attack = Integer.parseInt(matcher.group(2));
         final int armour = Integer.parseInt(matcher.group(3));
 
-        return create(hitPoints, 0, damage, armour);
+        return create(hitPoints, 0, attack, armour);
     }
 }
