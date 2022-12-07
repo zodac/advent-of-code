@@ -1,6 +1,6 @@
 # Advent Of Code: Java Edition
 
-![](https://img.shields.io/badge/2022%20⭐-12-yellow)
+![](https://img.shields.io/badge/2022%20⭐-12-orange)
 ![](https://img.shields.io/badge/2021%20⭐-19-orange)
 ![](https://img.shields.io/badge/2020%20⭐-0-red)
 ![](https://img.shields.io/badge/2019%20⭐-0-red)
