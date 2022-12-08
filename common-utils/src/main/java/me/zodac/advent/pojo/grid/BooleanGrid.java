@@ -56,25 +56,27 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
     }
 
     /**
-     * Given a {@link Collection} of {@link List}s of {@link Boolean}s that represents a {@link BooleanGrid}'s internal boolean 2D-array, we convert
-     * the {@link Collection} to a 2D array and create a new instance of {@link BooleanGrid}.
+     * Given a {@link List}s of {@link String}s where each {@link String} represents a 2D array of {@link Boolean}s, we convert to a 2D array and
+     * create a new instance of {@link BooleanGrid}.
      *
-     * @param grid the {@link Collection} representation of a 2D array
+     * @param gridValues           the {@link String}s representing a 2D array (where each character in the {@link String} is an element in the array)
+     * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
      * @return the created {@link BooleanGrid}
-     * @throws IllegalArgumentException thrown if input is empty, or the input {@link Collection} size does not match the size of the first element
+     * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
+     * @see ArrayUtils#convertToArrayOfBooleanArrays(List, char)
      */
-    public static BooleanGrid parse(final Collection<? extends List<Boolean>> grid) {
-        if (grid.isEmpty()) {
+    public static BooleanGrid parse(final List<String> gridValues, final char symbolSignifyingTrue) {
+        if (gridValues.isEmpty()) {
             throw new IllegalArgumentException("Input cannot be empty");
         }
 
-        final List<Boolean> firstElement = getFirst(grid);
-        if (grid.size() != firstElement.size()) {
+        final int firstElementSize = getFirst(gridValues).length();
+        if (gridValues.size() != firstElementSize) {
             throw new IllegalArgumentException(
-                String.format("Outer size must match inner size, found outer: %s, inner: %s", grid.size(), firstElement.size()));
+                String.format("Outer size must match inner size, found outer: %s, inner: %s", gridValues.size(), firstElementSize));
         }
 
-        return new BooleanGrid(ArrayUtils.convertToArrayOfBooleanArrays(grid));
+        return new BooleanGrid(ArrayUtils.convertToArrayOfBooleanArrays(gridValues, symbolSignifyingTrue));
     }
 
     /**

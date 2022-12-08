@@ -30,16 +30,13 @@ import org.junit.jupiter.api.Test;
 class Day18Test {
 
     private static final String INPUT_FILENAME = "day18.txt";
+    private static final char SYMBOL_SIGNIFYING_TRUE = '#';
 
     @Test
     void part1() {
-        final List<List<Boolean>> values =
-            FileUtils.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Day18Test::convertLineToBooleans)
-                .toList();
+        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final BooleanGrid booleanGrid = BooleanGrid.parse(values);
+        final BooleanGrid booleanGrid = BooleanGrid.parse(values, SYMBOL_SIGNIFYING_TRUE);
         final long numberOfCombinations = Day18.playGameOfLife(booleanGrid, 100);
         assertThat(numberOfCombinations)
             .isEqualTo(814L);
@@ -47,23 +44,11 @@ class Day18Test {
 
     @Test
     void part2() {
-        final List<List<Boolean>> values =
-            FileUtils.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Day18Test::convertLineToBooleans)
-                .toList();
+        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final BooleanGrid booleanGrid = BooleanGrid.parse(values);
+        final BooleanGrid booleanGrid = BooleanGrid.parse(values, SYMBOL_SIGNIFYING_TRUE);
         final long numberOfCombinations = Day18.playGameOfLifeWithCornersAlwaysOn(booleanGrid, 100);
         assertThat(numberOfCombinations)
             .isEqualTo(924L);
-    }
-
-    private static List<Boolean> convertLineToBooleans(final String line) {
-        return line
-            .chars()
-            .mapToObj(i -> (char) i)
-            .map(c -> c == '#')
-            .toList();
     }
 }

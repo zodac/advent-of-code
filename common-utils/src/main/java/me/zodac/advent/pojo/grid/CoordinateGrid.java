@@ -293,4 +293,13 @@ abstract class CoordinateGrid<E> {
             || (row == 0 && column == gridSize - 1)
             || (row == gridSize - 1 && column == 0);
     }
+
+    /**
+     * Returns the backing 2D array of the {@link CoordinateGrid}.
+     *
+     * @return the {@link CoordinateGrid} as a 2D array
+     */
+    public E[][] getGrid() {
+        return grid.clone();
+    }
 }

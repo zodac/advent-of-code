@@ -34,7 +34,7 @@ class Day08Test {
     void part1() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final long result = Day08.part1(values);
+        final long result = Day08.countTreesVisibleFromOutsideForest(values);
         assertThat(result)
             .isEqualTo(1_679L);
     }
@@ -43,7 +43,7 @@ class Day08Test {
     void part2() {
         final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final long result = Day08.part2(values);
+        final long result = Day08.findHighestScenicScore(values);
         assertThat(result)
             .isEqualTo(536_625L);
     }

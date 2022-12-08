@@ -18,6 +18,8 @@
 package me.zodac.advent;
 
 import java.util.List;
+import me.zodac.advent.pojo.grid.IntegerGrid;
+import me.zodac.advent.util.ArrayUtils;
 
 /**
  * Solution for 2022, Day 8.
@@ -30,8 +32,33 @@ public final class Day08 {
 
     }
 
-    public static long part1(final List<String> values) {
-        final int[][] trees = convertToArrayOfIntArrays(values);
+    /**
+     * Given a {@link List} of {@link String}s where each character represents a single tree's height in a forest, we count the number
+     * of trees that can be viewed from outside the forest.
+     *
+     * <p>
+     * For example, the input:
+     * <pre>
+     *     30373
+     *     25512
+     *     65332
+     *     33549
+     *     35390
+     * </pre>
+     *
+     * <p>
+     * Ignoring the outer edges (which are all visible), we have the inner 9 trees to check. A tree is visible if it can be seen from at least one
+     * direction (up, down, left, right). It will be visible from a direction if there are no trees equal to or greater than its height. In the above
+     * example, we have 5 visible trees in the middle, and 16 visible trees along the edge.
+     *
+     * @param values the input {@link String}s representing a 2D array of {@link Integer}s
+     * @return the number of trees visible from outside
+     * @see ArrayUtils#countPerimeterElements(Object[][])
+     * @see IntegerGrid#parse(List)
+     */
+    public static long countTreesVisibleFromOutsideForest(final List<String> values) {
+        final IntegerGrid forest = IntegerGrid.parse(values);
+        final Integer[][] trees = forest.getGrid();
 
         int innerCount = 0;
         for (int i = 1; i < trees.length - 1; i++) {
@@ -42,11 +69,10 @@ public final class Day08 {
             }
         }
 
-        final int outerEdgeCount = (2 * trees.length) + (2 * trees[0].length) - 4;
-        return innerCount + outerEdgeCount;
+        return innerCount + ArrayUtils.countPerimeterElements(trees);
     }
 
-    private static boolean isTreeVisibleFromOutside(final int[][] trees, final int row, final int column) {
+    private static boolean isTreeVisibleFromOutside(final Integer[][] trees, final int row, final int column) {
         final int tree = trees[row][column];
 
         return isVisibleUp(trees, tree, row, column)
@@ -55,7 +81,7 @@ public final class Day08 {
             || isVisibleRight(trees, tree, row, column);
     }
 
-    private static boolean isVisibleUp(final int[][] trees, final int tree, final int row, final int column) {
+    private static boolean isVisibleUp(final Integer[][] trees, final int tree, final int row, final int column) {
         for (int i = (row - 1); i >= 0; i--) {
             if (tree <= trees[i][column]) {
                 return false;
@@ -65,7 +91,7 @@ public final class Day08 {
         return true;
     }
 
-    private static boolean isVisibleDown(final int[][] trees, final int tree, final int row, final int column) {
+    private static boolean isVisibleDown(final Integer[][] trees, final int tree, final int row, final int column) {
         for (int i = (row + 1); i < trees.length; i++) {
             if (tree <= trees[i][column]) {
                 return false;
@@ -75,7 +101,7 @@ public final class Day08 {
         return true;
     }
 
-    private static boolean isVisibleLeft(final int[][] trees, final int tree, final int row, final int column) {
+    private static boolean isVisibleLeft(final Integer[][] trees, final int tree, final int row, final int column) {
         for (int j = (column - 1); j >= 0; j--) {
             if (tree <= trees[row][j]) {
                 return false;
@@ -85,7 +111,7 @@ public final class Day08 {
         return true;
     }
 
-    private static boolean isVisibleRight(final int[][] trees, final int tree, final int row, final int column) {
+    private static boolean isVisibleRight(final Integer[][] trees, final int tree, final int row, final int column) {
         for (int j = (column + 1); j < trees[0].length; j++) {
             if (tree <= trees[row][j]) {
                 return false;
@@ -95,34 +121,36 @@ public final class Day08 {
         return true;
     }
 
-    public static int[][] convertToArrayOfIntArrays(final List<String> input) {
-        final int outerLength = input.size();
-        final int innerLength = input
-            .stream()
-            .mapToInt(String::length)
-            .max()
-            .orElse(outerLength);
-
-        final int[][] arrayOfIntArrays = new int[outerLength][innerLength];
-
-        for (int i = 0; i < input.size(); i++) {
-            final String line = input.get(i);
-            arrayOfIntArrays[i] = convertToArrayOfInts(line);
-        }
-
-        return arrayOfIntArrays;
-    }
-
-    private static int[] convertToArrayOfInts(final CharSequence input) {
-        final int[] intArray = new int[input.length()];
-        for (int i = 0; i < input.length(); i++) {
-            intArray[i] = Integer.parseInt(String.valueOf(input.charAt(i)));
-        }
-        return intArray;
-    }
-
-    public static long part2(final List<String> values) {
-        final int[][] trees = convertToArrayOfIntArrays(values);
+    /**
+     * Given a {@link List} of {@link String}s where each character represents a single tree's height in a forest, find the tree with the highest
+     * 'scenic score'. The scenic score is defined as:
+     * <pre>
+     *     treesWeCanSeeLookingUp * treesWeCanSeeLookingDown * treesWeCanSeeLookingLeft * treesWeCanSeeLookingRight
+     * </pre>
+     *
+     * <p>
+     * For example, the input:
+     * <pre>
+     *     30373
+     *     25512
+     *     65332
+     *     33549
+     *     35390
+     * </pre>
+     *
+     * <p>
+     * Ignoring the outer edges (which have 0 visible trees in at least one direction, so a scenic score of <b>0</b>), we have the inner 9 trees to
+     * check.  We can see trees in a given direction (up, down, left, right) if the tree is less than the height of our tree, or we reach the edge. In
+     * the above example, the middle 5 in the 2nd last row has the highest scenic score, of <b>8</b>.
+     *
+     * @param values the input {@link String}s representing a 2D array of {@link Integer}s
+     * @return the highest scenic score
+     * @see ArrayUtils#countPerimeterElements(Object[][])
+     * @see IntegerGrid#parse(List)
+     */
+    public static long findHighestScenicScore(final List<String> values) {
+        final IntegerGrid forest = IntegerGrid.parse(values);
+        final Integer[][] trees = forest.getGrid();
         long max = Long.MIN_VALUE;
 
         for (int i = 1; i < trees.length - 1; i++) {
@@ -134,7 +162,7 @@ public final class Day08 {
         return max;
     }
 
-    private static long getScenicScore(final int[][] trees, final int row, final int column) {
+    private static long getScenicScore(final Integer[][] trees, final int row, final int column) {
         final int tree = trees[row][column];
 
         return getScenicScoreUp(trees, row, column, tree)
@@ -143,7 +171,7 @@ public final class Day08 {
             * getScenicScoreRight(trees, row, column, tree);
     }
 
-    private static long getScenicScoreUp(final int[][] trees, final int row, final int column, final int tree) {
+    private static long getScenicScoreUp(final Integer[][] trees, final int row, final int column, final int tree) {
         long upScore = 0;
         for (int i = (row - 1); i >= 0; i--) {
             if (tree <= trees[i][column]) {
@@ -155,7 +183,7 @@ public final class Day08 {
         return upScore;
     }
 
-    private static long getScenicScoreDown(final int[][] trees, final int row, final int column, final int tree) {
+    private static long getScenicScoreDown(final Integer[][] trees, final int row, final int column, final int tree) {
         long downScore = 0;
         for (int i = (row + 1); i < trees.length; i++) {
             if (tree <= trees[i][column]) {
@@ -167,7 +195,7 @@ public final class Day08 {
         return downScore;
     }
 
-    private static long getScenicScoreLeft(final int[][] trees, final int row, final int column, final int tree) {
+    private static long getScenicScoreLeft(final Integer[][] trees, final int row, final int column, final int tree) {
         long leftScore = 0;
         for (int j = (column - 1); j >= 0; j--) {
             if (tree <= trees[row][j]) {
@@ -179,7 +207,7 @@ public final class Day08 {
         return leftScore;
     }
 
-    private static long getScenicScoreRight(final int[][] trees, final int row, final int column, final int tree) {
+    private static long getScenicScoreRight(final Integer[][] trees, final int row, final int column, final int tree) {
         int rightScore = 0;
         for (int j = (column + 1); j < trees[0].length; j++) {
             if (tree <= trees[row][j]) {

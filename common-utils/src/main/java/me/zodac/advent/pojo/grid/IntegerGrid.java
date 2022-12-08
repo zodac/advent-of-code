@@ -17,8 +17,12 @@
 
 package me.zodac.advent.pojo.grid;
 
+import static me.zodac.advent.util.CollectionUtils.getFirst;
+
+import java.util.List;
 import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.util.ArrayUtils;
 
 /**
  * Class defining a {@link CoordinateGrid} of {@link Integer}s, where any point can have an {@link Integer} value.
@@ -29,6 +33,10 @@ public final class IntegerGrid extends CoordinateGrid<Integer> {
 
     private IntegerGrid(final int gridSize) {
         super(gridSize, new Integer[gridSize][gridSize], 0, NUMBER_SIGNIFYING_OVERLAP);
+    }
+
+    private IntegerGrid(final Integer[][] grid) {
+        super(grid, NUMBER_SIGNIFYING_OVERLAP);
     }
 
     /**
@@ -44,6 +52,29 @@ public final class IntegerGrid extends CoordinateGrid<Integer> {
         }
 
         return new IntegerGrid(gridSize);
+    }
+
+    /**
+     * Given a {@link List}s of {@link String}s where each {@link String} represents a 2D array of {@link Integer}s, we convert to a 2D array and
+     * create a new instance of {@link IntegerGrid}.
+     *
+     * @param gridValues the {@link String}s representing a 2D array (where each character in the {@link String} is an element in the array)
+     * @return the created {@link IntegerGrid}
+     * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
+     * @see ArrayUtils#convertToArrayOfIntegerArrays(List)
+     */
+    public static IntegerGrid parse(final List<String> gridValues) {
+        if (gridValues.isEmpty()) {
+            throw new IllegalArgumentException("Input cannot be empty");
+        }
+
+        final int firstElementLength = getFirst(gridValues).length();
+        if (gridValues.size() != firstElementLength) {
+            throw new IllegalArgumentException(
+                String.format("Outer size must match inner size, found outer: %s, inner: %s", gridValues.size(), firstElementLength));
+        }
+
+        return new IntegerGrid(ArrayUtils.convertToArrayOfIntegerArrays(gridValues));
     }
 
     /**

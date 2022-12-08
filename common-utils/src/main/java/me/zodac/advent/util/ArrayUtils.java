@@ -18,7 +18,6 @@
 package me.zodac.advent.util;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,7 +25,6 @@ import java.util.List;
  */
 public final class ArrayUtils {
 
-    private static final Boolean[] EMPTY_BOOLEAN_ARRAY = new Boolean[0];
     private static final char[][] EMPTY_2D_CHAR_ARRAY = new char[0][0];
 
     private ArrayUtils() {
@@ -58,20 +56,59 @@ public final class ArrayUtils {
     }
 
     /**
-     * Converts the provided {@link Collection} of {@link List}s of {@link Boolean}s to a 2D {@link Boolean} array.
+     * Converts the provided {@link List} of {@link String}s to a 2D {@link Boolean} array. Each {@link String} will be converted to an array of
+     * {@link Boolean}s, where each character is compared to {@code symbolSignifyingTrue}.
      *
-     * @param input the input {@link Collection} of {@link List}s
+     * <p>
+     * Given a {@link List} as follows, with a {@code symbolSignifyingTrue} of <b>a</b>:
+     * <pre>
+     *     [
+     *      "abbb",
+     *      "bab",
+     *      "aa",
+     *      "bbb"
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * The result will be:
+     * <pre>
+     *     [
+     *      [TRUE, FALSE, FALSE, FALSE],
+     *      [FALSE, TRUE, FALSE],
+     *      [TRUE, TRUE],
+     *      [FALSE, FALSE, FALSE]
+     *     ]
+     * </pre>
+     *
+     * @param input                the input {@link String}s
+     * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
      * @return the 2D {@link Boolean} array
      */
-    public static Boolean[][] convertToArrayOfBooleanArrays(final Collection<? extends List<Boolean>> input) {
-        final Boolean[][] array = new Boolean[input.size()][];
+    public static Boolean[][] convertToArrayOfBooleanArrays(final List<String> input, final char symbolSignifyingTrue) {
+        final int outerLength = input.size();
+        final int innerLength = input
+            .stream()
+            .mapToInt(String::length)
+            .max()
+            .orElse(outerLength);
 
-        int i = 0;
-        for (final List<Boolean> row : input) {
-            array[i++] = row.toArray(EMPTY_BOOLEAN_ARRAY);
+        final Boolean[][] arrayOfBooleanArrays = new Boolean[outerLength][innerLength];
+
+        for (int i = 0; i < input.size(); i++) {
+            final String line = input.get(i);
+            arrayOfBooleanArrays[i] = convertToArrayOfBooleans(line, symbolSignifyingTrue);
         }
 
-        return array;
+        return arrayOfBooleanArrays;
+    }
+
+    private static Boolean[] convertToArrayOfBooleans(final CharSequence input, final char symbolSignifyingTrue) {
+        final Boolean[] booleanArray = new Boolean[input.length()];
+        for (int i = 0; i < input.length(); i++) {
+            booleanArray[i] = input.charAt(i) == symbolSignifyingTrue;
+        }
+        return booleanArray;
     }
 
     /**
@@ -122,6 +159,87 @@ public final class ArrayUtils {
         }
 
         return arrayOfCharArrays;
+    }
+
+    /**
+     * Converts the provided {@link List} of {@link String}s into a 2D {@link Integer} array. We assume each character in the {@link String} is a
+     * one-digit {@link Integer}, there is no support for multiple-digit {@link Integer}s.
+     *
+     * <p>
+     * Given a {@link List} as follows:
+     * <pre>
+     *     [
+     *      "1234",
+     *      "567",
+     *      "89",
+     *      "012"
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * The result will be:
+     * <pre>
+     *     [
+     *      [1, 2, 3, 4],
+     *      [5, 6, 7],
+     *      [8, 9],
+     *      [0, 1, 2]
+     *     ]
+     * </pre>
+     *
+     * @param input the input {@link List} of {@link String}s
+     * @return the 2D {@link Integer} array
+     */
+    public static Integer[][] convertToArrayOfIntegerArrays(final List<String> input) {
+        final int outerLength = input.size();
+        final int innerLength = input
+            .stream()
+            .mapToInt(String::length)
+            .max()
+            .orElse(outerLength);
+
+        final Integer[][] arrayOfIntegerArrays = new Integer[outerLength][innerLength];
+
+        for (int i = 0; i < input.size(); i++) {
+            final String line = input.get(i);
+            arrayOfIntegerArrays[i] = convertToArrayOfIntegerss(line);
+        }
+
+        return arrayOfIntegerArrays;
+    }
+
+    private static Integer[] convertToArrayOfIntegerss(final CharSequence input) {
+        final Integer[] integerArray = new Integer[input.length()];
+        for (int i = 0; i < input.length(); i++) {
+            integerArray[i] = Integer.parseInt(String.valueOf(input.charAt(i)));
+        }
+        return integerArray;
+    }
+
+    /**
+     * Counts the number of elements along the end of a 2D array. This is calculated as:
+     * <pre>
+     *     (length - 1) * 4
+     * </pre>
+     *
+     * @param input the array to check
+     * @param <E>   the type of the array
+     * @return the number of elements on the perimeter
+     */
+    public static <E> int countPerimeterElements(final E[][] input) {
+        if (input == null || input.length == 0) {
+            throw new IllegalArgumentException("Input cannot be null or empty");
+        }
+
+        final int outerLength = input.length;
+        final int innerLength = input[0].length;
+
+        if (outerLength != innerLength) {
+            throw new IllegalArgumentException(
+                String.format("Outer size must match inner size, found outer: %s, inner: %s", outerLength, innerLength));
+        }
+
+        return (input.length - 1) << 2;
     }
 
     /**
