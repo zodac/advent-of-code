@@ -83,6 +83,46 @@ class MathUtilsTest {
     }
 
     @Test
+    void whenDiagonalSum_givenValidInput_thenValueIsReturned() {
+        final int row = 2;
+        final int column = 4;
+
+        final long output = MathUtils.diagonalSum(row, column);
+        assertThat(output)
+            .isEqualTo(13L);
+    }
+
+    @Test
+    void whenDiagonalSum_givenValidOrigin_thenValueIsReturned() {
+        final int row = 1;
+        final int column = 1;
+
+        final long output = MathUtils.diagonalSum(row, column);
+        assertThat(output)
+            .isEqualTo(0L);
+    }
+
+    @Test
+    void whenDiagonalSum_givenNegativeRow_thenExceptionIsThrown() {
+        final int row = -2;
+        final int column = 4;
+
+        assertThatThrownBy(() -> MathUtils.diagonalSum(row, column))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Both row -2 and column 4 must be at least 1");
+    }
+
+    @Test
+    void whenDiagonalSum_givenNegativeColumn_thenExceptionIsThrown() {
+        final int row = 2;
+        final int column = -4;
+
+        assertThatThrownBy(() -> MathUtils.diagonalSum(row, column))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Both row 2 and column -4 must be at least 1");
+    }
+
+    @Test
     void whenIsBetween_givenInputBetweenRange_thenTrueIsReturned() {
         final int input = 3;
         final boolean output = MathUtils.isBetween(1, 5, input);

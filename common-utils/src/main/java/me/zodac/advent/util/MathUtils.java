@@ -52,6 +52,46 @@ public final class MathUtils {
     }
 
     /**
+     * Sums up the number of elements needed to traverse an infinite 2D array diagonally to reach the wanted {@code row} and {@code column}. For
+     * example:
+     *
+     * <pre>
+     *        | 1   2   3   4   5   6
+     *     ---+---+---+---+---+---+---+
+     *      1 |  1   3   6  10  15  21
+     *      2 |  2   5   9  14  20
+     *      3 |  4   8  13  19
+     *      4 |  7  12  18
+     *      5 | 11  17
+     *      6 | 16
+     * </pre>
+     *
+     * <p>
+     * To get to the value <b>14</b>, at (2, 4) would take 13 steps.
+     *
+     * <p>
+     * <b>NOTE:</b> the infinite diagonal array starts at (1, 1), not (0, 0).
+     *
+     * @param row    the row
+     * @param column the column
+     * @return the number of elements to get to the wanted {@code row} and {@code column}
+     * @throws IllegalArgumentException thrown if the input {@code row} or {@code column} is less than <b>1</b>
+     */
+    public static long diagonalSum(final int row, final int column) {
+        if (row < 1 || column < 1) {
+            throw new IllegalArgumentException(String.format("Both row %s and column %s must be at least 1", row, column));
+        }
+
+        long total = column;
+
+        for (int i = 0; i < row + column - 1; i++) {
+            total += i;
+        }
+
+        return total - 1;
+    }
+
+    /**
      * Checks if the given {@link Integer} is between two other {@link Integer}s.
      *
      * @param start the start of the {@link Integer} range
