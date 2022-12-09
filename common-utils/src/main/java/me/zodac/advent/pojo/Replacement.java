@@ -23,18 +23,18 @@ import java.util.regex.Pattern;
 /**
  * Simple representation of an element and its replacement.
  *
- * @param from the source element
- * @param to   the element it should be replaced with
- * @param <E>  the type of the element
+ * @param source the source element
+ * @param target the element it should be replaced with
+ * @param <E>    the type of the element
  */
-public record Replacement<E>(E from, E to) {
+public record Replacement<E>(E source, E target) {
 
     private static final Pattern STRING_REPLACEMENT_PATTERN = Pattern.compile("(.*) => (.*)");
 
     /**
      * Creates a {@link String} {@link Replacement} from a {@link CharSequence} in the format:
      * <pre>
-     *     [from] => [to]
+     *     [source] => [target]
      * </pre>
      *
      * @param input the {@link CharSequence} to parse
@@ -47,9 +47,21 @@ public record Replacement<E>(E from, E to) {
             throw new IllegalStateException("Unable to find match in input: " + input);
         }
 
-        final String from = matcher.group(1);
-        final String to = matcher.group(2);
+        final String source = matcher.group(1);
+        final String target = matcher.group(2);
 
-        return new Replacement<>(from, to);
+        return new Replacement<>(source, target);
+    }
+
+    /**
+     * Creates a {@link Replacement}.
+     *
+     * @param source the element being replaced
+     * @param target the replacement element
+     * @param <E>    the type of the elements
+     * @return the {@link Replacement}
+     */
+    public static <E> Replacement<E> of(final E source, final E target) {
+        return new Replacement<>(source, target);
     }
 }

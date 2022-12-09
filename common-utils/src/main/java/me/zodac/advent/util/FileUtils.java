@@ -102,6 +102,24 @@ public final class FileUtils {
     }
 
     /**
+     * Reads all lines from a file in {@code src/main/resources}, then mapping each {@link String} to an {@link Integer}.
+     *
+     * @param filePathInResources file path to be read
+     * @return a {@link List} of the {@link Integer}s from the file, or {@link Collections#emptyList()} if an error occurs
+     * @throws IllegalArgumentException thrown if any value in the file is not a valid {@link Integer}
+     */
+    public static List<Integer> readLinesAsIntegers(final String filePathInResources) {
+        try {
+            return readLines(filePathInResources)
+                .stream()
+                .map(Integer::parseInt)
+                .toList();
+        } catch (final NumberFormatException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    /**
      * Reads all lines from a file in {@code src/main/resources}, then concatenates them into a single {@link String}, with the delimiter as
      * {@value #NEW_LINE}.
      *

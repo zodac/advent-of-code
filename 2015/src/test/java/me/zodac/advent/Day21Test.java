@@ -46,8 +46,8 @@ class Day21Test {
         final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
         final Fighter boss = Fighter.parse(value);
 
-        final long part1 = Day21.costOfCheapestEquipmentThatDefeatsBoss(EQUIPMENT_COMBINATIONS, boss);
-        assertThat(part1)
+        final long cheapestEquimentCost = Day21.costOfCheapestEquipmentThatDefeatsBoss(EQUIPMENT_COMBINATIONS, boss);
+        assertThat(cheapestEquimentCost)
             .isEqualTo(91L);
     }
 
@@ -56,8 +56,8 @@ class Day21Test {
         final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
         final Fighter boss = Fighter.parse(value);
 
-        final long part1 = Day21.costOfPriciestArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);
-        assertThat(part1)
+        final long cheapestEquimentCost = Day21.costOfPriciestArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);
+        assertThat(cheapestEquimentCost)
             .isEqualTo(158L);
     }
 

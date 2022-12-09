@@ -20,32 +20,31 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import java.util.Map;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day23}.
+ * Tests to verify answers for {@link Day24}.
  */
-class Day23Test {
+class Day24Test {
 
-    private static final String INPUT_FILENAME = "day23.txt";
+    private static final String INPUT_FILENAME = "day24.txt";
 
     @Test
     void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<Integer> values = FileUtils.readLinesAsIntegers(INPUT_FILENAME);
 
-        final long registerValue = Day23.calculateRegisterValue(values, 'b', Map.of());
-        assertThat(registerValue)
-            .isEqualTo(307L);
+        final long smallestQuantumEntanglement = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 3);
+        assertThat(smallestQuantumEntanglement)
+            .isEqualTo(11_846_773_891L);
     }
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<Integer> values = FileUtils.readLinesAsIntegers(INPUT_FILENAME);
 
-        final long registerValue = Day23.calculateRegisterValue(values, 'b', Map.of('a', 1L));
-        assertThat(registerValue)
-            .isEqualTo(160L);
+        final long smallestQuantumEntanglement = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 4);
+        assertThat(smallestQuantumEntanglement)
+            .isEqualTo(80_393_059L);
     }
 }

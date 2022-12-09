@@ -35,8 +35,8 @@ class Day22Test {
         final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
         final MageBoss boss = MageBoss.parse(value);
 
-        final long part1 = Day22.findCheapestManaCostToWinBattle(boss, 0);
-        assertThat(part1)
+        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(boss, 0);
+        assertThat(cheapestManaCost)
             .isEqualTo(953L);
     }
 
@@ -45,8 +45,8 @@ class Day22Test {
         final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
         final MageBoss boss = MageBoss.parse(value);
 
-        final long part1 = Day22.findCheapestManaCostToWinBattle(boss, 1);
-        assertThat(part1)
+        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(boss, 1);
+        assertThat(cheapestManaCost)
             .isEqualTo(1_289L);
     }
 }

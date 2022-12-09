@@ -67,14 +67,14 @@ public final class Day19 {
     public static long numberOfDistinctReplacementMolecules(final String molecule, final Iterable<Replacement<String>> replacements) {
         final Collection<String> newMolecules = new HashSet<>();
         for (final Replacement<String> replacement : replacements) {
-            int indexInMolecule = molecule.indexOf(replacement.from());
+            int indexInMolecule = molecule.indexOf(replacement.source());
 
             while (indexInMolecule >= 0) {
-                final String newMolecule = StringUtils.replaceAtIndex(molecule, replacement.from(), replacement.to(), indexInMolecule);
+                final String newMolecule = StringUtils.replaceAtIndex(molecule, replacement.source(), replacement.target(), indexInMolecule);
 
                 newMolecules.add(newMolecule);
-                indexInMolecule += replacement.from().length(); // Increment the position by the length of the key
-                indexInMolecule = molecule.indexOf(replacement.from(), indexInMolecule);
+                indexInMolecule += replacement.source().length(); // Increment the position by the length of the key
+                indexInMolecule = molecule.indexOf(replacement.source(), indexInMolecule);
             }
         }
 
@@ -106,9 +106,9 @@ public final class Day19 {
 
         while (!remainingMolecule.equals(input)) {
             for (final Replacement<String> replacement : replacements) {
-                if (remainingMolecule.contains(replacement.to())) {
-                    final int index = remainingMolecule.lastIndexOf(replacement.to());
-                    remainingMolecule = StringUtils.replaceAtIndex(remainingMolecule, replacement.to(), replacement.from(), index);
+                if (remainingMolecule.contains(replacement.target())) {
+                    final int index = remainingMolecule.lastIndexOf(replacement.target());
+                    remainingMolecule = StringUtils.replaceAtIndex(remainingMolecule, replacement.target(), replacement.source(), index);
                     count++;
                 }
             }

@@ -114,6 +114,31 @@ class FileUtilsTest {
     }
 
     @Test
+    void whenReadLinesAsIntegers_givenValidFileOfIntegers_thenListOfStringsIsReturned() {
+        final String input = "validFileOfIntegers.txt";
+        final List<Integer> output = FileUtils.readLinesAsIntegers(input);
+        assertThat(output)
+            .hasSize(3)
+            .containsExactly(1, 2, 3);
+    }
+
+    @Test
+    void whenReadLinesAsIntegers_givenInvalidFileOfIntegers_thenExceptionIsThrown() {
+        final String input = "validFileOfStrings.txt";
+        assertThatThrownBy(() -> FileUtils.readLinesAsIntegers(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("For input string: \"line1\"");
+    }
+
+    @Test
+    void whenReadLinesAsIntegers_givenEmptyFile_thenEmptyListIsReturned() {
+        final String input = "emptyFile.txt";
+        final List<Integer> output = FileUtils.readLinesAsIntegers(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
     void whenReadLinesAsSingleString_givenValidFileOfStrings_thenListOfStringsIsReturned() {
         final String input = "validFileOfStrings.txt";
         final String output = FileUtils.readLinesAsSingleString(input);
@@ -180,7 +205,7 @@ class FileUtilsTest {
         final String input = "invalidCsvOfIntegers.txt";
         assertThatThrownBy(() -> FileUtils.readSingleLineOfCommaSeparatedIntegers(input))
             .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("For input string: \"five\"");
+            .hasMessageContaining("For input string: \"five\"");
     }
 
     @Test
