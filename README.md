@@ -52,6 +52,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 6](https://adventofcode.com/2022/day/6) |   2,913 ⭐ |   3,596 ⭐ |
 | [Day 7](https://adventofcode.com/2022/day/7) |   9,084 ⭐ |   7,992 ⭐ |
 | [Day 8](https://adventofcode.com/2022/day/8) |   4,751 ⭐ |   3,356 ⭐ |
+| [Day 9](https://adventofcode.com/2022/day/9) |           |           |
 
 </details>
 
