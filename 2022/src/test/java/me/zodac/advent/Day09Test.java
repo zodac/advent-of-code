@@ -20,6 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.pojo.Movement;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -32,41 +33,25 @@ class Day09Test {
 
     @Test
     void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
-        final List<String> values2 = List.of(
-            "R 4",
-            "U 4",
-            "L 3",
-            "D 1",
-            "R 4",
-            "D 1",
-            "L 5",
-            "R 2"
-        );
+        final List<Movement> values = FileUtils.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Movement::parse)
+            .toList();
 
-        final long result = Day09.part1(values);
-//        final long result = Day09.part1(values2);
-        assertThat(result)
+        final long uniquePointsVisited = Day09.uniquePointsVisitedByTail(values, 1);
+        assertThat(uniquePointsVisited)
             .isEqualTo(6_332L);
     }
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
-        final List<String> values2 = List.of(
-            "R 5",
-            "U 8",
-            "L 8",
-            "D 3",
-            "R 17",
-            "D 10",
-            "L 25",
-            "U 20"
-        );
+        final List<Movement> values = FileUtils.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Movement::parse)
+            .toList();
 
-        final long result = Day09.part2(values);
-//        final long result = Day09.part2(values2);
-        assertThat(result)
+        final long uniquePointsVisited = Day09.uniquePointsVisitedByTail(values, 9);
+        assertThat(uniquePointsVisited)
             .isEqualTo(2_511L);
     }
 }

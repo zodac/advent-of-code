@@ -17,12 +17,37 @@
 
 package me.zodac.advent.pojo;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Simple POJO defining a movement in a given {@link Direction} for a number of spaces.
  *
  * @param direction the {@link Direction} to move in
- * @param spaces the number of spaces to move
+ * @param spaces    the number of spaces to move
  */
 public record Movement(Direction direction, int spaces) {
 
+    private static final Pattern MOVEMENT_PATTERN = Pattern.compile("(\\w+) (\\d+)");
+
+    /**
+     * Creates a {@link Movement} from a {@link CharSequence} in the format:
+     * <pre>
+     *     [direction] [spaces]
+     * </pre>
+     *
+     * @param input the {@link CharSequence} to parse
+     * @return the {@link Movement}
+     */
+    public static Movement parse(final CharSequence input) {
+        final Matcher matcher = MOVEMENT_PATTERN.matcher(input);
+
+        if (!matcher.find()) {
+            throw new IllegalStateException("Unable to find match in input: " + input);
+        }
+
+        final Direction direction = Direction.get(matcher.group(1));
+        final int spaces = Integer.parseInt(matcher.group(2));
+        return new Movement(direction, spaces);
+    }
 }

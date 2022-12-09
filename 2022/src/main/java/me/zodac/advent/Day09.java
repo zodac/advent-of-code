@@ -17,12 +17,9 @@
 
 package me.zodac.advent;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import me.zodac.advent.pojo.Movement;
 import me.zodac.advent.pojo.Point;
 
 /**
@@ -32,212 +29,87 @@ import me.zodac.advent.pojo.Point;
  */
 public final class Day09 {
 
+    private static final int DISTANCE_FOR_FOLLOWER_TO_MOVE_TOWARDS_LEADER = 2;
+
     private Day09() {
 
     }
 
     /**
-     * Part 1.
+     * Given {@link String}s defining a route for a 'head' {@link Point} to follow around a 2D grid, {@code numberOfTails} tails will follow. Each
+     * 'tail' {@link Point} will only follow its direct predecessor (heads--tail0--tail1--tail2...--tailn).
      *
-     * @param values the input {@link String}s
-     * @return the result
-     */
-    public static long part1(final Collection<String> values) {
-        Point currentH = Point.of(0, 0);
-        Point currentT = Point.of(0, 0);
-
-        Set<Point> visitedByTail = new LinkedHashSet<>();
-        visitedByTail.add(currentT);
-
-        for (final String value : values) {
-            final String[] tokens = value.split("\\s+");
-            final String dir = tokens[0];
-            final int num = Integer.parseInt(tokens[1]);
-
-
-//            System.out.println();
-            System.out.println(value);
-            for(int i = 0; i < num; i++){
-                System.out.println(i);
-
-                switch (dir){
-                    case "U" -> currentH = Point.of(currentH.x() + 1, currentH.y());
-                    case "D" -> currentH = Point.of(currentH.x() - 1, currentH.y());
-                    case "L" -> currentH = Point.of(currentH.x(), currentH.y() - 1);
-                    case "R" -> currentH = Point.of(currentH.x(), currentH.y() + 1);
-                }
-
-                if(!areTouching(currentH, currentT)){
-//                    System.out.println("not touching");
-
-                    if(currentH.x() == currentT.x()) {
-                        if (currentH.y() > currentT.y()) {
-                            currentT = Point.of(currentT.x(), currentT.y() + 1);
-                        } else {
-                            currentT = Point.of(currentT.x(), currentT.y() - 1);
-                        }
-                    } else if(currentH.y() == currentT.y()) {
-                        if (currentH.x() > currentT.x()) {
-                            currentT = Point.of(currentT.x() + 1, currentT.y());
-                        } else {
-                            currentT = Point.of(currentT.x() - 1, currentT.y());
-                        }
-                    } else {
-                        if(currentH.x() < currentT.x() && currentH.y() > currentT.y()){
-                            // move down-right
-                            currentT = Point.of(currentT.x() - 1, currentT.y() + 1);
-                        } else if(currentH.x() < currentT.x() && currentH.y() < currentT.y()){
-                            // move down-left
-                            currentT = Point.of(currentT.x() - 1, currentT.y() - 1);
-                        } else if(currentH.x() > currentT.x() && currentH.y() > currentT.y()){
-                            // move up-right
-                            currentT = Point.of(currentT.x() + 1, currentT.y() + 1);
-                        } else {
-                            // move up-left
-                            currentT = Point.of(currentT.x() + 1, currentT.y() - 1);
-                        }
-                    }
-
-                }
-
-
-                visitedByTail.add(currentT);
-
-                System.out.println("head: " + currentH);
-                System.out.println("tail: " + currentT);
-                System.out.println();
-            }
-        }
-
-        visitedByTail.forEach(System.out::println);
-
-        return visitedByTail.size();
-    }
-
-    private static boolean areTouching(final Point h, final Point t){
-        final Set<Point> n = getNeighbours(h.x(), h.y());
-        n.add(h);
-        return n.contains(t);
-    }
-
-    private static Set<Point> getNeighbours(final int row, final int column) {
-        final Set<Point> neighbours = new HashSet<>();
-        neighbours.add(Point.of(next(row), column));
-        neighbours.add(Point.of(previous(row), column));
-        neighbours.add(Point.of(row, next(column)));
-        neighbours.add(Point.of(row, previous(column)));
-        neighbours.add(Point.of(next(row), next(column)));
-        neighbours.add(Point.of(previous(row), previous(column)));
-        neighbours.add(Point.of(next(row), previous(column)));
-        neighbours.add(Point.of(previous(row), next(column)));
-
-        // Remove current point, in case it was added in above calculations
-        neighbours.remove(Point.of(row, column));
-        return neighbours;
-    }
-
-    private static int next(final int rowOrColumn) {
-        return rowOrColumn + 1;
-    }
-
-    private static int previous(final int rowOrColumn) {
-        return rowOrColumn - 1;
-    }
-
-
-
-    /**
-     * Part 2.
+     * <p>
+     * After each movement the leading {@link Point} makes, its follower will move according to one of these rules, in priority order.
      *
-     * @param values the input {@link String}s
-     * @return the result
+     * <p>
+     * If the {@link Point}:
+     * <ol>
+     *     <li>And its follower are on the same {@link Point}, the follower does not move</li>
+     *     <li>And its follower are direct neighbours (including diagonals), the follower does not move</li>
+     *     <li>Is on the same row, the follower moves one column towards it</li>
+     *     <li>Is on the same column, the follower moves one row towards it</li>
+     *     <li>Is not on the same row or column, the follower moves one row and one column diagonally towards it</li>
+     * </ol>
+     *
+     * <p>
+     * The input {@link Movement}s define the route the head {@link Point} should follow.
+     *
+     * @param movements the {@link Movement}s for the head to follow
+     * @param numberOfTails the number of tails following the head
+     * @return the number of unique {@link Point}s visited by the last tail
      */
-    public static long part2(final Collection<String> values) {
-        Point currentH = Point.of(0, 0);
+    public static long uniquePointsVisitedByTail(final Iterable<Movement> movements, final int numberOfTails) {
+        Point head = Point.atOrigin();
+        final Point[] tails = createTails(numberOfTails);
 
-        final Point[] tails = {
-            Point.of(0, 0),
-            Point.of(0, 0),
-            Point.of(0, 0),
-            Point.of(0, 0),
-            Point.of(0, 0),
-            Point.of(0, 0),
-            Point.of(0, 0),
-            Point.of(0, 0),
-            Point.of(0, 0)
-        };
-
-        Set<Point> visitedByTail = new LinkedHashSet<>();
+        final Collection<Point> visitedByTail = new HashSet<>();
         visitedByTail.add(tails[tails.length - 1]);
 
-        for (final String value : values) {
-            final String[] tokens = value.split("\\s+");
-            final String dir = tokens[0];
-            final int num = Integer.parseInt(tokens[1]);
+        for (final Movement movement : movements) {
+            for (int i = 0; i < movement.spaces(); i++) {
+                // Move the head
+                head = head.move(movement.direction());
 
-
-//            System.out.println();
-//            System.out.println(value);
-            for(int i = 0; i < num; i++){
-//                System.out.println(i);
-
-                switch (dir){
-                    case "U" -> currentH = Point.of(currentH.x() + 1, currentH.y());
-                    case "D" -> currentH = Point.of(currentH.x() - 1, currentH.y());
-                    case "L" -> currentH = Point.of(currentH.x(), currentH.y() - 1);
-                    case "R" -> currentH = Point.of(currentH.x(), currentH.y() + 1);
+                // Move all tails in sequence
+                for (int tailNumber = 0; tailNumber < tails.length; tailNumber++) {
+                    final Point leader = tailNumber == 0 ? head : tails[tailNumber - 1];
+                    tails[tailNumber] = moveFollower(leader, tails[tailNumber]);
                 }
 
-                for(int tail = 0; tail < tails.length; tail++) {
-                    final Point target = tail == 0 ? currentH : tails[tail -1];
-                    Point currentT = tails[tail];
-
-                    if (!areTouching(target, currentT)) {
-//                    System.out.println("not touching");
-
-                        if (target.x() == currentT.x()) {
-                            if (target.y() > currentT.y()) {
-                                currentT = Point.of(currentT.x(), currentT.y() + 1);
-                            } else {
-                                currentT = Point.of(currentT.x(), currentT.y() - 1);
-                            }
-                        } else if (target.y() == currentT.y()) {
-                            if (target.x() > currentT.x()) {
-                                currentT = Point.of(currentT.x() + 1, currentT.y());
-                            } else {
-                                currentT = Point.of(currentT.x() - 1, currentT.y());
-                            }
-                        } else {
-                            if (target.x() < currentT.x() && target.y() > currentT.y()) {
-                                // move down-right
-                                currentT = Point.of(currentT.x() - 1, currentT.y() + 1);
-                            } else if (target.x() < currentT.x() && target.y() < currentT.y()) {
-                                // move down-left
-                                currentT = Point.of(currentT.x() - 1, currentT.y() - 1);
-                            } else if (target.x() > currentT.x() && target.y() > currentT.y()) {
-                                // move up-right
-                                currentT = Point.of(currentT.x() + 1, currentT.y() + 1);
-                            } else {
-                                // move up-left
-                                currentT = Point.of(currentT.x() + 1, currentT.y() - 1);
-                            }
-                        }
-                    }
-
-                    tails[tail] = currentT;
-                }
-
-
+                // Only add the last tail to the visited list
                 visitedByTail.add(tails[tails.length - 1]);
-
-//                System.out.println("head: " + currentH);
-//                for(int j = 0; j < tails.length; j++) {
-//                    System.out.println("tail" + j + ": " + tails[j]);
-//                }
-//                System.out.println();
             }
         }
 
         return visitedByTail.size();
+    }
+
+    private static Point[] createTails(final int numberOfTails) {
+        final Point[] tails = new Point[numberOfTails];
+
+        for (int i = 0; i < numberOfTails; i++) {
+            tails[i] = Point.atOrigin();
+        }
+
+        return tails;
+    }
+
+    private static Point moveFollower(final Point leader, final Point follower) {
+        final int deltaX = leader.x() - follower.x();
+        final int deltaY = leader.y() - follower.y();
+
+        // Check for the distance between leader and follower in both row and column.
+        // Since the leader only moves one space at a time and cannot move diagonally,
+        // only one of the X or Y coordinate will be multiple spaces away.
+        // The follower should only move 1 space, do we use Integer#signum(int)
+        if (Math.abs(deltaX) == DISTANCE_FOR_FOLLOWER_TO_MOVE_TOWARDS_LEADER) {
+            return follower.move(Integer.signum(deltaX), Integer.signum(deltaY));
+        } else if (Math.abs(deltaY) == DISTANCE_FOR_FOLLOWER_TO_MOVE_TOWARDS_LEADER) {
+            return follower.move(Integer.signum(deltaX), Integer.signum(deltaY));
+        }
+
+        // If neither X nor Y coodinate is far away enough, do not move
+        return follower;
     }
 }

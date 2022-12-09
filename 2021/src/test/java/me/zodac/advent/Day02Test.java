@@ -20,10 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Movement;
 import me.zodac.advent.util.FileUtils;
-import me.zodac.advent.util.StringUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -37,7 +35,7 @@ class Day02Test {
     void part1() {
         final List<Movement> movements = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .map(Day02Test::convertToMovement)
+            .map(Movement::parse)
             .toList();
 
         final long magnitude = Day02.magnitudeOfAllMovements(movements);
@@ -49,29 +47,11 @@ class Day02Test {
     void part2() {
         final List<Movement> movements = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .map(Day02Test::convertToMovement)
+            .map(Movement::parse)
             .toList();
 
         final long magnitude = Day02.magnitudeOfAllMovementsWithAim(movements);
         assertThat(magnitude)
             .isEqualTo(1_960_569_556L);
-    }
-
-    /**
-     * Input should be in the form:
-     * <pre>
-     *     forward 1
-     * </pre>
-     *
-     * @param input the input {@link String} to convert
-     * @return the converted {@link Movement}
-     */
-    private static Movement convertToMovement(final String input) {
-        final String[] tokens = StringUtils.splitOnWhitespace(input);
-
-        final Direction direction = Direction.get(tokens[0]);
-        final int spaces = Integer.parseInt(tokens[1]);
-
-        return new Movement(direction, spaces);
     }
 }

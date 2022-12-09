@@ -17,8 +17,6 @@
 
 package me.zodac.advent.pojo.grid;
 
-import java.util.HashSet;
-import java.util.Set;
 import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
 
@@ -115,37 +113,6 @@ abstract class CoordinateGrid<E> {
             }
         }
         return count;
-    }
-
-    /**
-     * Returns a {@link Set} of the neighbours for a {@link Point}. Can return up to 8 neighbours, depending on where the input is located.
-     *
-     * @param row    the x coordinate
-     * @param column the y coordinate
-     * @return the neighbouring {@link Point}s
-     */
-    protected Set<Point> getNeighbours(final int row, final int column) {
-        final Set<Point> neighbours = new HashSet<>();
-        neighbours.add(Point.of(next(row), column));
-        neighbours.add(Point.of(previous(row), column));
-        neighbours.add(Point.of(row, next(column)));
-        neighbours.add(Point.of(row, previous(column)));
-        neighbours.add(Point.of(next(row), next(column)));
-        neighbours.add(Point.of(previous(row), previous(column)));
-        neighbours.add(Point.of(next(row), previous(column)));
-        neighbours.add(Point.of(previous(row), next(column)));
-
-        // Remove current point, in case it was added in above calculations
-        neighbours.remove(Point.of(row, column));
-        return neighbours;
-    }
-
-    private int next(final int rowOrColumn) {
-        return Math.min(rowOrColumn + 1, (gridSize - 1));
-    }
-
-    private static int previous(final int rowOrColumn) {
-        return Math.max(rowOrColumn - 1, 0);
     }
 
     /**

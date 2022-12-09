@@ -1,6 +1,6 @@
 # Advent Of Code: Java Edition
 
-![](https://img.shields.io/badge/2022%20⭐-16-orange)
+![](https://img.shields.io/badge/2022%20⭐-18-orange)
 ![](https://img.shields.io/badge/2021%20⭐-19-orange)
 ![](https://img.shields.io/badge/2020%20⭐-0-red)
 ![](https://img.shields.io/badge/2019%20⭐-0-red)
@@ -16,7 +16,7 @@ The solutions are written in Java.
 
 ## Purpose
 
-This is not an attempt to '[code golf](https://en.wikipedia.org/wiki/Code_golf)' solutions; Java is a verbose enough language, so it's not the right
+This is not an attempt to '[code golf](https://en.wikipedia.org/wiki/Code_golf)' solutions; Java is already a verbose language, so it's not the right
 tool for that sort of challenge.
 
 Instead, I aim to create a project with re-usable algorithms and function, that can be re-used as needed rather than having to import large
@@ -24,7 +24,7 @@ dependencies like [Apache Commons](https://commons.apache.org/) or [Google Guava
 
 I'm also not aiming for extreme performance. Readability and re-usability are the main goals here, so sometimes I'll use a solution with Collections
 and generics rather than a more performant array-based solution. As long as they complete in a
-[reasonable time](https://en.wikipedia.org/wiki/Reasonable_time), I'll use the more readable and generic option.
+reasonable time[™](https://en.wikipedia.org/wiki/Reasonable_time), I'll use the more readable and generic option.
 
 ## How To View Solutions
 
@@ -52,7 +52,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 6](https://adventofcode.com/2022/day/6) |   2,913 ⭐ |   3,596 ⭐ |
 | [Day 7](https://adventofcode.com/2022/day/7) |   9,084 ⭐ |   7,992 ⭐ |
 | [Day 8](https://adventofcode.com/2022/day/8) |   4,751 ⭐ |   3,356 ⭐ |
-| [Day 9](https://adventofcode.com/2022/day/9) |           |           |
+| [Day 9](https://adventofcode.com/2022/day/9) |   7,495 ⭐ |   5,231 ⭐ |
 
 </details>
 

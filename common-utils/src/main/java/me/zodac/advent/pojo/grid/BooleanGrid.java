@@ -94,7 +94,7 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
      * <b>NOTE:</b> All {@link Point}s are updated at the same time, so we do not make a change and use the new value for another {@link Point}.
      *
      * @return the updated {@link BooleanGrid}
-     * @see BooleanGrid#getNeighbours(int, int)
+     * @see Point#getNeighbours(boolean, int)
      */
     public BooleanGrid playGameOfLife() {
         return playGameOfLife(false);
@@ -120,7 +120,7 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
      *
      * @param cornersAlwaysOn the corners of the {@link BooleanGrid} are always <b>ON</b>
      * @return the updated {@link BooleanGrid}
-     * @see BooleanGrid#getNeighbours(int, int)
+     * @see Point#getNeighbours(boolean, int)
      */
     public BooleanGrid playGameOfLife(final boolean cornersAlwaysOn) {
         final Boolean[][] newGrid = new Boolean[gridSize][gridSize];
@@ -132,8 +132,10 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
                     continue;
                 }
 
+                final Point currentPoint = Point.of(x, y);
                 final boolean isSet = grid[x][y];
-                final Set<Point> neighbours = getNeighbours(x, y);
+
+                final Set<Point> neighbours = currentPoint.getNeighbours(false, gridSize);
                 final int numberOfSetNeighbours = countSetPoints(neighbours);
 
                 if (isSet) {

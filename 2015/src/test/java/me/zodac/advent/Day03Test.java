@@ -37,7 +37,7 @@ class Day03Test {
             .stream()
             .flatMapToInt(String::chars)
             .mapToObj(i -> String.valueOf((char) i))
-            .map(Direction::getByValue)
+            .map(Direction::get)
             .toList();
 
         final int floor = Day03.countUniqueHouses(values);
@@ -51,7 +51,7 @@ class Day03Test {
             .stream()
             .flatMapToInt(String::chars)
             .mapToObj(i -> String.valueOf((char) i))
-            .map(Direction::getByValue)
+            .map(Direction::get)
             .toList();
 
         final int floor = Day03.countUniqueHousesTwoUsers(values);
