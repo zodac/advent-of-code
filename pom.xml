@@ -12,6 +12,7 @@
 
     <modules>
         <module>2015</module>
+        <module>2018</module>
         <module>2021</module>
         <module>2022</module>
         <module>common-utils</module>
