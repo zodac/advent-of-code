@@ -38,48 +38,6 @@ public final class Day10 {
     }
 
     /**
-     * Part 1.
-     *
-     * @param values the input {@link String}s
-     * @return the result
-     */
-    public static long part1(final List<String> values) {
-        int xValue = 1;
-        long totalAtSpecificCyles = 0;
-
-        int i = 0;
-        int cycle = 1;
-
-        Map<Integer, String> offsetByTargetCycle = new HashMap<>();
-
-        while (i < values.size()) {
-            String command = values.get(i);
-            if (Set.of(20, 60, 100, 140, 180, 220).contains(cycle)) {
-                totalAtSpecificCyles += ((long) xValue * cycle);
-                System.out.println("Cycle " + cycle + ", xValue: " + xValue);
-            }
-
-            System.out.println("Cycle " + cycle);
-            System.out.println("Command: " + command);
-            if (offsetByTargetCycle.containsKey(cycle)) {
-                String s = offsetByTargetCycle.get(cycle);
-                xValue += Integer.parseInt(s.split("\\s+")[1]);
-                i++;
-            } else {
-                if (command.equalsIgnoreCase("noop")) {
-                    i++;
-                } else {
-                    offsetByTargetCycle.put(cycle + 1, command);
-                }
-            }
-
-            cycle++;
-        }
-
-        return totalAtSpecificCyles;
-    }
-
-    /**
      * Part 2.
      *
      * @param values the input {@link String}s
