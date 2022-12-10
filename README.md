@@ -42,17 +42,18 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 <details>
     <summary>2022 Results</summary>
 
-| Day                                          |    Part 1 |    Part 2 |
-|:---------------------------------------------|----------:|----------:|
-| [Day 1](https://adventofcode.com/2022/day/1) | 181,122 ⭐ | 174,520 ⭐ |
-| [Day 2](https://adventofcode.com/2022/day/2) | 146,753 ⭐ | 140,513 ⭐ |
-| [Day 3](https://adventofcode.com/2022/day/3) | 112,894 ⭐ | 107,699 ⭐ |
-| [Day 4](https://adventofcode.com/2022/day/4) |  87,474 ⭐ |  85,471 ⭐ |
-| [Day 5](https://adventofcode.com/2022/day/5) |   9,071 ⭐ |   8,050 ⭐ |
-| [Day 6](https://adventofcode.com/2022/day/6) |   2,913 ⭐ |   3,596 ⭐ |
-| [Day 7](https://adventofcode.com/2022/day/7) |   9,084 ⭐ |   7,992 ⭐ |
-| [Day 8](https://adventofcode.com/2022/day/8) |   4,751 ⭐ |   3,356 ⭐ |
-| [Day 9](https://adventofcode.com/2022/day/9) |   7,495 ⭐ |   5,231 ⭐ |
+| Day                                            |    Part 1 |    Part 2 |
+|:-----------------------------------------------|----------:|----------:|
+| [Day 1](https://adventofcode.com/2022/day/1)   | 181,122 ⭐ | 174,520 ⭐ |
+| [Day 2](https://adventofcode.com/2022/day/2)   | 146,753 ⭐ | 140,513 ⭐ |
+| [Day 3](https://adventofcode.com/2022/day/3)   | 112,894 ⭐ | 107,699 ⭐ |
+| [Day 4](https://adventofcode.com/2022/day/4)   |  87,474 ⭐ |  85,471 ⭐ |
+| [Day 5](https://adventofcode.com/2022/day/5)   |   9,071 ⭐ |   8,050 ⭐ |
+| [Day 6](https://adventofcode.com/2022/day/6)   |   2,913 ⭐ |   3,596 ⭐ |
+| [Day 7](https://adventofcode.com/2022/day/7)   |   9,084 ⭐ |   7,992 ⭐ |
+| [Day 8](https://adventofcode.com/2022/day/8)   |   4,751 ⭐ |   3,356 ⭐ |
+| [Day 9](https://adventofcode.com/2022/day/9)   |   7,495 ⭐ |   5,231 ⭐ |
+| [Day 10](https://adventofcode.com/2022/day/10) |   7,670 ⭐ |   5,514 ⭐ |
 
 </details>
 
