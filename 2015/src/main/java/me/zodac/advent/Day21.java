@@ -19,8 +19,8 @@ package me.zodac.advent;
 
 import java.util.Collection;
 import java.util.List;
-import me.zodac.advent.pojo.rpg.Equipment;
-import me.zodac.advent.pojo.rpg.Fighter;
+import me.zodac.advent.pojo.rpg.warrior.Equipment;
+import me.zodac.advent.pojo.rpg.warrior.Warrior;
 import me.zodac.advent.pojo.tuple.Triple;
 
 /**
@@ -37,15 +37,15 @@ public final class Day21 {
     }
 
     /**
-     * Given all valid {@link Equipment} combinations, we calculate the cost of each combination, then attempt to defeat the boss {@link Fighter}. For
-     * the {@link Equipment} combinations that can defeat the {@link Fighter}, we return the lowest cost.
+     * Given all valid {@link Equipment} combinations, we calculate the cost of each combination, then attempt to defeat the boss {@link Warrior}. For
+     * the {@link Equipment} combinations that can defeat the {@link Warrior}, we return the lowest cost.
      *
      * @param equipmentCombinations the {@link Equipment} combinations
-     * @param boss                  the boss {@link Fighter} to defeat
-     * @return the cost of the cheapest {@link Equipment} combination that successfully defeats the {@link Fighter}
+     * @param boss                  the boss {@link Warrior} to defeat
+     * @return the cost of the cheapest {@link Equipment} combination that successfully defeats the {@link Warrior}
      */
     public static long costOfCheapestEquipmentThatDefeatsBoss(final Iterable<? extends List<Equipment>> equipmentCombinations,
-                                                              final Fighter boss) {
+                                                              final Warrior boss) {
         int lowestCost = Integer.MAX_VALUE;
 
         for (final List<Equipment> equipmentCombination : equipmentCombinations) {
@@ -63,7 +63,7 @@ public final class Day21 {
                 continue;
             }
 
-            final Fighter me = Fighter.create(PLAYER_HITPOINTS, totalCost, totalAttack, totalDefence);
+            final Warrior me = Warrior.create(PLAYER_HITPOINTS, totalCost, totalAttack, totalDefence);
 
             if (me.canWinFightAgainst(boss)) {
                 lowestCost = totalCost;
@@ -74,20 +74,20 @@ public final class Day21 {
     }
 
     /**
-     * Given all valid {@link Equipment} combinations, we calculate the cost of each combination, then attempt to defeat the boss {@link Fighter}. For
-     * the {@link Equipment} combinations that cannotdefeat the {@link Fighter}, we return the highest cost.
+     * Given all valid {@link Equipment} combinations, we calculate the cost of each combination, then attempt to defeat the boss {@link Warrior}. For
+     * the {@link Equipment} combinations that cannotdefeat the {@link Warrior}, we return the highest cost.
      *
      * @param equipmentCombinations the {@link Equipment} combinations
-     * @param boss                  the boss {@link Fighter} to defeat
-     * @return the cost of the most expensive {@link Equipment} combination that cannot successfully defeat the {@link Fighter}
+     * @param boss                  the boss {@link Warrior} to defeat
+     * @return the cost of the most expensive {@link Equipment} combination that cannot successfully defeat the {@link Warrior}
      */
-    public static long costOfPriciestArmourThatLosesToBoss(final Collection<? extends List<Equipment>> equipmentCombinations, final Fighter boss) {
+    public static long costOfPriciestArmourThatLosesToBoss(final Collection<? extends List<Equipment>> equipmentCombinations, final Warrior boss) {
         return equipmentCombinations
             .stream()
             .map(Day21::getTotalEquipmentStats)
-            .map(triple -> Fighter.create(PLAYER_HITPOINTS, triple.first(), triple.second(), triple.third()))
-            .filter(fighter -> !fighter.canWinFightAgainst(boss))
-            .mapToLong(Fighter::equipmentCost)
+            .map(triple -> Warrior.create(PLAYER_HITPOINTS, triple.first(), triple.second(), triple.third()))
+            .filter(warrior -> !warrior.canWinFightAgainst(boss))
+            .mapToLong(Warrior::equipmentCost)
             .max()
             .orElse(0L);
     }

@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.rpg.magic;
+package me.zodac.advent.pojo.rpg.mage;
 
 /**
  * POJO defining a {@link MagePlayer} with health and mana, which can fight against a {@link MageBoss}.
@@ -31,9 +31,10 @@ public record MagePlayer(int hitPoints, int mana) {
     /**
      * Creates a {@link MagePlayer}.
      *
-     * @param hitPoints the {@link MagePlayer}'s hit points
-     * @param mana      the {@link MagePlayer}'s mana stats
+     * @param hitPoints the {@link MagePlayer}'s hit points, at least {@value #MINIMUM_HITPOINTS_VALUE}
+     * @param mana      the {@link MagePlayer}'s mana stats, at least {@value #MINIMUM_MANA_VALUE}
      * @return the created {@link MagePlayer}
+     * @throws IllegalArgumentException thrown if the input {@code hitPoints} or {@code mana} is too low
      */
     public static MagePlayer create(final int hitPoints, final int mana) {
         if (hitPoints < MINIMUM_HITPOINTS_VALUE) {
@@ -62,7 +63,7 @@ public record MagePlayer(int hitPoints, int mana) {
      * Updates the {@link MagePlayer} after an attack and returns an updated instance.
      *
      * @param hitPointsIncrease the amount of hitpoints gained by the {@link MagePlayer}
-     * @param manaIncrease the amount of mana gained by the {@link MagePlayer}
+     * @param manaIncrease      the amount of mana gained by the {@link MagePlayer}
      * @return the updated {@link MagePlayer}
      */
     public MagePlayer update(final int hitPointsIncrease, final int manaIncrease) {

@@ -15,28 +15,28 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.rpg;
+package me.zodac.advent.pojo.rpg.warrior;
 
 /**
- * Implementation of {@link Equipment} defining a weapon.
+ * Implementation of {@link Equipment} defining a ring.
  */
-public final class Weapon extends Equipment {
+public final class Ring extends Equipment {
 
-    private Weapon(final String name, final int cost, final int attack, final int defence) {
+    private Ring(final String name, final int cost, final int attack, final int defence) {
         super(name, cost, attack, defence);
     }
 
     /**
-     * Creates a {@link Weapon}.
+     * Creates a {@link Ring}.
      *
-     * @param name    the name of the {@link Weapon}
-     * @param cost    the cost of the {@link Weapon}
-     * @param attack  the attack stats of the {@link Weapon}
-     * @param defence the defence stats of the {@link Weapon}
-     * @return the created {@link Weapon}
+     * @param name    the name of the {@link Ring}
+     * @param cost    the cost of the {@link Ring}
+     * @param attack  the attack stats of the {@link Ring}
+     * @param defence the defence stats of the {@link Ring}
+     * @return the created {@link Ring}
      * @throws IllegalArgumentException if the {@code name} is null or blank, or if the input stats are invalid
      */
-    public static Weapon create(final String name, final int cost, final int attack, final int defence) {
+    public static Ring create(final String name, final int cost, final int attack, final int defence) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("'name' cannot be null or blank");
         }
@@ -53,6 +53,6 @@ public final class Weapon extends Equipment {
             throw new IllegalArgumentException(String.format("'defence' must be greater than %s, found: %s", MINIMUM_DEFENCE_VALUE, defence));
         }
 
-        return new Weapon(name, cost, attack, defence);
+        return new Ring(name, cost, attack, defence);
     }
 }

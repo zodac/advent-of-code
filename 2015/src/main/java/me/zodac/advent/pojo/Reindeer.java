@@ -43,12 +43,13 @@ public record Reindeer(int flyingVelocity, Duration flyingDuration, Duration res
      *
      * @param input the {@link CharSequence} to parse
      * @return the {@link Reindeer}
+     * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
     public static Reindeer parse(final CharSequence input) {
         final Matcher matcher = REINDEER_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input: " + input);
+            throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
         final int flyingVelocity = Integer.parseInt(matcher.group("velocity"));

@@ -15,12 +15,12 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.rpg;
+package me.zodac.advent.pojo.rpg.warrior;
 
 import java.util.Objects;
 
 /**
- * POJO defining a piece of {@link Equipment} to be used by a {@link Fighter}.
+ * POJO defining a piece of {@link Equipment} to be used by a {@link Warrior}.
  */
 public sealed class Equipment permits Armour, Ring, Weapon {
 

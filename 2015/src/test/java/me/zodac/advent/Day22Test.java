@@ -19,7 +19,7 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import me.zodac.advent.pojo.rpg.magic.MageBoss;
+import me.zodac.advent.pojo.rpg.mage.MageBoss;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 

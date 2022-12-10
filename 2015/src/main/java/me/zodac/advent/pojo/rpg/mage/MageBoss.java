@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.rpg.magic;
+package me.zodac.advent.pojo.rpg.mage;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,12 +42,13 @@ public record MageBoss(int hitPoints, int attack) {
      *
      * @param input the {@link CharSequence} to parse
      * @return the {@link MageBoss}
+     * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
     public static MageBoss parse(final CharSequence input) {
         final Matcher matcher = MAGE_BOSS_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input: " + input);
+            throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
         final int hitPoints = Integer.parseInt(matcher.group(1));

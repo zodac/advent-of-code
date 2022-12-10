@@ -20,7 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.pojo.GiftBox;
+import me.zodac.advent.shape.Box;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -33,9 +33,9 @@ class Day02Test {
 
     @Test
     void part1() {
-        final List<GiftBox> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Box> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .map(GiftBox::createFromString)
+            .map(Box::parse)
             .toList();
 
         final long totalPaperNeeded = Day02.calculateWrappingPaperNeeded(values);
@@ -45,9 +45,9 @@ class Day02Test {
 
     @Test
     void part2() {
-        final List<GiftBox> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Box> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .map(GiftBox::createFromString)
+            .map(Box::parse)
             .toList();
 
         final long totalRibbonNeeded = Day02.calculateRibbonNeeded(values);

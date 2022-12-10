@@ -40,7 +40,7 @@ import me.zodac.advent.util.StringUtils;
  * </ul>
  *
  * <p>
- * There is no maximum or minimum id of attributes a {@link Sue} needs to have - they could have values for all, or none. Any missing attribute
+ * There is no maximum or minimum number of attributes a {@link Sue} needs to have - they could have values for all, or none. Any missing attribute
  * simply means it is unknown, not that that value is <b>0</b>.
  *
  * @param id         the ID of the Aunt {@link Sue} (they do not have names)
@@ -60,12 +60,13 @@ public record Sue(int id, Map<String, Integer> attributes) {
      *
      * @param input the {@link CharSequence} to check
      * @return the created {@link Sue}
+     * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
     public static Sue parseThreeAttributes(final CharSequence input) {
         final Matcher matcher = SUE_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input: " + input);
+            throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
         final int id = Integer.parseInt(matcher.group(1));
@@ -100,7 +101,7 @@ public record Sue(int id, Map<String, Integer> attributes) {
             final Matcher matcher = ATTRIBUTE_PATTERN.matcher(line);
 
             if (!matcher.find()) {
-                throw new IllegalStateException("Unable to find match in input: " + input);
+                throw new IllegalArgumentException("Unable to find match in input: " + input);
             }
 
             final String attributeName = matcher.group(1);

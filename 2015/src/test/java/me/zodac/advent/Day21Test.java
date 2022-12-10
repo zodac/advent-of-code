@@ -22,11 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import me.zodac.advent.pojo.rpg.Armour;
-import me.zodac.advent.pojo.rpg.Equipment;
-import me.zodac.advent.pojo.rpg.Fighter;
-import me.zodac.advent.pojo.rpg.Ring;
-import me.zodac.advent.pojo.rpg.Weapon;
+import me.zodac.advent.pojo.rpg.warrior.Armour;
+import me.zodac.advent.pojo.rpg.warrior.Equipment;
+import me.zodac.advent.pojo.rpg.warrior.Ring;
+import me.zodac.advent.pojo.rpg.warrior.Warrior;
+import me.zodac.advent.pojo.rpg.warrior.Weapon;
 import me.zodac.advent.util.CollectionUtils;
 import me.zodac.advent.util.FileUtils;
 import me.zodac.advent.util.PowerSetFilter;
@@ -44,7 +44,7 @@ class Day21Test {
     @Test
     void part1() {
         final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
-        final Fighter boss = Fighter.parse(value);
+        final Warrior boss = Warrior.parse(value);
 
         final long cheapestEquimentCost = Day21.costOfCheapestEquipmentThatDefeatsBoss(EQUIPMENT_COMBINATIONS, boss);
         assertThat(cheapestEquimentCost)
@@ -54,7 +54,7 @@ class Day21Test {
     @Test
     void part2() {
         final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
-        final Fighter boss = Fighter.parse(value);
+        final Warrior boss = Warrior.parse(value);
 
         final long cheapestEquimentCost = Day21.costOfPriciestArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);
         assertThat(cheapestEquimentCost)

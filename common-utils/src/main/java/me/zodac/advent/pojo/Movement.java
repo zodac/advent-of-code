@@ -38,12 +38,13 @@ public record Movement(Direction direction, int spaces) {
      *
      * @param input the {@link CharSequence} to parse
      * @return the {@link Movement}
+     * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
     public static Movement parse(final CharSequence input) {
         final Matcher matcher = MOVEMENT_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input: " + input);
+            throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
         final Direction direction = Direction.get(matcher.group(1));

@@ -39,12 +39,13 @@ public record Replacement<E>(E source, E target) {
      *
      * @param input the {@link CharSequence} to parse
      * @return the {@link Replacement}
+     * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
     public static Replacement<String> parse(final CharSequence input) {
         final Matcher matcher = STRING_REPLACEMENT_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input: " + input);
+            throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
         final String source = matcher.group(1);

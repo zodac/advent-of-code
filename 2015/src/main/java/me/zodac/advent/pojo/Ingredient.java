@@ -43,12 +43,13 @@ public record Ingredient(String name, int capacity, int durability, int flavour,
      *
      * @param input the {@link CharSequence} to parse
      * @return the {@link Ingredient}
+     * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
     public static Ingredient parse(final CharSequence input) {
         final Matcher matcher = INGREDIENT_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input: " + input);
+            throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
         final String name = matcher.group(1);

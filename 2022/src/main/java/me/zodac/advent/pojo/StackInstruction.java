@@ -39,12 +39,13 @@ public record StackInstruction(int sourceStackId, int destinationStackId, int nu
      *
      * @param input the {@link CharSequence} to parse
      * @return the {@link StackInstruction}
+     * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
     public static StackInstruction parse(final CharSequence input) {
         final Matcher matcher = INSTRUCTION_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input: " + input);
+            throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
         final int sourceId = Integer.parseInt(matcher.group(2));

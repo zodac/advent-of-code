@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.rpg;
+package me.zodac.advent.pojo.rpg.warrior;
 
 /**
  * Implementation of {@link Equipment} defining an armour.

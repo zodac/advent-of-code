@@ -17,10 +17,10 @@
 
 package me.zodac.advent;
 
-import me.zodac.advent.pojo.rpg.magic.BattleRound;
-import me.zodac.advent.pojo.rpg.magic.MageBoss;
-import me.zodac.advent.pojo.rpg.magic.MagePlayer;
-import me.zodac.advent.pojo.rpg.magic.Spell;
+import me.zodac.advent.pojo.rpg.mage.BattleRound;
+import me.zodac.advent.pojo.rpg.mage.MageBoss;
+import me.zodac.advent.pojo.rpg.mage.MagePlayer;
+import me.zodac.advent.pojo.rpg.mage.Spell;
 import me.zodac.advent.search.Dijkstra;
 import me.zodac.advent.search.SearchNode;
 

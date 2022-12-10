@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.rpg.magic;
+package me.zodac.advent.pojo.rpg.mage;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -15,52 +15,60 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo;
+package me.zodac.advent.shape;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * A perfect rectangular prism, describing a gift box.
+ * A perfect rectangular prism, describing a box.
  *
- * @param length the length of the {@link GiftBox}
- * @param width  the width of the {@link GiftBox}
- * @param height the height of the {@link GiftBox}
+ * @param length the length of the {@link Box}
+ * @param width  the width of the {@link Box}
+ * @param height the height of the {@link Box}
  */
-public record GiftBox(int length, int width, int height) {
+public record Box(int length, int width, int height) {
 
-    private static final String DELIMITER = "x";
+    private static final Pattern DIMENSIONS_PATTERN = Pattern.compile("(\\d+)x(\\d+)x(\\d+)");
 
     /**
-     * Parses a {@link String} into a {@link GiftBox}, if the {@link String} follows the format:
+     * Creates a {@link Box} from a {@link CharSequence} in the format:
      * <pre>
-     *     LengthxWidthxHeight
+     *     [length]x[width]x[height]
      * </pre>
      *
-     * @param input the input {@link String} to be converted to a {@link GiftBox}
-     * @return the {@link GiftBox} with the dimensions from the {@link String}
-     * @throws IllegalArgumentException thrown if the input does not contain the delimiter {@link #DELIMITER}
+     *@param input the {@link CharSequence} to parse
+     *@return the {@link Box}
+     * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
-    public static GiftBox createFromString(final String input) {
-        if (!input.contains(DELIMITER)) {
-            throw new IllegalArgumentException(String.format("Input string does not contain expected delimiter '%s': '%s'", DELIMITER, input));
+    public static Box parse(final CharSequence input) {
+        final Matcher matcher = DIMENSIONS_PATTERN.matcher(input);
+
+        if (!matcher.find()) {
+            throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
-        final String[] tokens = input.split(DELIMITER);
-        return new GiftBox(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
+        final int length = Integer.parseInt(matcher.group(1));
+        final int width = Integer.parseInt(matcher.group(2));
+        final int height = Integer.parseInt(matcher.group(3));
+
+        return new Box(length, width, height);
     }
 
     /**
      * Calculates the surface area of a rectangular prism:
      * <pre>
-     *     (2xLengthxWidth) + (2xWidthxHeight) + (2xHeight*Length)
+     *     (2xLength*Width) + (2xWidth*Height) + (2xHeight*Length)
      * </pre>
      *
-     * @return the surface area of the {@link GiftBox}
+     * @return the surface area of the {@link Box}
      */
     public long surfaceArea() {
         return (2L * length * width) + (2L * width * height) + (2L * height * length);
     }
 
     /**
-     * Calculates the area of only the smallest side of the {@link GiftBox}.
+     * Calculates the area of only the smallest side of the {@link Box}.
      *
      * @return the area of the smallest side
      */
@@ -75,7 +83,7 @@ public record GiftBox(int length, int width, int height) {
     }
 
     /**
-     * Calculates the smallest perimeter around the {@link GiftBox}, across the smallest two sides.
+     * Calculates the smallest perimeter around the {@link Box}, across the smallest two sides.
      *
      * @return the smallest perimeter
      */
@@ -88,9 +96,9 @@ public record GiftBox(int length, int width, int height) {
     }
 
     /**
-     * The product of the length, width, height.
+     * The product of the {@code length}, {@code width}, {@code height}.
      *
-     * @return the product of the {@link GiftBox} dimensions
+     * @return the product of the {@link Box} dimensions
      */
     public long productOfDimensions() {
         return (long) length * width * height;

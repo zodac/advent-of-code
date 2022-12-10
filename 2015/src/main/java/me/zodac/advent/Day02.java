@@ -18,7 +18,7 @@
 package me.zodac.advent;
 
 import java.util.Collection;
-import me.zodac.advent.pojo.GiftBox;
+import me.zodac.advent.shape.Box;
 
 /**
  * Solution for 2015, Day 2.
@@ -32,40 +32,40 @@ public final class Day02 {
     }
 
     /**
-     * Given a {@link Collection} of {@link GiftBox}s, we calculate the wrapping paper needed for each {@link GiftBox}.
+     * Given a {@link Collection} of {@link Box}s, we calculate the wrapping paper needed for each {@link Box}.
      *
      * <p>
-     * The needed wrapping paper for a single {@link GiftBox} is calculated as:
+     * The needed wrapping paper for a single {@link Box} is calculated as:
      * <pre>
      *     surfaceArea + areaOfSmallestSide
      * </pre>
      *
-     * @param values the {@link GiftBox}s to check
+     * @param values the {@link Box}s to check
      * @return the total amount of wrapping paper needed
      */
-    public static long calculateWrappingPaperNeeded(final Collection<GiftBox> values) {
+    public static long calculateWrappingPaperNeeded(final Collection<Box> values) {
         return values
             .stream()
-            .mapToLong(giftBox -> giftBox.surfaceArea() + giftBox.areaOfSmallestSide())
+            .mapToLong(box -> box.surfaceArea() + box.areaOfSmallestSide())
             .sum();
     }
 
     /**
-     * Given a {@link Collection} of {@link GiftBox}s, we calculate the ribbon needed for each {@link GiftBox}.
+     * Given a {@link Collection} of {@link Box}s, we calculate the ribbon needed for each {@link Box}.
      *
      * <p>
-     * The needed ribbon for a single {@link GiftBox} is calculated as:
+     * The needed ribbon for a single {@link Box} is calculated as:
      * <pre>
      *     smallestPerimeterAroundBox + productOfDimensions
      * </pre>
      *
-     * @param values the {@link GiftBox}s to check
+     * @param values the {@link Box}s to check
      * @return the total amount of wrapping paper needed
      */
-    public static long calculateRibbonNeeded(final Collection<GiftBox> values) {
+    public static long calculateRibbonNeeded(final Collection<Box> values) {
         return values
             .stream()
-            .mapToLong(giftBox -> giftBox.smallestPerimeter() + giftBox.productOfDimensions())
+            .mapToLong(box -> box.smallestPerimeter() + box.productOfDimensions())
             .sum();
     }
 }

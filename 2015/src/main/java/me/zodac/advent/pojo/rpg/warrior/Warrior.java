@@ -15,20 +15,20 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.rpg;
+package me.zodac.advent.pojo.rpg.warrior;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * POJO defining a {@link Fighter} with health, attack and defence, which can fight against other {@link Fighter}s.
+ * POJO defining a {@link Warrior} with health, attack and defence, which can fight against other {@link Warrior}s.
  *
- * @param hitPoints     the {@link Fighter}'s hit points
- * @param equipmentCost the cost of all {@link Equipment} for the {@link Fighter}
- * @param attack        the {@link Fighter}'s attack stats
- * @param defence       the {@link Fighter}'s defence stats
+ * @param hitPoints     the {@link Warrior}'s hit points
+ * @param equipmentCost the cost of all {@link Equipment} for the {@link Warrior}
+ * @param attack        the {@link Warrior}'s attack stats
+ * @param defence       the {@link Warrior}'s defence stats
  */
-public record Fighter(long hitPoints, int equipmentCost, int attack, int defence) {
+public record Warrior(long hitPoints, int equipmentCost, int attack, int defence) {
 
     private static final int MINIMUM_HITPOINTS_VALUE = 0;
     private static final int MINIMUM_ATTACK_VALUE = 0;
@@ -39,28 +39,29 @@ public record Fighter(long hitPoints, int equipmentCost, int attack, int defence
     private static final Pattern FIGHTER_PATTERN = Pattern.compile("Hit Points: (\\d+)\nDamage: (\\d+)\nArmor: (\\d+)");
 
     /**
-     * Checks whether this {@link Fighter} can defeat another {@link Fighter}. Each turn, first this {@link Fighter} attacks, then the other
-     * {@link Fighter}. The damage is calculated as this {@link Fighter}'s attack stat, minus the other {@link Fighter}'s defence. Each attack will
-     * have a minimum of {@value #MINIMUM_DAMAGE_PER_ROUND}, regardless of how high the other {@link Fighter}'s defence is.
+     * Checks whether this {@link Warrior} can defeat another {@link Warrior}. Each turn, first this {@link Warrior} attacks, then the other
+     * {@link Warrior}. The damage is calculated as this {@link Warrior}'s attack stat, minus the other {@link Warrior}'s defence. Each attack will
+     * have a minimum of {@value #MINIMUM_DAMAGE_PER_ROUND}, regardless of how high the other {@link Warrior}'s defence is.
      *
-     * @param other the {@link Fighter} to fight
-     * @return {@code true} if this {@link Fighter} defeats the other {@link Fighter}
+     * @param other the {@link Warrior} to fight
+     * @return {@code true} if this {@link Warrior} defeats the other {@link Warrior}
      */
-    public boolean canWinFightAgainst(final Fighter other) {
+    public boolean canWinFightAgainst(final Warrior other) {
         final double turnsToKillOther = Math.ceil(other.hitPoints / (double) (attack - other.defence));
         return hitPoints - (long) (other.attack - defence) * (turnsToKillOther - MINIMUM_DAMAGE_PER_ROUND) >= 0;
     }
 
     /**
-     * Creates a {@link Fighter}.
+     * Creates a {@link Warrior}.
      *
-     * @param hitPoints     the {@link Fighter}'s hit points
-     * @param equipmentCost the cost of all {@link Equipment} for the {@link Fighter}
-     * @param attack        the {@link Fighter}'s attack stats
-     * @param defence       the {@link Fighter}'s defence stats
-     * @return the created {@link Fighter}
+     * @param hitPoints     the {@link Warrior}'s hit points, at least {@value #MINIMUM_HITPOINTS_VALUE}
+     * @param equipmentCost the cost of all {@link Equipment} for the {@link Warrior}
+     * @param attack        the {@link Warrior}'s attack stats, at least {@value #MINIMUM_ATTACK_VALUE}
+     * @param defence       the {@link Warrior}'s defence stats, at least {@value #MINIMUM_DEFENCE_VALUE}
+     * @return the created {@link Warrior}
+     * @throws IllegalArgumentException thrown if {@code hitPoints}, {@code attack} or {@code defence} is too low
      */
-    public static Fighter create(final int hitPoints, final int equipmentCost, final int attack, final int defence) {
+    public static Warrior create(final int hitPoints, final int equipmentCost, final int attack, final int defence) {
         if (hitPoints < MINIMUM_HITPOINTS_VALUE) {
             throw new IllegalArgumentException(String.format("'hitPoints' must be greater than %s, found: %s", MINIMUM_HITPOINTS_VALUE, hitPoints));
         }
@@ -73,11 +74,11 @@ public record Fighter(long hitPoints, int equipmentCost, int attack, int defence
             throw new IllegalArgumentException(String.format("'defence' must be greater than %s, found: %s", MINIMUM_DEFENCE_VALUE, defence));
         }
 
-        return new Fighter(hitPoints, equipmentCost, attack, defence);
+        return new Warrior(hitPoints, equipmentCost, attack, defence);
     }
 
     /**
-     * Creates a {@link Fighter} from a {@link CharSequence} in the format:
+     * Creates a {@link Warrior} from a {@link CharSequence} in the format:
      * <pre>
      *     Hit Points: [hitPoints]
      *     Damage: [attack]
@@ -85,13 +86,14 @@ public record Fighter(long hitPoints, int equipmentCost, int attack, int defence
      * </pre>
      *
      * @param input the {@link CharSequence} to parse
-     * @return the {@link Fighter}
+     * @return the {@link Warrior}
+     * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
-    public static Fighter parse(final CharSequence input) {
+    public static Warrior parse(final CharSequence input) {
         final Matcher matcher = FIGHTER_PATTERN.matcher(input);
 
         if (!matcher.find()) {
-            throw new IllegalStateException("Unable to find match in input: " + input);
+            throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
         final int hitPoints = Integer.parseInt(matcher.group(1));
