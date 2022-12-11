@@ -17,14 +17,14 @@
 
 package me.zodac.advent;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import me.zodac.advent.pojo.AssemblyInstruction;
+import me.zodac.advent.pojo.SegmentedDisplay;
+import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * Solution for 2022, Day 10.
@@ -32,6 +32,10 @@ import java.util.Set;
  * @see <a href="https://adventofcode.com/2022/day/10">AoC 2022, Day 10</a>
  */
 public final class Day10 {
+
+    private static final int START_CYCLE_FOR_SIGNAL_CHECK = 20;
+    private static final int CYCLE_INTERVAL_FOR_SIGNAL_CHECK = 40;
+    private static final Set<String> NOOP_INSTRUCTIONS = Set.of("noop");
 
     private Day10() {
 
@@ -43,56 +47,53 @@ public final class Day10 {
      * @param values the input {@link String}s
      * @return the result
      */
-    public static long part2(final Collection<String> values) {
+    public static Pair<Long, String> solve(final Collection<AssemblyInstruction> values) {
         int xValue = 1;
         long totalAtSpecificCyles = 0;
 
         int i = 0;
         int cycle = 1;
 
-        final char[][] output = new char[6][40];
+        final SegmentedDisplay segmentedDisplay = SegmentedDisplay.create(8);
+        final int segmentedDisplayLength = segmentedDisplay.length();
 
-        Map<Integer, String> offsetByTargetCycle = new HashMap<>();
+        final Map<Integer, Integer> offsetByTargetCycle = new HashMap<>();
 
         while (i < values.size()) {
-            String command = new ArrayList<>(values).get(i);
-            if (Set.of(20, 60, 100, 140, 180, 220).contains(cycle)) {
+            final AssemblyInstruction assemblyInstruction = new ArrayList<>(values).get(i);
+
+            if (isCycleToConsiderSignal(cycle)) {
                 totalAtSpecificCyles += ((long) xValue * cycle);
             }
 
-            final int row = (cycle - 1) / 40;
-            final int col = (cycle - 1) % 40;
-
+            final int row = (cycle - 1) / segmentedDisplayLength;
+            final int col = (cycle - 1) % segmentedDisplayLength;
 
             if (xValue == col || xValue == (col - 1) || xValue == (col + 1)) {
-                output[row][col] = '#';
-            } else {
-                output[row][col] = '.';
+                segmentedDisplay.turnOn(row, col);
             }
 
             if (offsetByTargetCycle.containsKey(cycle)) {
-                String s = offsetByTargetCycle.get(cycle);
-                xValue += Integer.parseInt(s.split("\\s+")[1]);
+                xValue += offsetByTargetCycle.get(cycle);
                 i++;
             } else {
-                if (command.equalsIgnoreCase("noop")) {
+                if (NOOP_INSTRUCTIONS.contains(assemblyInstruction.instruction())) {
                     i++;
                 } else {
-                    offsetByTargetCycle.put(cycle + 1, command);
+                    offsetByTargetCycle.put(cycle + 1, assemblyInstruction.offset());
                 }
             }
 
             cycle++;
         }
 
-        for (final char[] o : output) {
-            for (final char c : o) {
-                System.out.print(c + " ");
-            }
-            System.out.println();
-        }
+        final String res = segmentedDisplay.getLetters();
 
+        return Pair.of(totalAtSpecificCyles, res);
+    }
 
-        return totalAtSpecificCyles;
+    // We check at cycle #20, and every subseqent 40 cycles
+    private static boolean isCycleToConsiderSignal(final int cycle) {
+        return cycle % CYCLE_INTERVAL_FOR_SIGNAL_CHECK == START_CYCLE_FOR_SIGNAL_CHECK;
     }
 }

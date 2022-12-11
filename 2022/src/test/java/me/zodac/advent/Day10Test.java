@@ -20,6 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.pojo.AssemblyInstruction;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -32,19 +33,25 @@ class Day10Test {
 
     @Test
     void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<AssemblyInstruction> values = FileUtils.readLines(INPUT_FILENAME)
+            .stream()
+            .map(AssemblyInstruction::parse)
+            .toList();
 
-        final long part1 = Day10.part2(values);
+        final long part1 = Day10.solve(values).first();
         assertThat(part1)
             .isEqualTo(16_480L);
     }
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<AssemblyInstruction> values = FileUtils.readLines(INPUT_FILENAME)
+            .stream()
+            .map(AssemblyInstruction::parse)
+            .toList();
 
-        final long part2 = Day10.part2(values);
+        final String part2 = Day10.solve(values).second();
         assertThat(part2)
-            .isEqualTo(16_480L);
+            .isEqualTo("PLEFULPB");
     }
 }
