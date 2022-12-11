@@ -19,39 +19,33 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.util.List;
-import me.zodac.advent.pojo.AssemblyInstruction;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day10}.
+ * Tests to verify answers for {@link Day11}.
  */
-class Day10Test {
+class Day11Test {
 
-    private static final String INPUT_FILENAME = "day10.txt";
+    private static final String INPUT_FILENAME = "day11.txt";
 
     @Test
     void part1() {
-        final List<AssemblyInstruction> values = FileUtils.readLines(INPUT_FILENAME)
-            .stream()
-            .map(AssemblyInstruction::parse)
-            .toList();
+        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final long sumOfSignalValues = Day10.sumOfSignalValues(values);
-        assertThat(sumOfSignalValues)
-            .isEqualTo(16_480L);
+        final BigDecimal part1 = Day11.solve(values, 20, true);
+        assertThat(part1)
+            .isEqualTo(new BigDecimal("151312"));
     }
 
     @Test
     void part2() {
-        final List<AssemblyInstruction> values = FileUtils.readLines(INPUT_FILENAME)
-            .stream()
-            .map(AssemblyInstruction::parse)
-            .toList();
+        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
 
-        final String charactersOnSegmentedDisplay = Day10.charactersOnSegmentedDisplay(values);
-        assertThat(charactersOnSegmentedDisplay)
-            .isEqualTo("PLEFULPB");
+        final BigDecimal part2 = Day11.solve(values, 10_000, false);
+        assertThat(part2)
+            .isEqualTo(new BigDecimal("51382025916"));
     }
 }
