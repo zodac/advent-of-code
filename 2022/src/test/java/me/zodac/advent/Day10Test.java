@@ -38,7 +38,7 @@ class Day10Test {
             .map(AssemblyInstruction::parse)
             .toList();
 
-        final long part1 = Day10.solve(values).first();
+        final long part1 = Day10.sumOfSignalValues(values);
         assertThat(part1)
             .isEqualTo(16_480L);
     }
@@ -50,7 +50,7 @@ class Day10Test {
             .map(AssemblyInstruction::parse)
             .toList();
 
-        final String part2 = Day10.solve(values).second();
+        final String part2 = Day10.charactersOnSegmentedDisplay(values);
         assertThat(part2)
             .isEqualTo("PLEFULPB");
     }

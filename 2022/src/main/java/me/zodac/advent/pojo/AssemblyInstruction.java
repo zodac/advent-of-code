@@ -17,6 +17,7 @@
 
 package me.zodac.advent.pojo;
 
+import java.util.Set;
 import me.zodac.advent.util.StringUtils;
 
 /**
@@ -26,6 +27,9 @@ import me.zodac.advent.util.StringUtils;
  * @param offset      the value offset
  */
 public record AssemblyInstruction(String instruction, int offset) {
+
+    private static final Set<String> NOOP_INSTRUCTIONS = Set.of("noop");
+    private static final int SINGLE_ELEMENT = 1;
 
     /**
      * Creates a {@link AssemblyInstruction} from a {@link String} in the format:
@@ -42,11 +46,20 @@ public record AssemblyInstruction(String instruction, int offset) {
     public static AssemblyInstruction parse(final String input) {
         final String[] tokens = StringUtils.splitOnWhitespace(input);
 
-        if (tokens.length == 1) {
+        if (tokens.length == SINGLE_ELEMENT) {
             return new AssemblyInstruction(input, 0);
         }
 
         final int offset = Integer.parseInt(tokens[1]);
         return new AssemblyInstruction(tokens[0], offset);
+    }
+
+    /**
+     * Checks if the {@link AssemblyInstruction} is a 'noop' - 'no operation', meaning no action to be taken.
+     *
+     * @return {@code true} if the {@link AssemblyInstruction} is a noop
+     */
+    public boolean isNoop() {
+        return NOOP_INSTRUCTIONS.contains(instruction);
     }
 }

@@ -253,7 +253,7 @@ public final class ArrayUtils {
      */
     public static boolean[][] deepFill(final boolean[][] input, final boolean value) {
         if (input == null || input.length == 0 || input[0].length == 0) {
-            return EMPTY_2D_BOOLEAN_ARRAY;
+            return EMPTY_2D_BOOLEAN_ARRAY.clone();
         }
 
         final boolean[][] array = deepCopy(input);
@@ -316,7 +316,7 @@ public final class ArrayUtils {
      */
     public static boolean[] flatten(final boolean[][] input) {
         if (input == null || input.length == 0 || input[0].length == 0) {
-            return EMPTY_BOOLEAN_ARRAY;
+            return EMPTY_BOOLEAN_ARRAY.clone();
         }
 
         final int size = size(input);
@@ -361,7 +361,7 @@ public final class ArrayUtils {
      */
     public static char[][] reverseRows(final char[][] input) {
         if (input == null || input.length == 0 || input[0].length == 0) {
-            return EMPTY_2D_CHAR_ARRAY;
+            return EMPTY_2D_CHAR_ARRAY.clone();
         }
 
         if (areColumnLengthsDifferent(input)) {

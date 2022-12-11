@@ -17,14 +17,11 @@
 
 package me.zodac.advent;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import me.zodac.advent.pojo.AssemblyInstruction;
 import me.zodac.advent.pojo.SegmentedDisplay;
-import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * Solution for 2022, Day 10.
@@ -35,51 +32,62 @@ public final class Day10 {
 
     private static final int START_CYCLE_FOR_SIGNAL_CHECK = 20;
     private static final int CYCLE_INTERVAL_FOR_SIGNAL_CHECK = 40;
-    private static final Set<String> NOOP_INSTRUCTIONS = Set.of("noop");
+    private static final int NUMBER_OF_CHARACTERS_IN_SEGMENTED_DISPLAY = 8;
+    private static final int MAXIMUM_PERMITTED_DISTANCE_FOR_SEGMENTED_DISPLAY = 1;
 
     private Day10() {
 
     }
 
     /**
-     * Part 2.
+     * Given a {@link List} of {@link AssemblyInstruction}s, execute each instruction according to the following rules:
+     * <ul>
+     *     <li>If the {@link AssemblyInstruction} is a {@link AssemblyInstruction#isNoop()}, do nothing</li>
+     *     <li>Otherwise, the {@link AssemblyInstruction} takes two cycles to execute (including the current)</li>
+     * </ul>
      *
-     * @param values the input {@link String}s
-     * @return the result
+     * <p>
+     * If an {@link AssemblyInstruction} is waiting to be executed, no new {@link AssemblyInstruction}s are considered until the pending ones have
+     * completed.
+     *
+     * <p>
+     * At specific cycles (cycle #20 and every 40th cycle after that), we calculate the current signal value, as:
+     * <pre>
+     *     currentValueOfRegisterX * cycle
+     * </pre>
+     *
+     * <p>
+     * We sum up these signal values and return the total.
+     *
+     * @param assemblyInstructions the input {@link AssemblyInstruction}s
+     * @return the total signal values
      */
-    public static Pair<Long, String> solve(final Collection<AssemblyInstruction> values) {
-        int xValue = 1;
-        long totalAtSpecificCyles = 0;
-
-        int i = 0;
+    public static long sumOfSignalValues(final List<AssemblyInstruction> assemblyInstructions) {
+        int valueOfRegisterX = 1;
+        long sumOfSignalValuesAtImportantCycles = 0;
+        int instructionIndex = 0;
         int cycle = 1;
-
-        final SegmentedDisplay segmentedDisplay = SegmentedDisplay.create(8);
-        final int segmentedDisplayLength = segmentedDisplay.length();
 
         final Map<Integer, Integer> offsetByTargetCycle = new HashMap<>();
 
-        while (i < values.size()) {
-            final AssemblyInstruction assemblyInstruction = new ArrayList<>(values).get(i);
-
+        while (instructionIndex < assemblyInstructions.size()) {
             if (isCycleToConsiderSignal(cycle)) {
-                totalAtSpecificCyles += ((long) xValue * cycle);
+                final long signalValue = ((long) valueOfRegisterX * cycle);
+                sumOfSignalValuesAtImportantCycles += signalValue;
             }
 
-            final int row = (cycle - 1) / segmentedDisplayLength;
-            final int col = (cycle - 1) % segmentedDisplayLength;
-
-            if (xValue == col || xValue == (col - 1) || xValue == (col + 1)) {
-                segmentedDisplay.turnOn(row, col);
-            }
-
+            // If we have any delayed 'addx' commands to execute this cycle, execute them
             if (offsetByTargetCycle.containsKey(cycle)) {
-                xValue += offsetByTargetCycle.get(cycle);
-                i++;
+                valueOfRegisterX += offsetByTargetCycle.get(cycle);
+                instructionIndex++;
             } else {
-                if (NOOP_INSTRUCTIONS.contains(assemblyInstruction.instruction())) {
-                    i++;
+                // Otherwise handle next instruction
+                final AssemblyInstruction assemblyInstruction = assemblyInstructions.get(instructionIndex);
+
+                if (assemblyInstruction.isNoop()) {
+                    instructionIndex++;
                 } else {
+                    // If not a noop instruction, add the instruction to be executed in the next cycle
                     offsetByTargetCycle.put(cycle + 1, assemblyInstruction.offset());
                 }
             }
@@ -87,9 +95,75 @@ public final class Day10 {
             cycle++;
         }
 
-        final String res = segmentedDisplay.getLetters();
+        return sumOfSignalValuesAtImportantCycles;
+    }
 
-        return Pair.of(totalAtSpecificCyles, res);
+    /**
+     * Given a {@link List} of {@link AssemblyInstruction}s, execute each instruction according to the following rules:
+     * <ul>
+     *     <li>If the {@link AssemblyInstruction} is a {@link AssemblyInstruction#isNoop()}, do nothing</li>
+     *     <li>Otherwise, the {@link AssemblyInstruction} takes two cycles to execute (including the current)</li>
+     * </ul>
+     *
+     * <p>
+     * If an {@link AssemblyInstruction} is waiting to be executed, no new {@link AssemblyInstruction}s are considered until the pending ones have
+     * completed.
+     *
+     * <p>
+     * Each cycle, we are also iterating through a {@link SegmentedDisplay}. As the X register value gets updated, it will always refer to a point in
+     * the current {@link SegmentedDisplay} row. If the current cycle value (mod {@link SegmentedDisplay#length()}) is within 1 of the X register,
+     * then that cell on the {@link SegmentedDisplay} is considered lit.
+     *
+     * <p>
+     * Once all {@link AssemblyInstruction}s have been completed, the {@link SegmentedDisplay} should be showing
+     * {@value NUMBER_OF_CHARACTERS_IN_SEGMENTED_DISPLAY} characters. We can parse these values and return the {@link String} of characters.
+     *
+     * @param assemblyInstructions the input {@link AssemblyInstruction}s
+     * @return the {@link String} of characters on the {@link SegmentedDisplay}
+     * @see SegmentedDisplay#getCharacters()
+     */
+    public static String charactersOnSegmentedDisplay(final List<AssemblyInstruction> assemblyInstructions) {
+        int valueOfRegisterX = 1;
+        int instructionIndex = 0;
+        int cycle = 1;
+
+        final Map<Integer, Integer> offsetByTargetCycle = new HashMap<>();
+        final SegmentedDisplay segmentedDisplay = SegmentedDisplay.create(NUMBER_OF_CHARACTERS_IN_SEGMENTED_DISPLAY);
+
+        while (instructionIndex < assemblyInstructions.size()) {
+            updateSegmentedDisplay(valueOfRegisterX, cycle, segmentedDisplay);
+
+            // If we have any delayed 'addx' commands to execute this cycle, execute them
+            if (offsetByTargetCycle.containsKey(cycle)) {
+                valueOfRegisterX += offsetByTargetCycle.get(cycle);
+                instructionIndex++;
+            } else {
+                // Otherwise handle next instruction
+                final AssemblyInstruction assemblyInstruction = assemblyInstructions.get(instructionIndex);
+
+                if (assemblyInstruction.isNoop()) {
+                    instructionIndex++;
+                } else {
+                    // If not a noop instruction, add the instruction to be executed in the next cycle
+                    offsetByTargetCycle.put(cycle + 1, assemblyInstruction.offset());
+                }
+            }
+
+            cycle++;
+        }
+
+        return segmentedDisplay.getCharacters();
+    }
+
+    private static void updateSegmentedDisplay(final int valueOfRegisterX, final int cycle, final SegmentedDisplay segmentedDisplay) {
+        final int displayIndex = cycle - 1;
+        final int displayRow = displayIndex / segmentedDisplay.length();
+        final int displayColumn = displayIndex % segmentedDisplay.length();
+
+        // The column value must be within 1 spac of the register X value
+        if (Math.abs(valueOfRegisterX - displayColumn) <= MAXIMUM_PERMITTED_DISTANCE_FOR_SEGMENTED_DISPLAY) {
+            segmentedDisplay.turnOn(displayRow, displayColumn);
+        }
     }
 
     // We check at cycle #20, and every subseqent 40 cycles
