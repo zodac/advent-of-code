@@ -221,6 +221,63 @@ class ArrayUtilsTest {
     }
 
     @Test
+    void whenDeepFill_givenValidInput_thenNewFilledArrayIsReturned_andOriginalArrayIsUnchanged() {
+        final boolean[][] input = new boolean[3][3];
+        final boolean[][] output = ArrayUtils.deepFill(input, true);
+        assertThat(output)
+            .contains(new boolean[] {true, true, true}, atIndex(0))
+            .contains(new boolean[] {true, true, true}, atIndex(1))
+            .contains(new boolean[] {true, true, true}, atIndex(2));
+
+        final boolean[][] secondOutput = ArrayUtils.deepFill(input, false);
+        assertThat(secondOutput)
+            .contains(new boolean[] {false, false, false}, atIndex(0))
+            .contains(new boolean[] {false, false, false}, atIndex(1))
+            .contains(new boolean[] {false, false, false}, atIndex(2));
+
+        // Confirm new 2D array is not modified if original array is modified
+        output[0][0] = true;
+        assertThat(secondOutput)
+            .contains(new boolean[] {false, false, false}, atIndex(0))
+            .contains(new boolean[] {false, false, false}, atIndex(1))
+            .contains(new boolean[] {false, false, false}, atIndex(2));
+    }
+
+    @Test
+    void whenDeepFill_givenValidInputWithColumnsOfDifferentLengths_thenNewFilledArrayIsReturned() {
+        final boolean[][] input = new boolean[3][2];
+        final boolean[][] output = ArrayUtils.deepFill(input, true);
+        assertThat(output)
+            .contains(new boolean[] {true, true}, atIndex(0))
+            .contains(new boolean[] {true, true}, atIndex(1))
+            .contains(new boolean[] {true, true}, atIndex(2));
+    }
+
+    @Test
+    void whenDeepFill_givenEmptyArray_thenEmptyArrayIsReturned() {
+        final boolean[][] input = {};
+        final boolean[][] output = ArrayUtils.deepFill(input, true);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenDeepFill_givenArrayOfEmptyArrays_thenEmptyArrayIsReturned() {
+        final boolean[][] input = {{}, {}, {}};
+        final boolean[][] output = ArrayUtils.deepFill(input, true);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenDeepFill_givenNullArray_thenEmptyArrayIsReturned() {
+        final boolean[][] input = null;
+        final boolean[][] output = ArrayUtils.deepFill(input, true);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
     void whenFindSmallestIndexGreaterThanThreshold_givenInputWithOneValueAboveThreshold_thenCorrectIndexIsReturned() {
         final int[] input = {1, 2, 3};
         final int output = ArrayUtils.findSmallestIndexGreaterThanThreshold(input, 2);
@@ -269,6 +326,48 @@ class ArrayUtilsTest {
     }
 
     @Test
+    void whenFlatten_givenValidArray_thenFlattenedArrayIsReturned() {
+        final boolean[][] input = {{true, true, true}, {false, false, false}, {true, false, true}};
+        final boolean[] output = ArrayUtils.flatten(input);
+        assertThat(output)
+            .hasSize(9)
+            .containsExactly(true, true, true, false, false, false, true, false, true);
+    }
+
+    @Test
+    void whenFlatten_givenValidArrayWithColumnsOfDifferingLengths_thenFlattenedArrayIsReturned() {
+        final boolean[][] input = {{true, true, true}, {false, false}, {true}};
+        final boolean[] output = ArrayUtils.flatten(input);
+        assertThat(output)
+            .hasSize(6)
+            .containsExactly(true, true, true, false, false, true);
+    }
+
+    @Test
+    void whenFlatten_givenEmptyArray_thenEmptyArrayIsReturned() {
+        final boolean[][] input = {};
+        final boolean[] output = ArrayUtils.flatten(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFlatten_givenArrayOfEmptyArrays_thenEmptyArrayIsReturned() {
+        final boolean[][] input = {{}, {}, {}};
+        final boolean[] output = ArrayUtils.flatten(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenFlatten_givenNullArray_thenEmptyArrayIsReturned() {
+        final boolean[][] input = null;
+        final boolean[] output = ArrayUtils.flatten(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
     void whenReverseColumns_givenValidInput_thenReversedArrayIsReturned() {
         final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}};
         final char[][] output = ArrayUtils.reverseRows(input);
@@ -300,6 +399,62 @@ class ArrayUtilsTest {
         final char[][] output = ArrayUtils.reverseRows(input);
         assertThat(output)
             .isEmpty();
+    }
+
+    @Test
+    void whenReverseColumns_givenNullArray_thenInputIsReturned() {
+        final char[][] input = null;
+        final char[][] output = ArrayUtils.reverseRows(input);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenSize_givenValidArray_thenFlattenedArrayIsReturned() {
+        final boolean[][] input = {{true, true, true}, {false, false, false}, {true, false, true}};
+        final int output = ArrayUtils.size(input);
+        assertThat(output)
+            .isEqualTo(9);
+    }
+
+    @Test
+    void whenSize_givenValidArrayWithColumnsOfDifferingLengths_thenFlattenedArrayIsReturned() {
+        final boolean[][] input = {{true, true, true}, {false, false}, {true}};
+        final int output = ArrayUtils.size(input);
+        assertThat(output)
+            .isEqualTo(6);
+    }
+
+    @Test
+    void whenSize_givenValidArrayWithColumnsOfDifferingLengths_andFirstRowIsEmpty_thenFlattenedArrayIsReturned() {
+        final boolean[][] input = {{}, {false, false}, {true}};
+        final int output = ArrayUtils.size(input);
+        assertThat(output)
+            .isEqualTo(3);
+    }
+
+    @Test
+    void whenFlatten_givenEmptyArray_thenZeroArrayIsReturned() {
+        final boolean[][] input = {};
+        final int output = ArrayUtils.size(input);
+        assertThat(output)
+            .isZero();
+    }
+
+    @Test
+    void whenSize_givenArrayOfEmptyArrays_thenZeroIsReturned() {
+        final boolean[][] input = {{}, {}, {}};
+        final int output = ArrayUtils.size(input);
+        assertThat(output)
+            .isZero();
+    }
+
+    @Test
+    void whenSize_givenNullArray_thenEmptyZeroIsReturned() {
+        final boolean[][] input = null;
+        final int output = ArrayUtils.size(input);
+        assertThat(output)
+            .isZero();
     }
 
     @Test

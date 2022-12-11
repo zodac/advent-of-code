@@ -25,6 +25,8 @@ import java.util.List;
  */
 public final class ArrayUtils {
 
+    private static final boolean[] EMPTY_BOOLEAN_ARRAY = new boolean[0];
+    private static final boolean[][] EMPTY_2D_BOOLEAN_ARRAY = new boolean[0][0];
     private static final char[][] EMPTY_2D_CHAR_ARRAY = new char[0][0];
 
     private ArrayUtils() {
@@ -243,6 +245,33 @@ public final class ArrayUtils {
     }
 
     /**
+     * Given a 2D array, we create a new array and fill it with the provided {@code value}. The input array is unmodified.
+     *
+     * @param input the input array
+     * @param value the value to set in the array
+     * @return the filled array
+     */
+    public static boolean[][] deepFill(final boolean[][] input, final boolean value) {
+        if (input == null || input.length == 0 || input[0].length == 0) {
+            return EMPTY_2D_BOOLEAN_ARRAY;
+        }
+
+        final boolean[][] array = deepCopy(input);
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[0].length; j++) {
+                array[i][j] = value;
+            }
+        }
+        return array;
+    }
+
+    private static boolean[][] deepCopy(final boolean[][] input) {
+        return Arrays.stream(input)
+            .map(boolean[]::clone)
+            .toArray(array -> input.clone());
+    }
+
+    /**
      * Given an unsorted {@code int} array, finds the smallest index that has a value greater than the {@code thresholdValue}.
      *
      * @param input          the input to check
@@ -264,6 +293,44 @@ public final class ArrayUtils {
         }
 
         throw new IllegalArgumentException(String.format("No value in input is greater than %s", thresholdValue));
+    }
+
+    /**
+     * Flattens a 2D array into a 1D array. For example, given the input 2D array:
+     * <pre>
+     *     [
+     *       [true, true, true],
+     *       [false, false, false],
+     *       [true, false, true],
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * Then the output 1D array would be:
+     * <pre>
+     *     [true, true, true, false, false, false, true, false, true]
+     * </pre>
+     *
+     * @param input the input 2D array to flatten
+     * @return the flattened 1D array, or an empty array if input is {@code null} or empty
+     */
+    public static boolean[] flatten(final boolean[][] input) {
+        if (input == null || input.length == 0 || input[0].length == 0) {
+            return EMPTY_BOOLEAN_ARRAY;
+        }
+
+        final int size = size(input);
+        final boolean[] output = new boolean[size];
+
+        int i = 0;
+        for (final boolean[] row : input) {
+            for (final boolean column : row) {
+                output[i] = column;
+                i++;
+            }
+        }
+
+        return output;
     }
 
     /**
@@ -293,8 +360,8 @@ public final class ArrayUtils {
      * @throws IllegalArgumentException if any of the columns are of different lengths
      */
     public static char[][] reverseRows(final char[][] input) {
-        if (input.length == 0 || input[0].length == 0) {
-            return input;
+        if (input == null || input.length == 0 || input[0].length == 0) {
+            return EMPTY_2D_CHAR_ARRAY;
         }
 
         if (areColumnLengthsDifferent(input)) {
@@ -309,6 +376,25 @@ public final class ArrayUtils {
             output[i] = input[outerLength - 1 - i];
         }
         return output;
+    }
+
+    /**
+     * Counts the number of elements in a 2D array. Used when there is no guarantee that the rows of a 2D array are a consistent length.
+     *
+     * @param input the array to check
+     * @return the number of elements in the array, or <b>0</b> if the input is {@code null}
+     */
+    public static int size(final boolean[][] input) {
+        if (input == null) {
+            return 0;
+        }
+
+        int size = 0;
+        for (final boolean[] row : input) {
+            size += row.length;
+        }
+
+        return size;
     }
 
     /**
