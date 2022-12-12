@@ -21,7 +21,7 @@ import me.zodac.advent.pojo.rpg.mage.BattleRound;
 import me.zodac.advent.pojo.rpg.mage.MageBoss;
 import me.zodac.advent.pojo.rpg.mage.MagePlayer;
 import me.zodac.advent.pojo.rpg.mage.Spell;
-import me.zodac.advent.search.Dijkstra;
+import me.zodac.advent.search.DijkstraSearcher;
 import me.zodac.advent.search.SearchNode;
 
 /**
@@ -39,17 +39,17 @@ public final class Day22 {
 
     /**
      * Given a {@link MageBoss}, we generate a {@link MagePlayer} and simulate a battle. Each round we will determine the possible next round,
-     * based on available {@link Spell}s and the {@link MagePlayer} mana. Using {@link Dijkstra}'s algorithm, we will attempt to find the shortest
-     * path in terms of mana usage that still lead to a victory.
+     * based on available {@link Spell}s and the {@link MagePlayer} mana. Using {@link DijkstraSearcher}'s algorithm, we will attempt to find the
+     * shortest path in terms of mana usage that still lead to a victory.
      *
      * @param boss                     the {@link MageBoss} to defeat
      * @param healthLossEachPlayerTurn the health the player loses at the start of each turn
      * @return the loest amount of mana that wins the battle
      * @see BattleRound
-     * @see Dijkstra
+     * @see DijkstraSearcher
      */
     public static long findCheapestManaCostToWinBattle(final MageBoss boss, final int healthLossEachPlayerTurn) {
         final SearchNode searchNode = BattleRound.createFirstRound(STARTING_PLAYER, boss, healthLossEachPlayerTurn);
-        return Dijkstra.findShortestDistance(searchNode);
+        return DijkstraSearcher.findShortestDistance(searchNode);
     }
 }

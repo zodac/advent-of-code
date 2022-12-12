@@ -76,7 +76,7 @@ public final class Day11 {
     }
 
     private static void throwItemsForMonkey(final Map<Integer, Monkey> monkeysById, final long productOfAllMonkeyDivisors, final Monkey monkey) {
-        final var thrownItemsByTargetMonkeyId = monkey.throwItemsToOtherMonkeys(productOfAllMonkeyDivisors);
+        final Map<Integer, List<Long>> thrownItemsByTargetMonkeyId = monkey.throwItemsToOtherMonkeys(productOfAllMonkeyDivisors);
 
         for (final Map.Entry<Integer, List<Long>> entry : thrownItemsByTargetMonkeyId.entrySet()) {
             final Monkey targetMonkey = monkeysById.get(entry.getKey());

@@ -28,7 +28,11 @@ import java.util.Set;
  */
 public record Point(int x, int y) {
 
-    private static final int INFINITE_GRID_SIZE = -1;
+    /**
+     * Defines the 2D grid that the {@link Point} is on as having infinite bounds. For example, this would allow us to consider all neighbours, not
+     * just ones within a range.
+     */
+    public static final int INFINITE_GRID_SIZE = -1;
 
     /**
      * Creates a {@link Point} starting at the origin (0, 0).
@@ -89,6 +93,33 @@ public record Point(int x, int y) {
 
     private Point moveRight() {
         return move(+1, 0);
+    }
+
+    /**
+     * Returns a {@link Set} of the direct neighbours for a {@link Point}. Can return up to 4 neighbours and itself, depending on where the input is
+     * located. Assumes the {@link Point}s are on a bounded 2D array, with a size of {@code gridSize}.
+     *
+     * @param includeSelf whether to include the input itself as a 'neighbour'
+     * @param gridSize    the limits of the 2D array for the {@link Point}s
+     * @return the neighbouring {@link Point}s (and self if chosen)
+     */
+    public Set<Point> getDirectNeighbours(final boolean includeSelf, final int gridSize) {
+        final int row = x;
+        final int column = y;
+
+        final Set<Point> neighbours = new HashSet<>();
+        neighbours.add(of(next(row, gridSize), column));
+        neighbours.add(of(previous(row, gridSize), column));
+        neighbours.add(of(row, next(column, gridSize)));
+        neighbours.add(of(row, previous(column, gridSize)));
+
+        if (includeSelf) {
+            neighbours.add(this);
+        } else {
+            // Remove current point, in case it was added in above calculations
+            neighbours.remove(this);
+        }
+        return neighbours;
     }
 
     /**

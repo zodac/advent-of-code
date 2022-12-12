@@ -22,14 +22,16 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
- * Implements <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm</a> for finding the shortest distance between
- * {@link SearchNode}s.
+ * Implements Dijkstra's algorithm for finding the shortest distance between {@link SearchNode}s, where edges between {@link SearchNode}s may not have
+ * the same cost/weight.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm</a>
  */
-public final class Dijkstra {
+public final class DijkstraSearcher {
 
     private static final long START_NODE_DISTANCE = 0L;
 
-    private Dijkstra() {
+    private DijkstraSearcher() {
 
     }
 
@@ -38,7 +40,7 @@ public final class Dijkstra {
      * condition.
      *
      * @param startNode the starting {@link SearchNode} to begin our search
-     * @return the shortest distance from the provided {@link SearchNode} a {@link SearchNode} at the end state
+     * @return the shortest distance from the provided {@link SearchNode} to a {@link SearchNode} at the end state
      * @throws IllegalStateException thrown if no {@link SearchNode} can be found that meets the {@link SearchNode#isAtEndState()} condition
      */
     public static long findShortestDistance(final SearchNode startNode) {
