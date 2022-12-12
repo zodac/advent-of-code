@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import me.zodac.advent.pojo.StackInstruction;
-import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.ArrayUtils;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
@@ -36,10 +35,12 @@ import org.junit.jupiter.api.Test;
 class Day05Test {
 
     private static final String INPUT_FILENAME = "day05.txt";
+    private static final int INDEX_OF_FIRST_GROUP = 0;
+    private static final int INDEX_OF_SECOND_GROUP = 1;
 
     @Test
     void part1() {
-        final Pair<List<String>, List<String>> values = FileUtils.readLinesAndSplit(INPUT_FILENAME, String::isEmpty);
+        final List<List<String>> values = FileUtils.readLinesAsGroups(INPUT_FILENAME, String::isEmpty);
         final Map<Integer, Deque<String>> stacksById = getStacksById(values);
         final List<StackInstruction> stackInstructions = getStackInstructions(values);
 
@@ -50,7 +51,7 @@ class Day05Test {
 
     @Test
     void part2() {
-        final Pair<List<String>, List<String>> values = FileUtils.readLinesAndSplit(INPUT_FILENAME, String::isEmpty);
+        final List<List<String>> values = FileUtils.readLinesAsGroups(INPUT_FILENAME, String::isEmpty);
         final Map<Integer, Deque<String>> stacksById = getStacksById(values);
         final List<StackInstruction> stackInstructions = getStackInstructions(values);
 
@@ -59,8 +60,8 @@ class Day05Test {
             .isEqualTo("CQQBBJFCS");
     }
 
-    private static Map<Integer, Deque<String>> getStacksById(final Pair<? extends List<String>, List<String>> values) {
-        final List<String> input = values.first();
+    private static Map<Integer, Deque<String>> getStacksById(final List<? extends List<String>> values) {
+        final List<String> input = values.get(INDEX_OF_FIRST_GROUP);
         final char[][] arrayOfCharArrays = ArrayUtils.convertToArrayOfCharArrays(input);
         final char[][] reversedArrayOfCharArrays = ArrayUtils.reverseRows(arrayOfCharArrays);
         final char[][] transposedArrayOfCharArrays = ArrayUtils.transpose(reversedArrayOfCharArrays);
@@ -91,9 +92,9 @@ class Day05Test {
         return stack;
     }
 
-    private static List<StackInstruction> getStackInstructions(final Pair<List<String>, ? extends List<String>> values) {
+    private static List<StackInstruction> getStackInstructions(final List<? extends List<String>> values) {
         return values
-            .second()
+            .get(INDEX_OF_SECOND_GROUP)
             .stream()
             .map(StackInstruction::parse)
             .toList();

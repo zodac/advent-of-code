@@ -19,8 +19,10 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import me.zodac.advent.pojo.Monkey;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -33,19 +35,32 @@ class Day11Test {
 
     @Test
     void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<List<String>> values = FileUtils.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final Map<Integer, Monkey> monkeysById = parseMonkeys(values, true);
 
-        final BigDecimal part1 = Day11.solve(values, 20, true);
-        assertThat(part1)
-            .isEqualTo(new BigDecimal("151312"));
+        final long productOfActiveMonkeys = Day11.productOfActiveMonkeys(monkeysById, 20);
+        assertThat(productOfActiveMonkeys)
+            .isEqualTo(151_312L);
     }
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<List<String>> values = FileUtils.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final Map<Integer, Monkey> monkeysById = parseMonkeys(values, false);
 
-        final BigDecimal part2 = Day11.solve(values, 10_000, false);
-        assertThat(part2)
-            .isEqualTo(new BigDecimal("51382025916"));
+        final long productOfActiveMonkeys = Day11.productOfActiveMonkeys(monkeysById, 10_000);
+        assertThat(productOfActiveMonkeys)
+            .isEqualTo(51_382_025_916L);
+    }
+
+    private static Map<Integer, Monkey> parseMonkeys(final List<? extends List<String>> values, final boolean worry) {
+        final Map<Integer, Monkey> monkeyById = new HashMap<>(values.size());
+
+        for (final List<String> monkeyValues : values) {
+            final Monkey monkey = Monkey.parse(monkeyValues, worry);
+            monkeyById.put(monkey.id(), monkey);
+        }
+
+        return monkeyById;
     }
 }

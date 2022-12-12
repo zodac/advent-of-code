@@ -17,17 +17,10 @@
 
 package me.zodac.advent;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import me.zodac.advent.pojo.tuple.Pair;
-import me.zodac.advent.util.StringUtils;
+import me.zodac.advent.pojo.Monkey;
 
 /**
  * Solution for 2022, Day 11.
@@ -36,141 +29,61 @@ import me.zodac.advent.util.StringUtils;
  */
 public final class Day11 {
 
+    private static final int NUMBER_OF_MONKEYS_TO_CHECK = 2;
+
     private Day11() {
 
     }
 
     /**
-     * Part 1.
+     * We are provided some {@link Monkey}s with their own items, and each item is assigned a 'worry' level. For each round, every {@link Monkey} will
+     * inspect their items and the 'worry' level is increased according to {@link Monkey#throwItemsToOtherMonkeys(long)}. Once inspected, the
+     * {@link Monkey} will throw the updated item to another {@link Monkey}.
      *
-     * @param values the input {@link String}s
-     * @return the result
+     * <p>
+     * After {@code rounds} have completed, we take the number of items inspected by each {@link Monkey}, and considered the
+     * {@value #NUMBER_OF_MONKEYS_TO_CHECK} {@link Monkey}s that are most active. We return the product of their {@link Monkey#numberOfInspections()}.
+     *
+     * @param monkeysById the input {@link Monkey}s keyed by their ID
+     * @param rounds      the number of rounds the {@link Monkey}s will throw items
+     * @return the product of the {@link Monkey#numberOfInspections()} of the {@value #NUMBER_OF_MONKEYS_TO_CHECK} most active {@link Monkey}s
      */
-    public static BigDecimal solve(final Collection<String> values, int rounds, boolean worry) {
-        final Map<Integer, Monkey> monkeyById = new HashMap<>();
-
-        final List<String> currentMonkey = new ArrayList<>();
-        for (final String value : values) {
-            if (value.isBlank()) {
-                final Monkey monkey = new Monkey(currentMonkey);
-                monkeyById.put(monkey.id, monkey);
-                currentMonkey.clear();
-            } else {
-                currentMonkey.add(value);
-            }
-        }
-
-        final Monkey monkeyTemp = new Monkey(currentMonkey);
-        monkeyById.put(monkeyTemp.id, monkeyTemp);
-
-        long commonDenominator = monkeyById
+    public static long productOfActiveMonkeys(final Map<Integer, Monkey> monkeysById, final int rounds) {
+        // We technically want the LCM (the lowest common multiple), but since all divisors are prime numbers we can use their product
+        final long productOfAllMonkeyDivisors = monkeysById
             .values()
             .stream()
-            .mapToLong(monkey -> monkey.divisorTest)
+            .mapToLong(Monkey::divisorTest)
             .reduce(1L, (first, second) -> first * second);
 
         for (int i = 0; i < rounds; i++) {
-            for (Monkey monkey : monkeyById.values()) {
-                var pairs = monkey.test(worry, commonDenominator);
-
-                for (final Pair<Integer, BigDecimal> pair : pairs) {
-                    monkeyById.get(pair.first()).add(pair.second());
-                }
-            }
+            throwItemsForRound(monkeysById, productOfAllMonkeyDivisors);
         }
 
-        return monkeyById
+        return monkeysById
             .values()
             .stream()
-            .map(Monkey::getInspectionCount)
+            .map(Monkey::numberOfInspections)
             .sorted(Comparator.reverseOrder())
-            .limit(2)
-            .map(BigDecimal::valueOf)
-            .reduce(BigDecimal.ONE, BigDecimal::multiply);
+            .limit(NUMBER_OF_MONKEYS_TO_CHECK)
+            .reduce(1L, (first, second) -> first * second);
     }
 
-    private static class Monkey {
-
-        int id;
-        List<BigDecimal> nums;
-        char op;
-        int opValue;
-        int divisorTest;
-        int trueMonkey;
-        int falseMonkey;
-
-        int inspectionCount = 0;
-
-        public int getInspectionCount() {
-            return inspectionCount;
+    private static void throwItemsForRound(final Map<Integer, Monkey> monkeysById, final long productOfAllMonkeyDivisors) {
+        for (final Monkey monkey : monkeysById.values()) {
+            throwItemsForMonkey(monkeysById, productOfAllMonkeyDivisors, monkey);
         }
+    }
 
-        public Monkey(List<String> input) {
+    private static void throwItemsForMonkey(final Map<Integer, Monkey> monkeysById, final long productOfAllMonkeyDivisors, final Monkey monkey) {
+        final var thrownItemsByTargetMonkeyId = monkey.throwItemsToOtherMonkeys(productOfAllMonkeyDivisors);
 
-            id = Integer.parseInt(StringUtils.removeLastCharacter(input.get(0).split("\\s+", 2)[1]));
-            nums = new ArrayList<>(StringUtils.collectIntegersInOrder(input.get(1)).stream().map(BigDecimal::valueOf).toList());
+        for (final Map.Entry<Integer, List<Long>> entry : thrownItemsByTargetMonkeyId.entrySet()) {
+            final Monkey targetMonkey = monkeysById.get(entry.getKey());
 
-            if (input.get(2).equals("  Operation: new = old * old")) {
-                op = '^';
-                opValue = 2;
-            } else {
-                op = input.get(2).charAt(23);
-                opValue =
-                    Integer.parseInt(("" + input.get(2).charAt(input.get(2).length() - 2) + input.get(2).charAt(input.get(2).length() - 1)).strip());
+            for (final long thrownItem : entry.getValue()) {
+                targetMonkey.addItem(thrownItem);
             }
-
-            divisorTest =
-                Integer.parseInt(("" + input.get(3).charAt(input.get(3).length() - 2) + input.get(3).charAt(input.get(3).length() - 1)).strip());
-            trueMonkey = Integer.parseInt(String.valueOf(input.get(4).charAt(input.get(4).length() - 1)));
-            falseMonkey = Integer.parseInt(String.valueOf(input.get(5).charAt(input.get(5).length() - 1)));
-        }
-
-        public void add(BigDecimal i) {
-            nums.add(i);
-        }
-
-        public List<Pair<Integer, BigDecimal>> test(boolean worry, long gcd) {
-            var pairs = new ArrayList<Pair<Integer, BigDecimal>>();
-
-            for (BigDecimal i : nums) {
-                BigDecimal newi = i;
-                if (op == '+') {
-                    newi = newi.add(BigDecimal.valueOf(opValue));
-                } else if (op == '*') {
-                    newi = newi.multiply(BigDecimal.valueOf(opValue));
-                } else if (op == '^') {
-                    newi = newi.multiply(newi);
-                }
-
-                if (worry) {
-                    newi = BigDecimal.valueOf(newi.intValue() / 3);
-                } else {
-                    newi = newi.remainder(BigDecimal.valueOf(gcd));
-                }
-
-                if (newi.remainder(BigDecimal.valueOf(divisorTest)).intValue() == 0) {
-                    pairs.add(Pair.of(trueMonkey, newi));
-                } else {
-                    pairs.add(Pair.of(falseMonkey, newi));
-                }
-                inspectionCount++;
-            }
-
-            nums.clear();
-            return pairs;
-        }
-
-        @Override
-        public String toString() {
-            return "Monkey{" +
-                "id=" + id +
-                ", nums=" + nums +
-                ", op=" + op +
-                ", opValue=" + opValue +
-                ", divisorTest=" + divisorTest +
-                ", trueMonkey=" + trueMonkey +
-                ", falseMonkey=" + falseMonkey +
-                '}';
         }
     }
 }

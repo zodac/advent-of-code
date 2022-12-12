@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collection;
 import java.util.List;
-import me.zodac.advent.pojo.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -48,69 +47,65 @@ class FileUtilsTest {
     }
 
     @Test
-    void whenReadLinesAndSplit_givenValidFileOfStringsWithDelimiter_thenPairOfListOfStringsIsReturned() {
+    void whenReadLinesAndSplit_givenValidFileOfStringsWithDelimiter_thenGroupOfListOfStringsIsReturned() {
         final String input = "validFileOfStringsWithDelimiter.txt";
-        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
         assertThat(output)
-            .isEqualTo(Pair.of(
+            .containsExactly(
                 List.of("line1", "line2"),
                 List.of("line3")
-            ));
+            );
     }
 
     @Test
-    void whenReadLinesAndSplit_givenValidFileOfStringsWithDelimiterOnFirstLine_thenPairOfListOfStringsIsReturned() {
+    void whenReadLinesAndSplit_givenValidFileOfStringsWithDelimiterOnFirstLine_thenGroupOfStringsIsReturned() {
         final String input = "validFileOfStringsWithDelimiterOnFirstLine.txt";
-        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
         assertThat(output)
-            .isEqualTo(Pair.of(
-                List.of(),
+            .containsExactly(
                 List.of("line1", "line2", "line3")
-            ));
+            );
     }
 
     @Test
-    void whenReadLinesAndSplit_givenValidFileOfStringsWithCustomDelimiter_thenOnlyFirstDelimiterIsConsideredAndPairIsReturned() {
+    void whenReadLinesAndSplit_givenValidFileOfStringsWithCustomDelimiter_thenGroupOfStringsIsReturned() {
         final String input = "validFileOfStringsWithCustomDelimiter.txt";
-        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, s -> s.startsWith("Can"));
+        final List<List<String>> output = FileUtils.readLinesAsGroups(input, s -> s.startsWith("Can"));
         assertThat(output)
-            .isEqualTo(Pair.of(
+            .containsExactly(
                 List.of("line1", "line2"),
                 List.of("line3")
-            ));
+            );
     }
 
     @Test
-    void whenReadLinesAndSplit_givenValidFileOfStringsWithMultipleDelimiters_thenOnlyFirstDelimiterIsConsideredAndPairIsReturned() {
+    void whenReadLinesAndSplit_givenValidFileOfStringsWithMultipleDelimiters_thenMultipleGroupsAreReturned() {
         final String input = "validFileOfStringsWithMultipleDelimiters.txt";
-        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
         assertThat(output)
-            .isEqualTo(Pair.of(
+            .containsExactly(
                 List.of("line1"),
-                List.of("line2", "", "line3")
-            ));
+                List.of("line2"),
+                List.of("line3")
+            );
     }
 
     @Test
-    void whenReadLinesAndSplit_givenValidFileOfStringsWithoutDelimiter_thenPairOfListOfStringsIsReturned() {
+    void whenReadLinesAndSplit_givenValidFileOfStringsWithoutDelimiter_thenListWithSingleListOfStringsIsReturned() {
         final String input = "validFileOfStringsWithoutDelimiter.txt";
-        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
         assertThat(output)
-            .isEqualTo(Pair.of(
-                List.of("line1", "line2", "line3"),
-                List.of()
-            ));
+            .containsExactly(
+                List.of("line1", "line2", "line3")
+            );
     }
 
     @Test
     void whenReadLinesAndSplit_givenEmptyFile_thenEmptyListIsReturned() {
         final String input = "emptyFile.txt";
-        final Pair<List<String>, List<String>> output = FileUtils.readLinesAndSplit(input, String::isEmpty);
+        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
         assertThat(output)
-            .isEqualTo(Pair.of(
-                List.of(),
-                List.of()
-            ));
+            .isEmpty();
     }
 
     @Test

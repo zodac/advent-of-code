@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
-import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * Utility class with functions for reading {@link String}s from files.
@@ -57,48 +56,46 @@ public final class FileUtils {
     }
 
     /**
-     * Reads all lines from a file in {@code src/main/resources}, then splits the {@link List} in two, with the split occurring when the provided
+     * Reads all lines from a file in {@code src/main/resources}, then groups the lines into {@link List}, with the split occurring when the provided
      * {@link Predicate} is met.
      *
      * <ul>
      *     <li>The line which matches the {@link Predicate} is discarded and not included in the output</li>
-     *     <li>Even if the {@link Predicate} can be met multiple times, only the first will be considered</li>
-     *     <li>If the {@link Predicate} is not met, we return a {@link Pair} of the full {@link List} and an empty {@link List}</li>
+     *     <li>If the {@link Predicate} is not met, we return an empty {@link List}</li>
+     *     <li>Empty groups are not included in the output</li>
      * </ul>
      *
      * @param filePathInResources file path to be read
      * @param predicate           the {@link Predicate} defining where the {@link List} is to be split
-     * @return a {@link Pair} of {@link List}s of {@link String} lines
+     * @return the group of {@link List}s of {@link String} lines
      * @see #readLines(String)
      */
-    public static Pair<List<String>, List<String>> readLinesAndSplit(final String filePathInResources, final Predicate<? super String> predicate) {
+    public static List<List<String>> readLinesAsGroups(final String filePathInResources, final Predicate<? super String> predicate) {
         final List<String> lines = readLines(filePathInResources);
 
         if (lines.isEmpty()) {
-            return Pair.of(List.of(), List.of());
+            return Collections.emptyList();
         }
 
-        final List<String> first = new ArrayList<>();
+        final List<List<String>> groups = new ArrayList<>();
 
-        boolean lookingForPredicateMatch = true;
-        int index = 0;
-        while (lookingForPredicateMatch && index < lines.size()) {
-            final String line = lines.get(index);
+        List<String> currentGroup = new ArrayList<>();
+        for (final String line : lines) {
             if (predicate.test(line)) {
-                lookingForPredicateMatch = false;
+                if (!currentGroup.isEmpty()) {
+                    groups.add(currentGroup);
+                }
+                currentGroup = new ArrayList<>();
             } else {
-                first.add(line);
+                currentGroup.add(line);
             }
-
-            index++;
         }
 
-        if (lookingForPredicateMatch) {
-            return Pair.of(first, List.of());
+        // Add last group if not empty
+        if (!currentGroup.isEmpty()) {
+            groups.add(currentGroup);
         }
-
-        final List<String> second = lines.subList(index, lines.size());
-        return Pair.of(first, second);
+        return groups;
     }
 
     /**

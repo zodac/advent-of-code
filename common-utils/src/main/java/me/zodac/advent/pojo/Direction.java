@@ -70,13 +70,13 @@ public enum Direction {
      *
      * @param input the {@link Direction} as a {@link String}
      * @return the matching {@link Direction}
-     * @throws IllegalStateException thrown if the input {@link String} is not a valid value for any {@link Direction}
+     * @throws IllegalArgumentException thrown if the input {@link String} is not a valid value for any {@link Direction}
      */
     public static Direction get(final String input) {
         return ALL_VALUES
             .stream()
             .filter(direction -> direction.possibleValues.contains(input.toUpperCase(Locale.UK)))
             .findAny()
-            .orElseThrow(() -> new IllegalStateException(String.format("Invalid direction: '%s'", input)));
+            .orElseThrow(() -> new IllegalArgumentException(String.format("Invalid %s: '%s'", Direction.class.getSimpleName(), input)));
     }
 }
