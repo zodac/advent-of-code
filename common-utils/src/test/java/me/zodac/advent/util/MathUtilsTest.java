@@ -250,18 +250,53 @@ class MathUtilsTest {
     }
 
     @Test
+    void whenLowestCommonMultiple_givenThreeNumbers_thenLcmIsReturned() {
+        final int first = 1;
+        final int[] input = {2, 3};
+        final long output = MathUtils.lowestCommonMultiple(first, input);
+        assertThat(output)
+            .isEqualTo(6);
+    }
+
+    @Test
+    void whenLowestCommonMultiple_givenZeroAsAnInput_thenZeroIsReturned() {
+        final int first = 1;
+        final int[] input = {0, 3};
+        final long output = MathUtils.lowestCommonMultiple(first, input);
+        assertThat(output)
+            .isZero();
+    }
+
+    @Test
+    void whenLowestCommonMultiple_givenSingleNumberAsInput_thenInputIsReturned() {
+        final int first = 1;
+        final long output = MathUtils.lowestCommonMultiple(first);
+        assertThat(output)
+            .isEqualTo(first);
+    }
+
+    @Test
+    void whenLowestCommonMultiple_givenPrimeNumbers_thenOutputIsSameAsProductOfInputs() {
+        final int first = 7;
+        final int[] input = {13, 29};
+        final long output = MathUtils.lowestCommonMultiple(first, input);
+        assertThat(output)
+            .isEqualTo((7 * 13 * 29));
+    }
+
+    @Test
     void whenMax_givenPositiveNumbers_thenLargestPositiveNumberIsReturned() {
         final int[] input = {2, 3};
-        final int max = MathUtils.max(1, input);
-        assertThat(max)
+        final int output = MathUtils.max(1, input);
+        assertThat(output)
             .isEqualTo(3);
     }
 
     @Test
     void whenMax_givenNegativeNumbers_thenLargestPositiveNumberIsReturned() {
         final int[] input = {-2, -3};
-        final int max = MathUtils.max(-1, input);
-        assertThat(max)
+        final int output = MathUtils.max(-1, input);
+        assertThat(output)
             .isEqualTo(-1);
     }
 

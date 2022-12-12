@@ -130,15 +130,50 @@ public final class MathUtils {
     }
 
     /**
+     * Calculates the Lower Common Multiple for the provided values.
+     *
+     * @param first  the first {@code int}, so at least one value is provided
+     * @param others the {@code int}s to check
+     * @return the lowest common multiple
+     * @see <a href="https://en.wikipedia.org/wiki/Least_common_multiple">Lower Common Multiple</a>
+     */
+    public static long lowestCommonMultiple(final int first, final int... others) {
+        long lcm = first;
+
+        for (final int other : others) {
+            lcm = calculateLowestCommonMultiple(lcm, other);
+        }
+
+        return lcm;
+    }
+
+    private static long calculateLowestCommonMultiple(final long first, final int second) {
+        if (first == 0 || second == 0) {
+            return 0;
+        }
+
+        final long absNumber1 = Math.abs(first);
+        final int absNumber2 = Math.abs(second);
+        final long absHigherNumber = Math.max(absNumber1, absNumber2);
+        final long absLowerNumber = Math.min(absNumber1, absNumber2);
+
+        long lcm = absHigherNumber;
+        while (lcm % absLowerNumber != 0) {
+            lcm += absHigherNumber;
+        }
+        return lcm;
+    }
+
+    /**
      * Returns the maximum value of the provided {@code int} values.
      *
-     * @param firstValue the first {@code int}, so at least one value is provided
-     * @param values     the {@link int}s to check
+     * @param first  the first {@code int}, so at least one value is provided
+     * @param others the {@code int}s to check
      * @return the largest value
      */
-    public static int max(final int firstValue, final int... values) {
-        final Collection<Integer> valuesAsCollection = new ArrayList<>(Arrays.stream(values).boxed().toList());
-        valuesAsCollection.add(firstValue);
+    public static int max(final int first, final int... others) {
+        final Collection<Integer> valuesAsCollection = new ArrayList<>(Arrays.stream(others).boxed().toList());
+        valuesAsCollection.add(first);
         return Collections.max(valuesAsCollection);
     }
 
