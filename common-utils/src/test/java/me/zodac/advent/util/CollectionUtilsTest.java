@@ -20,7 +20,6 @@ package me.zodac.advent.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -228,7 +227,7 @@ class CollectionUtilsTest {
     @Test
     void whenGroupBySize_givenValidCollection_thenGroupedCollectionsAreReturned() {
         final List<String> input = List.of("a", "b", "c", "d");
-        final Collection<Collection<String>> output = CollectionUtils.groupBySize(input, 2);
+        final List<List<String>> output = CollectionUtils.groupBySize(input, 2);
         assertThat(output)
             .hasSize(2)
             .containsExactly(
@@ -240,7 +239,7 @@ class CollectionUtilsTest {
     @Test
     void whenGroupBySize_givenEmptyCollection_thenEmptyGroupIsReturned() {
         final List<String> input = List.of();
-        final Collection<Collection<String>> output = CollectionUtils.groupBySize(input, 2);
+        final List<List<String>> output = CollectionUtils.groupBySize(input, 2);
 
         assertThat(output)
             .hasSize(1)

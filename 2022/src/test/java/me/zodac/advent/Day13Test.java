@@ -20,31 +20,41 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.json.JsonElement;
+import me.zodac.advent.json.JsonParser;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day12}.
+ * Tests to verify answers for {@link Day13}.
  */
-class Day12Test {
+class Day13Test {
 
-    private static final String INPUT_FILENAME = "day12.txt";
+    private static final String INPUT_FILENAME = "day13.txt";
 
     @Test
     void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<JsonElement> values = FileUtils.readLines(INPUT_FILENAME)
+            .stream()
+            .filter(s -> !s.isBlank())
+            .map(JsonParser::parse)
+            .toList();
 
-        final long distanceOfShortestPath = Day12.findShortestPathFromPossibleStartsToEnd(values, 'S');
-        assertThat(distanceOfShortestPath)
-            .isEqualTo(370L);
+        final long sumOfValidIndices = Day13.calculateSumOfValidIndices(values);
+        assertThat(sumOfValidIndices)
+            .isEqualTo(5_185L);
     }
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<JsonElement> values = FileUtils.readLines(INPUT_FILENAME)
+            .stream()
+            .filter(s -> !s.isBlank())
+            .map(JsonParser::parse)
+            .toList();
 
-        final long distanceOfShortestPath = Day12.findShortestPathFromPossibleStartsToEnd(values, 'a');
-        assertThat(distanceOfShortestPath)
-            .isEqualTo(363L);
+        final long productOfDistressSignalIndices = Day13.calculateProductOfDistressSignalIndices(values);
+        assertThat(productOfDistressSignalIndices)
+            .isEqualTo(23_751L);
     }
 }

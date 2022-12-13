@@ -106,9 +106,9 @@ public final class Day03 {
     public static long sumCommonCharacterValuesInGroupedStrings(final Collection<String> values, final int amountPerGroup) {
         long total = 0L;
 
-        final Collection<Collection<String>> groupedValues = CollectionUtils.groupBySize(values, amountPerGroup);
+        final List<List<String>> groupedValues = CollectionUtils.groupBySize(values, amountPerGroup);
 
-        for (final Collection<String> groupedValue : groupedValues) {
+        for (final List<String> groupedValue : groupedValues) {
             final List<String> groupAsList = new ArrayList<>(groupedValue);
             final Set<Character> commonCharacters = StringUtils.commonChars(groupAsList.get(0), groupAsList.get(1), groupAsList.get(2));
             final Character commonCharacter = CollectionUtils.getFirst(commonCharacters); // Assuming only one common char
