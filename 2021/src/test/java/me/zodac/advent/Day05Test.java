@@ -68,11 +68,11 @@ class Day05Test {
 
         final Matcher digitMatcher = DIGIT_PATTERN.matcher(input);
 
-        final List<Integer> coordinates = new ArrayList<>(Line.NUMBER_OF_COORDINATES_PER_LINE);
+        final List<Integer> coordinates = new ArrayList<>();
 
         while (digitMatcher.find()) {
             coordinates.add(Integer.parseInt(digitMatcher.group()));
         }
-        return Line.of(coordinates);
+        return Line.parse(coordinates);
     }
 }
