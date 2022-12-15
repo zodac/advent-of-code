@@ -20,44 +20,38 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day05}.
+ * Tests to verify answers for {@link Day14}.
  */
-class Day05Test {
+class Day14Test {
 
-    private static final String INPUT_FILENAME = "day05.txt";
+    private static final String INPUT_FILENAME = "day14.txt";
 
     @Test
     void part1() {
-        final List<Line> coordinateLines = FileUtils.readLines(INPUT_FILENAME)
+        final List<List<Point>> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .map(Day05Test::convertToLine)
+            .map(Point::ofMany)
             .toList();
 
-        final int numberOfOverlaps = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
-        assertThat(numberOfOverlaps)
-            .isEqualTo(6_113);
+        final long grainsOfSand = Day14.countGrainsOfSandBeforeFallingPastTheFloor(values);
+        assertThat(grainsOfSand)
+            .isEqualTo(843L);
     }
 
     @Test
     void part2() {
-        final List<Line> coordinateLines = FileUtils.readLines(INPUT_FILENAME)
+        final List<List<Point>> values = FileUtils.readLines(INPUT_FILENAME)
             .stream()
-            .map(Day05Test::convertToLine)
+            .map(Point::ofMany)
             .toList();
 
-        final int numberOfOverlaps = Day05.addAllLinesAndReturnOverlap(coordinateLines);
-        assertThat(numberOfOverlaps)
-            .isEqualTo(20_373);
-    }
-
-    private static Line convertToLine(final String input) {
-        final List<Point> points = Point.ofMany(input);
-        return Line.of(points.get(0), points.get(1));
+        final long grainsOfSand = Day14.countGrainsOfSandBeforeReachingSandSpawnPoint(values);
+        assertThat(grainsOfSand)
+            .isEqualTo(27_625L);
     }
 }

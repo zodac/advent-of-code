@@ -18,7 +18,6 @@
 package me.zodac.advent.pojo;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import me.zodac.advent.util.MathUtils;
 
@@ -29,8 +28,6 @@ import me.zodac.advent.util.MathUtils;
  * @param second the second {@link Point}
  */
 public record Line(Point first, Point second) {
-
-    private static final int NUMBER_OF_INTEGER_COORDINATES_PER_LINE = 4;
 
     /**
      * Creates a {@link Line} based off the provided {@link Point}s.
@@ -48,33 +45,6 @@ public record Line(Point first, Point second) {
         }
 
         return new Line(first, second);
-    }
-
-    /**
-     * Creates a {@link Line} based off the input {@code coordinates}.
-     *
-     * <p>
-     * Note that the input {@link List} of {@link Integer}s will fill the coordinates in the order:
-     * <ol>
-     *     <li>x1</li>
-     *     <li>y1</li>
-     *     <li>x2</li>
-     *     <li>y2</li>
-     * </ol>
-     *
-     * @param coordinates the {@link Line} coordinates
-     * @return the created {@link Line}
-     * @throws IllegalArgumentException thrown if the input {@link List} does not have {@value #NUMBER_OF_INTEGER_COORDINATES_PER_LINE} entries
-     */
-    public static Line parse(final List<Integer> coordinates) {
-        if (coordinates.size() != NUMBER_OF_INTEGER_COORDINATES_PER_LINE) {
-            throw new IllegalArgumentException(
-                String.format("Expected %d elements, found %d", NUMBER_OF_INTEGER_COORDINATES_PER_LINE, coordinates.size()));
-        }
-
-        final Point firstPoint = Point.of(coordinates.get(0), coordinates.get(1));
-        final Point secondPoint = Point.of(coordinates.get(2), coordinates.get(3));
-        return of(firstPoint, secondPoint);
     }
 
     /**
@@ -152,16 +122,20 @@ public record Line(Point first, Point second) {
      *
      * @return the {@link Point}s in the {@link Line}
      */
-    public Set<Point> allPoints() {
+    public Set<Point> getPointsInLine() {
         final Set<Point> points = new HashSet<>();
+        final int minX = Math.min(first.x(), second.x());
+        final int maxX = Math.max(first.x(), second.x());
+        final int minY = Math.min(first.y(), second.y());
+        final int maxY = Math.max(first.y(), second.y());
 
         if (isHorizontal()) {
-            for (int y = first.y(); y <= second.y(); y++) {
-                points.add(Point.of(first.x(), y));
+            for (int y = minY; y <= maxY; y++) {
+                points.add(Point.of(minX, y));
             }
         } else if (isVertical()) {
-            for (int x = first.x(); x <= second.x(); x++) {
-                points.add(Point.of(x, first.y()));
+            for (int x = minX; x <= maxX; x++) {
+                points.add(Point.of(x, minY));
             }
         } else if (isPerfectDiagonal()) {
             final int incrementForX = diagonalIncrement(second.x() - first.x());
@@ -174,13 +148,13 @@ public record Line(Point first, Point second) {
             int currY = first.y();
 
             while (currX != x2 && currY != y2) {
+                points.add(Point.of(currX, currY));
                 currX += incrementForX;
                 currY += incrementForY;
-                points.add(Point.of(currX, currY));
             }
 
-            // Get the second coordinate, as it is missed in the while loop
-            points.add(second);
+            // Add the second coordinate, as it is missed in the while loop
+            points.add(Point.of(second.x(), second.y()));
         }
 
         return points;

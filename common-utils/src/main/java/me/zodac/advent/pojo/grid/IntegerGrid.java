@@ -20,6 +20,7 @@ package me.zodac.advent.pojo.grid;
 import static me.zodac.advent.util.CollectionUtils.getFirst;
 
 import java.util.List;
+import java.util.Set;
 import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.ArrayUtils;
@@ -119,55 +120,14 @@ public final class IntegerGrid extends CoordinateGrid<Integer> {
      * @param allowedLineType the types of lines allowed to be drawn on the {@link IntegerGrid}
      */
     public void addLine(final Line line, final AllowedLineType allowedLineType) {
-        if (line.isHorizontal()) {
-            addHorizontalLine(line);
-        } else if (line.isVertical()) {
-            addVerticalLine(line);
-        } else if (line.isPerfectDiagonal() && allowedLineType == AllowedLineType.ALL_LINES) {
-            addDiagonalLine(line);
-        }
-    }
-
-    private void addHorizontalLine(final Line line) {
-        final int start = Math.min(line.first().y(), line.second().y());
-        final int end = Math.max(line.first().y(), line.second().y());
-
-        for (int i = start; i <= end; i++) {
-            grid[i][line.first().x()] = grid[i][line.first().x()] + 1;
-        }
-    }
-
-    private void addVerticalLine(final Line line) {
-        final int start = Math.min(line.first().x(), line.second().x());
-        final int end = Math.max(line.first().x(), line.second().x());
-
-        for (int i = start; i <= end; i++) {
-            grid[line.first().y()][i] = grid[line.first().y()][i] + 1;
-        }
-    }
-
-    private void addDiagonalLine(final Line line) {
-        final int incrementForX = diagonalIncrement(line.second().x() - line.first().x());
-        final int incrementForY = diagonalIncrement(line.second().y() - line.first().y());
-
-        final int x2 = line.second().x();
-        final int y2 = line.second().y();
-
-        int currX = line.first().x();
-        int currY = line.first().y();
-
-        while (currX != x2 && currY != y2) {
-            grid[currY][currX] = grid[currY][currX] + 1;
-
-            currX += incrementForX;
-            currY += incrementForY;
+        if (line.isPerfectDiagonal() && allowedLineType != AllowedLineType.ALL_LINES) {
+            return;
         }
 
-        // Get the end coordinate, as it is missed in the while loop
-        grid[line.second().y()][line.second().x()] = grid[line.second().y()][line.second().x()] + 1;
-    }
+        final Set<Point> points = line.getPointsInLine();
 
-    private static int diagonalIncrement(final int i) {
-        return Integer.compare(i, 0);
+        for (final Point point : points) {
+            grid[point.y()][point.x()]++;
+        }
     }
 }
