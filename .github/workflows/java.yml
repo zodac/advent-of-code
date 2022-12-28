@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Checkout submodule
         run: |
-          git submodule add https://x-access-token:${{ env.SUBMODULE_ACCESS }}@github.com/zodac/advent-of-code.git advent-of-code-inputs
+          git submodule sync
       - name: Set up JDK 19
         uses: actions/setup-java@v2
         with:
