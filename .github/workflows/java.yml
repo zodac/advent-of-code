@@ -17,7 +17,7 @@ jobs:
         with:
           repository: zodac/advent-of-code-inputs
           token: ${{ secrets.SUBMODULE_ACCESS }}
-          path: zodac/advent-of-code-inputs
+          path: advent-of-code-inputs
       - name: Set up JDK 19
         uses: actions/setup-java@v2
         with:
