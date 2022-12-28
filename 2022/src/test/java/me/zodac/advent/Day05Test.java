@@ -24,6 +24,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import me.zodac.advent.input.ExampleInput;
 import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.StackInstruction;
 import me.zodac.advent.util.ArrayUtils;
@@ -40,7 +41,20 @@ class Day05Test {
 
     @Test
     void example() {
-        // TODO: Solution won't work for example
+        final List<List<String>> values = ExampleInput.readLinesAsGroups(INPUT_FILENAME, String::isEmpty);
+
+        final Map<Integer, Deque<String>> stacksById1 = getStacksById(values);
+        final List<StackInstruction> stackInstructions1 = getStackInstructions(values);
+        final String result1 = Day05.moveElementsBetweenStacksLastInFirstOutOrderAndCreateCode(stacksById1, stackInstructions1);
+        assertThat(result1)
+            .isEqualTo("CMZ");
+
+        // Need to create a fresh map since the deques are being changed
+        final Map<Integer, Deque<String>> stacksById2 = getStacksById(values);
+        final List<StackInstruction> stackInstructions2 = getStackInstructions(values);
+        final String result2 = Day05.moveElementsBetweenStacksRetainingOrderAndCreateCode(stacksById2, stackInstructions2);
+        assertThat(result2)
+            .isEqualTo("MCD");
     }
 
     @Test

@@ -334,7 +334,25 @@ public final class ArrayUtils {
     }
 
     /**
-     * Given a 2D char array, reversed the order of the rows. For example, given the 2D array:
+     * Given a 2D char array, returns the length of the longest inner char array.
+     *
+     * @param input the input 2D char array
+     * @return the length of the longest inner array
+     * @throws IllegalArgumentException thrown if the input is {@code null} or an empty array
+     */
+    public static int maxInnerLength(final char[][] input) {
+        if (input == null) {
+            throw new IllegalArgumentException("Input cannot be null");
+        }
+
+        return Arrays.stream(input)
+            .mapToInt(array -> array.length)
+            .max()
+            .orElseThrow(() -> new IllegalArgumentException("Cannot find max length of input: " + Arrays.deepToString(input)));
+    }
+
+    /**
+     * Given a 2D char array, reverses the order of the rows. For example, given the 2D array:
      * <pre>
      *     [
      *      ['a', 'b', 'c'],
@@ -357,21 +375,16 @@ public final class ArrayUtils {
      *
      * @param input the input 2D char array
      * @return the reversed 2D array
-     * @throws IllegalArgumentException if any of the columns are of different lengths
      */
     public static char[][] reverseRows(final char[][] input) {
         if (input == null || input.length == 0 || input[0].length == 0) {
             return EMPTY_2D_CHAR_ARRAY.clone();
         }
 
-        if (areColumnLengthsDifferent(input)) {
-            throw new IllegalArgumentException("Column lengths must be the same in all rows, found: " + Arrays.deepToString(input));
-        }
-
         final int outerLength = input.length;
-        final int innerLength = input[0].length;
-        final char[][] output = new char[outerLength][innerLength];
+        final int innerLength = maxInnerLength(input);
 
+        final char[][] output = new char[outerLength][innerLength];
         for (int i = 0; i < outerLength; i++) {
             output[i] = input[outerLength - 1 - i];
         }
@@ -418,26 +431,31 @@ public final class ArrayUtils {
      *     ]
      * </pre>
      *
+     * <p>
+     * <b>NOTE:</b> If the inner arrays are of different lengths, the shorter arrays will be filled with blank characters to fill them up.
+     *
      * @param input the input 2D char array
      * @return the transposed 2D array
-     * @throws IllegalArgumentException if any of the columns are of different lengths
      */
     public static char[][] transpose(final char[][] input) {
         if (input.length == 0 || input[0].length == 0) {
             return input;
         }
 
-        if (areColumnLengthsDifferent(input)) {
-            throw new IllegalArgumentException("Column lengths must be the same in all rows, found: " + Arrays.deepToString(input));
-        }
-
         final int outerLength = input.length;
-        final int innerLength = input[0].length;
+        final int innerLength = Arrays.stream(input)
+            .mapToInt(array -> array.length)
+            .max()
+            .orElse(0);
 
         final char[][] transposedArray = new char[innerLength][outerLength];
         for (int i = 0; i < innerLength; i++) {
             for (int j = 0; j < outerLength; j++) {
-                transposedArray[i][j] = input[j][i];
+                if (i >= input[j].length) {
+                    transposedArray[i][j] = ' ';
+                } else {
+                    transposedArray[i][j] = input[j][i];
+                }
             }
         }
 

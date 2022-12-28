@@ -368,7 +368,55 @@ class ArrayUtilsTest {
     }
 
     @Test
-    void whenReverseColumns_givenValidInput_thenReversedArrayIsReturned() {
+    void whenMaxInnerLength_givenArrayWithEqualLengths_thenMaxInnerLengthIsReturned() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}};
+        final int output = ArrayUtils.maxInnerLength(input);
+        assertThat(output)
+            .isEqualTo(3);
+    }
+
+    @Test
+    void whenMaxInnerLength_givenSingleInnerArray_thenMaxInnerLengthIsReturned() {
+        final char[][] input = {{'a', 'b'}};
+        final int output = ArrayUtils.maxInnerLength(input);
+        assertThat(output)
+            .isEqualTo(2);
+    }
+
+    @Test
+    void whenMaxInnerLength_givenArrayWithDifferingLengths_thenMaxInnerLengthIsReturned() {
+        final char[][] input = {{'a', 'b'}, {'c', 'd', 'e', 'f'}, {'g', 'h', 'i'}};
+        final int output = ArrayUtils.maxInnerLength(input);
+        assertThat(output)
+            .isEqualTo(4);
+    }
+
+    @Test
+    void whenMaxInnerLength_givenEmptyArray_thenEmptyArrayIsReturned() {
+        final char[][] input = {};
+        assertThatThrownBy(() -> ArrayUtils.maxInnerLength(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Cannot find max length of input: []");
+    }
+
+    @Test
+    void whenMaxInnerLength_givenArrayOfEmptyArrays_thenEmptyArrayIsReturned() {
+        final char[][] input = {{}, {}, {}};
+        final int output = ArrayUtils.maxInnerLength(input);
+        assertThat(output)
+            .isEqualTo(0);
+    }
+
+    @Test
+    void whenMaxInnerLength_givenNullArray_thenEmptyArrayIsReturned() {
+        final char[][] input = null;
+        assertThatThrownBy(() -> ArrayUtils.maxInnerLength(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Input cannot be null");
+    }
+
+    @Test
+    void whenReverseRows_givenValidInput_thenReversedArrayIsReturned() {
         final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}};
         final char[][] output = ArrayUtils.reverseRows(input);
         assertThat(output)
@@ -378,15 +426,17 @@ class ArrayUtilsTest {
     }
 
     @Test
-    void whenReverseColumns_givenInputWithColumnsOfDifferentLengths_thenExceptionIsThrown() {
+    void whenReverseRows_givenInputWithColumnsOfDifferentLengths_thenReversedArrayIsReturned() {
         final char[][] input = {{'a', 'b', 'c'}, {'d', 'e'}, {'f', 'g', 'h', 'i'}};
-        assertThatThrownBy(() -> ArrayUtils.reverseRows(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Column lengths must be the same in all rows, found: ");
+        final char[][] output = ArrayUtils.reverseRows(input);
+        assertThat(output)
+            .contains(new char[] {'f', 'g', 'h', 'i'}, atIndex(0))
+            .contains(new char[] {'d', 'e'}, atIndex(1))
+            .contains(new char[] {'a', 'b', 'c'}, atIndex(2));
     }
 
     @Test
-    void whenReverseColumns_givenEmptyArray_thenInputIsReturned() {
+    void whenReverseRows_givenEmptyArray_thenInputIsReturned() {
         final char[][] input = {};
         final char[][] output = ArrayUtils.reverseRows(input);
         assertThat(output)
@@ -394,7 +444,7 @@ class ArrayUtilsTest {
     }
 
     @Test
-    void whenReverseColumns_givenArrayOfEmptyArray_thenInputIsReturned() {
+    void whenReverseRows_givenArrayOfEmptyArray_thenInputIsReturned() {
         final char[][] input = {{}, {}};
         final char[][] output = ArrayUtils.reverseRows(input);
         assertThat(output)
@@ -402,7 +452,7 @@ class ArrayUtilsTest {
     }
 
     @Test
-    void whenReverseColumns_givenNullArray_thenInputIsReturned() {
+    void whenReverseRows_givenNullArray_thenInputIsReturned() {
         final char[][] input = null;
         final char[][] output = ArrayUtils.reverseRows(input);
         assertThat(output)
@@ -434,7 +484,7 @@ class ArrayUtilsTest {
     }
 
     @Test
-    void whenFlatten_givenEmptyArray_thenZeroArrayIsReturned() {
+    void whenSize_givenEmptyArray_thenZeroArrayIsReturned() {
         final boolean[][] input = {};
         final int output = ArrayUtils.size(input);
         assertThat(output)
@@ -458,7 +508,7 @@ class ArrayUtilsTest {
     }
 
     @Test
-    void whenTranspose_givenValidInput_thenReversedArrayIsReturned() {
+    void whenTranspose_givenValidInput_thenTransposedArrayIsReturned() {
         final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, {'j', 'k', 'l'}};
         final char[][] output = ArrayUtils.transpose(input);
         assertThat(output)
@@ -468,11 +518,14 @@ class ArrayUtilsTest {
     }
 
     @Test
-    void whenTranspose_givenInputWithColumnsOfDifferentLengths_thenExceptionIsThrown() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i', 'j'}};
-        assertThatThrownBy(() -> ArrayUtils.transpose(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Column lengths must be the same in all rows, found: ");
+    void whenTranspose_givenInputWithColumnsOfDifferentLengths_thenTransposedArrayIsReturned_andGapsFilledWithEmptyCharacter() {
+        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f', 'g'}, {'h', 'i'}};
+        final char[][] output = ArrayUtils.transpose(input);
+        assertThat(output)
+            .contains(new char[] {'a', 'd', 'h'}, atIndex(0))
+            .contains(new char[] {'b', 'e', 'i'}, atIndex(1))
+            .contains(new char[] {'c', 'f', ' '}, atIndex(2))
+            .contains(new char[] {' ', 'g', ' '}, atIndex(3));
     }
 
     @Test

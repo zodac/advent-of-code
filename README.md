@@ -40,7 +40,7 @@ own input files.
 As requested by the creator of Advent of Code, no individual input files are included in this repository. My specific inputs are included as a git
 submodule in the `advent-of-code-inputs` directory. Feel free to provide your own inputs in that directory. Each year's inputs should be placed in a
 module matching the module name in the source code. For example, for **2015, Day 01**, its input should be available at:
-`advent-of-code/advent-of-code-inputs/2015/Day01.txt`
+`advent-of-code/advent-of-code-inputs/2015/Day01.txt`.
 
 ## License
 
