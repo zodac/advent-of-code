@@ -20,6 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
 import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Replacement;
 import me.zodac.advent.util.CollectionUtils;
@@ -34,7 +35,21 @@ class Day19Test {
 
     @Test
     void example() {
-        // TODO: Solution won't work for example
+        final List<String> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .toList();
+
+        // Ignore 2 last lines with molecule and blank line
+        final List<Replacement<String>> replacements = values.subList(0, values.size() - 2)
+            .stream()
+            .map(Replacement::parse)
+            .toList();
+
+        final String molecule = CollectionUtils.getLast(values);
+
+        final long numberOfDistinctMolecules = Day19.numberOfDistinctReplacementMolecules(molecule, replacements);
+        assertThat(numberOfDistinctMolecules)
+            .isEqualTo(4L);
     }
 
     @Test

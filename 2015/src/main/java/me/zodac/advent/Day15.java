@@ -31,7 +31,6 @@ import me.zodac.advent.util.MathUtils;
  */
 public final class Day15 {
 
-    private static final int NUMBER_OF_DIFFERENT_INGREDIENTS = 4;
     private static final int MAXIMUM_AMOUNT_OF_INGREDIENTS = 100;
     private static final int VALUE_FOR_NO_CALORIE_CHECK = 0;
 
@@ -65,7 +64,6 @@ public final class Day15 {
      *
      * @param ingredients the {@link Ingredient}s
      * @return the score of the highest-scoring combinarion
-     * @throws IllegalArgumentException thrown if input has more than {@value #NUMBER_OF_DIFFERENT_INGREDIENTS} elements
      * @see #scoreOfBestIngredients(Collection, int)
      */
     public static long scoreOfBestIngredients(final Collection<Ingredient> ingredients) {
@@ -104,14 +102,8 @@ public final class Day15 {
      * @param ingredients        the {@link Ingredient}s
      * @param wantedCalorieCount the wanted total calorie count for a valid combination
      * @return the score of the highest-scoring combinarion
-     * @throws IllegalArgumentException thrown if input has more than {@value #NUMBER_OF_DIFFERENT_INGREDIENTS} elements
      */
     public static long scoreOfBestIngredients(final Collection<Ingredient> ingredients, final int wantedCalorieCount) {
-        if (ingredients.size() != NUMBER_OF_DIFFERENT_INGREDIENTS) {
-            throw new IllegalArgumentException(
-                String.format("Expected %s %ss, found: %s", NUMBER_OF_DIFFERENT_INGREDIENTS, Ingredient.class.getSimpleName(), ingredients.size()));
-        }
-
         long bestScore = Long.MIN_VALUE;
 
         for (int ingredient1Amount = 0; ingredient1Amount < MAXIMUM_AMOUNT_OF_INGREDIENTS; ingredient1Amount++) {
@@ -120,21 +112,7 @@ public final class Day15 {
                     final int ingredient4Amount = MAXIMUM_AMOUNT_OF_INGREDIENTS - ingredient1Amount - ingredient2Amount - ingredient3Amount;
 
                     final List<Integer> amounts = List.of(ingredient1Amount, ingredient2Amount, ingredient3Amount, ingredient4Amount);
-
-                    final long totalCapacity = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::capacity));
-                    final long totalDurability = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::durability));
-                    final long totalFlavour = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::flavour));
-                    final long totalTexture = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::texture));
-
-                    if (isCaloriesInvalid(ingredients, wantedCalorieCount, amounts)) {
-                        continue;
-                    }
-
-                    if (MathUtils.areAnyLessThan(0L, totalCapacity, totalDurability, totalFlavour, totalTexture)) {
-                        continue;
-                    }
-
-                    final long totalScore = totalCapacity * totalDurability * totalFlavour * totalTexture;
+                    final Long totalScore = calculateScore(ingredients, wantedCalorieCount, amounts);
 
                     if (totalScore > bestScore) {
                         bestScore = totalScore;
@@ -144,6 +122,23 @@ public final class Day15 {
         }
 
         return bestScore;
+    }
+
+    private static Long calculateScore(final Collection<Ingredient> ingredients, final int wantedCalorieCount, final List<Integer> amounts) {
+        final long totalCapacity = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::capacity));
+        final long totalDurability = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::durability));
+        final long totalFlavour = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::flavour));
+        final long totalTexture = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::texture));
+
+        if (isCaloriesInvalid(ingredients, wantedCalorieCount, amounts)) {
+            return 0L;
+        }
+
+        if (MathUtils.areAnyLessThan(0L, totalCapacity, totalDurability, totalFlavour, totalTexture)) {
+            return 0L;
+        }
+
+        return totalCapacity * totalDurability * totalFlavour * totalTexture;
     }
 
     private static boolean isCaloriesInvalid(final Collection<Ingredient> ingredients, final int wantedCalorieCount, final List<Integer> amounts) {
