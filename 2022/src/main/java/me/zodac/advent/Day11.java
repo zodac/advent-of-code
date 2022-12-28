@@ -50,6 +50,7 @@ public final class Day11 {
      */
     public static long productOfActiveMonkeys(final Map<Integer, Monkey> monkeysById, final int rounds) {
         // We technically want the LCM (the lowest common multiple), but since all divisors are prime numbers we can use their product
+        // TODO: Add LCM method
         final long productOfAllMonkeyDivisors = monkeysById
             .values()
             .stream()

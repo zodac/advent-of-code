@@ -20,8 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Movement;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,8 +33,24 @@ class Day02Test {
     private static final String INPUT_FILENAME = "day02.txt";
 
     @Test
+    void example() {
+        final List<Movement> movements = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Movement::parse)
+            .toList();
+
+        final long magnitude1 = Day02.magnitudeOfAllMovements(movements);
+        assertThat(magnitude1)
+            .isEqualTo(150L);
+
+        final long magnitude2 = Day02.magnitudeOfAllMovementsWithAim(movements);
+        assertThat(magnitude2)
+            .isEqualTo(900L);
+    }
+
+    @Test
     void part1() {
-        final List<Movement> movements = FileUtils.readLines(INPUT_FILENAME)
+        final List<Movement> movements = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Movement::parse)
             .toList();
@@ -45,7 +62,7 @@ class Day02Test {
 
     @Test
     void part2() {
-        final List<Movement> movements = FileUtils.readLines(INPUT_FILENAME)
+        final List<Movement> movements = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Movement::parse)
             .toList();

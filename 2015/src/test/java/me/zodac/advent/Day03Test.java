@@ -20,8 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Direction;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,30 +33,48 @@ class Day03Test {
     private static final String INPUT_FILENAME = "day03.txt";
 
     @Test
-    void part1() {
-        final List<Direction> values = FileUtils.readLines(INPUT_FILENAME)
+    void example() {
+        final List<Direction> values = ExampleInput.readLines(INPUT_FILENAME)
             .stream()
             .flatMapToInt(String::chars)
             .mapToObj(i -> String.valueOf((char) i))
             .map(Direction::get)
             .toList();
 
-        final int floor = Day03.countUniqueHouses(values);
-        assertThat(floor)
+        final int uniqueHouses1 = Day03.countUniqueHouses(values);
+        assertThat(uniqueHouses1)
+            .isEqualTo(2);
+
+        final int uniqueHouses2 = Day03.countUniqueHousesTwoUsers(values);
+        assertThat(uniqueHouses2)
+            .isEqualTo(11);
+    }
+
+    @Test
+    void part1() {
+        final List<Direction> values = PuzzleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .flatMapToInt(String::chars)
+            .mapToObj(i -> String.valueOf((char) i))
+            .map(Direction::get)
+            .toList();
+
+        final int uniqueHouses = Day03.countUniqueHouses(values);
+        assertThat(uniqueHouses)
             .isEqualTo(2_081);
     }
 
     @Test
     void part2() {
-        final List<Direction> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Direction> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .flatMapToInt(String::chars)
             .mapToObj(i -> String.valueOf((char) i))
             .map(Direction::get)
             .toList();
 
-        final int floor = Day03.countUniqueHousesTwoUsers(values);
-        assertThat(floor)
+        final int uniqueHouses = Day03.countUniqueHousesTwoUsers(values);
+        assertThat(uniqueHouses)
             .isEqualTo(2_341);
     }
 }

@@ -20,7 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,8 +32,23 @@ class Day08Test {
     private static final String INPUT_FILENAME = "day08.txt";
 
     @Test
+    void example() {
+        final List<String> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .toList();
+
+        final long diff1 = Day08.calculateDiffOfLiteralAndInMemoryLength(values);
+        assertThat(diff1)
+            .isEqualTo(12L);
+
+        final long diff2 = Day08.calculateDiffOfEscapedAndLiteralLength(values);
+        assertThat(diff2)
+            .isEqualTo(19L);
+    }
+
+    @Test
     void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .toList();
 
@@ -43,7 +59,7 @@ class Day08Test {
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .toList();
 

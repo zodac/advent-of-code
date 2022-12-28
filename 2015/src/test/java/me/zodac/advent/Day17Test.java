@@ -20,7 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -29,30 +30,45 @@ import org.junit.jupiter.api.Test;
 class Day17Test {
 
     private static final String INPUT_FILENAME = "day17.txt";
-    private static final int WANTED_VALUE = 150;
+    private static final int EXAMPLE_WANTED_VALUE = 25;
+    private static final int PUZZLE_WANTED_VALUE = 150;
+
+    @Test
+    void example() {
+        final List<Integer> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Integer::parseInt)
+            .toList();
+
+        final long numberOfCombinations1 = Day17.numberOfCombinationsMatchingWantedValue(values, EXAMPLE_WANTED_VALUE);
+        assertThat(numberOfCombinations1)
+            .isEqualTo(4L);
+
+        final long numberOfCombinations2 = Day17.numberOfSmallestSizeCombinationsMatchingWantedValue(values, EXAMPLE_WANTED_VALUE);
+        assertThat(numberOfCombinations2)
+            .isEqualTo(3L);
+    }
 
     @Test
     void part1() {
-        final List<Integer> values =
-            FileUtils.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Integer::parseInt)
-                .toList();
+        final List<Integer> values = PuzzleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Integer::parseInt)
+            .toList();
 
-        final long numberOfCombinations = Day17.numberOfCombinationsMatchingWantedValue(values, WANTED_VALUE);
+        final long numberOfCombinations = Day17.numberOfCombinationsMatchingWantedValue(values, PUZZLE_WANTED_VALUE);
         assertThat(numberOfCombinations)
             .isEqualTo(4_372L);
     }
 
     @Test
     void part2() {
-        final List<Integer> values =
-            FileUtils.readLines(INPUT_FILENAME)
+        final List<Integer> values = PuzzleInput.readLines(INPUT_FILENAME)
                 .stream()
                 .map(Integer::parseInt)
                 .toList();
 
-        final long numberOfCombinations = Day17.numberOfSmallestSizeCombinationsMatchingWantedValue(values, WANTED_VALUE);
+        final long numberOfCombinations = Day17.numberOfSmallestSizeCombinationsMatchingWantedValue(values, PUZZLE_WANTED_VALUE);
         assertThat(numberOfCombinations)
             .isEqualTo(4L);
     }

@@ -20,8 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.grid.BooleanGrid;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,8 +34,22 @@ class Day18Test {
     private static final char SYMBOL_SIGNIFYING_TRUE = '#';
 
     @Test
+    void example() {
+        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final BooleanGrid booleanGrid = BooleanGrid.parse(values, SYMBOL_SIGNIFYING_TRUE);
+
+        final long numberOfCombinations1 = Day18.playGameOfLife(booleanGrid, 4);
+        assertThat(numberOfCombinations1)
+            .isEqualTo(4L);
+
+        final long numberOfCombinations2 = Day18.playGameOfLifeWithCornersAlwaysOn(booleanGrid, 5);
+        assertThat(numberOfCombinations2)
+            .isEqualTo(17L);
+    }
+
+    @Test
     void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         final BooleanGrid booleanGrid = BooleanGrid.parse(values, SYMBOL_SIGNIFYING_TRUE);
         final long numberOfCombinations = Day18.playGameOfLife(booleanGrid, 100);
@@ -44,7 +59,7 @@ class Day18Test {
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         final BooleanGrid booleanGrid = BooleanGrid.parse(values, SYMBOL_SIGNIFYING_TRUE);
         final long numberOfCombinations = Day18.playGameOfLifeWithCornersAlwaysOn(booleanGrid, 100);

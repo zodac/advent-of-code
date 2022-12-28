@@ -22,9 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Range;
 import me.zodac.advent.pojo.tuple.Pair;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -36,8 +37,24 @@ class Day04Test {
     private static final Pattern INPUT_PATTERN = Pattern.compile("(\\d+)-(\\d+),(\\d+)-(\\d+)");
 
     @Test
+    void example() {
+        final Collection<Pair<Range, Range>> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Day04Test::convert)
+            .toList();
+
+        final long count1 = Day04.countCompleteOverlaps(values);
+        assertThat(count1)
+            .isEqualTo(2L);
+
+        final long count2 = Day04.countPartialOverlaps(values);
+        assertThat(count2)
+            .isEqualTo(4L);
+    }
+
+    @Test
     void part1() {
-        final Collection<Pair<Range, Range>> values = FileUtils.readLines(INPUT_FILENAME)
+        final Collection<Pair<Range, Range>> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Day04Test::convert)
             .toList();
@@ -49,7 +66,7 @@ class Day04Test {
 
     @Test
     void part2() {
-        final Collection<Pair<Range, Range>> values = FileUtils.readLines(INPUT_FILENAME)
+        final Collection<Pair<Range, Range>> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Day04Test::convert)
             .toList();

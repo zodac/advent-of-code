@@ -22,7 +22,8 @@ import static me.zodac.advent.pojo.MoveCostType.VARIABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,8 +34,24 @@ class Day07Test {
     private static final String INPUT_FILENAME = "day07.txt";
 
     @Test
+    void example() {
+        final List<Integer> verticalLocations = ExampleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
+            .stream()
+            .flatMap(List::stream)
+            .toList();
+
+        final long minimumMoves1 = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
+        assertThat(minimumMoves1)
+            .isEqualTo(37L);
+
+        final long minimumMoves2 = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);
+        assertThat(minimumMoves2)
+            .isEqualTo(168L);
+    }
+
+    @Test
     void part1() {
-        final List<Integer> verticalLocations = FileUtils.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
+        final List<Integer> verticalLocations = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
             .stream()
             .flatMap(List::stream)
             .toList();
@@ -46,7 +63,7 @@ class Day07Test {
 
     @Test
     void part2() {
-        final List<Integer> verticalLocations = FileUtils.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
+        final List<Integer> verticalLocations = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
             .stream()
             .flatMap(List::stream)
             .toList();

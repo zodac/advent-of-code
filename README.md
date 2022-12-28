@@ -28,10 +28,19 @@ reasonable time[™](https://en.wikipedia.org/wiki/Reasonable_time), I'll use th
 
 ## How To View Solutions
 
-The solutions for a given year are saved in their respective module. The solution for each day is run as a unit test, where the puzzle input is read
-and passed into the actual solution class. Sometimes some minor mapping of the input to a POJO will be done in the test set-up.
+The solutions for a given year are saved in their respective module. The solution for each day is run as a unit test, where a puzzle input is read
+and passed into the actual solution class. Sometimes some minor mapping of the input to a POJO will be done in the test set-up. The result from the
+solution is then asserted in the unit test.
 
-The result from the solution is then asserted in the unit test, for both part 1 and part 2 of the challenge.
+The test module will include assertions for the example from the [Advent of Code](https://adventofcode.com/) challenge, and part 1 and 2 using your
+own input files.
+
+## Input Files
+
+As requested by the creator of Advent of Code, no individual input files are included in this repository. My specific inputs are included as a git
+submodule in the `advent-of-code-inputs` directory. Feel free to provide your own inputs in that directory. Each year's inputs should be placed in a
+module matching the module name in the source code. For example, for **2015, Day 01**, its input should be available at:
+`advent-of-code/advent-of-code-inputs/2015/Day01.txt`
 
 ## License
 

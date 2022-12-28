@@ -20,7 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,20 +32,33 @@ class Day02Test {
     private static final String INPUT_FILENAME = "day02.txt";
 
     @Test
-    void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+    void example() {
+        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long count = Day02.finalScoreFollowingGuideWithMoves(values);
-        assertThat(count)
+        final long score1 = Day02.finalScoreFollowingGuideWithMoves(values);
+        assertThat(score1)
+            .isEqualTo(15L);
+
+        final long score2 = Day02.finalScoreFollowingGuideWithResults(values);
+        assertThat(score2)
+            .isEqualTo(12L);
+    }
+
+    @Test
+    void part1() {
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+
+        final long score = Day02.finalScoreFollowingGuideWithMoves(values);
+        assertThat(score)
             .isEqualTo(13_052L);
     }
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long count = Day02.finalScoreFollowingGuideWithResults(values);
-        assertThat(count)
+        final long score = Day02.finalScoreFollowingGuideWithResults(values);
+        assertThat(score)
             .isEqualTo(13_693L);
     }
 }

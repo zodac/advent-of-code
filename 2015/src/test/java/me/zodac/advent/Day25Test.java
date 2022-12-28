@@ -21,8 +21,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -34,8 +35,18 @@ class Day25Test {
     private static final Pattern INPUT_PATTERN = Pattern.compile(".*Enter the code at row (\\d+), column (\\d+).*");
 
     @Test
+    void example() {
+        final String value = ExampleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final Point point = getPoint(value);
+
+        final long instructionManualCode = Day25.calculateInstructionManualCode(point.x(), point.y());
+        assertThat(instructionManualCode)
+            .isEqualTo(32_451_966L);
+    }
+
+    @Test
     void part1() {
-        final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
+        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
         final Point point = getPoint(value);
 
         final long instructionManualCode = Day25.calculateInstructionManualCode(point.x(), point.y());

@@ -20,8 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Route;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,26 +33,42 @@ class Day09Test {
     private static final String INPUT_FILENAME = "day09.txt";
 
     @Test
-    void part1() {
-        final List<Route> values = FileUtils.readLines(INPUT_FILENAME)
+    void example() {
+        final List<Route> values = ExampleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Route::parseSourceDestination)
             .toList();
 
-        final long diff = Day09.distanceOfShortestPath(values);
-        assertThat(diff)
+        final long shortestPath = Day09.distanceOfShortestPath(values);
+        assertThat(shortestPath)
+            .isEqualTo(605L);
+
+        final long longestPath = Day09.distanceOfLongestPath(values);
+        assertThat(longestPath)
+            .isEqualTo(982L);
+    }
+
+    @Test
+    void part1() {
+        final List<Route> values = PuzzleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Route::parseSourceDestination)
+            .toList();
+
+        final long shortestPath = Day09.distanceOfShortestPath(values);
+        assertThat(shortestPath)
             .isEqualTo(141L);
     }
 
     @Test
     void part2() {
-        final List<Route> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Route> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Route::parseSourceDestination)
             .toList();
 
-        final long diff = Day09.distanceOfLongestPath(values);
-        assertThat(diff)
+        final long longestPath = Day09.distanceOfLongestPath(values);
+        assertThat(longestPath)
             .isEqualTo(736L);
     }
 }

@@ -20,9 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Replacement;
 import me.zodac.advent.util.CollectionUtils;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,9 +33,13 @@ class Day19Test {
     private static final String INPUT_FILENAME = "day19.txt";
 
     @Test
+    void example() {
+        // TODO: Solution won't work for example
+    }
+
+    @Test
     void part1() {
-        final List<String> values =
-            FileUtils.readLines(INPUT_FILENAME)
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
                 .stream()
                 .toList();
 
@@ -54,8 +58,7 @@ class Day19Test {
 
     @Test
     void part2() {
-        final List<String> values =
-            FileUtils.readLines(INPUT_FILENAME)
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
                 .stream()
                 .toList();
 

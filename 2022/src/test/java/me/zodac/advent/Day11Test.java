@@ -22,8 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Monkey;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -34,8 +35,23 @@ class Day11Test {
     private static final String INPUT_FILENAME = "day11.txt";
 
     @Test
+    void example() {
+        final List<List<String>> values = ExampleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final Map<Integer, Monkey> monkeysById1 = parseMonkeys(values, true);
+
+        final long productOfActiveMonkeys1 = Day11.productOfActiveMonkeys(monkeysById1, 20);
+        assertThat(productOfActiveMonkeys1)
+            .isEqualTo(10_605L);
+
+        final Map<Integer, Monkey> monkeysById2 = parseMonkeys(values, false);
+        final long productOfActiveMonkeys2 = Day11.productOfActiveMonkeys(monkeysById2, 10_000);
+        assertThat(productOfActiveMonkeys2)
+            .isEqualTo(2_713_310_158L);
+    }
+
+    @Test
     void part1() {
-        final List<List<String>> values = FileUtils.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
         final Map<Integer, Monkey> monkeysById = parseMonkeys(values, true);
 
         final long productOfActiveMonkeys = Day11.productOfActiveMonkeys(monkeysById, 20);
@@ -45,7 +61,7 @@ class Day11Test {
 
     @Test
     void part2() {
-        final List<List<String>> values = FileUtils.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
         final Map<Integer, Monkey> monkeysById = parseMonkeys(values, false);
 
         final long productOfActiveMonkeys = Day11.productOfActiveMonkeys(monkeysById, 10_000);

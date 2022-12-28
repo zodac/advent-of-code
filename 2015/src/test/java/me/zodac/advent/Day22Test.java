@@ -19,8 +19,10 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.rpg.mage.MageBoss;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.pojo.rpg.mage.MagePlayer;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -29,23 +31,35 @@ import org.junit.jupiter.api.Test;
 class Day22Test {
 
     private static final String INPUT_FILENAME = "day22.txt";
+    private static final MagePlayer EXAMPLE_STARTING_PLAYER = MagePlayer.create(10, 250);
+    private static final MagePlayer PUZZLE_STARTING_PLAYER = MagePlayer.create(50, 500);
+
+    @Test
+    void example() {
+        final String value = ExampleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final MageBoss boss = MageBoss.parse(value);
+
+        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(EXAMPLE_STARTING_PLAYER, boss, 0);
+        assertThat(cheapestManaCost)
+            .isEqualTo(641L);
+    }
 
     @Test
     void part1() {
-        final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
+        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
         final MageBoss boss = MageBoss.parse(value);
 
-        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(boss, 0);
+        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(PUZZLE_STARTING_PLAYER, boss, 0);
         assertThat(cheapestManaCost)
             .isEqualTo(953L);
     }
 
     @Test
     void part2() {
-        final String value = FileUtils.readLinesAsSingleString(INPUT_FILENAME);
+        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
         final MageBoss boss = MageBoss.parse(value);
 
-        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(boss, 1);
+        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(PUZZLE_STARTING_PLAYER, boss, 1);
         assertThat(cheapestManaCost)
             .isEqualTo(1_289L);
     }

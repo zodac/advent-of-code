@@ -24,9 +24,9 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.StackInstruction;
 import me.zodac.advent.util.ArrayUtils;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -39,8 +39,13 @@ class Day05Test {
     private static final int INDEX_OF_SECOND_GROUP = 1;
 
     @Test
+    void example() {
+        // TODO: Solution won't work for example
+    }
+
+    @Test
     void part1() {
-        final List<List<String>> values = FileUtils.readLinesAsGroups(INPUT_FILENAME, String::isEmpty);
+        final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isEmpty);
         final Map<Integer, Deque<String>> stacksById = getStacksById(values);
         final List<StackInstruction> stackInstructions = getStackInstructions(values);
 
@@ -51,7 +56,7 @@ class Day05Test {
 
     @Test
     void part2() {
-        final List<List<String>> values = FileUtils.readLinesAsGroups(INPUT_FILENAME, String::isEmpty);
+        final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isEmpty);
         final Map<Integer, Deque<String>> stacksById = getStacksById(values);
         final List<StackInstruction> stackInstructions = getStackInstructions(values);
 

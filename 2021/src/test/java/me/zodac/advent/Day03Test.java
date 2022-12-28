@@ -20,7 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,8 +32,21 @@ class Day03Test {
     private static final String INPUT_FILENAME = "day03.txt";
 
     @Test
+    void example() {
+        final List<String> binaryValues = ExampleInput.readLines(INPUT_FILENAME);
+
+        final long powerConsumption = Day03.calculatePowerConsumption(binaryValues);
+        assertThat(powerConsumption)
+            .isEqualTo(198L);
+
+        final long lifeSupportRating = Day03.calculateLifeSupportRating(binaryValues);
+        assertThat(lifeSupportRating)
+            .isEqualTo(230L);
+    }
+
+    @Test
     void part1() {
-        final List<String> binaryValues = FileUtils.readLines(INPUT_FILENAME);
+        final List<String> binaryValues = PuzzleInput.readLines(INPUT_FILENAME);
 
         final long powerConsumption = Day03.calculatePowerConsumption(binaryValues);
         assertThat(powerConsumption)
@@ -41,7 +55,7 @@ class Day03Test {
 
     @Test
     void part2() {
-        final List<String> binaryValues = FileUtils.readLines(INPUT_FILENAME);
+        final List<String> binaryValues = PuzzleInput.readLines(INPUT_FILENAME);
 
         final long lifeSupportRating = Day03.calculateLifeSupportRating(binaryValues);
         assertThat(lifeSupportRating)

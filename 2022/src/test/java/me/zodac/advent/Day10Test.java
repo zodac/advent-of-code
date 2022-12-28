@@ -20,8 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.AssemblyInstruction;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,8 +33,20 @@ class Day10Test {
     private static final String INPUT_FILENAME = "day10.txt";
 
     @Test
+    void example() {
+        final List<AssemblyInstruction> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(AssemblyInstruction::parse)
+            .toList();
+
+        final long sumOfSignalValues = Day10.sumOfSignalValues(values);
+        assertThat(sumOfSignalValues)
+            .isEqualTo(13_140L);
+    }
+
+    @Test
     void part1() {
-        final List<AssemblyInstruction> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<AssemblyInstruction> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(AssemblyInstruction::parse)
             .toList();
@@ -45,7 +58,7 @@ class Day10Test {
 
     @Test
     void part2() {
-        final List<AssemblyInstruction> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<AssemblyInstruction> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(AssemblyInstruction::parse)
             .toList();

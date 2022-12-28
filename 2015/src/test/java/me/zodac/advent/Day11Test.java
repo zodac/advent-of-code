@@ -26,8 +26,16 @@ import org.junit.jupiter.api.Test;
  */
 class Day11Test {
 
+    private static final String EXAMPLE_INPUT = "abcdefgh";
     private static final String PUZZLE_INPUT_PART_1 = "hxbxwxba";
     private static final String PUZZLE_INPUT_PART_2 = "hxbxxyzz";
+
+    @Test
+    void example() {
+        final String newPassword = Day11.findNextValidPassword(EXAMPLE_INPUT);
+        assertThat(newPassword)
+            .isEqualTo("abcdffaa");
+    }
 
     @Test
     void part1() {

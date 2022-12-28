@@ -20,8 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Signal;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,8 +33,24 @@ class Day08Test {
     private static final String INPUT_FILENAME = "day08.txt";
 
     @Test
+    void example() {
+        final List<Signal> signals = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Signal::create)
+            .toList();
+
+        final long numberOfUniqueOutputSignals = Day08.identifyUniqueOutputValues(signals);
+        assertThat(numberOfUniqueOutputSignals)
+            .isEqualTo(26L);
+
+        final long sumOfDecodedOutputs = Day08.sumOfDecodedOutputs(signals);
+        assertThat(sumOfDecodedOutputs)
+            .isEqualTo(61_229L);
+    }
+
+    @Test
     void part1() {
-        final List<Signal> signals = FileUtils.readLines(INPUT_FILENAME)
+        final List<Signal> signals = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Signal::create)
             .toList();
@@ -45,7 +62,7 @@ class Day08Test {
 
     @Test
     void part2() {
-        final List<Signal> signals = FileUtils.readLines(INPUT_FILENAME)
+        final List<Signal> signals = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Signal::create)
             .toList();

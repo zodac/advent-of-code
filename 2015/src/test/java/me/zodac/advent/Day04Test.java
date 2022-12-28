@@ -27,7 +27,19 @@ import org.junit.jupiter.api.Test;
  */
 class Day04Test {
 
+    private static final String EXAMPLE_INPUT = "abcdef";
     private static final String PUZZLE_INPUT = "yzbqklnj";
+
+    @Test
+    void example() throws NoSuchAlgorithmException {
+        final long index1 = Day04.iterateHashesToFindPrefix(EXAMPLE_INPUT, "00000");
+        assertThat(index1)
+            .isEqualTo(609_043L);
+
+        final long index2 = Day04.iterateHashesToFindPrefix(EXAMPLE_INPUT, "000000");
+        assertThat(index2)
+            .isEqualTo(6_742_839L);
+    }
 
     @Test
     void part1() throws NoSuchAlgorithmException {

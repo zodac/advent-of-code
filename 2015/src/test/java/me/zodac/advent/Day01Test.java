@@ -20,7 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,8 +32,25 @@ class Day01Test {
     private static final String INPUT_FILENAME = "day01.txt";
 
     @Test
+    void example() {
+        final List<Character> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .flatMapToInt(String::chars)
+            .mapToObj(i -> (char) i)
+            .toList();
+
+        final int floor1 = Day01.findResultFloor(values);
+        assertThat(floor1)
+            .isEqualTo(-1);
+
+        final int floor2 = Day01.findIndexOfSpecificFloor(values, -1);
+        assertThat(floor2)
+            .isEqualTo(5);
+    }
+
+    @Test
     void part1() {
-        final List<Character> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Character> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .flatMapToInt(String::chars)
             .mapToObj(i -> (char) i)
@@ -45,7 +63,7 @@ class Day01Test {
 
     @Test
     void part2() {
-        final List<Character> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Character> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .flatMapToInt(String::chars)
             .mapToObj(i -> (char) i)

@@ -20,9 +20,10 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.json.JsonElement;
 import me.zodac.advent.json.JsonParser;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,8 +34,25 @@ class Day13Test {
     private static final String INPUT_FILENAME = "day13.txt";
 
     @Test
+    void example() {
+        final List<JsonElement> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .filter(s -> !s.isBlank())
+            .map(JsonParser::parse)
+            .toList();
+
+        final long sumOfValidIndices = Day13.calculateSumOfValidIndices(values);
+        assertThat(sumOfValidIndices)
+            .isEqualTo(13L);
+
+        final long productOfDistressSignalIndices = Day13.calculateProductOfDistressSignalIndices(values);
+        assertThat(productOfDistressSignalIndices)
+            .isEqualTo(140L);
+    }
+
+    @Test
     void part1() {
-        final List<JsonElement> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<JsonElement> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .filter(s -> !s.isBlank())
             .map(JsonParser::parse)
@@ -47,7 +65,7 @@ class Day13Test {
 
     @Test
     void part2() {
-        final List<JsonElement> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<JsonElement> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .filter(s -> !s.isBlank())
             .map(JsonParser::parse)

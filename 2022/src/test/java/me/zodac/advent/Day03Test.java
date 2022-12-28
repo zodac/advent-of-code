@@ -20,7 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,20 +32,33 @@ class Day03Test {
     private static final String INPUT_FILENAME = "day03.txt";
 
     @Test
-    void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+    void example() {
+        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long count = Day03.sumCommonCharacterValuesInStringHalves(values);
-        assertThat(count)
+        final long sum1 = Day03.sumCommonCharacterValuesInStringHalves(values);
+        assertThat(sum1)
+            .isEqualTo(157L);
+
+        final long sum2 = Day03.sumCommonCharacterValuesInGroupedStrings(values, 3);
+        assertThat(sum2)
+            .isEqualTo(70L);
+    }
+
+    @Test
+    void part1() {
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+
+        final long sum = Day03.sumCommonCharacterValuesInStringHalves(values);
+        assertThat(sum)
             .isEqualTo(7_824L);
     }
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long count = Day03.sumCommonCharacterValuesInGroupedStrings(values, 3);
-        assertThat(count)
+        final long sum = Day03.sumCommonCharacterValuesInGroupedStrings(values, 3);
+        assertThat(sum)
             .isEqualTo(2_798L);
     }
 }

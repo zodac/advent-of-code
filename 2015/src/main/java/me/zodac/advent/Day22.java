@@ -31,8 +31,6 @@ import me.zodac.advent.search.SearchNode;
  */
 public final class Day22 {
 
-    private static final MagePlayer STARTING_PLAYER = MagePlayer.create(50, 500);
-
     private Day22() {
 
     }
@@ -42,14 +40,15 @@ public final class Day22 {
      * based on available {@link Spell}s and the {@link MagePlayer} mana. Using {@link DijkstraSearcher}'s algorithm, we will attempt to find the
      * shortest path in terms of mana usage that still lead to a victory.
      *
+     * @param player                   the {@link MagePlayer}
      * @param boss                     the {@link MageBoss} to defeat
      * @param healthLossEachPlayerTurn the health the player loses at the start of each turn
      * @return the loest amount of mana that wins the battle
      * @see BattleRound
      * @see DijkstraSearcher
      */
-    public static long findCheapestManaCostToWinBattle(final MageBoss boss, final int healthLossEachPlayerTurn) {
-        final SearchNode searchNode = BattleRound.createFirstRound(STARTING_PLAYER, boss, healthLossEachPlayerTurn);
+    public static long findCheapestManaCostToWinBattle(final MagePlayer player, final MageBoss boss, final int healthLossEachPlayerTurn) {
+        final SearchNode searchNode = BattleRound.createFirstRound(player, boss, healthLossEachPlayerTurn);
         return DijkstraSearcher.findShortestDistance(searchNode);
     }
 }

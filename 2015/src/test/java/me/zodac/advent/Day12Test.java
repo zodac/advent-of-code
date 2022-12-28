@@ -19,7 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,8 +31,21 @@ class Day12Test {
     private static final String INPUT_FILENAME = "day12.txt";
 
     @Test
+    void example() {
+        final String value = ExampleInput.readSingleLine(INPUT_FILENAME);
+
+        final long sum1 = Day12.sumOfAllNumbers(value);
+        assertThat(sum1)
+            .isEqualTo(15L);
+
+        final long sum2 = Day12.sumOfAllNumbersWithNoInvalidLabel(value, "red");
+        assertThat(sum2)
+            .isEqualTo(0L);
+    }
+
+    @Test
     void part1() {
-        final String value = FileUtils.readSingleLine(INPUT_FILENAME);
+        final String value = PuzzleInput.readSingleLine(INPUT_FILENAME);
 
         final long sum = Day12.sumOfAllNumbers(value);
         assertThat(sum)
@@ -40,7 +54,7 @@ class Day12Test {
 
     @Test
     void part2() {
-        final String value = FileUtils.readSingleLine(INPUT_FILENAME);
+        final String value = PuzzleInput.readSingleLine(INPUT_FILENAME);
 
         final long sum = Day12.sumOfAllNumbersWithNoInvalidLabel(value, "red");
         assertThat(sum)

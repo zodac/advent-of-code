@@ -15,48 +15,47 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.util;
+package me.zodac.advent.input;
 
 import static me.zodac.advent.util.CollectionUtils.getFirst;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Utility class with functions for reading {@link String}s from files.
+ * Utility class with functions for reading {@link String}s from input files.
  */
-public final class FileUtils {
+final class FileUtils {
 
     private static final int SINGLE_ENTRY = 1;
-    private static final String NEW_LINE = "\n";
 
     private FileUtils() {
 
     }
 
     /**
-     * Reads all lines from a file in {@code src/main/resources}.
+     * Reads all lines from an input file {@link Path}.
      *
-     * @param filePathInResources file path to be read
+     * @param filePath file {@link Path}
      * @return a {@link List} of the {@link String} lines from the file, or {@link Collections#emptyList()} if an error occurs
      */
-    public static List<String> readLines(final String filePathInResources) {
+    static List<String> readLines(final Path filePath) {
         try {
-            return Files.readAllLines(Paths.get(ClassLoader.getSystemResource(filePathInResources).toURI()));
-        } catch (final IOException | URISyntaxException e) {
+            return Files.readAllLines(filePath);
+        } catch (final IOException e) {
             return Collections.emptyList();
         }
     }
 
     /**
-     * Reads all lines from a file in {@code src/main/resources}, then groups the lines into {@link List}, with the split occurring when the provided
+     * Given a {@link Collection} of {@link String} lines from a file, groups the lines into {@link List}s, where each group occurs when the provided
      * {@link Predicate} is met.
      *
      * <ul>
@@ -65,14 +64,11 @@ public final class FileUtils {
      *     <li>Empty groups are not included in the output</li>
      * </ul>
      *
-     * @param filePathInResources file path to be read
-     * @param predicate           the {@link Predicate} defining where the {@link List} is to be split
+     * @param lines     the input {@link String} lines
+     * @param predicate the {@link Predicate} defining where the {@link List} is to be split
      * @return the group of {@link List}s of {@link String} lines
-     * @see #readLines(String)
      */
-    public static List<List<String>> readLinesAsGroups(final String filePathInResources, final Predicate<? super String> predicate) {
-        final List<String> lines = readLines(filePathInResources);
-
+    static List<List<String>> readLinesAsGroups(final Collection<String> lines, final Predicate<? super String> predicate) {
         if (lines.isEmpty()) {
             return Collections.emptyList();
         }
@@ -99,15 +95,15 @@ public final class FileUtils {
     }
 
     /**
-     * Reads all lines from a file in {@code src/main/resources}, then mapping each {@link String} to an {@link Integer}.
+     * Given a {@link Collection} of {@link String} lines from a file, then mapping each {@link String} to an {@link Integer}.
      *
-     * @param filePathInResources file path to be read
+     * @param lines the input {@link String} lines
      * @return a {@link List} of the {@link Integer}s from the file, or {@link Collections#emptyList()} if an error occurs
      * @throws IllegalArgumentException thrown if any value in the file is not a valid {@link Integer}
      */
-    public static List<Integer> readLinesAsIntegers(final String filePathInResources) {
+    static List<Integer> readLinesAsIntegers(final Collection<String> lines) {
         try {
-            return readLines(filePathInResources)
+            return lines
                 .stream()
                 .map(Integer::parseInt)
                 .toList();
@@ -117,26 +113,13 @@ public final class FileUtils {
     }
 
     /**
-     * Reads all lines from a file in {@code src/main/resources}, then concatenates them into a single {@link String}, with the delimiter as
-     * {@value #NEW_LINE}.
+     * Given a {@link List} of {@link String} lines from a file, expects only a single line to exist, and returns that {@link String}.
      *
-     * @param filePathInResources file path to be read
-     * @return the {@link String} lines from the file
-     * @see #readLines(String)
-     */
-    public static String readLinesAsSingleString(final String filePathInResources) {
-        return String.join(NEW_LINE, readLines(filePathInResources));
-    }
-
-    /**
-     * Reads the only line from a file in {@code src/main/resources}.
-     *
-     * @param filePathInResources file path to be read
+     * @param lines the input {@link String} lines
      * @return the {@link String} line from the file
      * @throws IllegalArgumentException thrown if there is not exactly one line in the file
      */
-    public static String readSingleLine(final String filePathInResources) {
-        final List<String> lines = readLines(filePathInResources);
+    static String readSingleLine(final List<String> lines) {
         if (lines.size() != SINGLE_ENTRY) {
             throw new IllegalArgumentException("Expected a single line, found: " + lines.size());
         }
@@ -145,15 +128,16 @@ public final class FileUtils {
     }
 
     /**
-     * Reads all lines from a file in {@code src/main/resources} where each line is a row of comma-separated {@link Integer}s.
+     * Given a {@link Collection} of {@link String} lines from a file, where each line is a row of comma-separated {@link Integer}s, reads each line
+     * as a {@link List} of {@link Integer}, returning all lines as a {@link List} of {@link List}s.
      *
-     * @param filePathInResources file path to be read
+     * @param lines the input {@link String} lines
      * @return a {@link List} of each line from the file as a {@link List} of {@link Integer}s, or {@link Collections#emptyList()} if an error occurs
      * @throws IllegalArgumentException thrown if any value is not a valid {@link Integer} separated by commas
      */
-    public static List<List<Integer>> readSingleLineOfCommaSeparatedIntegers(final String filePathInResources) {
+    static List<List<Integer>> readSingleLineOfCommaSeparatedIntegers(final Collection<String> lines) {
         try {
-            return readLines(filePathInResources)
+            return lines
                 .stream()
                 .map(input -> Arrays.asList(input.split(",")))
                 .map(listOfStrings -> listOfStrings.stream().mapToInt(Integer::parseInt).boxed().toList())

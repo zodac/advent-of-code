@@ -15,11 +15,14 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.util;
+package me.zodac.advent.input;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -31,7 +34,7 @@ class FileUtilsTest {
 
     @Test
     void whenReadLines_givenValidFileOfStrings_thenListOfStringsIsReturned() {
-        final String input = "validFileOfStrings.txt";
+        final Path input = get("validFileOfStrings.txt");
         final List<String> output = FileUtils.readLines(input);
         assertThat(output)
             .hasSize(3)
@@ -40,7 +43,7 @@ class FileUtilsTest {
 
     @Test
     void whenReadLines_givenEmptyFile_thenEmptyListIsReturned() {
-        final String input = "emptyFile.txt";
+        final Path input = get("emptyFile.txt");
         final List<String> output = FileUtils.readLines(input);
         assertThat(output)
             .isEmpty();
@@ -48,8 +51,10 @@ class FileUtilsTest {
 
     @Test
     void whenReadLinesAndSplit_givenValidFileOfStringsWithDelimiter_thenGroupOfListOfStringsIsReturned() {
-        final String input = "validFileOfStringsWithDelimiter.txt";
-        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
+        final Path input = get("validFileOfStringsWithDelimiter.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<String>> output = FileUtils.readLinesAsGroups(lines, String::isEmpty);
         assertThat(output)
             .containsExactly(
                 List.of("line1", "line2"),
@@ -59,8 +64,10 @@ class FileUtilsTest {
 
     @Test
     void whenReadLinesAndSplit_givenValidFileOfStringsWithDelimiterOnFirstLine_thenGroupOfStringsIsReturned() {
-        final String input = "validFileOfStringsWithDelimiterOnFirstLine.txt";
-        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
+        final Path input = get("validFileOfStringsWithDelimiterOnFirstLine.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<String>> output = FileUtils.readLinesAsGroups(lines, String::isEmpty);
         assertThat(output)
             .containsExactly(
                 List.of("line1", "line2", "line3")
@@ -69,8 +76,10 @@ class FileUtilsTest {
 
     @Test
     void whenReadLinesAndSplit_givenValidFileOfStringsWithCustomDelimiter_thenGroupOfStringsIsReturned() {
-        final String input = "validFileOfStringsWithCustomDelimiter.txt";
-        final List<List<String>> output = FileUtils.readLinesAsGroups(input, s -> s.startsWith("Can"));
+        final Path input = get("validFileOfStringsWithCustomDelimiter.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<String>> output = FileUtils.readLinesAsGroups(lines, s -> s.startsWith("Can"));
         assertThat(output)
             .containsExactly(
                 List.of("line1", "line2"),
@@ -80,8 +89,10 @@ class FileUtilsTest {
 
     @Test
     void whenReadLinesAndSplit_givenValidFileOfStringsWithMultipleDelimiters_thenMultipleGroupsAreReturned() {
-        final String input = "validFileOfStringsWithMultipleDelimiters.txt";
-        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
+        final Path input = get("validFileOfStringsWithMultipleDelimiters.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<String>> output = FileUtils.readLinesAsGroups(lines, String::isEmpty);
         assertThat(output)
             .containsExactly(
                 List.of("line1"),
@@ -92,8 +103,10 @@ class FileUtilsTest {
 
     @Test
     void whenReadLinesAndSplit_givenValidFileOfStringsWithoutDelimiter_thenListWithSingleListOfStringsIsReturned() {
-        final String input = "validFileOfStringsWithoutDelimiter.txt";
-        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
+        final Path input = get("validFileOfStringsWithoutDelimiter.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<String>> output = FileUtils.readLinesAsGroups(lines, String::isEmpty);
         assertThat(output)
             .containsExactly(
                 List.of("line1", "line2", "line3")
@@ -102,16 +115,20 @@ class FileUtilsTest {
 
     @Test
     void whenReadLinesAndSplit_givenEmptyFile_thenEmptyListIsReturned() {
-        final String input = "emptyFile.txt";
-        final List<List<String>> output = FileUtils.readLinesAsGroups(input, String::isEmpty);
+        final Path input = get("emptyFile.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<String>> output = FileUtils.readLinesAsGroups(lines, String::isEmpty);
         assertThat(output)
             .isEmpty();
     }
 
     @Test
     void whenReadLinesAsIntegers_givenValidFileOfIntegers_thenListOfStringsIsReturned() {
-        final String input = "validFileOfIntegers.txt";
-        final List<Integer> output = FileUtils.readLinesAsIntegers(input);
+        final Path input = get("validFileOfIntegers.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<Integer> output = FileUtils.readLinesAsIntegers(lines);
         assertThat(output)
             .hasSize(3)
             .containsExactly(1, 2, 3);
@@ -119,67 +136,60 @@ class FileUtilsTest {
 
     @Test
     void whenReadLinesAsIntegers_givenInvalidFileOfIntegers_thenExceptionIsThrown() {
-        final String input = "validFileOfStrings.txt";
-        assertThatThrownBy(() -> FileUtils.readLinesAsIntegers(input))
+        final Path input = get("validFileOfStrings.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        assertThatThrownBy(() -> FileUtils.readLinesAsIntegers(lines))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("For input string: \"line1\"");
     }
 
     @Test
     void whenReadLinesAsIntegers_givenEmptyFile_thenEmptyListIsReturned() {
-        final String input = "emptyFile.txt";
-        final List<Integer> output = FileUtils.readLinesAsIntegers(input);
-        assertThat(output)
-            .isEmpty();
-    }
+        final Path input = get("emptyFile.txt");
+        final List<String> lines = FileUtils.readLines(input);
 
-    @Test
-    void whenReadLinesAsSingleString_givenValidFileOfStrings_thenListOfStringsIsReturned() {
-        final String input = "validFileOfStrings.txt";
-        final String output = FileUtils.readLinesAsSingleString(input);
-        assertThat(output)
-            .isEqualTo("""
-                line1
-                line2
-                line3""");
-    }
-
-    @Test
-    void whenReadLinesAsSingleString_givenEmptyFile_thenEmptyListIsReturned() {
-        final String input = "emptyFile.txt";
-        final String output = FileUtils.readLinesAsSingleString(input);
+        final List<Integer> output = FileUtils.readLinesAsIntegers(lines);
         assertThat(output)
             .isEmpty();
     }
 
     @Test
     void whenReadSingleLine_givenFileWithSingleString_thenStringIsReturned() {
-        final String input = "validFileOfSingleString.txt";
-        final String output = FileUtils.readSingleLine(input);
+        final Path input = get("validFileOfSingleString.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final String output = FileUtils.readSingleLine(lines);
         assertThat(output)
             .isEqualTo("line1");
     }
 
     @Test
     void whenReadSingleLine_givenFileWithMultipleStrings_thenExceptionIsThrown() {
-        final String input = "validFileOfStrings.txt";
-        assertThatThrownBy(() -> FileUtils.readSingleLine(input))
+        final Path input = get("validFileOfStrings.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        assertThatThrownBy(() -> FileUtils.readSingleLine(lines))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Expected a single line, found: 3");
     }
 
     @Test
     void whenReadSingleLine_givenEmptyFile_thenExceptionIsThrown() {
-        final String input = "emptyFile.txt";
-        assertThatThrownBy(() -> FileUtils.readSingleLine(input))
+        final Path input = get("emptyFile.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        assertThatThrownBy(() -> FileUtils.readSingleLine(lines))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Expected a single line, found: 0");
     }
 
     @Test
     void whenReadSingleLineOfCommaSeparatedIntegers_givenMultipleLinesOfIntegers_thenListOfListOfIntegersIsReturned() {
-        final String input = "validCsvOfIntegers.txt";
-        final List<List<Integer>> output = FileUtils.readSingleLineOfCommaSeparatedIntegers(input);
+        final Path input = get("validCsvOfIntegers.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<Integer>> output = FileUtils.readSingleLineOfCommaSeparatedIntegers(lines);
 
         assertThat(output)
             .hasSize(3)
@@ -197,18 +207,29 @@ class FileUtilsTest {
 
     @Test
     void whenReadSingleLineOfCommaSeparatedIntegers_givenInvalidInteger_thenExceptionIsThrown() {
-        final String input = "invalidCsvOfIntegers.txt";
-        assertThatThrownBy(() -> FileUtils.readSingleLineOfCommaSeparatedIntegers(input))
+        final Path input = get("invalidCsvOfIntegers.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        assertThatThrownBy(() -> FileUtils.readSingleLineOfCommaSeparatedIntegers(lines))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("For input string: \"five\"");
     }
 
     @Test
     void whenReadSingleLineOfCommaSeparatedIntegers_givenEmptyFile_thenEmptyListIsReturned() {
-        final String input = "emptyFile.txt";
-        final List<List<Integer>> output = FileUtils.readSingleLineOfCommaSeparatedIntegers(input);
+        final Path input = get("emptyFile.txt");
+        final List<String> lines = FileUtils.readLines(input);
 
+        final List<List<Integer>> output = FileUtils.readSingleLineOfCommaSeparatedIntegers(lines);
         assertThat(output)
             .isEmpty();
+    }
+
+    private static Path get(final String fileName) {
+        try {
+            return Paths.get(ClassLoader.getSystemResource(fileName).toURI());
+        } catch (final URISyntaxException e) {
+            throw new AssertionError(e);
+        }
     }
 }

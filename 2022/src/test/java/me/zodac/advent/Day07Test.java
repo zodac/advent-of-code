@@ -20,7 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,8 +32,21 @@ class Day07Test {
     private static final String INPUT_FILENAME = "day07.txt";
 
     @Test
+    void example() {
+        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+
+        final long result1 = Day07.totalSizeOfDirectoriesOverThreshold(values);
+        assertThat(result1)
+            .isEqualTo(95_437L);
+
+        final long result2 = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirepments(values);
+        assertThat(result2)
+            .isEqualTo(24_933_642L);
+    }
+
+    @Test
     void part1() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         final long result = Day07.totalSizeOfDirectoriesOverThreshold(values);
         assertThat(result)
@@ -41,7 +55,7 @@ class Day07Test {
 
     @Test
     void part2() {
-        final List<String> values = FileUtils.readLines(INPUT_FILENAME);
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         final long result = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirepments(values);
         assertThat(result)

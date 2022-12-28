@@ -19,7 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,8 +31,21 @@ class Day06Test {
     private static final String INPUT_FILENAME = "day06.txt";
 
     @Test
+    void example() {
+        final String value = ExampleInput.readSingleLine(INPUT_FILENAME);
+
+        final long result1 = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 4);
+        assertThat(result1)
+            .isEqualTo(7L);
+
+        final long result2 = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 14);
+        assertThat(result2)
+            .isEqualTo(19L);
+    }
+
+    @Test
     void part1() {
-        final String value = FileUtils.readSingleLine(INPUT_FILENAME);
+        final String value = PuzzleInput.readSingleLine(INPUT_FILENAME);
 
         final long result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 4);
         assertThat(result)
@@ -40,7 +54,7 @@ class Day06Test {
 
     @Test
     void part2() {
-        final String value = FileUtils.readSingleLine(INPUT_FILENAME);
+        final String value = PuzzleInput.readSingleLine(INPUT_FILENAME);
 
         final long result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 14);
         assertThat(result)

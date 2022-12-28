@@ -21,7 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,8 +33,24 @@ class Day06Test {
     private static final String INPUT_FILENAME = "day06.txt";
 
     @Test
+    void example() {
+        final List<Integer> lanternValues = ExampleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
+            .stream()
+            .flatMap(List::stream)
+            .toList();
+
+        final BigDecimal finalNumberOfLanterns1 = Day06.countLanternFishAfterDays(lanternValues, 80);
+        assertThat(finalNumberOfLanterns1)
+            .isEqualTo(BigDecimal.valueOf(5_934L));
+
+        final BigDecimal finalNumberOfLanterns2 = Day06.countLanternFishAfterDays(lanternValues, 256);
+        assertThat(finalNumberOfLanterns2)
+            .isEqualTo(BigDecimal.valueOf(26_984_457_539L));
+    }
+
+    @Test
     void part1() {
-        final List<Integer> lanternValues = FileUtils.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
+        final List<Integer> lanternValues = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
             .stream()
             .flatMap(List::stream)
             .toList();
@@ -45,7 +62,7 @@ class Day06Test {
 
     @Test
     void part2() {
-        final List<Integer> lanternValues = FileUtils.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
+        final List<Integer> lanternValues = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
             .stream()
             .flatMap(List::stream)
             .toList();

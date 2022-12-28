@@ -20,8 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.shape.Box;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,8 +33,24 @@ class Day02Test {
     private static final String INPUT_FILENAME = "day02.txt";
 
     @Test
+    void example() {
+        final List<Box> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Box::parse)
+            .toList();
+
+        final long totalPaperNeeded = Day02.calculateWrappingPaperNeeded(values);
+        assertThat(totalPaperNeeded)
+            .isEqualTo(101L);
+
+        final long totalRibbonNeeded = Day02.calculateRibbonNeeded(values);
+        assertThat(totalRibbonNeeded)
+            .isEqualTo(48L);
+    }
+
+    @Test
     void part1() {
-        final List<Box> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Box> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Box::parse)
             .toList();
@@ -45,7 +62,7 @@ class Day02Test {
 
     @Test
     void part2() {
-        final List<Box> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Box> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Box::parse)
             .toList();

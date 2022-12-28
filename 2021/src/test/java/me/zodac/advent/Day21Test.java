@@ -19,7 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,8 +31,21 @@ class Day21Test {
     private static final String INPUT_FILENAME = "day21.txt";
 
     @Test
+    void example() {
+        final int[] startPositions = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(input -> input.split(":", 2)[1].trim())
+            .mapToInt(Integer::parseInt)
+            .toArray();
+
+        final long result = Day21.getLosingScoreTimesNumberOfRolls(startPositions, 3, 100, 10, 1_000L);
+        assertThat(result)
+            .isEqualTo(739_785L);
+    }
+
+    @Test
     void part1() {
-        final int[] startPositions = FileUtils.readLines(INPUT_FILENAME)
+        final int[] startPositions = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(input -> input.split(":", 2)[1].trim())
             .mapToInt(Integer::parseInt)

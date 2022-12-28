@@ -26,7 +26,15 @@ import org.junit.jupiter.api.Test;
  */
 class Day10Test {
 
+    private static final String EXAMPLE_INPUT = "1";
     private static final String PUZZLE_INPUT = "1113222113";
+
+    @Test
+    void example() {
+        final long length = Day10.performLookAndSaySequenceAndReturnLength(EXAMPLE_INPUT, 5);
+        assertThat(length)
+            .isEqualTo(6L);
+    }
 
     @Test
     void part1() {

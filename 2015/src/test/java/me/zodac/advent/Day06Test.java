@@ -22,10 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.grid.GridInstruction;
 import me.zodac.advent.pojo.tuple.Triple;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -37,8 +38,24 @@ class Day06Test {
     private static final Pattern INSTRUCTION_AND_POINTS_PATTERN = Pattern.compile("(turn on|turn off|toggle) (\\d+),(\\d+) through (\\d+),(\\d+)");
 
     @Test
+    void example() {
+        final List<Triple<GridInstruction, Point, Point>> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Day06Test::convertToInstructionAndPoints)
+            .toList();
+
+        final long numberOfLitLights = Day06.countSwitchedOnLights(values);
+        assertThat(numberOfLitLights)
+            .isEqualTo(1_000_000L);
+
+        final long brightnessOfLights = Day06.calculateBrightness(values);
+        assertThat(brightnessOfLights)
+            .isEqualTo(2_000_000L);
+    }
+
+    @Test
     void part1() {
-        final List<Triple<GridInstruction, Point, Point>> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Triple<GridInstruction, Point, Point>> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Day06Test::convertToInstructionAndPoints)
             .toList();
@@ -50,7 +67,7 @@ class Day06Test {
 
     @Test
     void part2() {
-        final List<Triple<GridInstruction, Point, Point>> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Triple<GridInstruction, Point, Point>> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Day06Test::convertToInstructionAndPoints)
             .toList();

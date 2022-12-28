@@ -20,7 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,8 +32,21 @@ public class Day01Test {
     private static final String INPUT_FILENAME = "day01.txt";
 
     @Test
+    void example() {
+        final List<Integer> values = ExampleInput.readLinesAsIntegers(INPUT_FILENAME);
+
+        final long sumOfFrequencies = Day01.sumOfFrequencies(values);
+        assertThat(sumOfFrequencies)
+            .isEqualTo(3L);
+
+        final long result = Day01.findFirstFrequencyReachedTwice(values);
+        assertThat(result)
+            .isEqualTo(2L);
+    }
+
+    @Test
     void part1() {
-        final List<Integer> values = FileUtils.readLinesAsIntegers(INPUT_FILENAME);
+        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
 
         final long sumOfFrequencies = Day01.sumOfFrequencies(values);
         assertThat(sumOfFrequencies)
@@ -41,7 +55,7 @@ public class Day01Test {
 
     @Test
     void part2() {
-        final List<Integer> values = FileUtils.readLinesAsIntegers(INPUT_FILENAME);
+        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
 
         final long result = Day01.findFirstFrequencyReachedTwice(values);
         assertThat(result)

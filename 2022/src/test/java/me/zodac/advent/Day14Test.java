@@ -20,8 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,8 +33,24 @@ class Day14Test {
     private static final String INPUT_FILENAME = "day14.txt";
 
     @Test
+    void example() {
+        final List<List<Point>> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .map(Point::ofMany)
+            .toList();
+
+        final long grainsOfSand1 = Day14.countGrainsOfSandBeforeFallingPastTheFloor(values);
+        assertThat(grainsOfSand1)
+            .isEqualTo(24L);
+
+        final long grainsOfSand2 = Day14.countGrainsOfSandBeforeReachingSandSpawnPoint(values);
+        assertThat(grainsOfSand2)
+            .isEqualTo(93L);
+    }
+
+    @Test
     void part1() {
-        final List<List<Point>> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<List<Point>> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Point::ofMany)
             .toList();
@@ -45,7 +62,7 @@ class Day14Test {
 
     @Test
     void part2() {
-        final List<List<Point>> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<List<Point>> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .map(Point::ofMany)
             .toList();

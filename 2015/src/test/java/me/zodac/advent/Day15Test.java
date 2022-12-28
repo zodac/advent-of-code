@@ -20,8 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Ingredient;
-import me.zodac.advent.util.FileUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,28 +33,31 @@ class Day15Test {
     private static final int PART_2_WANTED_CALORIE_COUNT = 500;
 
     @Test
+    void example() {
+        // TODO: Solution won't work for example
+    }
+
+    @Test
     void part1() {
-        final List<Ingredient> values =
-            FileUtils.readLines(INPUT_FILENAME)
+        final List<Ingredient> values = PuzzleInput.readLines(INPUT_FILENAME)
                 .stream()
                 .map(Ingredient::parse)
                 .toList();
 
-        final long furthestDistance = Day15.scoreOfBestIngredients(values);
-        assertThat(furthestDistance)
+        final long score = Day15.scoreOfBestIngredients(values);
+        assertThat(score)
             .isEqualTo(21_367_368L);
     }
 
     @Test
     void part2() {
-        final List<Ingredient> values =
-            FileUtils.readLines(INPUT_FILENAME)
+        final List<Ingredient> values = PuzzleInput.readLines(INPUT_FILENAME)
                 .stream()
                 .map(Ingredient::parse)
                 .toList();
 
-        final long furthestDistance = Day15.scoreOfBestIngredients(values, PART_2_WANTED_CALORIE_COUNT);
-        assertThat(furthestDistance)
+        final long score = Day15.scoreOfBestIngredients(values, PART_2_WANTED_CALORIE_COUNT);
+        assertThat(score)
             .isEqualTo(1_766_400L);
     }
 }

@@ -82,7 +82,7 @@ public final class Day01 {
      * {@code numberOfGroups} value of 2, it would be group 1 and 3 with a value of <b>2,783</b>.
      *
      * @param values         the input calorie values
-     * @param numberOfGroups the number of largest groups to count
+     * @param numberOfGroups the number of the largest groups to count
      * @return the sum of the calories in the largest {@code numberOfGroups} groups (by value, not size)
      */
     public static long valueOfLargestGroupsOfCalories(final Iterable<String> values, final int numberOfGroups) {
@@ -106,6 +106,9 @@ public final class Day01 {
                 currentTotal += Integer.parseInt(value);
             }
         }
+
+        // Don't miss the last group!
+        elves.add(currentTotal);
 
         return elves;
     }

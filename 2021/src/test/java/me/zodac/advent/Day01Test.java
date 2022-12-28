@@ -20,7 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.util.FileUtils;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,8 +33,25 @@ class Day01Test {
     private static final int WINDOW_SIZE = 3;
 
     @Test
+    void example() {
+        final List<Integer> values = ExampleInput.readLines(INPUT_FILENAME)
+            .stream()
+            .mapToInt(Integer::parseInt)
+            .boxed()
+            .toList();
+
+        final int count1 = Day01.countValuesHigherThanPreviousValue(values);
+        assertThat(count1)
+            .isEqualTo(7);
+
+        final int count2 = Day01.countWindowValueHigherThanPreviousValue(WINDOW_SIZE, values);
+        assertThat(count2)
+            .isEqualTo(5);
+    }
+
+    @Test
     void part1() {
-        final List<Integer> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Integer> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .mapToInt(Integer::parseInt)
             .boxed()
@@ -46,7 +64,7 @@ class Day01Test {
 
     @Test
     void part2() {
-        final List<Integer> values = FileUtils.readLines(INPUT_FILENAME)
+        final List<Integer> values = PuzzleInput.readLines(INPUT_FILENAME)
             .stream()
             .mapToInt(Integer::parseInt)
             .boxed()

@@ -26,7 +26,15 @@ import org.junit.jupiter.api.Test;
  */
 class Day20Test {
 
+    private static final int EXAMPLE_INPUT = 70;
     private static final int PUZZLE_INPUT = 36_000_000;
+
+    @Test
+    void example() {
+        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(EXAMPLE_INPUT, 10);
+        assertThat(firstVisitedHouseWithExpectedNumberOfGifts)
+            .isEqualTo(6L);
+    }
 
     @Test
     void part1() {
