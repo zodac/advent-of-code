@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import me.zodac.advent.pojo.Monkey;
+import me.zodac.advent.util.MathUtils;
 
 /**
  * Solution for 2022, Day 11.
@@ -49,16 +50,15 @@ public final class Day11 {
      * @return the product of the {@link Monkey#numberOfInspections()} of the {@value #NUMBER_OF_MONKEYS_TO_CHECK} most active {@link Monkey}s
      */
     public static long productOfActiveMonkeys(final Map<Integer, Monkey> monkeysById, final int rounds) {
-        // We technically want the LCM (the lowest common multiple), but since all divisors are prime numbers we can use their product
-        // TODO: Add LCM method
-        final long productOfAllMonkeyDivisors = monkeysById
+        final List<Integer> monkeyDivisors = monkeysById
             .values()
             .stream()
-            .mapToLong(Monkey::divisorTest)
-            .reduce(1L, (first, second) -> first * second);
+            .map(Monkey::divisorTest)
+            .toList();
+        final long lcmOfAllMonkeyDivisors = MathUtils.lowestCommonMultiple(monkeyDivisors);
 
         for (int i = 0; i < rounds; i++) {
-            throwItemsForRound(monkeysById, productOfAllMonkeyDivisors);
+            throwItemsForRound(monkeysById, lcmOfAllMonkeyDivisors);
         }
 
         return monkeysById

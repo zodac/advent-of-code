@@ -123,6 +123,38 @@ class MathUtilsTest {
     }
 
     @Test
+    void whenGreatestCommonDivisor_givenNumbers_thenGcdIsReturned() {
+        final int[] input = {36, 54, 99};
+        final int output = MathUtils.greatestCommonDivisor(9, input);
+        assertThat(output)
+            .isEqualTo(9);
+    }
+
+    @Test
+    void whenGreatestCommonDivisor_givenSingleNumber_thenInputIsReturned() {
+        final int input = 5;
+        final int output = MathUtils.greatestCommonDivisor(input);
+        assertThat(output)
+            .isEqualTo(input);
+    }
+
+    @Test
+    void whenGreatestCommonDivisor_givenNumbersIncludingZero_thenZeroIsIgnored_andGcdIsReturned() {
+        final int[] input = {36, 0};
+        final int output = MathUtils.greatestCommonDivisor(9, input);
+        assertThat(output)
+            .isEqualTo(9);
+    }
+
+    @Test
+    void whenGreatestCommonDivisor_givenNumbersOnlyZero_thenZeroIsReturned() {
+        final int[] input = {0, 0};
+        final int output = MathUtils.greatestCommonDivisor(0, input);
+        assertThat(output)
+            .isEqualTo(0);
+    }
+
+    @Test
     void whenIsBetween_givenInputBetweenRange_thenTrueIsReturned() {
         final int input = 3;
         final boolean output = MathUtils.isBetween(1, 5, input);
@@ -251,37 +283,42 @@ class MathUtilsTest {
 
     @Test
     void whenLowestCommonMultiple_givenThreeNumbers_thenLcmIsReturned() {
-        final int first = 1;
-        final int[] input = {2, 3};
-        final long output = MathUtils.lowestCommonMultiple(first, input);
+        final List<Integer> input = List.of(6, 9, 18, 15, 27, 54);
+        final int output = MathUtils.lowestCommonMultiple(input);
         assertThat(output)
-            .isEqualTo(6);
+            .isEqualTo(270);
     }
 
     @Test
     void whenLowestCommonMultiple_givenZeroAsAnInput_thenZeroIsReturned() {
-        final int first = 1;
-        final int[] input = {0, 3};
-        final long output = MathUtils.lowestCommonMultiple(first, input);
+        final List<Integer> input = List.of(1, 0, 3);
+        final int output = MathUtils.lowestCommonMultiple(input);
         assertThat(output)
             .isZero();
     }
 
     @Test
     void whenLowestCommonMultiple_givenSingleNumberAsInput_thenInputIsReturned() {
-        final int first = 1;
-        final long output = MathUtils.lowestCommonMultiple(first);
+        final List<Integer> input = List.of(1);
+        final int output = MathUtils.lowestCommonMultiple(input);
         assertThat(output)
-            .isEqualTo(first);
+            .isEqualTo(1);
     }
 
     @Test
     void whenLowestCommonMultiple_givenPrimeNumbers_thenOutputIsSameAsProductOfInputs() {
-        final int first = 7;
-        final int[] input = {13, 29};
-        final long output = MathUtils.lowestCommonMultiple(first, input);
+        final List<Integer> input = List.of(7, 13, 29);
+        final int output = MathUtils.lowestCommonMultiple(input);
         assertThat(output)
             .isEqualTo((7 * 13 * 29));
+    }
+
+    @Test
+    void whenLowestCommonMultiple_givenEmptyInput_thenExceptionIsThrown() {
+        final List<Integer> input = List.of();
+        assertThatThrownBy(() -> MathUtils.lowestCommonMultiple(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Input cannot be empty");
     }
 
     @Test

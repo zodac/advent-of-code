@@ -161,6 +161,10 @@ public final class Monkey {
         if (isWorried) {
             newItemValue = newItemValue / DIVISOR_WHEN_WORRIED;
         } else {
+            // The numbers can get very large depending on the operation being applied
+            // Since our tests only care about the remainder of the item value after dividing, we don't actually need the full value
+            // Instead, we can mod each value by the LCM of all possible divisors
+            // This was the number size remains manageable, while we can continue testing against the divisors
             newItemValue = newItemValue % lowestCommonMultiple;
         }
         return newItemValue;

@@ -33,9 +33,9 @@ class Day15Test {
     private static final String INPUT_FILENAME = "day15.txt";
     private static final int PART_2_WANTED_CALORIE_COUNT = 500;
 
-    @Disabled("TODO: Solution only works with 4 inputs, will fail with 2 from the example")
+    @Disabled("Solution only works with 4 inputs, will fail with 2 from the example")
     void example() {
-
+        // TODO
     }
 
     @Test

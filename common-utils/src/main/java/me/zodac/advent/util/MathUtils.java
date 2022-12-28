@@ -92,6 +92,27 @@ public final class MathUtils {
     }
 
     /**
+     * Calculates the Greatest Common Divisor (also known as the Highest Common Factor) of the provided {@code int}s.
+     *
+     * @param first  the first {@code int}, so at least one value is provided
+     * @param others the {@code int}s to check
+     * @return the GCD of the provided {@code int}s
+     * @see <a href="https://en.wikipedia.org/wiki/Greatest_common_divisor">Greatest Common Divisor</a>
+     */
+    public static int greatestCommonDivisor(final int first, final int... others) {
+        int gcd = first;
+        for (final int input : others) {
+            gcd = gcd(gcd, input);
+        }
+
+        return gcd;
+    }
+
+    private static int gcd(final int x, final int y) {
+        return (y == 0) ? x : gcd(y, x % y);
+    }
+
+    /**
      * Checks if the given {@link Integer} is between two other {@link Integer}s.
      *
      * @param start the start of the {@link Integer} range
@@ -130,38 +151,33 @@ public final class MathUtils {
     }
 
     /**
-     * Calculates the Lower Common Multiple for the provided values.
+     * Calculates the Lowest Common Multiple (also known as Least Common Multiple) of the provided {@link Integer}s.
      *
-     * @param first  the first {@code int}, so at least one value is provided
-     * @param others the {@code int}s to check
-     * @return the lowest common multiple
+     * @param inputs the {@link Integer}s to check
+     * @return the LCM of the provided {@link Integer}s
+     * @throws IllegalArgumentException thrown if the input {@link Collection#isEmpty()}
      * @see <a href="https://en.wikipedia.org/wiki/Least_common_multiple">Lower Common Multiple</a>
      */
-    public static long lowestCommonMultiple(final int first, final int... others) {
-        long lcm = first;
+    public static int lowestCommonMultiple(final Collection<Integer> inputs) {
+        if (inputs.isEmpty()) {
+            throw new IllegalArgumentException("Input cannot be empty");
+        }
 
-        for (final int other : others) {
-            lcm = calculateLowestCommonMultiple(lcm, other);
+        int lcm = 1;
+        for (final int input : inputs) {
+            lcm = lcm(lcm, input);
         }
 
         return lcm;
     }
 
-    private static long calculateLowestCommonMultiple(final long first, final int second) {
-        if (first == 0 || second == 0) {
+    private static int lcm(final int number1, final int number2) {
+        if (number1 == 0 || number2 == 0) {
             return 0;
         }
 
-        final long absNumber1 = Math.abs(first);
-        final int absNumber2 = Math.abs(second);
-        final long absHigherNumber = Math.max(absNumber1, absNumber2);
-        final long absLowerNumber = Math.min(absNumber1, absNumber2);
-
-        long lcm = absHigherNumber;
-        while (lcm % absLowerNumber != 0) {
-            lcm += absHigherNumber;
-        }
-        return lcm;
+        final int gcd = greatestCommonDivisor(number1, number2);
+        return Math.abs(number1 * number2) / gcd;
     }
 
     /**

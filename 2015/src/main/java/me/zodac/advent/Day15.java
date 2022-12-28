@@ -125,14 +125,14 @@ public final class Day15 {
     }
 
     private static Long calculateScore(final Collection<Ingredient> ingredients, final int wantedCalorieCount, final List<Integer> amounts) {
+        if (isCaloriesInvalid(ingredients, wantedCalorieCount, amounts)) {
+            return 0L;
+        }
+
         final long totalCapacity = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::capacity));
         final long totalDurability = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::durability));
         final long totalFlavour = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::flavour));
         final long totalTexture = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::texture));
-
-        if (isCaloriesInvalid(ingredients, wantedCalorieCount, amounts)) {
-            return 0L;
-        }
 
         if (MathUtils.areAnyLessThan(0L, totalCapacity, totalDurability, totalFlavour, totalTexture)) {
             return 0L;
