@@ -2,12 +2,18 @@ name: Java CI
 
 on: [ push ]
 
+env:
+  SUBMODULE_ACCESS: ${{ secrets.SUBMODULE_ACCESS }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+      - name: Checkout submodule
+        run: |
+          git submodule add https://x-access-token:${{ env.SUBMODULE_ACCESS }}@github.com/zodac/advent-of-code.git advent-of-code-inputs
       - name: Set up JDK 19
         uses: actions/setup-java@v2
         with:
