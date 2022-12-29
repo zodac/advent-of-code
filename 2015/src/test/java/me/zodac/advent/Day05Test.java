@@ -33,9 +33,7 @@ class Day05Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .toList();
+        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
         final long numberOfValidStrings1 = Day05.countValidStringsPartOne(values);
         assertThat(numberOfValidStrings1)
@@ -48,9 +46,7 @@ class Day05Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .toList();
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         final long numberOfValidStrings = Day05.countValidStringsPartOne(values);
         assertThat(numberOfValidStrings)
@@ -59,9 +55,7 @@ class Day05Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .toList();
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         final long numberOfValidStrings = Day05.countValidStringsPartTwo(values);
         assertThat(numberOfValidStrings)

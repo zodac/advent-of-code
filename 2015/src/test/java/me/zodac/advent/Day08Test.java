@@ -33,9 +33,7 @@ class Day08Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .toList();
+        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
         final long diff1 = Day08.calculateDiffOfLiteralAndInMemoryLength(values);
         assertThat(diff1)
@@ -48,9 +46,7 @@ class Day08Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .toList();
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         final long diff = Day08.calculateDiffOfLiteralAndInMemoryLength(values);
         assertThat(diff)
@@ -59,9 +55,7 @@ class Day08Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .toList();
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         final long diff = Day08.calculateDiffOfEscapedAndLiteralLength(values);
         assertThat(diff)

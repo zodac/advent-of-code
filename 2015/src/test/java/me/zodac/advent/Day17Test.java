@@ -35,10 +35,7 @@ class Day17Test {
 
     @Test
     void example() {
-        final List<Integer> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Integer::parseInt)
-            .toList();
+        final List<Integer> values = ExampleInput.readLinesAsIntegers(INPUT_FILENAME);
 
         final long numberOfCombinations1 = Day17.numberOfCombinationsMatchingWantedValue(values, EXAMPLE_WANTED_VALUE);
         assertThat(numberOfCombinations1)
@@ -51,10 +48,7 @@ class Day17Test {
 
     @Test
     void part1() {
-        final List<Integer> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Integer::parseInt)
-            .toList();
+        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
 
         final long numberOfCombinations = Day17.numberOfCombinationsMatchingWantedValue(values, PUZZLE_WANTED_VALUE);
         assertThat(numberOfCombinations)
@@ -63,10 +57,7 @@ class Day17Test {
 
     @Test
     void part2() {
-        final List<Integer> values = PuzzleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Integer::parseInt)
-                .toList();
+        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
 
         final long numberOfCombinations = Day17.numberOfSmallestSizeCombinationsMatchingWantedValue(values, PUZZLE_WANTED_VALUE);
         assertThat(numberOfCombinations)

@@ -34,11 +34,7 @@ class Day01Test {
 
     @Test
     void example() {
-        final List<Integer> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .mapToInt(Integer::parseInt)
-            .boxed()
-            .toList();
+        final List<Integer> values = ExampleInput.readLinesAsIntegers(INPUT_FILENAME);
 
         final int count1 = Day01.countValuesHigherThanPreviousValue(values);
         assertThat(count1)
@@ -51,11 +47,7 @@ class Day01Test {
 
     @Test
     void part1() {
-        final List<Integer> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .mapToInt(Integer::parseInt)
-            .boxed()
-            .toList();
+        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
 
         final int count = Day01.countValuesHigherThanPreviousValue(values);
         assertThat(count)
@@ -64,11 +56,7 @@ class Day01Test {
 
     @Test
     void part2() {
-        final List<Integer> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .mapToInt(Integer::parseInt)
-            .boxed()
-            .toList();
+        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
 
         final int count = Day01.countWindowValueHigherThanPreviousValue(WINDOW_SIZE, values);
         assertThat(count)

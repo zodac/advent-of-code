@@ -35,9 +35,7 @@ class Day19Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .toList();
+        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
         // Ignore 2 last lines with molecule and blank line
         final List<Replacement<String>> replacements = values.subList(0, values.size() - 2)
@@ -54,9 +52,7 @@ class Day19Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .toList();
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         // Ignore 2 last lines with molecule and blank line
         final List<Replacement<String>> replacements = values.subList(0, values.size() - 2)
@@ -73,9 +69,7 @@ class Day19Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .toList();
+        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
         // Ignore 2 last lines with molecule and blank line
         final List<Replacement<String>> replacements = values.subList(0, values.size() - 2)
