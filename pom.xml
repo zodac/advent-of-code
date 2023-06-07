@@ -40,33 +40,33 @@
         <maven.test.skip>${skip-tests}</maven.test.skip>
 
         <!-- Test 3PP Versions -->
-        <assertj-core.version>3.23.1</assertj-core.version>
-        <junit.version>5.9.1</junit.version>
+        <assertj-core.version>3.24.2</assertj-core.version>
+        <junit-bom.version>5.10.0-M1</junit-bom.version>
 
         <!-- Plugin Versions -->
-        <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
+        <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
         <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <maven-install-plugin.version>3.0.1</maven-install-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-        <versions-maven-plugin.version>2.13.0</versions-maven-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
 
         <!-- Linter 3PP Versions -->
-        <checkstyle.version>10.4</checkstyle.version>
-        <errorprone.version>2.16</errorprone.version>
+        <checkstyle.version>10.12.0</checkstyle.version>
+        <errorprone.version>2.19.1</errorprone.version>
         <licenses.version>1</licenses.version>
-        <pitest-junit5-plugin.version>1.1.0</pitest-junit5-plugin.version>
-        <pmd.version>6.52.0</pmd.version>
+        <pitest-junit5-plugin.version>1.2.0</pitest-junit5-plugin.version>
+        <pmd.version>6.55.0</pmd.version>
         <spotbugs.version>4.7.3</spotbugs.version>
 
         <!-- Linter Plugin Versions -->
-        <license-maven-plugin.version>4.2.rc3</license-maven-plugin.version>
-        <maven-checkstyle-plugin.version>3.2.0</maven-checkstyle-plugin.version>
-        <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
-        <maven-pmd-plugin.version>3.19.0</maven-pmd-plugin.version>
-        <pitest-maven.version>1.9.9</pitest-maven.version>
-        <spotbugs-maven-plugin.version>4.7.2.2</spotbugs-maven-plugin.version>
+        <license-maven-plugin.version>4.2</license-maven-plugin.version>
+        <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <maven-pmd-plugin.version>3.21.0</maven-pmd-plugin.version>
+        <pitest-maven.version>1.14.1</pitest-maven.version>
+        <spotbugs-maven-plugin.version>4.7.3.4</spotbugs-maven-plugin.version>
 
         <!-- Linter Properties -->
         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
@@ -92,7 +92,7 @@
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
-                <version>${junit.version}</version>
+                <version>${junit-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -205,14 +205,18 @@
                     <artifactId>license-maven-plugin</artifactId>
                     <version>${license-maven-plugin.version}</version>
                     <configuration>
-                        <header>${license-file}</header>
-                        <headerDefinitions>
-                            <headerDefinition>${license-header-definition-file}</headerDefinition>
-                        </headerDefinitions>
-                        <includes>
-                            <include>src/main/java/**</include>
-                            <include>src/test/java/**</include>
-                        </includes>
+                        <licenseSets>
+                            <licenseSet>
+                                <header>${license-file}</header>
+                                <headerDefinitions>
+                                    <headerDefinition>${license-header-definition-file}</headerDefinition>
+                                </headerDefinitions>
+                                <includes>
+                                    <include>src/main/java/**</include>
+                                    <include>src/test/java/**</include>
+                                </includes>
+                            </licenseSet>
+                        </licenseSets>
                         <mapping>
                             <java>JavaPackage</java>
                         </mapping>
