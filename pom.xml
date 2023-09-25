@@ -21,7 +21,7 @@
     <properties>
         <!-- Project Properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java-release>19</java-release>
+        <java-release>21</java-release>
 
         <!-- License Properties -->
         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
@@ -41,20 +41,20 @@
 
         <!-- Test 3PP Versions -->
         <assertj-core.version>3.24.2</assertj-core.version>
-        <junit-bom.version>5.10.0-M1</junit-bom.version>
+        <junit-bom.version>5.10.0</junit-bom.version>
 
         <!-- Plugin Versions -->
         <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
-        <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
+        <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
-        <versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.16.1</versions-maven-plugin.version>
 
         <!-- Linter 3PP Versions -->
-        <checkstyle.version>10.12.0</checkstyle.version>
-        <errorprone.version>2.19.1</errorprone.version>
+        <checkstyle.version>10.12.3</checkstyle.version>
+        <error_prone_core.version>2.22.0</error_prone_core.version>
         <licenses.version>1</licenses.version>
         <pitest-junit5-plugin.version>1.2.0</pitest-junit5-plugin.version>
         <pmd.version>6.55.0</pmd.version>
@@ -63,10 +63,10 @@
         <!-- Linter Plugin Versions -->
         <license-maven-plugin.version>4.2</license-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
-        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.6.0</maven-javadoc-plugin.version>
         <maven-pmd-plugin.version>3.21.0</maven-pmd-plugin.version>
-        <pitest-maven.version>1.14.1</pitest-maven.version>
-        <spotbugs-maven-plugin.version>4.7.3.4</spotbugs-maven-plugin.version>
+        <pitest-maven.version>1.15.0</pitest-maven.version>
+        <spotbugs-maven-plugin.version>4.7.3.6</spotbugs-maven-plugin.version>
 
         <!-- Linter Properties -->
         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
@@ -136,13 +136,14 @@
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
                         <release>${java-release}</release>
+                        <showWarnings>false</showWarnings>
 
                         <!-- Configuration for errorprone compiler checks -->
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>com.google.errorprone</groupId>
                                 <artifactId>error_prone_core</artifactId>
-                                <version>${errorprone.version}</version>
+                                <version>${error_prone_core.version}</version>
                             </path>
                         </annotationProcessorPaths>
                         <fork>true</fork>
