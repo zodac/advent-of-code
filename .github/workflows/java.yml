@@ -15,10 +15,10 @@ jobs:
           repository: zodac/advent-of-code-inputs
           token: ${{ secrets.SUBMODULE_ACCESS }}
           path: advent-of-code-inputs
-      - name: Set up JDK 19
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '19'
+          java-version: '21'
           distribution: 'adopt'
       - name: Cache local .m2
         uses: actions/cache@v3
