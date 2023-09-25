@@ -17,7 +17,6 @@
 
 package me.zodac.advent;
 
-import static me.zodac.advent.util.CollectionUtils.getFirst;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
@@ -40,7 +39,7 @@ class Day04Test {
             .filter(input -> !input.isBlank())
             .toList();
 
-        final List<Integer> bingoNumbers = Arrays.stream(getFirst(bingoInput).split(","))
+        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.getFirst().split(","))
             .mapToInt(Integer::parseInt)
             .boxed()
             .toList();
@@ -64,7 +63,7 @@ class Day04Test {
             .filter(input -> !input.isBlank())
             .toList();
 
-        final List<Integer> bingoNumbers = Arrays.stream(getFirst(bingoInput).split(","))
+        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.getFirst().split(","))
             .mapToInt(Integer::parseInt)
             .boxed()
             .toList();
@@ -84,7 +83,7 @@ class Day04Test {
             .filter(input -> !input.isBlank())
             .toList();
 
-        final List<Integer> bingoNumbers = Arrays.stream(getFirst(bingoInput).split(","))
+        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.getFirst().split(","))
             .mapToInt(Integer::parseInt)
             .boxed()
             .toList();

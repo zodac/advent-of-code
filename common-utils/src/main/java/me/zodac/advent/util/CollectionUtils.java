@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -115,18 +114,6 @@ public final class CollectionUtils {
     }
 
     /**
-     * Returns the first element of the {@link Collection}.
-     *
-     * @param input the {@link Collection}
-     * @param <E>   the type of the {@link Collection}
-     * @return the first element
-     * @throws NoSuchElementException thrown if the input {@link Collection} is empty
-     */
-    public static <E> E getFirst(final Collection<? extends E> input) {
-        return get(input, 0);
-    }
-
-    /**
      * For cases when the value of a {@link Map} might be known, but the key is not. We iterate over all {@link Map.Entry}s and check the value. If it
      * matches the input, then the key for that {@link Map.Entry} is returned.
      *
@@ -144,18 +131,6 @@ public final class CollectionUtils {
         }
 
         return Optional.empty();
-    }
-
-    /**
-     * Returns the last element of the {@link Collection}.
-     *
-     * @param input the {@link Collection}
-     * @param <E>   the type of the {@link Collection}
-     * @return the last element
-     * @throws NoSuchElementException thrown if the input {@link Collection} is empty
-     */
-    public static <E> E getLast(final Collection<? extends E> input) {
-        return get(input, input.size() - 1);
     }
 
     /**
@@ -220,14 +195,5 @@ public final class CollectionUtils {
         groups.add(group);
 
         return groups;
-    }
-
-    private static <E> E get(final Collection<? extends E> input, final int index) {
-        if (input.isEmpty()) {
-            throw new NoSuchElementException();
-        }
-
-        final List<E> temp = new ArrayList<>(input);
-        return temp.get(index);
     }
 }

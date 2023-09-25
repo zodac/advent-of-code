@@ -23,7 +23,6 @@ import java.util.List;
 import me.zodac.advent.input.ExampleInput;
 import me.zodac.advent.input.PuzzleInput;
 import me.zodac.advent.pojo.Replacement;
-import me.zodac.advent.util.CollectionUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -43,7 +42,7 @@ class Day19Test {
             .map(Replacement::parse)
             .toList();
 
-        final String molecule = CollectionUtils.getLast(values);
+        final String molecule = values.getLast();
 
         final long numberOfDistinctMolecules = Day19.numberOfDistinctReplacementMolecules(molecule, replacements);
         assertThat(numberOfDistinctMolecules)
@@ -60,7 +59,7 @@ class Day19Test {
             .map(Replacement::parse)
             .toList();
 
-        final String molecule = CollectionUtils.getLast(values);
+        final String molecule = values.getLast();
 
         final long numberOfDistinctMolecules = Day19.numberOfDistinctReplacementMolecules(molecule, replacements);
         assertThat(numberOfDistinctMolecules)
@@ -77,7 +76,7 @@ class Day19Test {
             .map(Replacement::parse)
             .toList();
 
-        final String molecule = CollectionUtils.getLast(values);
+        final String molecule = values.getLast();
 
         final long numberOfDistinctMolecules = Day19.minimumStepsToCreateOutputFromInput("e", molecule, replacements);
         assertThat(numberOfDistinctMolecules)

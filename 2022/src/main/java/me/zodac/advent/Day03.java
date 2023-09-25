@@ -70,7 +70,7 @@ public final class Day03 {
         for (final String value : values) {
             final Pair<String, String> bisectedString = StringUtils.bisect(value);
             final Set<Character> commonCharacters = StringUtils.commonChars(bisectedString.first(), bisectedString.second());
-            final Character commonCharacter = CollectionUtils.getFirst(commonCharacters); // Assuming only one common char
+            final Character commonCharacter = getFirst(commonCharacters); // Assuming only one common char
             total += VALUES.indexOf(commonCharacter);
         }
 
@@ -111,10 +111,15 @@ public final class Day03 {
         for (final List<String> groupedValue : groupedValues) {
             final List<String> groupAsList = new ArrayList<>(groupedValue);
             final Set<Character> commonCharacters = StringUtils.commonChars(groupAsList.get(0), groupAsList.get(1), groupAsList.get(2));
-            final Character commonCharacter = CollectionUtils.getFirst(commonCharacters); // Assuming only one common char
+            final Character commonCharacter = getFirst(commonCharacters); // Assuming only one common char
             total += VALUES.indexOf(commonCharacter);
         }
 
         return total;
+    }
+
+    private static <E> E getFirst(final Set<E> set) {
+        final List<E> temp = new ArrayList<>(set);
+        return temp.get(0);
     }
 }

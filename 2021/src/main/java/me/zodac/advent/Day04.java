@@ -17,8 +17,6 @@
 
 package me.zodac.advent;
 
-import static me.zodac.advent.util.CollectionUtils.getFirst;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -135,7 +133,7 @@ public final class Day04 {
             return Collections.emptyList();
         }
 
-        final int boardSize = StringUtils.splitOnWhitespace(getFirst(bingoBoardValues)).length;
+        final int boardSize = StringUtils.splitOnWhitespace(bingoBoardValues.getFirst()).length;
         final List<BingoBoard> bingoBoards = new ArrayList<>();
         final int numberOfBoardValues = bingoBoardValues.size();
 

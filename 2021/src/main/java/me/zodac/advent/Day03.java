@@ -17,11 +17,9 @@
 
 package me.zodac.advent;
 
-import static me.zodac.advent.util.CollectionUtils.getFirst;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.SequencedCollection;
 import me.zodac.advent.pojo.BitParityCount;
 import me.zodac.advent.util.BinaryConversionUtils;
 
@@ -72,13 +70,13 @@ public final class Day03 {
      * @see BinaryConversionUtils
      * @see BitParityCount#createForIndexOfBinaryValues(Iterable, int)
      */
-    public static long calculatePowerConsumption(final Collection<String> binaryValues) {
+    public static long calculatePowerConsumption(final SequencedCollection<String> binaryValues) {
         if (binaryValues.isEmpty()) {
             return 0L;
         }
 
         // Input should have 12 digits, but no harm being a bit flexible
-        final int lengthOfBinaryValue = getFirst(binaryValues).length();
+        final int lengthOfBinaryValue = binaryValues.getFirst().length();
 
         final StringBuilder gammaRate = new StringBuilder();
         final StringBuilder epsilonRate = new StringBuilder();
@@ -145,7 +143,7 @@ public final class Day03 {
      * @see BinaryConversionUtils
      * @see BitParityCount#createForIndexOfBinaryValues(Iterable, int)
      */
-    public static long calculateLifeSupportRating(final List<String> binaryValues) {
+    public static long calculateLifeSupportRating(final SequencedCollection<String> binaryValues) {
         if (binaryValues.isEmpty()) {
             return 0L;
         }
@@ -156,16 +154,16 @@ public final class Day03 {
         return oxygenRating * carbonDioxideRating;
     }
 
-    private static long getOxygenRating(final List<String> binaryValues) {
+    private static long getOxygenRating(final SequencedCollection<String> binaryValues) {
         return getRating(binaryValues, true);
     }
 
-    private static long getCarbonDioxideRating(final List<String> binaryValues) {
+    private static long getCarbonDioxideRating(final SequencedCollection<String> binaryValues) {
         return getRating(binaryValues, false);
     }
 
-    private static long getRating(final List<String> binaryValues, final boolean mostCommon) {
-        final int lengthOfBinaryValue = getFirst(binaryValues).length();
+    private static long getRating(final SequencedCollection<String> binaryValues, final boolean mostCommon) {
+        final int lengthOfBinaryValue = binaryValues.getFirst().length();
         List<String> validRatings = new ArrayList<>(binaryValues);
 
         for (int i = 0; i < lengthOfBinaryValue; i++) {
@@ -190,7 +188,7 @@ public final class Day03 {
         if (validRatings.size() != EXPECTED_NUMBER_OF_VALID_RATINGS) {
             throw new IllegalStateException("Expected there to be only 1 valid rating, found: " + validRatings.size());
         }
-        return BinaryConversionUtils.toDecimal(getFirst(validRatings));
+        return BinaryConversionUtils.toDecimal(validRatings.getFirst());
     }
 }
 

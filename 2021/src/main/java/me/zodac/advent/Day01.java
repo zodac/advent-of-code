@@ -17,10 +17,8 @@
 
 package me.zodac.advent;
 
-import static me.zodac.advent.util.CollectionUtils.getFirst;
-
-import java.util.Collection;
 import java.util.List;
+import java.util.SequencedCollection;
 
 /**
  * Solution for 2021, Day 1.
@@ -37,10 +35,10 @@ public final class Day01 {
      * Iterates through the supplied {@code values} and compares each entry to the one before it. If the new value is greater than the previous one,
      * the counter is updated.
      *
-     * @param values the {@link List} of {@link Integer}s to be checked
+     * @param values the {@link SequencedCollection} of {@link Integer}s to be checked
      * @return the count of the values higher than their predecessor
      */
-    public static int countValuesHigherThanPreviousValue(final Collection<Integer> values) {
+    public static int countValuesHigherThanPreviousValue(final SequencedCollection<Integer> values) {
         if (values.isEmpty()) {
             return 0;
         }
@@ -48,7 +46,7 @@ public final class Day01 {
         int count = 0;
 
         // Initialise with first value, rather than assuming the value cannot be negative
-        int currentValue = getFirst(values);
+        int currentValue = values.getFirst();
 
         for (final int nextValue : values) {
             if (nextValue > currentValue) {

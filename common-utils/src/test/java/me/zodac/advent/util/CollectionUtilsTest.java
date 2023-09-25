@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
@@ -120,21 +119,6 @@ class CollectionUtilsTest {
     }
 
     @Test
-    void whenGetFirst_givenCollection_thenFirstElementIsReturned() {
-        final List<String> input = List.of("a", "b", "c");
-        final String output = CollectionUtils.getFirst(input);
-        assertThat(output)
-            .isEqualTo("a");
-    }
-
-    @Test
-    void whenGetFirst_givenEmptyCollection_thenExceptionIsThrown() {
-        final List<String> input = List.of();
-        assertThatThrownBy(() -> CollectionUtils.getFirst(input))
-            .isInstanceOf(NoSuchElementException.class);
-    }
-
-    @Test
     void whenGetKeyByValue_givenValueDoesExist_thenKeyIsReturned() {
         final Map<String, String> inputMap = Map.of(
             "key1", "value1",
@@ -169,21 +153,6 @@ class CollectionUtilsTest {
         final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
         assertThat(output)
             .isEmpty();
-    }
-
-    @Test
-    void whenGetLast_givenCollection_thenLastElementIsReturned() {
-        final List<String> input = List.of("a", "b", "c");
-        final String output = CollectionUtils.getLast(input);
-        assertThat(output)
-            .isEqualTo("c");
-    }
-
-    @Test
-    void whenGetLast_givenEmptyCollection_thenExceptionIsThrown() {
-        final List<String> input = List.of();
-        assertThatThrownBy(() -> CollectionUtils.getLast(input))
-            .isInstanceOf(NoSuchElementException.class);
     }
 
     @Test

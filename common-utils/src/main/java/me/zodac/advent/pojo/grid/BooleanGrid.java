@@ -17,8 +17,6 @@
 
 package me.zodac.advent.pojo.grid;
 
-import static me.zodac.advent.util.CollectionUtils.getFirst;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -70,7 +68,7 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
             throw new IllegalArgumentException("Input cannot be empty");
         }
 
-        final int firstElementSize = getFirst(gridValues).length();
+        final int firstElementSize = gridValues.getFirst().length();
         if (gridValues.size() != firstElementSize) {
             throw new IllegalArgumentException(
                 String.format("Outer size must match inner size, found outer: %s, inner: %s", gridValues.size(), firstElementSize));

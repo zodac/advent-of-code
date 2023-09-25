@@ -17,8 +17,6 @@
 
 package me.zodac.advent.input;
 
-import static me.zodac.advent.util.CollectionUtils.getFirst;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -124,7 +122,7 @@ final class FileUtils {
             throw new IllegalArgumentException("Expected a single line, found: " + lines.size());
         }
 
-        return getFirst(lines);
+        return lines.getFirst();
     }
 
     /**

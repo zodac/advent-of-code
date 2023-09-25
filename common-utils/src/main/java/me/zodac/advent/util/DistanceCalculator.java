@@ -17,8 +17,6 @@
 
 package me.zodac.advent.util;
 
-import static me.zodac.advent.util.CollectionUtils.getFirst;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -134,7 +132,7 @@ public final class DistanceCalculator {
      * @return the distance of the shortest path
      */
     public int distanceOfShortestPath() {
-        int minimumDistance = calculateDistance(getFirst(permutations));
+        int minimumDistance = calculateDistance(permutations.getFirst());
 
         // First entry is used as 'baseline' distance, compare remaining entries in the subList to this value
         for (final List<String> permutation : permutations.subList(1, permutations.size())) {
@@ -151,14 +149,14 @@ public final class DistanceCalculator {
      * @return the distance of the longest path
      */
     public int distanceOfLongestPath() {
-        int maximumDistance = calculateDistance(getFirst(permutations));
+        int maximumDistance = calculateDistance(permutations.getFirst());
 
         // First entry is used as 'baseline' distance, compare remaining entries in the subList to this value
         for (final List<String> permutation : permutations.subList(1, permutations.size())) {
             final List<String> newPermutation = new ArrayList<>(permutation);
 
             if (isEnabled(Option.LOOPS_TO_START)) {
-                newPermutation.add(getFirst(permutation));
+                newPermutation.add(permutation.getFirst());
             }
 
             final int distanceOfPath = calculateDistance(newPermutation);
