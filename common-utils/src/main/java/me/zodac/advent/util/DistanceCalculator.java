@@ -61,7 +61,7 @@ public final class DistanceCalculator {
         LOOPS_TO_START,
 
         /**
-         * The distance from a -> b != b -> a, so we cannot simply find the reverse direction when calculating distance.
+         * The distance from (a -> b) != (b -> a), so we cannot simply find the reverse direction when calculating distance.
          */
         UNI_DIRECTIONAL_DISTANCES
     }

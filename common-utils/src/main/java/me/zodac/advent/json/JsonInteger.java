@@ -21,28 +21,24 @@ import me.zodac.advent.util.StringUtils;
 
 /**
  * Implementation of {@link JsonElement} defining a single {@code int} value.
+ *
+ * @param value the input {@link String}
  */
-public final class JsonInteger implements JsonElement {
-
-    private final int value;
-
-    private JsonInteger(final int value) {
-        this.value = value;
-    }
+public record JsonInteger(int value) implements JsonElement {
 
     /**
      * Parses the input {@link String} as an {@code int} and creates a {@link JsonInteger}.
      *
-     * @param input the input {@link String}
+     * @param value the input {@link String}
      * @return the created {@link JsonInteger}
      * @throws IllegalArgumentException thrown if the input {@link String} cannot be parses as an {@code int}
      */
-    public static JsonInteger create(final String input) {
-        if (!StringUtils.isInteger(input)) {
-            throw new IllegalArgumentException(String.format("Cannot parse input '%s' as %s", input, JsonInteger.class.getSimpleName()));
+    public static JsonInteger create(final String value) {
+        if (!StringUtils.isInteger(value)) {
+            throw new IllegalArgumentException(String.format("Cannot parse input '%s' as %s", value, JsonInteger.class.getSimpleName()));
         }
 
-        return new JsonInteger(Integer.parseInt(input));
+        return new JsonInteger(Integer.parseInt(value));
     }
 
     @Override
@@ -57,23 +53,5 @@ public final class JsonInteger implements JsonElement {
         }
 
         throw new IllegalArgumentException(String.format("Cannot compare %s to %s", JsonInteger.class.getSimpleName(), o.getClass().getSimpleName()));
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof JsonInteger other)) {
-            return false;
-        }
-
-        return value == other.value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value;
     }
 }

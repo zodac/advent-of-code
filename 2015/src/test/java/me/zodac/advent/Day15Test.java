@@ -35,7 +35,7 @@ class Day15Test {
 
     @Disabled("Solution only works with 4 inputs, will fail with 2 from the example")
     void example() {
-        // TODO
+        // TODO: Build this some day
     }
 
     @Test

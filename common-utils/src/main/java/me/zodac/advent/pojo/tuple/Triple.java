@@ -23,11 +23,11 @@ package me.zodac.advent.pojo.tuple;
  * @param first  the first object
  * @param second the second object
  * @param third  the third object
- * @param <E1>   type of first value
- * @param <E2>   type of second value
- * @param <E3>   type of second value
+ * @param <A>    type of first value
+ * @param <B>    type of second value
+ * @param <C>    type of second value
  */
-public record Triple<E1, E2, E3>(E1 first, E2 second, E3 third) {
+public record Triple<A, B, C>(A first, B second, C third) {
 
     /**
      * Create a {@link Triple} with three values.
@@ -35,12 +35,12 @@ public record Triple<E1, E2, E3>(E1 first, E2 second, E3 third) {
      * @param first  the first value
      * @param second the second value
      * @param third  the third value
-     * @param <E1>   type of first value
-     * @param <E2>   type of second value
-     * @param <E3>   type of third value
+     * @param <A>    type of first value
+     * @param <B>    type of second value
+     * @param <C>    type of third value
      * @return the created {@link Triple}
      */
-    public static <E1, E2, E3> Triple<E1, E2, E3> of(final E1 first, final E2 second, final E3 third) {
+    public static <A, B, C> Triple<A, B, C> of(final A first, final B second, final C third) {
         return new Triple<>(first, second, third);
     }
 }

@@ -19,6 +19,7 @@ package me.zodac.advent.search;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -58,7 +59,7 @@ public final class BreadthFirstSearcher {
         final Map<Point, Long> distanceByNeighbourNode = new HashMap<>();
         distanceByNeighbourNode.put(startPoint, START_NODE_DISTANCE);
 
-        final LinkedList<Point> neighbourNodes = new LinkedList<>();
+        final Deque<Point> neighbourNodes = new LinkedList<>();
         neighbourNodes.add(startPoint);
 
         final Map<Point, Point> neighbourNodeByParentNode = new HashMap<>();

@@ -257,11 +257,12 @@ public final class ArrayUtils {
         }
 
         final boolean[][] array = deepCopy(input);
-        for (int i = 0; i < array.length; i++) {
+        for (final boolean[] innerArray : array) {
             for (int j = 0; j < array[0].length; j++) {
-                array[i][j] = value;
+                innerArray[j] = value;
             }
         }
+
         return array;
     }
 

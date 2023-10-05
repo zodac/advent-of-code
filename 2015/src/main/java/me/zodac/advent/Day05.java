@@ -53,15 +53,9 @@ public final class Day05 {
     }
 
     private static boolean isValidForPartOne(final String input) {
-        if (StringUtils.containsAny(input, INVALID_SUBSTRINGS)) {
-            return false;
-        }
-
-        if (StringUtils.countVowels(input) < MINIMUM_NUMBER_OF_VOWELS_REQUIRED) {
-            return false;
-        }
-
-        return StringUtils.hasRepeatedCharacterInOrder(input);
+        return !StringUtils.containsAny(input, INVALID_SUBSTRINGS)
+            && StringUtils.countVowels(input) >= MINIMUM_NUMBER_OF_VOWELS_REQUIRED
+            && StringUtils.hasRepeatedCharacterInOrder(input);
     }
 
     /**

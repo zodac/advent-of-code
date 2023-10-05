@@ -347,8 +347,7 @@ public final class StringUtils {
                 count++;
             }
 
-            output.append(count);
-            output.append(c);
+            output.append(count).append(c);
         }
         return output.toString();
     }
@@ -430,7 +429,7 @@ public final class StringUtils {
     public static String sort(final String input) {
         final char[] chars = input.toCharArray();
         Arrays.sort(chars);
-        return new String(chars);
+        return String.copyValueOf(chars);
     }
 
     /**

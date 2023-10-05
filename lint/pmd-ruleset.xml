@@ -50,6 +50,7 @@
         <exclude name="ShortMethodName"/>
         <exclude name="ShortVariable"/>
         <exclude name="TooManyStaticImports"/>
+        <exclude name="UnnecessaryCast"/>
         <exclude name="UselessParentheses"/>
     </rule>
     <!-- I don't want to stick to the convention for unit tests, reasonable for production methods though -->

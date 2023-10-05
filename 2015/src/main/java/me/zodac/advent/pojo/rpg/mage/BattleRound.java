@@ -132,7 +132,7 @@ public final class BattleRound implements SearchNode {
                     continue;
                 }
 
-                if (activeSpells.stream().anyMatch(activeSpell -> activeSpell.spell() == spell)) {
+                if (activeSpells.stream().anyMatch(activeSpell -> spell.equals(activeSpell.spell()))) {
                     continue;
                 }
 

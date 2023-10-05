@@ -17,21 +17,14 @@
 
 package me.zodac.advent.json;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Implementation of {@link JsonElement} defining a {@link List} of {@link JsonElement}s.
+ *
+ * @param elements the {@link JsonElement}s
  */
-public final class JsonList implements JsonElement {
-
-    private final List<JsonElement> elements;
-
-    private JsonList(final Collection<JsonElement> elements) {
-        this.elements = new ArrayList<>(elements);
-    }
+public record JsonList(List<JsonElement> elements) implements JsonElement {
 
     /**
      * Creates a {@link JsonList} from the provided {@link JsonElement}s.
@@ -55,7 +48,7 @@ public final class JsonList implements JsonElement {
 
     @Override
     public int compareTo(final JsonElement o) {
-        if (o instanceof JsonList other) {
+        if (o instanceof final JsonList other) {
             final int thisSize = elements.size();
             final int otherSize = other.elements.size();
             final int maxSize = Math.max(thisSize, otherSize);
@@ -84,23 +77,5 @@ public final class JsonList implements JsonElement {
         }
 
         throw new IllegalArgumentException(String.format("Cannot compare %s to %s", JsonList.class.getSimpleName(), o.getClass().getSimpleName()));
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!(obj instanceof JsonList other)) {
-            return false;
-        }
-
-        return Objects.equals(elements, other.elements);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(elements);
     }
 }

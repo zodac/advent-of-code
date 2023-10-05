@@ -92,7 +92,7 @@ public sealed class Equipment permits Armour, Ring, Weapon {
             return true;
         }
 
-        if (!(obj instanceof Equipment equipment)) {
+        if (!(obj instanceof final Equipment equipment)) {
             return false;
         }
 
