@@ -915,6 +915,87 @@ class StringUtilsTest {
     }
 
     @Test
+    void whenRemoveDifferentCharacters_givenEqualInputs_thenInputIsReturnedWithoutChange() {
+        final String first = "abcdef";
+        final String second = "abcdef";
+        final String output = StringUtils.removeDifferentCharacters(first, second);
+        assertThat(output)
+            .isEqualTo(first);
+    }
+
+    @Test
+    void whenRemoveDifferentCharacters_givenInputsWithSingleDifferent_thenOnlyCommonCharactersAreReturned() {
+        final String first = "abcdef";
+        final String second = "abcqef";
+        final String output = StringUtils.removeDifferentCharacters(first, second);
+        assertThat(output)
+            .isEqualTo("abcef");
+    }
+
+    @Test
+    void whenRemoveDifferentCharacters_givenInputsWithNoCommonCharacters_thenEmptyStringIsReturned() {
+        final String first = "abcdef";
+        final String second = "ghijkl";
+        final String output = StringUtils.removeDifferentCharacters(first, second);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveDifferentCharacters_givenInputsOfDifferentLength_thenExceptionIsThrown() {
+        final String first = "abcdef";
+        final String second = "abcdefg";
+        assertThatThrownBy(() -> StringUtils.removeDifferentCharacters(first, second))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Expected inputs of equal length, found abcdef (6) and abcdefg (7)");
+    }
+
+    @Test
+    void whenRemoveDifferentCharacters_givenInputIsEmpty_thenEmptyStringIsReturned() {
+        final String first = "";
+        final String second = "";
+        final String output = StringUtils.removeDifferentCharacters(first, second);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveDifferentCharacters_givenFirstInputIsBlank_thenEmptyStringIsReturned() {
+        final String first = " ";
+        final String second = "a";
+        final String output = StringUtils.removeDifferentCharacters(first, second);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveDifferentCharacters_givenSecondInputIsBlank_thenEmptyStringIsReturned() {
+        final String first = "a";
+        final String second = " ";
+        final String output = StringUtils.removeDifferentCharacters(first, second);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenRemoveDifferentCharacters_givenFirstInputIsNull_thenExceptionIsThrown() {
+        final String first = null;
+        final String second = "abcdef";
+        assertThatThrownBy(() -> StringUtils.removeDifferentCharacters(first, second))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Inputs must not be null");
+    }
+
+    @Test
+    void whenRemoveDifferentCharacters_givenSecondInputIsNull_thenExceptionIsThrown() {
+        final String first = "abcdef";
+        final String second = null;
+        assertThatThrownBy(() -> StringUtils.removeDifferentCharacters(first, second))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Inputs must not be null");
+    }
+
+    @Test
     void whenRemoveLastCharacter_givenString_thenStringIsReturnedWithoutLastCharacter() {
         final String input = "abc";
         final String output = StringUtils.removeLastCharacter(input);

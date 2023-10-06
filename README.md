@@ -4,7 +4,7 @@
 ![](https://img.shields.io/badge/2021%20⭐-19-orange)
 ![](https://img.shields.io/badge/2020%20⭐-0-red)
 ![](https://img.shields.io/badge/2019%20⭐-0-red)
-![](https://img.shields.io/badge/2018%20⭐-2-orange)
+![](https://img.shields.io/badge/2018%20⭐-4-orange)
 ![](https://img.shields.io/badge/2017%20⭐-0-red)
 ![](https://img.shields.io/badge/2016%20⭐-0-red)
 ![](https://img.shields.io/badge/2015%20⭐-50-green)
@@ -176,7 +176,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | Day                                            |   Part 1 |   Part 2 |
 |:-----------------------------------------------|---------:|---------:|
 | [Day 1](https://adventofcode.com/2018/day/1)   | 27,792 ⭐ | 22,808 ⭐ |
-| [Day 2](https://adventofcode.com/2018/day/2)   |          |          |
+| [Day 2](https://adventofcode.com/2018/day/2)   | 66,502 ⭐ | 59,417 ⭐ |
 | [Day 3](https://adventofcode.com/2018/day/3)   |          |          |
 | [Day 4](https://adventofcode.com/2018/day/4)   |          |          |
 | [Day 5](https://adventofcode.com/2018/day/5)   |          |          |

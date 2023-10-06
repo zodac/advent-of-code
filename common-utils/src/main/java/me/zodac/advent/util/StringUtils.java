@@ -353,7 +353,52 @@ public final class StringUtils {
     }
 
     /**
+     * Iterates through both input {@link String}s index by index, and if the character at any index is different, that character is removed.
+     *
+     * <p>
+     * For example, given {@code foobar} and {@code fuubar}, the returned value will be:
+     * <pre>
+     *   {@code fbar}
+     * </pre>
+     *
+     * @param first  the first {@link String}
+     * @param second the second {@link String}
+     * @return the {@link String} with any differences removed
+     * @throws IllegalArgumentException thrown if the two input {@link String}s do not have the same length, or if either input is {@code null}
+     */
+    public static String removeDifferentCharacters(final String first, final String second) {
+        if (first == null || second == null) {
+            throw new IllegalArgumentException("Inputs must not be null");
+        }
+
+        if (first.length() != second.length()) {
+            throw new IllegalArgumentException(
+                String.format("Expected inputs of equal length, found %s (%s) and %s (%s)", first, first.length(), second, second.length()));
+        }
+
+        final int stringLength = first.length();
+
+        final StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < stringLength; i++) {
+            final char charFromFirst = first.charAt(i);
+            final char charFromSecond = second.charAt(i);
+
+            if (charFromFirst == charFromSecond) {
+                stringBuilder.append(charFromFirst);
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+    /**
      * Removes the last character in the {@link String}.
+     *
+     * <p>
+     * For example, given {@code foobar}, the returned value will be:
+     * <pre>
+     *   {@code fooba}
+     * </pre>
      *
      * @param input the input {@link String}
      * @return the updated {@link String}
@@ -364,6 +409,12 @@ public final class StringUtils {
 
     /**
      * Removes the last {@code numberOfCharactersToRemove} characters in the {@link String}.
+     *
+     * <p>
+     * For example, given {@code foobar} and {@code numberOfCharactersToRemove} set to <b>3</b>, the returned value will be:
+     * <pre>
+     *   {@code foo}
+     * </pre>
      *
      * @param input                      the input {@link String}
      * @param numberOfCharactersToRemove the number of characters to remove
@@ -421,7 +472,10 @@ public final class StringUtils {
      * Sorts the individual characters in the given {@link String} alphabetically.
      *
      * <p>
-     * For example, {@code foobar} will be returned as {@code abfoor}
+     * For example, given {@code foobar}, the returned value will be:
+     * <pre>
+     *   {@code abfoor}
+     * </pre>
      *
      * @param input the {@link String} to sort
      * @return the sorted {@link String}
