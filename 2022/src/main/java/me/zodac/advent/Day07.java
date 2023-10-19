@@ -73,7 +73,7 @@ public final class Day07 {
     public static long smallestDirectorySizeToDeleteToMeetSpaceRequirepments(final Iterable<String> commands) {
         final Map<String, Long> directorySizeByPath = getDirectorySizesByDirectoryPath(commands);
 
-        final long totalUsedSpace = directorySizeByPath.get(Directory.ROOT_DIRECTORY_PATH);
+        final long totalUsedSpace = directorySizeByPath.getOrDefault(Directory.ROOT_DIRECTORY_PATH, Long.MAX_VALUE);
         final long unusedSpace = TOTAL_DISK_SPACE - totalUsedSpace;
         final long spaceToFind = REQUIRED_DISK_SPACE - unusedSpace;
 

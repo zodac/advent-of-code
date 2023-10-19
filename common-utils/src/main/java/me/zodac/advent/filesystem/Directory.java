@@ -19,6 +19,7 @@ package me.zodac.advent.filesystem;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import org.checkerframework.nullaway.checker.nullness.qual.Nullable;
 
 /**
  * Simple class defining a {@link Directory} on a filesystem.
@@ -32,12 +33,14 @@ public final class Directory {
 
     private static final String ROOT_DIRECTORY_NAME = "/";
 
+    @Nullable
     private final Directory parent;
+
     private final String path;
     private final Collection<Directory> childDirectories = new ArrayList<>();
     private final Collection<File> files = new ArrayList<>();
 
-    private Directory(final Directory parent, final String path) {
+    private Directory(@Nullable final Directory parent, final String path) {
         this.parent = parent;
         this.path = path;
     }
@@ -49,7 +52,7 @@ public final class Directory {
      * @param name   the name of the {@link Directory}
      * @return the created {@link Directory}
      */
-    public static Directory create(final Directory parent, final String name) {
+    public static Directory create(@Nullable final Directory parent, final String name) {
         final String path = parent == null ? ROOT_DIRECTORY_PATH : parent.path + File.PATH_SEPARATOR + name;
         return new Directory(parent, path);
     }
@@ -105,7 +108,7 @@ public final class Directory {
      *
      * @return the parent {@link Directory}
      */
-    public Directory parent() {
+    public @Nullable Directory parent() {
         return parent;
     }
 

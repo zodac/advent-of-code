@@ -56,6 +56,7 @@
         <checkstyle.version>10.12.4</checkstyle.version>
         <error_prone_core.version>2.22.0</error_prone_core.version>
         <licenses.version>1</licenses.version>
+        <nullaway.version>0.10.14</nullaway.version>
         <pitest-junit5-plugin.version>1.2.0</pitest-junit5-plugin.version>
         <pmd.version>7.0.0-rc4</pmd.version>
         <spotbugs.version>4.7.3</spotbugs.version>
@@ -82,6 +83,22 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- 3PP Dependencies -->
+            <!-- Provides @NonNull/@Nullable compile-time checks for NullAway -->
+            <dependency>
+                <groupId>com.uber.nullaway</groupId>
+                <artifactId>nullaway</artifactId>
+                <version>${nullaway.version}</version>
+                <scope>provided</scope>
+                <exclusions>
+                    <!-- We only want the annotations, we won't be using guava -->
+                    <exclusion>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <!-- Test Dependencies -->
             <dependency>
                 <groupId>org.assertj</groupId>
@@ -145,6 +162,11 @@
                                 <artifactId>error_prone_core</artifactId>
                                 <version>${error_prone_core.version}</version>
                             </path>
+                            <path>
+                                <groupId>com.uber.nullaway</groupId>
+                                <artifactId>nullaway</artifactId>
+                                <version>${nullaway.version}</version>
+                            </path>
                         </annotationProcessorPaths>
                         <fork>true</fork>
                         <compilerArgs>
@@ -152,7 +174,7 @@
                             <arg>-Xdoclint:all</arg>
                             <!-- Configuration for ErrorProne -->
                             <arg>-XDcompilePolicy=simple</arg>
-                            <arg>-Xplugin:ErrorProne</arg>
+                            <arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR -XepOpt:NullAway:AnnotatedPackages=${project.groupId}</arg>
                             <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
                             <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
                             <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>

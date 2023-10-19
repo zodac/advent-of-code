@@ -20,6 +20,7 @@ package me.zodac.advent.pojo;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 import me.zodac.advent.pojo.tuple.Pair;
@@ -146,6 +147,7 @@ public record SyntaxLine(String line) {
             throw new IllegalArgumentException(String.format("No close symbol found for input: '%s'", openSymbol));
         }
 
-        return CLOSE_SYMBOL_FOR_OPEN_SYMBOL.get(openSymbol);
+        // Value will be non-null since we define a static map, but adding the check so the compiler knows too
+        return Objects.requireNonNull(CLOSE_SYMBOL_FOR_OPEN_SYMBOL.get(openSymbol));
     }
 }

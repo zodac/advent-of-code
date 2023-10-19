@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import me.zodac.advent.pojo.BingoBoard;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.StringUtils;
@@ -54,13 +55,13 @@ public final class Day04 {
      */
     public static long finalScoreOfFirstWinningBingoBoard(final Iterable<Integer> bingoNumbersToDraw, final List<String> bingoBoardValues) {
         final List<BingoBoard> bingoBoards = convertBingoBoards(bingoBoardValues);
-        final Pair<Integer, BingoBoard> firstWinningNumberAndBingoBoard = drawNumbersAndReturnFirstWinner(bingoNumbersToDraw, bingoBoards);
+        final Pair<Integer, Optional<BingoBoard>> firstWinningNumberAndBingoBoard = drawNumbersAndReturnFirstWinner(bingoNumbersToDraw, bingoBoards);
 
-        if (firstWinningNumberAndBingoBoard.first() == INVALID_WINNING_NUMBER) {
+        if (firstWinningNumberAndBingoBoard.first() == INVALID_WINNING_NUMBER || firstWinningNumberAndBingoBoard.second().isEmpty()) {
             return 0L;
         }
 
-        return firstWinningNumberAndBingoBoard.second().sum() * firstWinningNumberAndBingoBoard.first();
+        return firstWinningNumberAndBingoBoard.second().get().sum() * firstWinningNumberAndBingoBoard.first();
     }
 
     /**
@@ -78,33 +79,33 @@ public final class Day04 {
      */
     public static long finalScoreOfLastWinningBingoBoard(final Iterable<Integer> bingoNumbersToDraw, final List<String> bingoBoardValues) {
         final List<BingoBoard> bingoBoards = convertBingoBoards(bingoBoardValues);
-        final Pair<Integer, BingoBoard> lastWinningNumberAndBingoBoard = drawNumbersAndReturnLastWinner(bingoNumbersToDraw, bingoBoards);
+        final Pair<Integer, Optional<BingoBoard>> lastWinningNumberAndBingoBoard = drawNumbersAndReturnLastWinner(bingoNumbersToDraw, bingoBoards);
 
-        if (lastWinningNumberAndBingoBoard.first() == INVALID_WINNING_NUMBER) {
+        if (lastWinningNumberAndBingoBoard.first() == INVALID_WINNING_NUMBER || lastWinningNumberAndBingoBoard.second().isEmpty()) {
             return 0L;
         }
 
-        return lastWinningNumberAndBingoBoard.second().sum() * lastWinningNumberAndBingoBoard.first();
+        return lastWinningNumberAndBingoBoard.second().get().sum() * lastWinningNumberAndBingoBoard.first();
     }
 
-    private static Pair<Integer, BingoBoard> drawNumbersAndReturnFirstWinner(final Iterable<Integer> pickedNumbers,
-                                                                             final Iterable<BingoBoard> bingoBoards) {
+    private static Pair<Integer, Optional<BingoBoard>> drawNumbersAndReturnFirstWinner(final Iterable<Integer> pickedNumbers,
+                                                                                       final Iterable<BingoBoard> bingoBoards) {
         for (final int pickedNumber : pickedNumbers) {
             for (final BingoBoard bingoBoard : bingoBoards) {
                 bingoBoard.mark(pickedNumber);
 
                 if (bingoBoard.isWinner()) {
-                    return Pair.of(pickedNumber, bingoBoard);
+                    return Pair.of(pickedNumber, Optional.of(bingoBoard));
                 }
             }
         }
 
-        return Pair.withNull(INVALID_WINNING_NUMBER);
+        return Pair.ofSingle(INVALID_WINNING_NUMBER);
     }
 
-    private static Pair<Integer, BingoBoard> drawNumbersAndReturnLastWinner(final Iterable<Integer> bingoNumbers,
-                                                                            final List<BingoBoard> bingoBoards) {
-        Pair<Integer, BingoBoard> lastWinner = Pair.withNull(INVALID_WINNING_NUMBER);
+    private static Pair<Integer, Optional<BingoBoard>> drawNumbersAndReturnLastWinner(final Iterable<Integer> bingoNumbers,
+                                                                                      final List<BingoBoard> bingoBoards) {
+        Pair<Integer, Optional<BingoBoard>> lastWinner = Pair.ofSingle(INVALID_WINNING_NUMBER);
 
         // If the board is not a winner, it is added to the boards to be checked for the next number
         // If it is a winner, we update 'lastWinner' and stop checking it for future numbers
@@ -116,7 +117,7 @@ public final class Day04 {
                 bingoBoard.mark(number);
 
                 if (bingoBoard.isWinner()) {
-                    lastWinner = Pair.of(number, bingoBoard);
+                    lastWinner = Pair.of(number, Optional.of(bingoBoard));
                 } else {
                     nextBingoBoardsToCheck.add(bingoBoard);
                 }

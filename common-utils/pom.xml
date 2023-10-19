@@ -14,6 +14,13 @@
     <name>[${project.parent.artifactId}] Common Utilities</name>
 
     <dependencies>
+        <!-- 3PP Dependencies -->
+        <dependency>
+            <groupId>com.uber.nullaway</groupId>
+            <artifactId>nullaway</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.assertj</groupId>

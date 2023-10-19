@@ -48,7 +48,7 @@ public final class Day23 {
      */
     public static long calculateRegisterValue(final List<String> commands, final char wantedRegisterValue, final Map<Character, Long> initialValues) {
         final Map<Character, Long> registerValues = populateRegisterValues(commands, initialValues);
-        return registerValues.get(wantedRegisterValue);
+        return registerValues.getOrDefault(wantedRegisterValue, 0L);
     }
 
     private static Map<Character, Long> populateRegisterValues(final List<String> commands, final Map<Character, Long> initialValues) {

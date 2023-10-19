@@ -80,7 +80,13 @@ public final class Day11 {
         final Map<Integer, List<Long>> thrownItemsByTargetMonkeyId = monkey.throwItemsToOtherMonkeys(productOfAllMonkeyDivisors);
 
         for (final Map.Entry<Integer, List<Long>> entry : thrownItemsByTargetMonkeyId.entrySet()) {
-            final Monkey targetMonkey = monkeysById.get(entry.getKey());
+            final int targetMonkeyId = entry.getKey();
+            final Monkey targetMonkey = monkeysById.get(targetMonkeyId);
+
+            if (targetMonkey == null) {
+                throw new IllegalStateException(
+                    String.format("Unable to find target %s with ID '%s' from map: %s", Monkey.class.getSimpleName(), targetMonkeyId, monkeysById));
+            }
 
             for (final long thrownItem : entry.getValue()) {
                 targetMonkey.addItem(thrownItem);

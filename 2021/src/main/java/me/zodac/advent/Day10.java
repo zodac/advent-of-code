@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import me.zodac.advent.pojo.SyntaxLine;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.CollectionUtils;
@@ -32,6 +33,8 @@ import me.zodac.advent.util.CollectionUtils;
  * @see <a href="https://adventofcode.com/2021/day/10">AoC 2021, Day 10</a>
  */
 public final class Day10 {
+
+    private static final int SCORE_MULTIPLIER = 5;
 
     private static final Map<Character, Integer> SYNTAX_ERROR_SCORE_FOR_SYMBOL = Map.of(
         ')', 3,
@@ -115,7 +118,8 @@ public final class Day10 {
     }
 
     private static long calculateNewCompletionScore(final long currentScore, final char closeSymbol) {
-        final int scoreForCloseSymbol = COMPLETION_SCORE_FOR_SYMBOL.get(closeSymbol);
-        return (currentScore * 5) + scoreForCloseSymbol;
+        // Value will be non-null since we define a static map, but adding the check so the compiler knows too
+        final int scoreForCloseSymbol = Objects.requireNonNull(COMPLETION_SCORE_FOR_SYMBOL.get(closeSymbol));
+        return (currentScore * SCORE_MULTIPLIER) + scoreForCloseSymbol;
     }
 }

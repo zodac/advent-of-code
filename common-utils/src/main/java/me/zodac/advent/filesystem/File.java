@@ -17,6 +17,7 @@
 
 package me.zodac.advent.filesystem;
 
+import java.util.Optional;
 import me.zodac.advent.pojo.tuple.Pair;
 
 /**
@@ -34,6 +35,8 @@ public record File(String path, String name, String extension, String nameWithEx
      * The path-separator for a filesystem.
      */
     public static final char PATH_SEPARATOR = '/';
+
+    private static final String DEFAULT_FILE_EXTENSION = "";
 
     /**
      * Creates a {@link File}.
@@ -67,15 +70,16 @@ public record File(String path, String name, String extension, String nameWithEx
         }
 
         final String filePath = parent.path() + PATH_SEPARATOR + fileNameWithExtension;
-        final Pair<String, String> nameAndExtension = extractNameAndExtension(fileNameWithExtension);
+        final Pair<String, Optional<String>> nameAndExtension = extractNameAndExtension(fileNameWithExtension);
 
-        return new File(filePath, nameAndExtension.first(), nameAndExtension.second(), fileNameWithExtension, sizeInBytes);
+        final String fileExtension = nameAndExtension.second().orElse(DEFAULT_FILE_EXTENSION);
+        return new File(filePath, nameAndExtension.first(), fileExtension, fileNameWithExtension, sizeInBytes);
     }
 
-    private static Pair<String, String> extractNameAndExtension(final String fileNameWithExtension) {
+    private static Pair<String, Optional<String>> extractNameAndExtension(final String fileNameWithExtension) {
         final String[] nameTokens = fileNameWithExtension.split("\\.");
         final String fileName = nameTokens[0];
-        final String fileExtension = nameTokens.length == 1 ? "" : nameTokens[nameTokens.length - 1];
+        final Optional<String> fileExtension = nameTokens.length == 1 ? Optional.empty() : Optional.of(nameTokens[nameTokens.length - 1]);
 
         return Pair.of(fileName, fileExtension);
     }

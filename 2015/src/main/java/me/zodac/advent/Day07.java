@@ -34,6 +34,8 @@ public final class Day07 {
 
     private static final Pattern OUTPUT_PATTERN = Pattern.compile(" -> ");
     private static final int BIT_MASK = 0xFFFF;
+    private static final String EMPTY_OVERRIDE_LABEL = "";
+    private static final String EMPTY_OVERRIDE_VALUE = "";
 
     private final Map<String, Integer> calculatedValuesByLabel;
     private final Map<? super String, Pair<BitwiseOperator, String>> commandByLabel;
@@ -71,7 +73,7 @@ public final class Day07 {
      * @return the evaluated value
      */
     public int evaulate(final String wantedLabel) {
-        return evaulateWithOverride(wantedLabel, null, null);
+        return evaulateWithOverride(wantedLabel, EMPTY_OVERRIDE_LABEL, EMPTY_OVERRIDE_VALUE);
     }
 
     /**
@@ -83,7 +85,7 @@ public final class Day07 {
      * @return the evaluated value
      */
     public int evaulateWithOverride(final String wantedLabel, final String overrideLabel, final String overrideValue) {
-        if (overrideLabel != null) {
+        if (!EMPTY_OVERRIDE_LABEL.equals(overrideLabel)) {
             commandByLabel.put(overrideLabel, Pair.of(BitwiseOperator.SET, overrideValue));
         }
 
@@ -103,6 +105,10 @@ public final class Day07 {
     private int evaluateCommand(final String wantedLabel) {
         if (StringUtils.isInteger(wantedLabel)) {
             return Integer.parseInt(wantedLabel);
+        }
+
+        if (!commandByLabel.containsKey(wantedLabel)) {
+            throw new IllegalStateException(String.format("Expected to find command with label '%s', found nothing", wantedLabel));
         }
 
         final Pair<BitwiseOperator, String> operatorAndCommand = commandByLabel.get(wantedLabel);

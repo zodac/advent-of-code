@@ -77,11 +77,11 @@ public final class BreadthFirstSearcher {
             }
 
             for (final Point neighbourPoint : pointNeighbourFunction.apply(currentPoint)) {
-                if (!valuesByPoint.containsKey(neighbourPoint) || valuesByPoint.get(neighbourPoint) > valuesByPoint.get(currentPoint) + 1) {
+                if (isInvalidPoint(valuesByPoint, neighbourPoint, currentPoint)) {
                     continue;
                 }
 
-                final long distanceToNeighbour = distanceByNeighbourNode.get(currentPoint);
+                final long distanceToNeighbour = distanceByNeighbourNode.getOrDefault(currentPoint, Long.MIN_VALUE);
 
                 if (distanceToNeighbour < distanceByNeighbourNode.getOrDefault(neighbourPoint, Long.MAX_VALUE)) {
                     distanceByNeighbourNode.put(neighbourPoint, distanceToNeighbour);
@@ -93,5 +93,10 @@ public final class BreadthFirstSearcher {
 
         // No need to throw an exception, just return a large distance
         return Long.MAX_VALUE;
+    }
+
+    private static boolean isInvalidPoint(final Map<Point, Integer> valuesByPoint, final Point neighbourPoint, final Point currentPoint) {
+        return !valuesByPoint.containsKey(neighbourPoint)
+            || valuesByPoint.getOrDefault(neighbourPoint, Integer.MIN_VALUE) > valuesByPoint.getOrDefault(currentPoint, Integer.MIN_VALUE) + 1;
     }
 }

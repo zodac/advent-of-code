@@ -19,6 +19,7 @@ package me.zodac.advent.pojo.tuple;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -36,11 +37,11 @@ class PairTest {
     }
 
     @Test
-    void whenWithNull_givenValue_thenValueIsReturnedAndSecondIsNull() {
-        final Pair<String, String> output = Pair.withNull("first");
+    void whenOfSingle_givenValue_thenValueIsReturnedAndSecondIsNull() {
+        final Pair<String, Optional<String>> output = Pair.ofSingle("first");
         assertThat(output.first())
             .isEqualTo("first");
         assertThat(output.second())
-            .isNull();
+            .isEmpty();
     }
 }

@@ -17,6 +17,8 @@
 
 package me.zodac.advent.pojo.tuple;
 
+import java.util.Optional;
+
 /**
  * Simple tuple for two objects.
  *
@@ -41,14 +43,14 @@ public record Pair<A, B>(A first, B second) {
     }
 
     /**
-     * Create a {@link Pair} with one values, with the second value set to {@code null}.
+     * Create a {@link Pair} with one value, with the second value set to {@link Optional#empty()}.
      *
      * @param first the first value
      * @param <A>   type of first value
      * @param <B>   type of second value
      * @return the created {@link Pair}
      */
-    public static <A, B> Pair<A, B> withNull(final A first) {
-        return of(first, null);
+    public static <A, B> Pair<A, Optional<B>> ofSingle(final A first) {
+        return new Pair<>(first, Optional.empty());
     }
 }

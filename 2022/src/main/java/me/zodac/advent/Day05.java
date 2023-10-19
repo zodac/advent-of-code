@@ -20,6 +20,7 @@ package me.zodac.advent;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map;
+import java.util.function.Supplier;
 import me.zodac.advent.pojo.StackInstruction;
 
 /**
@@ -28,6 +29,10 @@ import me.zodac.advent.pojo.StackInstruction;
  * @see <a href="https://adventofcode.com/2022/day/5">AoC 2022, Day 5</a>
  */
 public final class Day05 {
+
+    // In case an expected stack is not returned, we want to provide a new, empty stack
+    // Instead of making a single empty stack, or using 'new' directly, we'll create this supplier and call #get() when we need a new one
+    private static final Supplier<Deque<String>> NEW_STACK_SUPPLIER = ArrayDeque::new;
 
     private Day05() {
 
@@ -66,7 +71,7 @@ public final class Day05 {
      * @param stackInstructions the {@link StackInstruction}s to be applied
      * @return the final constructed {@link String} code
      */
-    public static String moveElementsBetweenStacksLastInFirstOutOrderAndCreateCode(final Map<Integer, ? extends Deque<String>> stacksById,
+    public static String moveElementsBetweenStacksLastInFirstOutOrderAndCreateCode(final Map<Integer, Deque<String>> stacksById,
                                                                                    final Iterable<StackInstruction> stackInstructions) {
         return moveElementsBetweenStacks(stacksById, stackInstructions, false);
     }
@@ -104,22 +109,22 @@ public final class Day05 {
      * @param stackInstructions the {@link StackInstruction}s to be applied
      * @return the final constructed {@link String} code
      */
-    public static String moveElementsBetweenStacksRetainingOrderAndCreateCode(final Map<Integer, ? extends Deque<String>> stacksById,
+    public static String moveElementsBetweenStacksRetainingOrderAndCreateCode(final Map<Integer, Deque<String>> stacksById,
                                                                               final Iterable<StackInstruction> stackInstructions) {
         return moveElementsBetweenStacks(stacksById, stackInstructions, true);
     }
 
-    private static String moveElementsBetweenStacks(final Map<Integer, ? extends Deque<String>> stacksById,
+    private static String moveElementsBetweenStacks(final Map<Integer, Deque<String>> stacksById,
                                                     final Iterable<StackInstruction> stackInstructions,
                                                     final boolean retainOrderOfMultipleElements
     ) {
         for (final StackInstruction stackInstruction : stackInstructions) {
-            final Deque<String> src = stacksById.get(stackInstruction.sourceStackId());
-            final Deque<String> des = stacksById.get(stackInstruction.destinationStackId());
+            final Deque<String> src = stacksById.getOrDefault(stackInstruction.sourceStackId(), NEW_STACK_SUPPLIER.get());
+            final Deque<String> des = stacksById.getOrDefault(stackInstruction.destinationStackId(), NEW_STACK_SUPPLIER.get());
             final int numberOfElementsToMove = stackInstruction.numberOfElementsToMove();
 
             if (retainOrderOfMultipleElements) {
-                final Deque<String> buffer = new ArrayDeque<>();
+                final Deque<String> buffer = NEW_STACK_SUPPLIER.get();
                 for (int i = 0; i < numberOfElementsToMove; i++) {
                     buffer.push(src.pop());
                 }
@@ -137,11 +142,11 @@ public final class Day05 {
         return buildStringFromFirstElements(stacksById);
     }
 
-    private static String buildStringFromFirstElements(final Map<Integer, ? extends Deque<String>> stacksById) {
+    private static String buildStringFromFirstElements(final Map<Integer, Deque<String>> stacksById) {
         final StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 1; i <= stacksById.size(); i++) {
-            final Deque<String> stack = stacksById.get(i);
+            final Deque<String> stack = stacksById.getOrDefault(i, NEW_STACK_SUPPLIER.get());
             stringBuilder.append(stack.pop());
         }
 
