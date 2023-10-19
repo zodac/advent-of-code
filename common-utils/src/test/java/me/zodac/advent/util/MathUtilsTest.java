@@ -21,369 +21,196 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Unit tests for {@link MathUtils}.
  */
 class MathUtilsTest {
 
-    @Test
-    void whenAreAnyLessThan_givenPositiveValue_andNoValuesLessThan_thenFalseIsReturned() {
-        final long input = 1L;
-        final long[] values = {1L, 2L, 3L};
+    @ParameterizedTest
+    @MethodSource("provideForAreAnyLessThan")
+    void testAreAnyLessThan(final long input, final long[] values, final boolean expected) {
         final boolean output = MathUtils.areAnyLessThan(input, values);
         assertThat(output)
-            .isFalse();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenAreAnyLessThan_givenPositiveValue_andPositiveValuesLessThan_thenTrueIsReturned() {
-        final long input = 1L;
-        final long[] values = {0L, 3L, 4L};
-        final boolean output = MathUtils.areAnyLessThan(input, values);
-        assertThat(output)
-            .isTrue();
+    private static Stream<Arguments> provideForAreAnyLessThan() {
+        return Stream.of(
+            Arguments.of(1L, new long[] {0L, 2L, 3L}, true),        // Positive input, positive value less than
+            Arguments.of(1L, new long[] {-1L, 2L, 3L}, true),       // Positive input, negative value less than
+            Arguments.of(-1L, new long[] {-2L, 2L, 3L}, true),      // Negative input, negative value less than
+            Arguments.of(1L, new long[] {1L, 2L, 3L}, false),       // Positive input, no values less than
+            Arguments.of(-2L, new long[] {-1L, 2L, 3L}, false),     // Negative input, no values less than
+            Arguments.of(-2L, new long[0], false)                   // Empty values
+        );
     }
 
-    @Test
-    void whenAreAnyLessThan_givenPositiveValue_andNegativeValuesLessThan_thenTrueIsReturned() {
-        final long input = 1L;
-        final long[] values = {-2L, 3L, 4L};
-        final boolean output = MathUtils.areAnyLessThan(input, values);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenAreAnyLessThan_givenNegativeValue_andNoValuesLessThan_thenFalseIsReturned() {
-        final long input = -2L;
-        final long[] values = {-1L, 3L, 4L};
-        final boolean output = MathUtils.areAnyLessThan(input, values);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenAreAnyLessThan_givenNegativeValue_andNegativeValuesLessThan_thenTrueIsReturned() {
-        final long input = -1L;
-        final long[] values = {-2L, 3L, 4L};
-        final boolean output = MathUtils.areAnyLessThan(input, values);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenAreAnyLessThan_givenValue_andNoInputValue_thenFalseIsReturned() {
-        final long input = -2L;
-        final long[] values = {};
-        final boolean output = MathUtils.areAnyLessThan(input, values);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenDiagonalSum_givenValidInput_thenValueIsReturned() {
-        final int row = 2;
-        final int column = 4;
-
+    @ParameterizedTest
+    @CsvSource({
+        "2,4,13",   // Valid
+        "1,1,0",    // Valid origin
+    })
+    void testDiagonalSum(final int row, final int column, final long expected) {
         final long output = MathUtils.diagonalSum(row, column);
         assertThat(output)
-            .isEqualTo(13L);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenDiagonalSum_givenValidOrigin_thenValueIsReturned() {
-        final int row = 1;
-        final int column = 1;
-
-        final long output = MathUtils.diagonalSum(row, column);
-        assertThat(output)
-            .isEqualTo(0L);
-    }
-
-    @Test
-    void whenDiagonalSum_givenNegativeRow_thenExceptionIsThrown() {
-        final int row = -2;
-        final int column = 4;
-
+    @ParameterizedTest
+    @CsvSource({
+        "-2,4,Both row -2 and column 4 must be at least 1",     // Negative row
+        "2,-4,Both row 2 and column -4 must be at least 1",     // Negative column
+    })
+    void testDiagonalSum_givenInvalidInputs(final int row, final int column, final String errorMessage) {
         assertThatThrownBy(() -> MathUtils.diagonalSum(row, column))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Both row -2 and column 4 must be at least 1");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenDiagonalSum_givenNegativeColumn_thenExceptionIsThrown() {
-        final int row = 2;
-        final int column = -4;
-
-        assertThatThrownBy(() -> MathUtils.diagonalSum(row, column))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Both row 2 and column -4 must be at least 1");
-    }
-
-    @Test
-    void whenGreatestCommonDivisor_givenNumbers_thenGcdIsReturned() {
-        final int[] input = {36, 54, 99};
-        final int output = MathUtils.greatestCommonDivisor(9, input);
+    @ParameterizedTest
+    @MethodSource("provideForGreatestCommonDivisor")
+    void testGreatestCommonDivisor(final int input, final int[] additionalInputs, final int expected) {
+        final int output = MathUtils.greatestCommonDivisor(input, additionalInputs);
         assertThat(output)
-            .isEqualTo(9);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenGreatestCommonDivisor_givenSingleNumber_thenInputIsReturned() {
-        final int input = 5;
-        final int output = MathUtils.greatestCommonDivisor(input);
+    private static Stream<Arguments> provideForGreatestCommonDivisor() {
+        return Stream.of(
+            Arguments.of(9, new int[] {36, 54, 99}, 9),     // Input is divisor of additional inputs
+            Arguments.of(36, new int[] {54, 90}, 18),       // Input and additional inputs share divisor
+            Arguments.of(5, new int[0], 5),                 // Input with no additional inputs
+            Arguments.of(9, new int[] {0, 36}, 9),          // Input contains zeros
+            Arguments.of(0, new int[] {0, 0}, 0),           // Input only has 0s
+            Arguments.of(9, new int[] {-36, 54, 99}, 9),    // Input contains single negative number
+            Arguments.of(9, new int[] {-36, -54, -99}, 9)   // Input contains only negative numbers
+        );
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "1,5,3,true",       // Input within range
+        "3,5,3,true",       // Input equal to start
+        "1,3,3,true",       // Input equal to end
+        "1,1,1,true",       // Input and range equal values
+        "-5,-1,-3,true",    // Input within range, all negative values
+        "-5,3,1,true",      // Input within range, input positive, range positive/negative
+        "-5,3,-1,true",     // Input within range, input negative, range positive/negative
+        "1,5,9,false",      // Input outside range
+        "-5,-1,-9,false",   // Input outside range, negative values
+    })
+    void testIsBetween(final int start, final int end, final int input, final boolean expected) {
+        final boolean output = MathUtils.isBetween(start, end, input);
         assertThat(output)
-            .isEqualTo(input);
+            .isEqualTo(expected);
     }
 
     @Test
-    void whenGreatestCommonDivisor_givenNumbersIncludingZero_thenZeroIsIgnored_andGcdIsReturned() {
-        final int[] input = {36, 0};
-        final int output = MathUtils.greatestCommonDivisor(9, input);
-        assertThat(output)
-            .isEqualTo(9);
-    }
-
-    @Test
-    void whenGreatestCommonDivisor_givenNumbersOnlyZero_thenZeroIsReturned() {
-        final int[] input = {0, 0};
-        final int output = MathUtils.greatestCommonDivisor(0, input);
-        assertThat(output)
-            .isEqualTo(0);
-    }
-
-    @Test
-    void whenIsBetween_givenInputBetweenRange_thenTrueIsReturned() {
-        final int input = 3;
-        final boolean output = MathUtils.isBetween(1, 5, input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsBetween_givenInputEqualToStart_thenTrueIsReturned() {
-        final int input = 3;
-        final boolean output = MathUtils.isBetween(3, 5, input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsBetween_givenInputEqualToEnd_thenTrueIsReturned() {
-        final int input = 3;
-        final boolean output = MathUtils.isBetween(1, 3, input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsBetween_givenRangeAndInputEqual_thenTrueIsReturned() {
-        final int input = 1;
-        final boolean output = MathUtils.isBetween(1, 1, input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsBetween_givenNegativeValues_andInputBetweenRange_thenTrueIsReturned() {
-        final int input = -3;
-        final boolean output = MathUtils.isBetween(-5, -1, input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsBetween_givenInputNotBetweenRange_thenFalseIsReturned() {
-        final int input = 9;
-        final boolean output = MathUtils.isBetween(1, 5, input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsBetween_givenNegativeValues_andInputNotBetweenRange_thenFalseIsReturned() {
-        final int input = -9;
-        final boolean output = MathUtils.isBetween(-5, -1, input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsBetween_givenRangeEndIsLessThanRangeStart_thenExceptionIsThrown() {
+    void testIsBetween_givenRangeEndIsLessThanRangeStart() {
         assertThatThrownBy(() -> MathUtils.isBetween(1, 0, 2))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("Cannot have end 0 less than start 1");
     }
 
-    @Test
-    void whenIsEven_givenEvenNumber_thenTrueIsReturned() {
-        final int input = 2;
+    @ParameterizedTest
+    @CsvSource({
+        "2,true",       // Even number
+        "-2,true",      // Even negative number
+        "3,false",      // Odd number
+        "-3,false",     // Odd negative number
+        "0,true",       // Zero
+    })
+    void testIsEven(final int input, final boolean expected) {
         final boolean output = MathUtils.isEven(input);
         assertThat(output)
-            .isTrue();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenIsEven_givenOddNumber_thenFalseIsReturned() {
-        final int input = 3;
-        final boolean output = MathUtils.isEven(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsEven_givenEvenNegativeNumber_thenTrueIsReturned() {
-        final int input = -2;
-        final boolean output = MathUtils.isEven(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsEven_givenOddNegativeNumber_thenFalseIsReturned() {
-        final int input = -3;
-        final boolean output = MathUtils.isEven(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsOdd_givenOddNumber_thenTrueIsReturned() {
-        final int input = 3;
+    @ParameterizedTest
+    @CsvSource({
+        "3,true",        // Odd number
+        "-3,true",       // Odd negative number
+        "2,false",       // Even number
+        "-2,false",      // Even negative number
+        "0,false",       // Zero
+    })
+    void testIsOdd(final int input, final boolean expected) {
         final boolean output = MathUtils.isOdd(input);
         assertThat(output)
-            .isTrue();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenIsOdd_givenEvenNumber_thenFalseIsReturned() {
-        final int input = 2;
-        final boolean output = MathUtils.isOdd(input);
+    @ParameterizedTest
+    @MethodSource("provideForLowestCommonMultiple")
+    void testLowestCommonMultiple(final List<Integer> input, final int expected) {
+        final long output = MathUtils.lowestCommonMultiple(input);
         assertThat(output)
-            .isFalse();
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForLowestCommonMultiple() {
+        return Stream.of(
+            Arguments.of(List.of(6, 9, 18, 15, 27, 54), 270),   // Multiple inputs with common divisors
+            Arguments.of(List.of(1, 0, 3), 0),                  // Inputs including 0
+            Arguments.of(List.of(5), 5),                    // Single input
+            Arguments.of(List.of(7, 13, 29), 2_639)             // Inputs are prime numbers
+        );
     }
 
     @Test
-    void whenIsOdd_givenOddNegativeNumber_thenTrueIsReturned() {
-        final int input = -3;
-        final boolean output = MathUtils.isOdd(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsOdd_givenEvenNegativeNumber_thenFalseIsReturned() {
-        final int input = -2;
-        final boolean output = MathUtils.isOdd(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenLowestCommonMultiple_givenThreeNumbers_thenLcmIsReturned() {
-        final List<Integer> input = List.of(6, 9, 18, 15, 27, 54);
-        final int output = MathUtils.lowestCommonMultiple(input);
-        assertThat(output)
-            .isEqualTo(270);
-    }
-
-    @Test
-    void whenLowestCommonMultiple_givenZeroAsAnInput_thenZeroIsReturned() {
-        final List<Integer> input = List.of(1, 0, 3);
-        final int output = MathUtils.lowestCommonMultiple(input);
-        assertThat(output)
-            .isZero();
-    }
-
-    @Test
-    void whenLowestCommonMultiple_givenSingleNumberAsInput_thenInputIsReturned() {
-        final List<Integer> input = List.of(1);
-        final int output = MathUtils.lowestCommonMultiple(input);
-        assertThat(output)
-            .isEqualTo(1);
-    }
-
-    @Test
-    void whenLowestCommonMultiple_givenPrimeNumbers_thenOutputIsSameAsProductOfInputs() {
-        final List<Integer> input = List.of(7, 13, 29);
-        final int output = MathUtils.lowestCommonMultiple(input);
-        assertThat(output)
-            .isEqualTo((7 * 13 * 29));
-    }
-
-    @Test
-    void whenLowestCommonMultiple_givenEmptyInput_thenExceptionIsThrown() {
+    void testLowestCommonMultiple_givenInvalidInputs() {
         final List<Integer> input = List.of();
         assertThatThrownBy(() -> MathUtils.lowestCommonMultiple(input))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Input cannot be empty");
     }
 
-    @Test
-    void whenMax_givenPositiveNumbers_thenLargestPositiveNumberIsReturned() {
-        final int[] input = {2, 3};
-        final int output = MathUtils.max(1, input);
+    @ParameterizedTest
+    @MethodSource("provideForMax")
+    void testMax(final int input, final int[] others, final int expected) {
+        final int output = MathUtils.max(input, others);
         assertThat(output)
-            .isEqualTo(3);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenMax_givenNegativeNumbers_thenLargestPositiveNumberIsReturned() {
-        final int[] input = {-2, -3};
-        final int output = MathUtils.max(-1, input);
-        assertThat(output)
-            .isEqualTo(-1);
+    private static Stream<Arguments> provideForMax() {
+        return Stream.of(
+            Arguments.of(1, new int[] {2, 3}, 3),       // Multiple positive values
+            Arguments.of(-1, new int[] {-2, -3}, -1),   // Multiple negative values
+            Arguments.of(-1, new int[] {2, -3}, 2),     // Negative and positive values
+            Arguments.of(0, new int[] {0, 0}, 0),       // Zeros
+            Arguments.of(4, new int[0], 4)              // No additional inputs
+        );
     }
 
-    @Test
-    void whenMultiplyElementsThenSum_givenAllPositiveValues_thenValueIsReturned() {
-        final List<Integer> first = List.of(1, 2, 3);
-        final List<Integer> second = List.of(4, 5, 6);
+    @ParameterizedTest
+    @MethodSource("provideForMultiplyElementsThenSum")
+    void testMultiplyElementsThenSum(final List<Integer> first, final List<Integer> second, final long expected) {
         final long output = MathUtils.multiplyElementsThenSum(first, second);
         assertThat(output)
-            .isEqualTo(32L);
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForMultiplyElementsThenSum() {
+        return Stream.of(
+            Arguments.of(List.of(1, 2, 3), List.of(4, 5, 6), 32L),          // Multiple positive values
+            Arguments.of(List.of(-1, -2, -3), List.of(-4, -5, -6), 32L),    // Multiple negative values
+            Arguments.of(List.of(-1, 2, 3), List.of(4, 5, 6), 24L),         // Negative and positive values
+            Arguments.of(List.of(0, 2, 3), List.of(4, 5, 6), 28L),          // Including zero
+            Arguments.of(List.of(0, 0, 0), List.of(0, 0, 0), 0L),           // All zeros
+            Arguments.of(List.of(), List.of(), 0L)                          // Both inputs empty
+        );
     }
 
     @Test
-    void whenMultiplyElementsThenSum_givenValuesIncludingNegativeValue_thenValueIsReturned() {
-        final List<Integer> first = List.of(-1, 2, 3);
-        final List<Integer> second = List.of(4, 5, 6);
-        final long output = MathUtils.multiplyElementsThenSum(first, second);
-        assertThat(output)
-            .isEqualTo(24L);
-    }
-
-    @Test
-    void whenMultiplyElementsThenSum_givenFirstValuesAllNegative_thenValueIsReturned() {
-        final List<Integer> first = List.of(-1, -2, -3);
-        final List<Integer> second = List.of(4, 5, 6);
-        final long output = MathUtils.multiplyElementsThenSum(first, second);
-        assertThat(output)
-            .isEqualTo(-32L);
-    }
-
-    @Test
-    void whenMultiplyElementsThenSum_givenValuesIncludingZero_thenValueIsReturned() {
-        final List<Integer> first = List.of(0, 2, 3);
-        final List<Integer> second = List.of(4, 5, 6);
-        final long output = MathUtils.multiplyElementsThenSum(first, second);
-        assertThat(output)
-            .isEqualTo(28L);
-    }
-
-    @Test
-    void whenMultiplyElementsThenSum_givenEmptyValues_thenZeroIsReturned() {
-        final List<Integer> first = List.of();
-        final List<Integer> second = List.of();
-        final long output = MathUtils.multiplyElementsThenSum(first, second);
-        assertThat(output)
-            .isZero();
-    }
-
-    @Test
-    void whenMultiplyElementsThenSum_givenFirstValuesNotEqualSizeToSecondValues_thenExceptionIsThrown() {
+    void testMultiplyElementsThenSum_givenInvalidInputs() {
         final List<Integer> first = List.of(1, 2, 3);
         final List<Integer> second = List.of(4);
         assertThatThrownBy(() -> MathUtils.multiplyElementsThenSum(first, second))
@@ -391,19 +218,14 @@ class MathUtilsTest {
             .hasMessageContaining("Inputs must be of same length, found: 3 and 1");
     }
 
-    @Test
-    void whenTriangularNumber_givenPositiveNumber_thenCorrectValueIsReturned() {
-        final int input = 6;
-        final long triangularNumber = MathUtils.triangularNumber(input);
+    @ParameterizedTest
+    @CsvSource({
+        "6,21",     // Positive
+        "-6,15",    // Negative
+    })
+    void testTriangularNumber(final int input, final long expected) {
+        final long triangularNumber = MathUtils.calculateTriangularNumberValue(input);
         assertThat(triangularNumber)
-            .isEqualTo(21L);
-    }
-
-    @Test
-    void whenTriangularNumber_givenNegativeNumber_thenCorrectValueIsReturned() {
-        final int input = -6;
-        final long triangularNumber = MathUtils.triangularNumber(input);
-        assertThat(triangularNumber)
-            .isEqualTo(15L);
+            .isEqualTo(expected);
     }
 }

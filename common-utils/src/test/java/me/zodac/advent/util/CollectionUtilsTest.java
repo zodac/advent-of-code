@@ -20,222 +20,153 @@ package me.zodac.advent.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.junit.jupiter.api.Test;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Unit tests for {@link CollectionUtils}.
  */
 class CollectionUtilsTest {
 
-    @Test
-    void whenContainsDuplicates_givenInputWithDuplicates_thenTrueIsReturned() {
-        final List<Integer> input = List.of(1, 2, 2);
+    @ParameterizedTest
+    @MethodSource("provideForContainsDuplicates")
+    void testContainsDuplicates(final List<Integer> input, final boolean expected) {
         final boolean output = CollectionUtils.containsDuplicates(input);
         assertThat(output)
-            .isTrue();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenContainsDuplicates_givenInputWithMultipleDuplicates_thenTrueIsReturned() {
-        final List<Integer> input = List.of(1, 1, 2, 2);
-        final boolean output = CollectionUtils.containsDuplicates(input);
-        assertThat(output)
-            .isTrue();
+    private static Stream<Arguments> provideForContainsDuplicates() {
+        return Stream.of(
+            Arguments.of(List.of(1, 2, 2), true),       // Input with single duplicate
+            Arguments.of(List.of(1, 1, 2, 2), true),    // Input with multiple duplicates
+            Arguments.of(List.of(1, 2, 3), false),      // Input with no duplicates
+            Arguments.of(List.of(), false),             // Empty
+            Arguments.of(null, false)                   // Null
+        );
     }
 
-    @Test
-    void whenContainsDuplicates_givenInputWithNoDuplicates_thenFalseIsReturned() {
-        final List<Integer> input = List.of(1, 2, 3);
-        final boolean output = CollectionUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenEmptyInput_thenFalseIsReturned() {
-        final List<Integer> input = List.of();
-        final boolean output = CollectionUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenNullInput_thenFalseIsReturned() {
-        final List<Integer> input = null;
-        final boolean output = CollectionUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenExtractValuesAsList_givenCollection_thenElementsAreExtractedAndReturnedAsList() {
-        final List<Long> input = List.of(1L, 2L, 3L);
+    @ParameterizedTest
+    @MethodSource("provideForExtractValuesAsList")
+    void testExtractValuesAsList(final List<Long> input, final List<Integer> expected) {
         final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
         assertThat(output)
-            .containsExactly(1, 2, 3);
+            .hasSameElementsAs(expected);
     }
 
-    @Test
-    void whenExtractValuesAsList_givenEmptyCollection_thenEmptyListIsReturned() {
-        final List<Long> input = List.of();
-        final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenGeneratePermutations_givenListWithSingleEntry_thenSingleEntryIsReturned() {
-        final List<String> input = List.of("a");
-        final List<List<String>> output = CollectionUtils.generatePermutations(input);
-        assertThat(output)
-            .containsExactly(List.of("a"));
-    }
-
-    @Test
-    void whenGeneratePermutations_givenListWithMultipleEntries_thenAllPermutationsAreReturned() {
-        final List<String> input = List.of("a", "b", "c");
-        final List<List<String>> output = CollectionUtils.generatePermutations(input);
-        assertThat(output)
-            .containsExactlyInAnyOrder(
-                List.of("a", "b", "c"),
-                List.of("a", "c", "b"),
-                List.of("b", "a", "c"),
-                List.of("b", "c", "a"),
-                List.of("c", "a", "b"),
-                List.of("c", "b", "a")
-            );
-    }
-
-    @Test
-    void whenGeneratePermutations_givenEmptyList_thenEmptyListIsReturned() {
-        final List<String> input = List.of();
-        final List<List<String>> output = CollectionUtils.generatePermutations(input);
-        assertThat(output)
-            .containsExactly(List.of());
-    }
-
-    @Test
-    void whenGetKeyByValue_givenValueDoesExist_thenKeyIsReturned() {
-        final Map<String, String> inputMap = Map.of(
-            "key1", "value1",
-            "key2", "value2"
+    private static Stream<Arguments> provideForExtractValuesAsList() {
+        return Stream.of(
+            Arguments.of(List.of(1L, 2L, 3L), List.of(1, 2, 3)),    // Collection of Long, extracting as Integers
+            Arguments.of(List.of(), List.of()),                     // Empty
+            Arguments.of(null, List.of())                 // Null
         );
-        final String inputValue = "value2";
-
-        final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
-        assertThat(output)
-            .isPresent()
-            .hasValue("key2");
     }
 
-    @Test
-    void whenGetKeyByValue_givenValueDoesNotExist_thenEmptyOptionalIsReturned() {
-        final Map<String, String> inputMap = Map.of(
-            "key1", "value1",
-            "key2", "value2"
+    @ParameterizedTest
+    @MethodSource("provideForGeneratePermutations")
+    void testGeneratePermutations(final List<String> input, final List<? extends List<String>> expected) {
+        final List<List<String>> output = CollectionUtils.generatePermutations(input);
+        assertThat(output)
+            .hasSameElementsAs(expected);
+    }
+
+    private static Stream<Arguments> provideForGeneratePermutations() {
+        return Stream.of(
+            Arguments.of(List.of("a"), List.of(List.of("a"))),  // Single entry
+            Arguments.of(List.of(), List.of(List.of())),               // Empty
+            // Multiple entries
+            Arguments.of(List.of("a", "b", "c"),
+                List.of(
+                    List.of("a", "b", "c"),
+                    List.of("a", "c", "b"),
+                    List.of("b", "a", "c"),
+                    List.of("b", "c", "a"),
+                    List.of("c", "a", "b"),
+                    List.of("c", "b", "a")
+                )
+            )
         );
-        final String inputValue = "value3";
+    }
 
-        final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
+    @ParameterizedTest
+    @MethodSource("provideForGetKeyByValue")
+    void testGetKeyByValue(final Map<String, ? super String> input, final String value, final Optional<String> expected) {
+        final Optional<String> output = CollectionUtils.getKeyByValue(input, value);
         assertThat(output)
-            .isEmpty();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenGetKeyByValue_givenEmptyMap_thenEmptyOptionalIsReturned() {
-        final Map<String, String> inputMap = Collections.emptyMap();
-        final String inputValue = "value1";
+    private static Stream<Arguments> provideForGetKeyByValue() {
+        final Map<String, String> inputMap = Map.of("key1", "value1", "key2", "value2");
+        return Stream.of(
+            Arguments.of(inputMap, "value2", Optional.of("key2")),  // Key exists
+            Arguments.of(inputMap, "value3", Optional.empty()),                  // Key doesn't exist
+            Arguments.of(Map.of(), "value1", Optional.empty())                   // Empty
+        );
+    }
 
-        final Optional<String> output = CollectionUtils.getKeyByValue(inputMap, inputValue);
+    @ParameterizedTest
+    @MethodSource("provideForMiddleValue")
+    void testMiddleValue(final List<String> input, final String expected) {
+        final String output = CollectionUtils.getMiddleValue(input);
         assertThat(output)
-            .isEmpty();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenGetMiddleValueOfList_givenListOfOddSize_thenMiddleValueIsReturned() {
-        final List<String> input = List.of("a", "b", "c");
-        final String output = CollectionUtils.getMiddleValueOfList(input);
-        assertThat(output)
-            .isEqualTo("b");
+    private static Stream<Arguments> provideForMiddleValue() {
+        return Stream.of(
+            Arguments.of(List.of("a", "b", "c"), "b"),  // Sorted list of odd size
+            Arguments.of(List.of("c", "a", "b"), "b"),  // Unsorted list of odd size
+            Arguments.of(List.of("a"), "a")         // List with single size
+        );
     }
 
-    @Test
-    void whenGetMiddleValueOfList_givenUnsortedListOfOddSize_thenMiddleValueOfSortedListIsReturned() {
-        final List<String> input = List.of("c", "a", "b");
-        final String output = CollectionUtils.getMiddleValueOfList(input);
-        assertThat(output)
-            .isEqualTo("b");
-    }
-
-    @Test
-    void whenGetMiddleValueOfList_givenListWithSingleEntry_thenOnlyValueIsReturned() {
-        final List<String> input = List.of("a");
-        final String output = CollectionUtils.getMiddleValueOfList(input);
-        assertThat(output)
-            .isEqualTo("a");
-    }
-
-    @Test
-    void whenGetMiddleValueOfList_givenListOfEvenSize_thenIllegalArgumentExceptionIsThrown() {
-        final List<String> input = List.of("a", "b");
-        assertThatThrownBy(() -> CollectionUtils.getMiddleValueOfList(input))
-            .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void whenGetMiddleValueOfList_givenEmptyList_thenIllegalArgumentExceptionIsThrown() {
-        final List<String> input = Collections.emptyList();
-        assertThatThrownBy(() -> CollectionUtils.getMiddleValueOfList(input))
-            .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void whenGroupBySize_givenValidCollection_thenGroupedCollectionsAreReturned() {
-        final List<String> input = List.of("a", "b", "c", "d");
-        final List<List<String>> output = CollectionUtils.groupBySize(input, 2);
-        assertThat(output)
-            .hasSize(2)
-            .containsExactly(
-                List.of("a", "b"),
-                List.of("c", "d")
-            );
-    }
-
-    @Test
-    void whenGroupBySize_givenEmptyCollection_thenEmptyGroupIsReturned() {
-        final List<String> input = List.of();
-        final List<List<String>> output = CollectionUtils.groupBySize(input, 2);
-
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly(List.of());
-    }
-
-    @Test
-    void whenGroupBySize_givenCollectionWithInvalidNumberOfEntries_thenExceptionIsThrown() {
-        final List<String> input = List.of("a");
-        assertThatThrownBy(() -> CollectionUtils.groupBySize(input, 2))
+    @ParameterizedTest
+    @MethodSource("provideForMiddleValue_invalid")
+    void testMiddleValue_givenInvalidInputs(final List<String> input, final String errorMessage) {
+        assertThatThrownBy(() -> CollectionUtils.getMiddleValue(input))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Expected number of entries to be divisible by 2, found: 1");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenGroupBySize_givenCollection_andZeroAmountPerGroup_thenExceptionIsThrown() {
-        final List<String> input = List.of("a");
-        assertThatThrownBy(() -> CollectionUtils.groupBySize(input, 0))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("amountPerGroup must be at least 1, found: 0");
+    private static Stream<Arguments> provideForMiddleValue_invalid() {
+        return Stream.of(
+            Arguments.of(List.of("a", "b"), "Expected list with positive odd size, found size: 2"),     // List of even size
+            Arguments.of(List.of(), "Expected list with positive odd size, found size: 0")              // Empty
+        );
     }
 
-    @Test
-    void whenGroupBySize_givenCollection_andNegativeAmountPerGroup_thenExceptionIsThrown() {
+    @ParameterizedTest
+    @MethodSource("provideForGroupBySize")
+    void testGroupBySize(final List<String> input, final int amountPerGroup, final List<? extends List<String>> expected) {
+        final List<List<String>> output = CollectionUtils.groupBySize(input, amountPerGroup);
+        assertThat(output)
+            .hasSameElementsAs(expected);
+    }
+
+    private static Stream<Arguments> provideForGroupBySize() {
+        return Stream.of(
+            Arguments.of(List.of("a", "b", "c", "d"), 2, List.of(List.of("a", "b"), List.of("c", "d"))),   // Divisible by amountPerGroup
+            Arguments.of(List.of(), 2, List.of(List.of()))                                                 // Empty
+        );
+    }
+
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+        "2|Expected number of entries to be divisible by 2, found: 1",  // Invalid number of entries
+        "0|amountPerGroup must be at least 1, found: 0",                // Zero amount per group
+        "-2|amountPerGroup must be at least 1, found: -2",              // Negative amount per group
+    })
+    void testGroupBySize_givenInvalidInputs(final int amountPerGroup, final String errorMessage) {
         final List<String> input = List.of("a");
-        assertThatThrownBy(() -> CollectionUtils.groupBySize(input, -2))
+        assertThatThrownBy(() -> CollectionUtils.groupBySize(input, amountPerGroup))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("amountPerGroup must be at least 1, found: -2");
+            .hasMessage(errorMessage);
     }
 }

@@ -57,9 +57,13 @@ public final class CollectionUtils {
      * @param extractionFunction the {@link Function} used to extract a value
      * @param <I>                the type of the input {@link Collection} of {@code elements}
      * @param <O>                the type of the output values which will be mapped by the {@link Function}
-     * @return the updated {@link Collection}
+     * @return the updated {@link Collection}, or an empty {@link Collection} if input is {@code null} or {@link Collection#isEmpty()}
      */
     public static <I, O> List<O> extractValuesAsList(final Collection<I> elements, final Function<? super I, O> extractionFunction) {
+        if (elements == null || elements.isEmpty()) {
+            return List.of();
+        }
+
         return elements
             .stream()
             .map(extractionFunction)
@@ -141,7 +145,7 @@ public final class CollectionUtils {
      * @return the value at the middle of the sorted {@link List}
      * @throws IllegalArgumentException thrown if the {@link List} has an even size
      */
-    public static <E extends Comparable<E>> E getMiddleValueOfList(final List<E> list) {
+    public static <E extends Comparable<E>> E getMiddleValue(final List<E> list) {
         final int listSize = list.size();
         if (list.isEmpty() || MathUtils.isEven(listSize)) {
             throw new IllegalArgumentException("Expected list with positive odd size, found size: " + listSize);

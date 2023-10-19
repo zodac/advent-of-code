@@ -138,7 +138,7 @@ final class FileUtils {
             return lines
                 .stream()
                 .map(input -> Arrays.asList(input.split(",")))
-                .map(listOfStrings -> listOfStrings.stream().mapToInt(Integer::parseInt).boxed().toList())
+                .map(listOfStrings -> listOfStrings.stream().map(Integer::parseInt).toList())
                 .toList();
         } catch (final NumberFormatException e) {
             throw new IllegalArgumentException(e);

@@ -23,201 +23,190 @@ import static org.assertj.core.api.Assertions.atIndex;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Unit tests for {@link ArrayUtils}.
  */
 class ArrayUtilsTest {
 
-    @Test
-    void whenAreColumnLengthsDifferent_givenArrayWithDifferentColumnLengths_thenTrueIsReturned() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e'}};
-        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
+    @ParameterizedTest
+    @MethodSource("provideForConvertToArrayOfBooleanArrays")
+    void testConvertToArrayOfBooleanArrays(final List<String> input, final char symbolForTrue, final Boolean[][] expected) {
+        final Boolean[][] output = ArrayUtils.convertToArrayOfBooleanArrays(input, symbolForTrue);
         assertThat(output)
-            .isTrue();
+            .isDeepEqualTo(expected);
     }
 
-    @Test
-    void whenAreColumnLengthsDifferent_givenArrayWithConstantColumnLength_thenFalseIsReturned() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}};
-        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
-        assertThat(output)
-            .isFalse();
+    private static Stream<Arguments> provideForConvertToArrayOfBooleanArrays() {
+        return Stream.of(
+            // Valid list
+            Arguments.of(List.of("abb", "bab", "aaa"), 'a',
+                new Boolean[][] {
+                    {Boolean.TRUE, Boolean.FALSE, Boolean.FALSE},
+                    {Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
+                    {Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}
+                }
+            ),
+            // Valid list, where first string is longer than others
+            Arguments.of(List.of("abbb", "bab", "aaa"), 'a',
+                new Boolean[][] {
+                    {Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+                    {Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
+                    {Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}
+                }
+            ),
+            // Valid list, where last string is longer than others
+            Arguments.of(List.of("abb", "bab", "aaaa"), 'a',
+                new Boolean[][] {
+                    {Boolean.TRUE, Boolean.FALSE, Boolean.FALSE},
+                    {Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
+                    {Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}
+                }
+            ),
+            // Valid list, with no matches
+            Arguments.of(List.of("abb", "bab", "aaa"), 'c',
+                new Boolean[][] {
+                    {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+                    {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
+                    {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE}
+                }
+            ),
+            Arguments.of(List.of(""), 'a', new Boolean[][] {}),         // List of empty string
+            Arguments.of(List.of(), 'a', new Boolean[][] {})                // Empty list
+        );
     }
 
-    @Test
-    void whenAreColumnLengthsDifferent_givenEmptyArray_thenFalseIsReturned() {
-        final char[][] input = {};
-        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenAreColumnLengthsDifferent_givenArrayOfEmptyArrays_thenFalseIsReturned() {
-        final char[][] input = {{}, {}};
-        final boolean output = ArrayUtils.areColumnLengthsDifferent(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenConvertToArrayOfBooleanArrays_givenValidListOfStrings_thenArrayOfBooleanArraysIsReturned() {
-        final List<String> input = List.of("abb", "bab", "aaa");
-        final Boolean[][] output = ArrayUtils.convertToArrayOfBooleanArrays(input, 'a');
-        assertThat(output)
-            .contains(new Boolean[] {Boolean.TRUE, Boolean.FALSE, Boolean.FALSE}, atIndex(0))
-            .contains(new Boolean[] {Boolean.FALSE, Boolean.TRUE, Boolean.FALSE}, atIndex(1))
-            .contains(new Boolean[] {Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}, atIndex(2));
-    }
-
-    @Test
-    void whenConvertToArrayOfBooleanArrays_givenValidListOfStrings_andLongestStringIsNotFirstString_thenArrayOfBooleanArraysIsReturned() {
-        final List<String> input = List.of("abbb", "bab", "aa", "bbb");
-        final Boolean[][] output = ArrayUtils.convertToArrayOfBooleanArrays(input, 'a');
-        assertThat(output)
-            .contains(new Boolean[] {Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE}, atIndex(0))
-            .contains(new Boolean[] {Boolean.FALSE, Boolean.TRUE, Boolean.FALSE}, atIndex(1))
-            .contains(new Boolean[] {Boolean.TRUE, Boolean.TRUE}, atIndex(2))
-            .contains(new Boolean[] {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE}, atIndex(3));
-    }
-
-    @Test
-    void whenConvertToArrayOfBooleanArrays_givenEmptyList_thenArrayOfBooleanArraysIsReturned() {
-        final List<String> input = List.of();
-        final Boolean[][] output = ArrayUtils.convertToArrayOfBooleanArrays(input, 'a');
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenConvertToArrayOfBooleanArrays_givenListOfEmptyString_thenArrayOfBooleanArraysIsReturned() {
-        final List<String> input = List.of("");
-        final Boolean[][] output = ArrayUtils.convertToArrayOfBooleanArrays(input, 'a');
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenConvertToArrayOfCharArrays_givenValidListOfStrings_thenArrayOfCharArraysIsReturned() {
-        final List<String> input = List.of("abc", "def", "ghi");
+    @ParameterizedTest
+    @MethodSource("provideForConvertToArrayOfCharArrays")
+    void testConvertToArrayOfCharArrays(final List<String> input, final char[][] expected) {
         final char[][] output = ArrayUtils.convertToArrayOfCharArrays(input);
         assertThat(output)
-            .contains(new char[] {'a', 'b', 'c'}, atIndex(0))
-            .contains(new char[] {'d', 'e', 'f'}, atIndex(1))
-            .contains(new char[] {'g', 'h', 'i'}, atIndex(2));
+            .isDeepEqualTo(expected);
     }
 
-    @Test
-    void whenConvertToArrayOfCharArrays_givenValidListOfStrings_andLongestStringIsNotFirstString_thenArrayOfCharArraysIsReturned() {
-        final List<String> input = List.of("abc", "defg", "hij");
-        final char[][] output = ArrayUtils.convertToArrayOfCharArrays(input);
-        assertThat(output)
-            .hasNumberOfRows(3)
-            .contains(new char[] {'a', 'b', 'c'}, atIndex(0))
-            .contains(new char[] {'d', 'e', 'f', 'g'}, atIndex(1))
-            .contains(new char[] {'h', 'i', 'j'}, atIndex(2));
+    private static Stream<Arguments> provideForConvertToArrayOfCharArrays() {
+        return Stream.of(
+            // Valid list
+            Arguments.of(List.of("abc", "def", "ghi"),
+                new char[][] {
+                    {'a', 'b', 'c'},
+                    {'d', 'e', 'f'},
+                    {'g', 'h', 'i'}
+                }
+            ),
+            // Valid list, where first string is longer than others
+            Arguments.of(List.of("abcd", "efg", "hij"),
+                new char[][] {
+                    {'a', 'b', 'c', 'd'},
+                    {'e', 'f', 'g'},
+                    {'h', 'i', 'j'}
+                }
+            ),
+            // Valid list, where last string is longer than others
+            Arguments.of(List.of("abc", "def", "ghij"),
+                new char[][] {
+                    {'a', 'b', 'c'},
+                    {'d', 'e', 'f'},
+                    {'g', 'h', 'i', 'j'}
+                }
+            ),
+            Arguments.of(List.of(""), new char[][] {}),     // List of empty string
+            Arguments.of(List.of(), new char[][] {})            // Empty list
+        );
     }
 
-    @Test
-    void whenConvertToArrayOfCharArrays_givenEmptyList_thenArrayOfCharArraysIsReturned() {
-        final List<String> input = List.of();
-        final char[][] output = ArrayUtils.convertToArrayOfCharArrays(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenConvertToArrayOfCharArrays_givenListOfEmptyString_thenArrayOfCharArraysIsReturned() {
-        final List<String> input = List.of("");
-        final char[][] output = ArrayUtils.convertToArrayOfCharArrays(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenConvertToArrayOfIntegerArrays_givenValidListOfStrings_thenArrayOfIntegerArraysIsReturned() {
-        final List<String> input = List.of("123", "456", "789");
+    @ParameterizedTest
+    @MethodSource("provideForConvertToArrayOfIntegerArrays")
+    void testConvertToArrayOfIntegerArrays(final List<String> input, final Integer[][] expected) {
         final Integer[][] output = ArrayUtils.convertToArrayOfIntegerArrays(input);
         assertThat(output)
-            .contains(new Integer[] {1, 2, 3}, atIndex(0))
-            .contains(new Integer[] {4, 5, 6}, atIndex(1))
-            .contains(new Integer[] {7, 8, 9}, atIndex(2));
+            .isDeepEqualTo(expected);
     }
 
-    @Test
-    void whenConvertToArrayOfIntegerArrays_givenValidListOfStrings_andLongestStringIsNotFirstString_thenArrayOfIntegerArraysIsReturned() {
-        final List<String> input = List.of("1234", "567", "89", "012");
-        final Integer[][] output = ArrayUtils.convertToArrayOfIntegerArrays(input);
-        assertThat(output)
-            .contains(new Integer[] {1, 2, 3, 4}, atIndex(0))
-            .contains(new Integer[] {5, 6, 7}, atIndex(1))
-            .contains(new Integer[] {8, 9}, atIndex(2))
-            .contains(new Integer[] {0, 1, 2}, atIndex(3));
+    private static Stream<Arguments> provideForConvertToArrayOfIntegerArrays() {
+        return Stream.of(
+            // Valid list
+            Arguments.of(List.of("123", "456", "789"),
+                new Integer[][] {
+                    {1, 2, 3},
+                    {4, 5, 6},
+                    {7, 8, 9}
+                }
+            ),
+            // Valid list, where first string is longer than others
+            Arguments.of(List.of("1234", "567", "890"),
+                new Integer[][] {
+                    {1, 2, 3, 4},
+                    {5, 6, 7},
+                    {8, 9, 0}
+                }
+            ),
+            // Valid list, where last string is longer than others
+            Arguments.of(List.of("123", "456", "7890"),
+                new Integer[][] {
+                    {1, 2, 3},
+                    {4, 5, 6},
+                    {7, 8, 9, 0}
+                }
+            ),
+            // List with some integers, some non-integers
+            Arguments.of(List.of("123", "4a6", "789"),
+                new Integer[][] {
+                    {1, 2, 3},
+                    {4, 0, 6},
+                    {7, 8, 9}
+                }
+            ),
+            // No integers
+            Arguments.of(List.of("abc", "def", "ghi"),
+                new Integer[][] {
+                    {0, 0, 0},
+                    {0, 0, 0},
+                    {0, 0, 0}
+                }
+            ),
+            Arguments.of(List.of(""), new Integer[][] {}),              // List of empty string
+            Arguments.of(List.of(), new Integer[][] {})                     // Empty list
+        );
     }
 
-    @Test
-    void whenConvertToArrayOfIntegerArrays_givenEmptyList_thenArrayOfIntegerArraysIsReturned() {
-        final List<String> input = List.of();
-        final Integer[][] output = ArrayUtils.convertToArrayOfIntegerArrays(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenConvertToArrayOfIntegerArrays_givenListOfEmptyString_thenArrayOfIntegerArraysIsReturned() {
-        final List<String> input = List.of("");
-        final Integer[][] output = ArrayUtils.convertToArrayOfIntegerArrays(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCountPerimeterElements_givenValidArray_thenCorrectCountIsReturned() {
-        final int output1 = ArrayUtils.countPerimeterElements(populateArrayOfArraysWithSize(3));
-        assertThat(output1)
-            .isEqualTo(8);
-
-        final int output2 = ArrayUtils.countPerimeterElements(populateArrayOfArraysWithSize(10));
-        assertThat(output2)
-            .isEqualTo(36);
-
-        final int output3 = ArrayUtils.countPerimeterElements(populateArrayOfArraysWithSize(99));
-        assertThat(output3)
-            .isEqualTo(392);
-    }
-
-    private static Integer[][] populateArrayOfArraysWithSize(final int size) {
-        final Integer[][] array = new Integer[size][size];
-        for (final Integer[] row : array) {
+    @ParameterizedTest
+    @CsvSource({
+        "3,8",
+        "10,36",
+        "99,392",
+    })
+    void testCountPerimeterElements(final int arraySize, final int expectedValue) {
+        final Integer[][] input = new Integer[arraySize][arraySize];
+        for (final Integer[] row : input) {
             Arrays.fill(row, 1);
         }
-        return array;
+
+        final int output = ArrayUtils.countPerimeterElements(input);
+        assertThat(output)
+            .isEqualTo(expectedValue);
     }
 
-    @Test
-    void whenCountPerimeterElements_givenNonSquareArray_thenExceptionIsThrown() {
-        final Integer[][] input = {{1, 2, 3, 4}, {5, 6}, {7, 8, 9}};
+    @ParameterizedTest
+    @MethodSource("provideForCountPerimeterElements_invalid")
+    void testCountPerimeterElements_givenInvalidInputs(final Integer[][] input, final String errorMessage) {
         assertThatThrownBy(() -> ArrayUtils.countPerimeterElements(input))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Outer size must match inner size, found outer: 3, inner: 4");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenCountPerimeterElements_givenEmptyArray_thenExceptionIsThrown() {
-        final Integer[][] input = {};
-        assertThatThrownBy(() -> ArrayUtils.countPerimeterElements(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input cannot be null or empty");
-    }
-
-    @Test
-    void whenCountPerimeterElements_givenNullArray_thenExceptionIsThrown() {
-        final Integer[][] input = null;
-        assertThatThrownBy(() -> ArrayUtils.countPerimeterElements(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input cannot be null or empty");
+    private static Stream<Arguments> provideForCountPerimeterElements_invalid() {
+        return Stream.of(
+            Arguments.of(new Integer[][] {{1, 2, 3, 4}, {5, 6}, {7, 8, 9}}, "Outer size must match inner size, found outer: 3, inner: 4"),
+            Arguments.of(new Integer[][] {}, "Input cannot be null or empty"),   // Empty 1D array
+            Arguments.of(null, "Input cannot be null or empty")                  // Empty 2D array
+        );
     }
 
     @Test
@@ -243,304 +232,200 @@ class ArrayUtilsTest {
             .contains(new boolean[] {false, false, false}, atIndex(2));
     }
 
-    @Test
-    void whenDeepFill_givenValidInputWithColumnsOfDifferentLengths_thenNewFilledArrayIsReturned() {
-        final boolean[][] input = new boolean[3][2];
-        final boolean[][] output = ArrayUtils.deepFill(input, true);
+    @ParameterizedTest
+    @MethodSource("provideForDeepFill")
+    void testForDeepFill(final boolean[][] input, final boolean value, final boolean[][] expected) {
+        final boolean[][] output = ArrayUtils.deepFill(input, value);
         assertThat(output)
-            .contains(new boolean[] {true, true}, atIndex(0))
-            .contains(new boolean[] {true, true}, atIndex(1))
-            .contains(new boolean[] {true, true}, atIndex(2));
+            .isDeepEqualTo(expected);
     }
 
-    @Test
-    void whenDeepFill_givenEmptyArray_thenEmptyArrayIsReturned() {
-        final boolean[][] input = {};
-        final boolean[][] output = ArrayUtils.deepFill(input, true);
-        assertThat(output)
-            .isEmpty();
+    private static Stream<Arguments> provideForDeepFill() {
+        return Stream.of(
+            Arguments.of(new boolean[2][2], false, new boolean[][] {{false, false}, {false, false}}),           // Same column lengths
+            Arguments.of(new boolean[3][2], true, new boolean[][] {{true, true}, {true, true}, {true, true}}),  // Different column lengths
+            Arguments.of(new boolean[][] {}, true, new boolean[0][0]),                                          // Empty 1D array
+            Arguments.of(new boolean[][] {{}, {}}, true, new boolean[0][0]),                                    // Empty 2D array
+            Arguments.of(null, true, new boolean[0][0])                                                         // Null
+        );
     }
 
-    @Test
-    void whenDeepFill_givenArrayOfEmptyArrays_thenEmptyArrayIsReturned() {
-        final boolean[][] input = {{}, {}, {}};
-        final boolean[][] output = ArrayUtils.deepFill(input, true);
+    @ParameterizedTest
+    @MethodSource("provideForFindSmallestIndexGreaterThanThreshold")
+    void testFindSmallestIndexGreaterThanThreshold(final int[] input, final int threshold, final int expected) {
+        final int output = ArrayUtils.findSmallestIndexGreaterThanThreshold(input, threshold);
         assertThat(output)
-            .isEmpty();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenDeepFill_givenNullArray_thenEmptyArrayIsReturned() {
-        final boolean[][] input = null;
-        final boolean[][] output = ArrayUtils.deepFill(input, true);
-        assertThat(output)
-            .isEmpty();
+    private static Stream<Arguments> provideForFindSmallestIndexGreaterThanThreshold() {
+        return Stream.of(
+            Arguments.of(new int[] {1, 2, 3}, 2, 2),        // Single value above threshold (sorted)
+            Arguments.of(new int[] {1, 2, 3}, 1, 1),        // Multiple values above threshold (sorted)
+            Arguments.of(new int[] {3, 2, 1}, 2, 0),        // Single value above threshold (unsorted)
+            Arguments.of(new int[] {2, 3, 1}, 1, 0),        // Multiple values above threshold (unsorted),
+            Arguments.of(new int[] {-1, -2, -3}, -2, 0)     // Single value above threshold (negative)
+        );
     }
 
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithOneValueAboveThreshold_thenCorrectIndexIsReturned() {
-        final int[] input = {1, 2, 3};
-        final int output = ArrayUtils.findSmallestIndexGreaterThanThreshold(input, 2);
-        assertThat(output)
-            .isEqualTo(2);
-    }
-
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithMultipleValuesAboveThreshold_thenSmallestIndexIsReturned() {
-        final int[] input = {1, 2, 3};
-        final int output = ArrayUtils.findSmallestIndexGreaterThanThreshold(input, 1);
-        assertThat(output)
-            .isEqualTo(1);
-    }
-
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithMultipleUnorderedValuesAboveThreshold_thenSmallestIndexIsReturned() {
-        final int[] input = {2, 3, 1};
-        final int output = ArrayUtils.findSmallestIndexGreaterThanThreshold(input, 1);
-        assertThat(output)
-            .isEqualTo(0);
-    }
-
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenInputWithNoValuesAboveThreshold_thenExceptionIsThrown() {
-        final int[] input = {1, 2, 3};
-        assertThatThrownBy(() -> ArrayUtils.findSmallestIndexGreaterThanThreshold(input, 3))
+    @ParameterizedTest
+    @MethodSource("provideFindSmallestIndexGreaterThanThreshold_invalid")
+    void testFindSmallestIndexGreaterThanThreshold_givenInvalidInputs(final int[] input, final int threshold, final String errorMessage) {
+        assertThatThrownBy(() -> ArrayUtils.findSmallestIndexGreaterThanThreshold(input, threshold))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("No value in input is greater than 3");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenEmptyInput_thenExceptionIsThrown() {
-        final int[] input = {};
-        assertThatThrownBy(() -> ArrayUtils.findSmallestIndexGreaterThanThreshold(input, 0))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Input cannot be null or empty");
+    private static Stream<Arguments> provideFindSmallestIndexGreaterThanThreshold_invalid() {
+        return Stream.of(
+            Arguments.of(new int[] {1, 2, 3}, 3, "No value in input is greater than 3"),    // No value above threshold
+            Arguments.of(new int[] {}, 1, "Input cannot be null or empty"),                         // Empty array
+            Arguments.of(null, 1, "Input cannot be null or empty")                                  // Null
+        );
     }
 
-    @Test
-    void whenFindSmallestIndexGreaterThanThreshold_givenNullInput_thenExceptionIsThrown() {
-        final int[] input = null;
-        assertThatThrownBy(() -> ArrayUtils.findSmallestIndexGreaterThanThreshold(input, 0))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Input cannot be null or empty");
-    }
-
-    @Test
-    void whenFlatten_givenValidArray_thenFlattenedArrayIsReturned() {
-        final boolean[][] input = {{true, true, true}, {false, false, false}, {true, false, true}};
+    @ParameterizedTest
+    @MethodSource("provideForFlatten")
+    void testFlatten(final boolean[][] input, final boolean[] expected) {
         final boolean[] output = ArrayUtils.flatten(input);
         assertThat(output)
-            .hasSize(9)
-            .containsExactly(true, true, true, false, false, false, true, false, true);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenFlatten_givenValidArrayWithColumnsOfDifferingLengths_thenFlattenedArrayIsReturned() {
-        final boolean[][] input = {{true, true, true}, {false, false}, {true}};
-        final boolean[] output = ArrayUtils.flatten(input);
-        assertThat(output)
-            .hasSize(6)
-            .containsExactly(true, true, true, false, false, true);
+    private static Stream<Arguments> provideForFlatten() {
+        return Stream.of(
+            // Valid array
+            Arguments.of(
+                new boolean[][] {{true, true, true}, {false, false, false}, {true, false, true}},
+                new boolean[] {true, true, true, false, false, false, true, false, true}
+            ),
+            // Columns with different lengths
+            Arguments.of(
+                new boolean[][] {{true, true, true}, {false, false}, {true}},
+                new boolean[] {true, true, true, false, false, true}
+            ),
+            Arguments.of(new boolean[][] {}, new boolean[0]),                     // Empty 1D array
+            Arguments.of(new boolean[][] {{}, {}}, new boolean[0]),     // Empty 2D array
+            Arguments.of(null, new boolean[0])                          // Null
+        );
     }
 
-    @Test
-    void whenFlatten_givenEmptyArray_thenEmptyArrayIsReturned() {
-        final boolean[][] input = {};
-        final boolean[] output = ArrayUtils.flatten(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFlatten_givenArrayOfEmptyArrays_thenEmptyArrayIsReturned() {
-        final boolean[][] input = {{}, {}, {}};
-        final boolean[] output = ArrayUtils.flatten(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFlatten_givenNullArray_thenEmptyArrayIsReturned() {
-        final boolean[][] input = null;
-        final boolean[] output = ArrayUtils.flatten(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenMaxInnerLength_givenArrayWithEqualLengths_thenMaxInnerLengthIsReturned() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}};
+    @ParameterizedTest
+    @MethodSource("provideForMaxInnerLength")
+    void testMaxInnerLength(final char[][] input, final int expected) {
         final int output = ArrayUtils.maxInnerLength(input);
         assertThat(output)
-            .isEqualTo(3);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenMaxInnerLength_givenSingleInnerArray_thenMaxInnerLengthIsReturned() {
-        final char[][] input = {{'a', 'b'}};
-        final int output = ArrayUtils.maxInnerLength(input);
-        assertThat(output)
-            .isEqualTo(2);
+    private static Stream<Arguments> provideForMaxInnerLength() {
+        return Stream.of(
+            Arguments.of(new char[][] {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}}, 3),  // Columns of equal length
+            Arguments.of(new char[][] {{'a', 'b'}}, 2),                                         // Single inner array
+            Arguments.of(new char[][] {{'a', 'b'}, {'c', 'd', 'e', 'f'}, {'g', 'h', 'i'}}, 4),  // Different column lengths
+            Arguments.of(new char[][] {{}, {}}, 0)                                              // Empty 2D array
+        );
     }
 
-    @Test
-    void whenMaxInnerLength_givenArrayWithDifferingLengths_thenMaxInnerLengthIsReturned() {
-        final char[][] input = {{'a', 'b'}, {'c', 'd', 'e', 'f'}, {'g', 'h', 'i'}};
-        final int output = ArrayUtils.maxInnerLength(input);
-        assertThat(output)
-            .isEqualTo(4);
-    }
-
-    @Test
-    void whenMaxInnerLength_givenEmptyArray_thenEmptyArrayIsReturned() {
-        final char[][] input = {};
+    @ParameterizedTest
+    @MethodSource("provideForMaxInnerLength_invalid")
+    void testMaxInnerLength_givenInvalidInputs(final char[][] input, final String errorMessage) {
         assertThatThrownBy(() -> ArrayUtils.maxInnerLength(input))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Cannot find max length of input: []");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenMaxInnerLength_givenArrayOfEmptyArrays_thenEmptyArrayIsReturned() {
-        final char[][] input = {{}, {}, {}};
-        final int output = ArrayUtils.maxInnerLength(input);
-        assertThat(output)
-            .isEqualTo(0);
+    private static Stream<Arguments> provideForMaxInnerLength_invalid() {
+        return Stream.of(
+            Arguments.of(new char[][] {}, "Cannot find max length of input: []"),   // Empty 1D array
+            Arguments.of(null, "Input cannot be null")                              // Null
+        );
     }
 
-    @Test
-    void whenMaxInnerLength_givenNullArray_thenEmptyArrayIsReturned() {
-        final char[][] input = null;
-        assertThatThrownBy(() -> ArrayUtils.maxInnerLength(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input cannot be null");
-    }
-
-    @Test
-    void whenReverseRows_givenValidInput_thenReversedArrayIsReturned() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}};
+    @ParameterizedTest
+    @MethodSource("provideForReverseRows")
+    void testReverseRows(final char[][] input, final char[][] expected) {
         final char[][] output = ArrayUtils.reverseRows(input);
         assertThat(output)
-            .contains(new char[] {'g', 'h', 'i'}, atIndex(0))
-            .contains(new char[] {'d', 'e', 'f'}, atIndex(1))
-            .contains(new char[] {'a', 'b', 'c'}, atIndex(2));
+            .isDeepEqualTo(expected);
     }
 
-    @Test
-    void whenReverseRows_givenInputWithColumnsOfDifferentLengths_thenReversedArrayIsReturned() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e'}, {'f', 'g', 'h', 'i'}};
-        final char[][] output = ArrayUtils.reverseRows(input);
-        assertThat(output)
-            .contains(new char[] {'f', 'g', 'h', 'i'}, atIndex(0))
-            .contains(new char[] {'d', 'e'}, atIndex(1))
-            .contains(new char[] {'a', 'b', 'c'}, atIndex(2));
+    private static Stream<Arguments> provideForReverseRows() {
+        return Stream.of(
+            // Valid input
+            Arguments.of(
+                new char[][] {
+                    {'a', 'b', 'c'},
+                    {'d', 'e', 'f'},
+                    {'g', 'h', 'i'}
+                },
+                new char[][] {
+                    {'g', 'h', 'i'},
+                    {'d', 'e', 'f'},
+                    {'a', 'b', 'c'}
+                }
+            ),
+            // Different column lengths
+            Arguments.of(
+                new char[][] {
+                    {'a', 'b', 'c'},
+                    {'d', 'e'},
+                    {'f', 'g', 'h', 'i'}
+                },
+                new char[][] {
+                    {'f', 'g', 'h', 'i'},
+                    {'d', 'e'},
+                    {'a', 'b', 'c'}
+                }
+            ),
+            Arguments.of(new char[][] {}, new char[0][0]),         // Empty 1D array
+            Arguments.of(new char[][] {{}, {}}, new char[0][0]),   // Empty 2D array
+            Arguments.of(new char[][] {{}, {}}, new char[0][0])    // Null
+        );
     }
 
-    @Test
-    void whenReverseRows_givenEmptyArray_thenInputIsReturned() {
-        final char[][] input = {};
-        final char[][] output = ArrayUtils.reverseRows(input);
-        assertThat(output)
-            .isEqualTo(input);
-    }
-
-    @Test
-    void whenReverseRows_givenArrayOfEmptyArray_thenInputIsReturned() {
-        final char[][] input = {{}, {}};
-        final char[][] output = ArrayUtils.reverseRows(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenReverseRows_givenNullArray_thenInputIsReturned() {
-        final char[][] input = null;
-        final char[][] output = ArrayUtils.reverseRows(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenSize_givenValidArray_thenFlattenedArrayIsReturned() {
-        final boolean[][] input = {{true, true, true}, {false, false, false}, {true, false, true}};
+    @ParameterizedTest
+    @MethodSource("provideForSize")
+    void testSize(final boolean[][] input, final int expected) {
         final int output = ArrayUtils.size(input);
         assertThat(output)
-            .isEqualTo(9);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenSize_givenValidArrayWithColumnsOfDifferingLengths_thenFlattenedArrayIsReturned() {
-        final boolean[][] input = {{true, true, true}, {false, false}, {true}};
-        final int output = ArrayUtils.size(input);
-        assertThat(output)
-            .isEqualTo(6);
+    private static Stream<Arguments> provideForSize() {
+        return Stream.of(
+            Arguments.of(new boolean[][] {{true, true, true}, {false, false, false}, {true, false, true}}, 9),  // Valid array
+            Arguments.of(new boolean[][] {{true, true, true}, {false, false}, {true}}, 6),                      // Different column lengths
+            Arguments.of(new boolean[][] {{}, {false, false}, {true}}, 3),                                      // Empty row
+            Arguments.of(new boolean[][] {}, 0),                                                                // Empty 1D array
+            Arguments.of(new boolean[][] {{}, {}}, 0),                                                          // Empty 2D array
+            Arguments.of(null, 0)                                                                               // Null
+        );
     }
 
-    @Test
-    void whenSize_givenValidArrayWithColumnsOfDifferingLengths_andFirstRowIsEmpty_thenFlattenedArrayIsReturned() {
-        final boolean[][] input = {{}, {false, false}, {true}};
-        final int output = ArrayUtils.size(input);
-        assertThat(output)
-            .isEqualTo(3);
-    }
-
-    @Test
-    void whenSize_givenEmptyArray_thenZeroArrayIsReturned() {
-        final boolean[][] input = {};
-        final int output = ArrayUtils.size(input);
-        assertThat(output)
-            .isZero();
-    }
-
-    @Test
-    void whenSize_givenArrayOfEmptyArrays_thenZeroIsReturned() {
-        final boolean[][] input = {{}, {}, {}};
-        final int output = ArrayUtils.size(input);
-        assertThat(output)
-            .isZero();
-    }
-
-    @Test
-    void whenSize_givenNullArray_thenEmptyZeroIsReturned() {
-        final boolean[][] input = null;
-        final int output = ArrayUtils.size(input);
-        assertThat(output)
-            .isZero();
-    }
-
-    @Test
-    void whenTranspose_givenValidInput_thenTransposedArrayIsReturned() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, {'j', 'k', 'l'}};
+    @ParameterizedTest
+    @MethodSource("provideForTranspose")
+    void testTranspose(final char[][] input, final char[][] expected) {
         final char[][] output = ArrayUtils.transpose(input);
         assertThat(output)
-            .contains(new char[] {'a', 'd', 'g', 'j'}, atIndex(0))
-            .contains(new char[] {'b', 'e', 'h', 'k'}, atIndex(1))
-            .contains(new char[] {'c', 'f', 'i', 'l'}, atIndex(2));
+            .isDeepEqualTo(expected);
     }
 
-    @Test
-    void whenTranspose_givenInputWithColumnsOfDifferentLengths_thenTransposedArrayIsReturned_andGapsFilledWithEmptyCharacter() {
-        final char[][] input = {{'a', 'b', 'c'}, {'d', 'e', 'f', 'g'}, {'h', 'i'}};
-        final char[][] output = ArrayUtils.transpose(input);
-        assertThat(output)
-            .contains(new char[] {'a', 'd', 'h'}, atIndex(0))
-            .contains(new char[] {'b', 'e', 'i'}, atIndex(1))
-            .contains(new char[] {'c', 'f', ' '}, atIndex(2))
-            .contains(new char[] {' ', 'g', ' '}, atIndex(3));
-    }
-
-    @Test
-    void whenTranspose_givenEmptyArray_thenInputIsReturned() {
-        final char[][] input = {};
-        final char[][] output = ArrayUtils.transpose(input);
-        assertThat(output)
-            .isEqualTo(input);
-    }
-
-    @Test
-    void whenTranspose_givenArrayOfEmptyArray_thenInputIsReturned() {
-        final char[][] input = {{}, {}};
-        final char[][] output = ArrayUtils.transpose(input);
-        assertThat(output)
-            .isEmpty();
+    private static Stream<Arguments> provideForTranspose() {
+        return Stream.of(
+            // Valid
+            Arguments.of(
+                new char[][] {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, {'j', 'k', 'l'}},
+                new char[][] {{'a', 'd', 'g', 'j'}, {'b', 'e', 'h', 'k'}, {'c', 'f', 'i', 'l'}}
+            ),
+            // Valid with gaps
+            Arguments.of(
+                new char[][] {{'a', 'b', 'c'}, {'d', 'e', 'f', 'g'}, {'h', 'i'}},
+                new char[][] {{'a', 'd', 'h'}, {'b', 'e', 'i'}, {'c', 'f', ' '}, {' ', 'g', ' '}}
+            ),
+            Arguments.of(new char[][] {}, new char[0][0]),         // Empty 1D array
+            Arguments.of(new char[][] {{}, {}}, new char[0][0]),   // Empty 2D array
+            Arguments.of(null, new char[0][0])           // Null
+        );
     }
 }

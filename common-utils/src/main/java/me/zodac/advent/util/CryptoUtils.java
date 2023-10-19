@@ -39,12 +39,12 @@ public final class CryptoUtils {
      * @param input            the {@link String} to be hashed
      * @param hashingAlgorithm the {@link HashingAlgorithm} to be used to hash the input
      * @return the hashed {@link String} as a hexadecimal {@link String}
-     * @throws IllegalArgumentException thrown if the input is <b>null</b> or {@link String#isBlank()}
+     * @throws IllegalArgumentException thrown if the input is {@code null} or {@link String#isBlank()}
      * @throws NoSuchAlgorithmException thrown if the {@link HashingAlgorithm} is not found
      */
     public static String hashAsHexString(final String input, final HashingAlgorithm hashingAlgorithm) throws NoSuchAlgorithmException {
         if (input == null || input.isBlank()) {
-            throw new IllegalArgumentException("Input must have at least one non-whitespace character, found: " + input);
+            throw new IllegalArgumentException(String.format("Input must have at least one non-whitespace character, found: '%s'", input));
         }
 
         final byte[] hash = hashingAlgorithm.hash(input);

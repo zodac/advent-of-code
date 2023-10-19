@@ -22,6 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 /**
  * Unit tests for {@link CryptoUtils}.
@@ -29,31 +31,22 @@ import org.junit.jupiter.api.Test;
 class CryptoUtilsTest {
 
     @Test
-    void whenHashAsHexString_givenValidString_thenHexStringIsReturned() throws NoSuchAlgorithmException {
+    void testHashAsHexString() throws NoSuchAlgorithmException {
         final String input = "abcdef609043";
         final String output = CryptoUtils.hashAsHexString(input, HashingAlgorithm.MD5);
         assertThat(output)
             .isEqualTo("000001DBBFA3A5C83A2D506429C7B00E");
     }
 
-    @Test
-    void whenHashAsHexString_givenEmptyString_thenIllegalArgumentExceptionIsThrown() {
-        final String input = "";
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+        "''|Input must have at least one non-whitespace character, found: ''",      // Empty
+        "' '|Input must have at least one non-whitespace character, found: ' '",    // Blank
+        "|Input must have at least one non-whitespace character, found: 'null'",    // Null
+    })
+    void testHashAsHexString_givenInvalidValues(final String input, final String errorMessage) {
         assertThatThrownBy(() -> CryptoUtils.hashAsHexString(input, HashingAlgorithm.MD5))
-            .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void whenHashAsHexString_givenBlankString_thenIllegalArgumentExceptionIsThrown() {
-        final String input = " ";
-        assertThatThrownBy(() -> CryptoUtils.hashAsHexString(input, HashingAlgorithm.MD5))
-            .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    void whenHashAsHexString_givenNullString_thenIllegalArgumentExceptionIsThrown() {
-        final String input = null;
-        assertThatThrownBy(() -> CryptoUtils.hashAsHexString(input, HashingAlgorithm.MD5))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(errorMessage);
     }
 }

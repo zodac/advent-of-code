@@ -141,16 +141,28 @@ public final class StringUtils {
     }
 
     /**
-     * Checks if the characters in the provided {@code superString} is a superset for all provided {@code subStrings}.
+     * Checks if the characters in the provided {@code input} is a superset for all provided {@code subStrings}.
      *
-     * @param superString the {@link String} that should contain all characters in all {@code subStrings}
-     * @param subStrings  the {@link String}s that should be subsets of {@code superString}
-     * @return {@code false} if any character in any {@code subString} is not in the {@code superString}
+     * @param input      the {@link String} that should contain all characters in all {@code subStrings}
+     * @param subStrings the {@link String}s that should be subsets of {@code input}, at least 1 must be provided
+     * @return {@code false} if any {@code subStrings} is not in the {@code input}, the {@code input} or any {@code subStrings} is {@code null}
      */
-    public static boolean containsAllCharacters(final String superString, final String... subStrings) {
+    public static boolean containsAllCharacters(final String input, final String... subStrings) {
+        if (input == null) {
+            return false;
+        }
+
+        if (subStrings.length == 0) {
+            return false;
+        }
+
         for (final String subString : subStrings) {
+            if (subString == null) {
+                return false;
+            }
+
             for (final char charToCheck : subString.toCharArray()) {
-                if (!superString.contains(Character.toString(charToCheck))) {
+                if (!input.contains(Character.toString(charToCheck))) {
                     return false;
                 }
             }
@@ -161,13 +173,21 @@ public final class StringUtils {
     /**
      * Checks if the provided {@code subStrings} are indeed contained in the provided {@code superString}.
      *
-     * @param superString the {@link String} that should contain all characters in all {@code subStrings}
-     * @param subStrings  the {@link String}s that should be subsets of {@code superString}
+     * @param input      the {@link String} that should contain all characters in all {@code subStrings}
+     * @param subStrings the {@link String}s that should be subsets of {@code superString}
      * @return {@code true} if any {@code subString} in contained in the {@code superString}
      */
-    public static boolean containsAny(final String superString, final String... subStrings) {
+    public static boolean containsAny(final String input, final String... subStrings) {
+        if (input == null) {
+            return false;
+        }
+
         for (final String subString : subStrings) {
-            if (superString.contains(subString)) {
+            if (subString == null) {
+                continue;
+            }
+
+            if (input.contains(subString)) {
                 return true;
             }
         }
@@ -329,25 +349,30 @@ public final class StringUtils {
      * This would give us an output of <b>11132221</b>.
      *
      * @param input the {@link String} input
-     * @return the output of the 'lookAndSay' sequence, or the input if input is <b>null</b>
+     * @return the output of the 'lookAndSay' sequence
+     * @throws IllegalArgumentException thrown if the input is {@code null} or {@link String#isBlank()}, or any character is not a valid integer
      */
     public static String lookAndSay(final String input) {
         if (input == null || input.isBlank()) {
-            return EMPTY_STRING;
+            throw new IllegalArgumentException("Input cannot be null or blank");
         }
 
         final StringBuilder output = new StringBuilder();
 
         for (int i = 0; i < input.length(); i++) {
-            int count = 1;
-            final char c = input.charAt(i);
+            final char currentChar = input.charAt(i);
 
-            while (i + 1 < input.length() && input.charAt(i + 1) == c) {
+            if (!Character.isDigit(currentChar)) {
+                throw new IllegalArgumentException(String.format("Character '%s' is not a valid integer", currentChar));
+            }
+
+            int count = 1;
+            while (i + 1 < input.length() && input.charAt(i + 1) == currentChar) {
                 i++; // If next char is same as current, move the pointer to the next char
                 count++;
             }
 
-            output.append(count).append(c);
+            output.append(count).append(currentChar);
         }
         return output.toString();
     }
@@ -478,9 +503,13 @@ public final class StringUtils {
      * </pre>
      *
      * @param input the {@link String} to sort
-     * @return the sorted {@link String}
+     * @return the sorted {@link String}, or {@link #EMPTY_STRING} if the input is {@code null}
      */
     public static String sort(final String input) {
+        if (input == null) {
+            return EMPTY_STRING;
+        }
+
         final char[] chars = input.toCharArray();
         Arrays.sort(chars);
         return String.copyValueOf(chars);
@@ -493,7 +522,7 @@ public final class StringUtils {
      * @return the array of split {@link String}s
      */
     public static String[] splitOnNewLines(final CharSequence input) {
-        if (input == null) {
+        if (input == null || input.isEmpty()) {
             return EMPTY_STRING_ARRAY;
         }
         return NEW_LINE_PATTERN.split(input);

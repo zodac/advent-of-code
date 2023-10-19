@@ -158,7 +158,7 @@ public final class MathUtils {
      * @throws IllegalArgumentException thrown if the input {@link Collection#isEmpty()}
      * @see <a href="https://en.wikipedia.org/wiki/Least_common_multiple">Lower Common Multiple</a>
      */
-    public static int lowestCommonMultiple(final Collection<Integer> inputs) {
+    public static long lowestCommonMultiple(final Collection<Integer> inputs) {
         if (inputs.isEmpty()) {
             throw new IllegalArgumentException("Input cannot be empty");
         }
@@ -229,7 +229,7 @@ public final class MathUtils {
      * @return the triangular number for the input
      * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
      */
-    public static long triangularNumber(final int value) {
+    public static long calculateTriangularNumberValue(final int value) {
         return Math.round(value * (value + 1) / TRIANGULAR_NUMBER_DENOMINATOR);
     }
 }

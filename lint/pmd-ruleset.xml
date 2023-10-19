@@ -10,17 +10,13 @@
     </description>
 
     <rule ref="category/java/bestpractices.xml">
-        <!-- Mostly used for tests -->
-        <exclude name="AvoidUsingHardCodedIP"/>
         <!-- Don't think a rule is necessary, should take it on a case-by-case basis to use a Supplier -->
         <exclude name="GuardLogStatement"/>
         <!-- False positives with other assertion libraries -->
         <exclude name="JUnitTestsShouldIncludeAssert"/>
         <!-- I have no problem with multiple asserts in my tests -->
         <exclude name="JUnitTestContainsTooManyAsserts"/>
-        <!-- False positives with AssertJ using #as() to include an error message -->
-        <exclude name="JUnitAssertionsShouldIncludeMessage"/>
-        <!-- False positives when using 2D arrays -->
+        <!-- I think explicit 2D arrays looks clearer -->
         <exclude name="UseVarargs"/>
     </rule>
     <!-- When using an indexed FOR loop, certain scenarios exist where I'd like to skip the increment -->
@@ -38,6 +34,8 @@
         <exclude name="CommentDefaultAccessModifier"/>
         <!-- Plenty of scenarios where we would like to exit a method early in error cases -->
         <exclude name="OnlyOneReturn"/>
+        <!-- False positives when multiplying 2 ints to result in a long -->
+        <exclude name="UnnecessaryCast"/>
         <!-- I prefer to be explicit in TRY-WITH-RESOURCES blocks -->
         <!-- Would be nice to keep the check for other cases (interfaces/annotations), but not possible -->
         <!-- Caught by SonarQube analysis -->
@@ -50,7 +48,6 @@
         <exclude name="ShortMethodName"/>
         <exclude name="ShortVariable"/>
         <exclude name="TooManyStaticImports"/>
-        <exclude name="UnnecessaryCast"/>
         <exclude name="UselessParentheses"/>
     </rule>
     <!-- I don't want to stick to the convention for unit tests, reasonable for production methods though -->
@@ -70,10 +67,16 @@
         <exclude name="AvoidCatchingGenericException"/>
         <!-- A little hit & miss -->
         <exclude name="GodClass"/>
-        <!-- I like chaining methods... -->
+        <!-- I like chaining methods -->
         <exclude name="LawOfDemeter"/>
         <!-- Not necessary -->
         <exclude name="LoosePackageCoupling"/>
+
+        <!-- Don't care about these rules, conflicts too much with the utility classes -->
+        <exclude name="CognitiveComplexity"/>
+        <exclude name="CyclomaticComplexity"/>
+        <exclude name="NcssCount"/>
+        <exclude name="NPathComplexity"/>
 
         <!-- Issues for a style guide -->
         <exclude name="CouplingBetweenObjects"/>
@@ -85,33 +88,6 @@
         <exclude name="UseObjectForClearerAPI"/>
         <exclude name="ExcessivePublicCount"/>
     </rule>
-    <!-- Default threshold is a bit high for some of our validation flows -->
-    <rule ref="category/java/design.xml/CognitiveComplexity">
-        <properties>
-            <property name="reportLevel" value="25"/>
-        </properties>
-    </rule>
-    <!-- Default threshold is a bit high for some of our classes -->
-    <rule ref="category/java/design.xml/CyclomaticComplexity">
-        <properties>
-            <property name="classReportLevel" value="200"/>
-            <property name="methodReportLevel" value="200"/>
-        </properties>
-    </rule>
-    <!-- Default threshold is a bit high for some of our classes -->
-    <rule ref="category/java/design.xml/NcssCount">
-        <properties>
-            <property name="methodReportLevel" value="70"/>
-            <property name="classReportLevel" value="1500"/>
-            <property name="ncssOptions" value=""/>
-        </properties>
-    </rule>
-    <!-- Default threshold is a bit high for some of our classes -->
-    <rule ref="category/java/design.xml/NPathComplexity">
-        <properties>
-            <property name="reportLevel" value="1000"/>
-        </properties>
-    </rule>
 
     <!-- Not checking this rule here, will be handled by Checkstyle -->
     <!-- <rule ref="category/java/documentation.xml"/> -->
@@ -119,25 +95,19 @@
     <rule ref="category/java/errorprone.xml">
         <!-- Don't agree, not worth it -->
         <exclude name="AvoidDuplicateLiterals"/>
-
         <!-- Disagree, nicer to have getters with the field name -->
         <exclude name="AvoidFieldNameMatchingMethodName"/>
-
-        <!-- Quite a few false positives -->
-        <exclude name="NonSerializableClass"/>
-
-        <!-- Helper classes can cause this to fail, not worth changing them -->
-        <exclude name="TestClassWithoutTestCases"/>
     </rule>
 
     <rule ref="category/java/multithreading.xml">
-        <!-- False positives in TeamCompetitionStatsEndpoint#getCategoryLeaderboard() -->
-        <!-- No need for concurrency in a @RequestScoped EJB, certainly not for an internal function -->
+        <!-- Need to interrupt the thread when catching an InterruptedException -->
+        <exclude name="DoNotUseThreads"/>
+        <!-- Not necessary, see https://github.com/pmd/pmd/issues/2926 for discussion -->
         <exclude name="UseConcurrentHashMap"/>
     </rule>
 
     <rule ref="category/java/performance.xml">
-        <!-- False positives in TeamCompetitionStatsEndpoint#getCategoryLeaderboard() -->
+        <!-- False positives when creating mutable ArrayList instances -->
         <exclude name="AvoidInstantiatingObjectsInLoops"/>
     </rule>
 

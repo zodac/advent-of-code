@@ -23,1285 +23,454 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 import me.zodac.advent.pojo.tuple.Pair;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Unit tests for {@link StringUtils}.
  */
 class StringUtilsTest {
 
-    @Test
-    void whenBisect_givenStringOfEvenLength_thenPairOfHalvesIsReturned() {
-        final String input = "abcdef";
+    @ParameterizedTest
+    @CsvSource({
+        "abcdef,abc,def",   // Valid
+        "'    ','  ','  '", // Blank, with valid length
+    })
+    void testBisect(final String input, final String firstHalf, final String secondHalf) {
         final Pair<String, String> output = StringUtils.bisect(input);
         assertThat(output)
-            .isEqualTo(Pair.of("abc", "def"));
+            .isEqualTo(Pair.of(firstHalf, secondHalf));
     }
 
-    @Test
-    void whenBisect_givenBlankStringOfEvenLength_thenPairOfHalvesIsReturned() {
-        final String input = "    ";
-        final Pair<String, String> output = StringUtils.bisect(input);
-        assertThat(output)
-            .isEqualTo(Pair.of("  ", "  "));
-    }
-
-    @Test
-    void whenBisect_givenStringOfOddLength_thenExceptionIsThrown() {
-        final String input = "abcdefg";
+    @ParameterizedTest
+    @CsvSource({
+        "abcdefg,Cannot bisect input of length: 7", // Invalid length
+        "'     ',Cannot bisect input of length: 5", // Blank, with invalid length
+        "'',Input cannot be null or empty",         // Empty
+        ",Input cannot be null or empty",           // Null
+    })
+    void testBisect_givenInvalidInputs(final String input, final String errorMessage) {
         assertThatThrownBy(() -> StringUtils.bisect(input))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Cannot bisect input of length: 7");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenBisect_givenEmptyStringOfOddLength_thenExceptionIsThrown() {
-        final String input = "     ";
-        assertThatThrownBy(() -> StringUtils.bisect(input))
+    @ParameterizedTest
+    @MethodSource("provideForCollectNumbersInOrder")
+    void testCollectNumbersInOrder(final String input, final List<Integer> expected) {
+        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+        assertThat(output)
+            .hasSameElementsAs(expected);
+    }
+
+    private static Stream<Arguments> provideForCollectNumbersInOrder() {
+        return Stream.of(
+            Arguments.of("1", List.of(1)),                              // Single integer
+            Arguments.of("1 23 456", List.of(1, 23, 456)),                  // Multiple integers
+            Arguments.of("1 -23 456", List.of(1, -23, 456)),                // Negative integer
+            Arguments.of("1 and 23 and 456", List.of(1, 23, 456)),          // Integers and words
+            Arguments.of("1 23 456 9999999999999999", List.of(1, 23, 456)), // Multiple integers and valid long
+            Arguments.of("No numbers here", List.of()),                     // No integers
+            Arguments.of("", List.of()),                                    // Empty
+            Arguments.of(" ", List.of()),                                   // Blank
+            Arguments.of(null, List.of())                                   // Null
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForCommonChars")
+    void testCommonChars(final String first, final String[] others, final Set<Character> expected) {
+        final Set<Character> output = StringUtils.commonChars(first, others);
+        assertThat(output)
+            .hasSameElementsAs(expected);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForCommonChars_invalid")
+    void testCommonChars_givenInvalidInputs(final String first, final String[] others, final String errorMessage) {
+        assertThatThrownBy(() -> StringUtils.commonChars(first, others))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Cannot bisect input of length: 5");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenBisect_givenEmptyString_thenExceptionIsThrown() {
-        final String input = "";
-        assertThatThrownBy(() -> StringUtils.bisect(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Input cannot be null or empty");
+    private static Stream<Arguments> provideForCommonChars() {
+        return Stream.of(
+            Arguments.of("abcd", new String[] {"aefg"}, Set.of('a')),                    // Single common character, 2 inputs
+            Arguments.of("abcd", new String[] {"aefg", "ahij"}, Set.of('a')),            // Single common character, 3 inputs
+            Arguments.of("abcdz", new String[] {"aefgz", "ahijz"}, Set.of('a', 'z')),    // Multiple common characters
+            Arguments.of("abcd", new String[] {"aefgh", "ahijk"}, Set.of('a')),          // Single common character, partial common ignored
+            Arguments.of("abcdz", new String[] {"aezfagz"}, Set.of('a', 'z')),           // Duplicate common characters
+            Arguments.of("abc", new String[] {"def", "ghi"}, Set.of())                   // No common characters
+        );
     }
 
-    @Test
-    void whenBisect_givenNullString_thenExceptionIsThrown() {
-        final String input = null;
-        assertThatThrownBy(() -> StringUtils.bisect(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Input cannot be null or empty");
+    private static Stream<Arguments> provideForCommonChars_invalid() {
+        return Stream.of(
+            Arguments.of("abcd", new String[0], "Must have at least two strings to compare"),               // One input
+            Arguments.of("abc", new String[] {"def", "ghi", "", "jkl"}, "Input cannot be null or blank"),   // Empty
+            Arguments.of("abc", new String[] {"def", "ghi", " ", "jkl"}, "Input cannot be null or blank"),  // Blank
+            Arguments.of("abc", new String[] {"def", "ghi", null, "jkl"}, "Input cannot be null or blank")  // Null
+        );
     }
 
-    @Test
-    void whenCollectNumbersInOrder_givenSingleIntegerAsString_thenSingleValueIsReturned() {
-        final String input = "1";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+    @ParameterizedTest
+    @MethodSource("provideForContainsAll")
+    void testContainsAll(final String input, final String[] subStrings, final boolean expected) {
+        final boolean output = StringUtils.containsAllCharacters(input, subStrings);
         assertThat(output)
-            .containsExactly(1);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenCollectNumbersInOrder_givenMultipleIntegersAsString_thenAllValuesAreReturned() {
-        final String input = "1 23 456";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+    private static Stream<Arguments> provideForContainsAll() {
+        return Stream.of(
+            Arguments.of("abcdef", new String[] {"abc"}, true),                 // 1 subString, exists in input
+            Arguments.of("abcd", new String[] {"abc", "bcd"}, true),            // 2 subStrings, exist in input
+            Arguments.of("abcd", new String[] {"abc", "bcd", "def"}, false),    // 3 subStrings, only 2 exist in input
+            Arguments.of("abcdef", new String[] {"abcdef"}, true),              // subString matches input
+            Arguments.of("abcdef", new String[] {"abcdefghij"}, false),         // Input is subString of subString
+            Arguments.of("abcdef", new String[0], false),                       // No subString provided
+            Arguments.of("abcdef", new String[] {""}, true),                    // Empty subString
+            Arguments.of("abcdef", new String[] {" "}, false),                  // Blank subString
+            Arguments.of("abcdef", new String[] {null}, false),                 // Null subString
+            Arguments.of("", new String[] {"abc"}, false),                      // Empty input
+            Arguments.of(" ", new String[] {"abc"}, false),                     // Blank input
+            Arguments.of(null, new String[] {"abc"}, false)                     // Null input
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForContainsAny")
+    void testContainsAny(final String input, final String[] subStrings, final boolean expected) {
+        final boolean output = StringUtils.containsAny(input, subStrings);
         assertThat(output)
-            .containsExactly(1, 23, 456);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenCollectNumbersInOrder_givenNegativeInteger_thenAllValuesIncludingNegativesAreReturned() {
-        final String input = "1 -23 456";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .containsExactly(1, -23, 456);
+    private static Stream<Arguments> provideForContainsAny() {
+        return Stream.of(
+            Arguments.of("abcdef", new String[] {"abc"}, true),                         // 1 subString, exists in input
+            Arguments.of("abcdef", new String[] {"abc", "cde", "efg"}, true),           // 3 subStrings, only 2 exist in input
+            Arguments.of("abcdef", new String[] {"abc", "ghi", "jkl", "mno"}, true),    // 4 subStrings, only 1 exists in input
+            Arguments.of("abcdef", new String[] {"ghi"}, false),                        // 1 subString, does not exist in input
+            Arguments.of("abcdef", new String[] {"ghi", "jkl", "mno"}, false),          // 3 subString, none exist in input
+            Arguments.of("abcdef", new String[] {"abcdef"}, true),                      // subString matches input
+            Arguments.of("abcdef", new String[] {"abcdefghij"}, false),                 // Input is subString of subString
+            Arguments.of("abcdef", new String[0], false),                               // No subString provided
+            Arguments.of("abcdef", new String[] {""}, true),                            // Empty subString
+            Arguments.of("abcdef", new String[] {" "}, false),                          // Blank subString
+            Arguments.of("abcdef", new String[] {null}, false),                         // Null subString
+            Arguments.of("", new String[] {"abc"}, false),                              // Empty input
+            Arguments.of(" ", new String[] {"abc"}, false),                             // Blank input
+            Arguments.of(null, new String[] {"abc"}, false)                             // Null input
+        );
     }
 
-    @Test
-    void whenCollectNumbersInOrder_givenMultipleIntegersAndWordsAsString_thenAllIntegerValuesAreReturned() {
-        final String input = "1 and 23 and 456";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .containsExactly(1, 23, 456);
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenMultipleIntegersAndLongAsString_thenLongValueIsNotReturned() {
-        final String input = "1 23 456 9999999999999999";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .containsExactly(1, 23, 456);
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenNoIntegersInString_thenEmptyListIsReturned() {
-        final String input = "No numbers here!";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenEmptyString_thenEmptyListIsReturned() {
-        final String input = "";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenBlankString_thenEmptyListIsReturned() {
-        final String input = " ";
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCollectNumbersInOrder_givenNullString_thenEmptyListIsReturned() {
-        final String input = null;
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCommonChars_givenTwoStrings_andBothHasSingleCommonCharacter_thenCommonCharacterIsReturned() {
-        final String first = "abcd";
-        final String second = "aefg";
-
-        final Set<Character> output = StringUtils.commonChars(first, second);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactlyInAnyOrder('a');
-    }
-
-    @Test
-    void whenCommonChars_givenThreeStrings_andEachHasSingleCommonCharacter_thenCommonCharacterIsReturned() {
-        final String first = "abcd";
-        final String second = "aefg";
-        final String third = "ahij";
-
-        final Set<Character> output = StringUtils.commonChars(first, second, third);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactlyInAnyOrder('a');
-    }
-
-    @Test
-    void whenCommonChars_givenThreeStrings_andEachHasMultipleCommonCharacters_thenCommonCharactersAreReturned() {
-        final String first = "abcdz";
-        final String second = "aefgz";
-        final String third = "ahijz";
-
-        final Set<Character> output = StringUtils.commonChars(first, second, third);
-        assertThat(output)
-            .hasSize(2)
-            .containsExactlyInAnyOrder('a', 'z');
-    }
-
-    @Test
-    void whenCommonChars_givenThreeStrings_andThereAreNoCommonCharacters_thenEmptySetIsReturned() {
-        final String first = "abc";
-        final String second = "def";
-        final String third = "ghi";
-
-        final Set<Character> output = StringUtils.commonChars(first, second, third);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenCommonChars_givenOneString_thenExceptionIsThrownReturned() {
-        final String first = "abc";
-
-        assertThatThrownBy(() -> StringUtils.commonChars(first))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Must have at least two strings to compare");
-    }
-
-    @Test
-    void whenCommonChars_givenEmptyStringInput_thenExceptionIsThrown() {
-        final String first = "abc";
-        final String second = "def";
-        final String third = "ghi";
-        final String fourth = "";
-        final String fifth = "jkl";
-
-        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input cannot be null or blank");
-    }
-
-    @Test
-    void whenCommonChars_givenBlankStringInput_thenExceptionIsThrown() {
-        final String first = "abc";
-        final String second = "def";
-        final String third = "ghi";
-        final String fourth = " ";
-        final String fifth = "jkl";
-
-        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input cannot be null or blank");
-    }
-
-    @Test
-    void whenCommonChars_givenNullStringInput_thenExceptionIsThrown() {
-        final String first = "abc";
-        final String second = "def";
-        final String third = "ghi";
-        final String fourth = null;
-        final String fifth = "jkl";
-
-        assertThatThrownBy(() -> StringUtils.commonChars(first, second, third, fourth, fifth))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Input cannot be null or blank");
-    }
-
-    @Test
-    void whenContainsAll_givenValidSuperString_andValidSubString_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"abc"};
-
-        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAll_givenValidSuperString_andMultipleValidSubStrings_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"abc", "bcd", "def"};
-
-        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAll_givenValidSuperString_andSubStringMatchesSuperString_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"abcdef"};
-
-        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAll_givenValidSuperString_andSubStringIsSuperStringOfSuperString_thenFalseIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"abcdefghij"};
-
-        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAll_givenValidSuperString_andNoSubString_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {};
-
-        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAll_givenValidSuperString_andEmptySubString_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {""};
-
-        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAll_givenValidSuperString_andBlankSubString_thenFalseIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {" "};
-
-        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAll_givenEmptySuperString_andValidSubString_thenFalseIsReturned() {
-        final String superString = "";
-        final String[] subStrings = {"abc", "def"};
-
-        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAll_givenBlankSuperString_andValidSubString_thenFalseIsReturned() {
-        final String superString = " ";
-        final String[] subStrings = {"abc", "def"};
-
-        final boolean output = StringUtils.containsAllCharacters(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andOneValidSubStrings_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"abc"};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andMultipleValidSubStrings_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"abc", "cde", "efg"};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andMultipleInvalidSubStrings_andOneValidSubString_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"abc", "ghi", "jkl", "mno"};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andInvalidSubString_thenFalseIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"ghi"};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andMultipleInvalidSubStrings_thenFalseIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"ghi", "jkl", "mno"};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andSubStringMatchesSuperString_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"abcdef"};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andSubStringIsSuperStringOfSuperString_thenFalseIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {"abcdefghij"};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andNoSubString_thenFalseIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andEmptySubString_thenTrueIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {""};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenContainsAny_givenValidSuperString_andBlankSubString_thenFalseIsReturned() {
-        final String superString = "abcdef";
-        final String[] subStrings = {" "};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAny_givenEmptySuperString_andValidSubString_thenFalseIsReturned() {
-        final String superString = "";
-        final String[] subStrings = {"abc", "def"};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsAny_givenBlankSuperString_andValidSubString_thenFalseIsReturned() {
-        final String superString = " ";
-        final String[] subStrings = {"abc", "def"};
-
-        final boolean output = StringUtils.containsAny(superString, subStrings);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenStringWithDuplicates_thenTrueIsReturned() {
-        final String input = "abca";
+    @ParameterizedTest
+    @CsvSource({
+        "abca,true",    // Duplicates
+        "abc,false",    // No duplicates
+        "'',false",     // Empty
+        "' ',false",    // Blank
+        ",false",       // Null
+    })
+    void whenContainsDuplicates_givenString_thenCorrectValueIsReturned(final String input, final boolean expected) {
         final boolean output = StringUtils.containsDuplicates(input);
         assertThat(output)
-            .isTrue();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenContainsDuplicates_givenStringWithNoDuplicates_thenFalseIsReturned() {
-        final String input = "abc";
-        final boolean output = StringUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenEmptyString_thenFalseIsReturned() {
-        final String input = "";
-        final boolean output = StringUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenBlankString_thenFalseIsReturned() {
-        final String input = " ";
-        final boolean output = StringUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenContainsDuplicates_givenNullString_thenFalseIsReturned() {
-        final String input = null;
-        final boolean output = StringUtils.containsDuplicates(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenCountVowels_givenStringWithNoVowels_thenZeroIsReturned() {
-        final String input = "bcdf";
+    @ParameterizedTest
+    @CsvSource({
+        "bcdf,0",       // No vowels
+        "abcdef,2",     // Multiple vowels
+        "aabcdeef,4",   // Repeated vowels
+        "'',0",         // Empty
+        "' ',0",        // Blank
+        ",0",           // Null
+    })
+    void testCountVowels(final String input, final long expected) {
         final long output = StringUtils.countVowels(input);
         assertThat(output)
-            .isZero();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenCountVowels_givenStringWithMultipleVowels_thenCountIsReturned() {
-        final String input = "abcdef";
-        final long output = StringUtils.countVowels(input);
-        assertThat(output)
-            .isEqualTo(2L);
-    }
-
-    @Test
-    void whenCountVowels_givenStringWithRepeatedVowels_thenCombinedCountIsReturned() {
-        final String input = "aabcdeef";
-        final long output = StringUtils.countVowels(input);
-        assertThat(output)
-            .isEqualTo(4L);
-    }
-
-    @Test
-    void whenCountVowels_givenEmptyString_thenZeroIsReturned() {
-        final String input = "";
-        final long output = StringUtils.countVowels(input);
-        assertThat(output)
-            .isZero();
-    }
-
-    @Test
-    void whenCountVowels_givenBlankString_thenZeroIsReturned() {
-        final String input = " ";
-        final long output = StringUtils.countVowels(input);
-        assertThat(output)
-            .isZero();
-    }
-
-    @Test
-    void whenCountVowels_givenNullString_thenZeroIsReturned() {
-        final String input = null;
-        final long output = StringUtils.countVowels(input);
-        assertThat(output)
-            .isZero();
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenStringWithSingleUpperCaseWord_thenWordIsReturned() {
-        final String input = "THIS is uppercase";
+    @ParameterizedTest
+    @CsvSource({
+        "THIS is uppercase,THIS",       // Input has single uppercase word
+        "THIS,THIS",                    // Input is only an uppercase word
+        "THIS is UPPERCASE,THIS"        // Input has multiple uppercase words
+    })
+    void testFindFullyFirstUpperCaseWord(final String input, final String expected) {
         final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
+
         assertThat(output)
             .isPresent()
-            .hasValue("THIS");
+            .hasValue(expected);
     }
 
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenOnlySingleUpperCaseWord_thenInputIsReturned() {
-        final String input = "THIS";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isPresent()
-            .hasValue(input);
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenMultipleUpperCaseWord_thenFirstWordIsReturned() {
-        final String input = "THIS is UPPERCASE";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isPresent()
-            .hasValue("THIS");
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenAllLowerCaseWord_thenEmptyOptionalIsThrown() {
-        final String input = "this is not uppercase";
+    @ParameterizedTest
+    @CsvSource({
+        "this is not uppercase",    // Input has no uppercase words
+        "This Is Not Uppercase",    // Input has uppercase characters but not a full uppercase word
+        "''",                       // Empty
+        "' '",                      // Blank
+        ",",                        // Null
+    })
+    void testFindFullyFirstUpperCaseWord_givenInvalidInputs(final String input) {
         final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
         assertThat(output)
             .isEmpty();
     }
 
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenNoFullyUpperCaseWord_thenEmptyOptionalIsThrown() {
-        final String input = "This Is Not Uppercase";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenEmptyString_thenEmptyOptionalIsThrown() {
-        final String input = "";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenBlankString_thenEmptyOptionalIsThrown() {
-        final String input = " ";
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenFindFullyFirstUpperCaseWord_givenNullString_thenEmptyOptionalIsThrown() {
-        final String input = null;
-        final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterInOrder_givenStringWithSingleRepeat_thenTrueIsReturned() {
-        final String input = "abccdef";
+    @ParameterizedTest
+    @CsvSource({
+        "abccdef,true",     // Single repeat
+        "aabccdef,true",    // Multiple repeats of different characters
+        "aabcdefaa,true",   // Multiple repeats of same characters
+        "abcdefa,false",    // Single repeat, but not in order of same characters
+        "abcdef,false",     // No repeat
+        "'',false",         // Empty
+        "' ',false",        // Blank
+        ",false",           // Null
+    })
+    void testHasRepeatedCharacterInOrder(final String input, final boolean expected) {
         final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
         assertThat(output)
-            .isTrue();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenHasRepeatedCharacterInOrder_givenStringWithMultipleRepeatsOfDifferentCharacters_thenTrueIsReturned() {
-        final String input = "aabccdef";
-        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterInOrder_givenStringWithMultipleRepeatsOfSameCharacters_thenTrueIsReturned() {
-        final String input = "aabcdefaa";
-        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterInOrder_givenStringWithSingleRepeatButNotInOrder_thenFalseIsReturned() {
-        final String input = "abcdefa";
-        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterInOrder_givenStringWithNoRepeats_thenFalseIsReturned() {
-        final String input = "abcdef";
-        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterInOrder_givenEmptyString_thenFalseIsReturned() {
-        final String input = "";
-        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterInOrder_givenBlankString_thenFalseIsReturned() {
-        final String input = " ";
-        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterInOrder_givenNullStringRepeats_thenFalseIsReturned() {
-        final String input = null;
-        final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithPairAndNoOverlap_thenTrueIsReturned() {
-        final String input = "abcdab";
+    @ParameterizedTest
+    @CsvSource({
+        "abcdab,true",      // Pair and no overlap
+        "abab,true",        // Pair and no other characters
+        "aabcdaafgh,true",  // Repeated character pair and no overlap
+        "aaa,false",        // Pair, but overlapping
+        "abcdef,false",     // No pairs
+        "'',false",         // Empty
+        "' ',false",        // Blank
+        ",false",           // Null
+    })
+    void testHasRepeatedCharacterPairWithNoOverlap(final String input, final boolean expected) {
         final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
         assertThat(output)
-            .isTrue();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithPairAndNoOtherCharacters_thenTrueIsReturned() {
-        final String input = "abab";
-        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithRepeatedCharacterPairAndNoOverlap_thenTrueIsReturned() {
-        final String input = "aabcdaafgh";
-        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithWithPairOverlapping_thenFalseIsReturned() {
-        final String input = "aaa";
-        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterPairWithNoOverlap_givenStringWithNoPairs_thenFalseIsReturned() {
-        final String input = "abcdef";
-        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterPairWithNoOverlap_givenEmptyString_thenFalseIsReturned() {
-        final String input = "";
-        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterPairWithNoOverlap_givenBlankString_thenFalseIsReturned() {
-        final String input = " ";
-        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasRepeatedCharacterPairWithNoOverlap_givenNullString_thenFalseIsReturned() {
-        final String input = null;
-        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasSandwichCharacters_givenStringWithSingleSandwich_thenTrueIsReturned() {
-        final String input = "aba";
+    @ParameterizedTest
+    @CsvSource({
+        "aba,true",         // Single sandwich
+        "abcdefgf,true",    // Single sandwich at end of string
+        "ababa,true",       // Multiple sandwiches
+        "aaa,true",         // Single sandwich of same characters
+        "abcdef,false",     // No sandwich
+        "'',false",         // Empty
+        "' ',false",        // Blank
+        ",false",           // Null
+    })
+    void testHasSandwichCharacters(final String input, final boolean expected) {
         final boolean output = StringUtils.hasSandwichCharacters(input);
         assertThat(output)
-            .isTrue();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenHasSandwichCharacters_givenStringWithSingleSandwichAtEndOfString_thenTrueIsReturned() {
-        final String input = "abcdefgf";
-        final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasSandwichCharacters_givenStringWithMultipleSandwichs_thenTrueIsReturned() {
-        final String input = "ababa";
-        final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasSandwichCharacters_givenStringWithSingleSandwichOfSameCharacters_thenTrueIsReturned() {
-        final String input = "aaa";
-        final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenHasSandwichCharacters_givenStringWithNoRepeats_thenFalseIsReturned() {
-        final String input = "abcdef";
-        final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasSandwichCharacters_givenEmptyString_thenFalseIsReturned() {
-        final String input = "";
-        final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasSandwichCharacters_givenBlankString_thenFalseIsReturned() {
-        final String input = " ";
-        final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenHasSandwichCharacters_givenNullString_thenFalseIsReturned() {
-        final String input = null;
-        final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsInteger_givenValidIntegerString_thenTrueIsReturned() {
-        final String input = "123";
+    @ParameterizedTest
+    @CsvSource({
+        "123,true",                                 // Valid integer
+        "-123,true",                                // Valid negative integer
+        "9999999999999999,false",                   // Valid long, but too large for integer
+        "-9999999999999999,false",                  // Valid negative long, but too large for integer
+        "99999999999999999999999999999999,false",   // Excessively large value
+        "3.14,false",                               // Valid float
+        "2/3,false",                                // Valid fraction
+        "abc,false",                                // Invalid numeric value
+        "'',false",                                 // Empty
+        "' ',false",                                // Blank
+        ",false",                                   // Null
+    })
+    void testIsInteger(final String input, final boolean expected) {
         final boolean output = StringUtils.isInteger(input);
         assertThat(output)
-            .isTrue();
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenIsInteger_givenValidNegativeIntegerString_thenTrueIsReturned() {
-        final String input = "-123";
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isTrue();
-    }
-
-    @Test
-    void whenIsInteger_givenValidLongString_thenFalseIsReturned() {
-        final String input = "9999999999999999";
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsInteger_givenNegativeLongString_thenFalseIsReturned() {
-        final String input = "-9999999999999999";
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsInteger_givenExcessivelyLargeString_thenFalseIsReturned() {
-        final String input = "99999999999999999999999999999999";
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsInteger_givenValidFloatString_thenFalseIsReturned() {
-        final String input = "3.14";
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsInteger_givenInvalidNumericString_thenFalseIsReturned() {
-        final String input = "abc";
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsInteger_givenEmptyNumericString_thenFalseIsReturned() {
-        final String input = "";
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsInteger_givenBlankString_thenFalseIsReturned() {
-        final String input = " ";
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenIsInteger_givenNullString_thenFalseIsReturned() {
-        final String input = null;
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isFalse();
-    }
-
-    @Test
-    void whenLookAndSay_givenValidInput_thenSequenceIsApplied() {
-        final String input = "132211";
+    @ParameterizedTest
+    @CsvSource({
+        "1211,111221",      // Valid
+        "132211,11132221",  // Valid, but longer
+    })
+    void testLookAndSay(final String input, final String expected) {
         final String output = StringUtils.lookAndSay(input);
         assertThat(output)
-            .isEqualTo("11132221");
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenLookAndSay_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String output = StringUtils.lookAndSay(input);
-        assertThat(output)
-            .isEmpty();
+    @ParameterizedTest
+    @CsvSource({
+        "abc,Character 'a' is not a valid integer",     // No valid integer characters
+        "1322a11,Character 'a' is not a valid integer", // One invalid character
+        "'',Input cannot be null or blank",             // Empty
+        "' ',Input cannot be null or blank",            // Blank
+        ",Input cannot be null or blank",               // Null
+    })
+    void testLookAndSay_givenInvalidInputs(final String input, final String errorMessage) {
+        assertThatThrownBy(() -> StringUtils.lookAndSay(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenLookAndSay_givenBlankString_thenEmptyStringIsReturned() {
-        final String input = " ";
-        final String output = StringUtils.lookAndSay(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenLookAndSay_givenNullString_thenEmptyStringIsReturned() {
-        final String input = null;
-        final String output = StringUtils.lookAndSay(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveDifferentCharacters_givenEqualInputs_thenInputIsReturnedWithoutChange() {
-        final String first = "abcdef";
-        final String second = "abcdef";
+    @ParameterizedTest
+    @CsvSource({
+        "abcdef,abcdef,abcdef", // No difference
+        "abcdef,abcqef,abcef",  // One difference
+        "abcdef,ghijkl,''",     // No matches
+        "'','',''",             // Both are empty
+        "' ',a,''",             // First is blank
+        "a,' ',''",             // Second is blank
+    })
+    void testRemoveDifferentCharacters(final String first, final String second, final String expected) {
         final String output = StringUtils.removeDifferentCharacters(first, second);
         assertThat(output)
-            .isEqualTo(first);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenRemoveDifferentCharacters_givenInputsWithSingleDifferent_thenOnlyCommonCharactersAreReturned() {
-        final String first = "abcdef";
-        final String second = "abcqef";
-        final String output = StringUtils.removeDifferentCharacters(first, second);
-        assertThat(output)
-            .isEqualTo("abcef");
-    }
-
-    @Test
-    void whenRemoveDifferentCharacters_givenInputsWithNoCommonCharacters_thenEmptyStringIsReturned() {
-        final String first = "abcdef";
-        final String second = "ghijkl";
-        final String output = StringUtils.removeDifferentCharacters(first, second);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveDifferentCharacters_givenInputsOfDifferentLength_thenExceptionIsThrown() {
-        final String first = "abcdef";
-        final String second = "abcdefg";
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+        "abcdef|abcdefg|Expected inputs of equal length, found abcdef (6) and abcdefg (7)", // Inputs of different length
+        "abcdef||Inputs must not be null",                                                  // First is null
+        "|abcdef|Inputs must not be null",                                                  // Second is null
+    })
+    void testRemoveDifferentCharacters_givenInvalidInputs(final String first, final String second, final String errorMessage) {
         assertThatThrownBy(() -> StringUtils.removeDifferentCharacters(first, second))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Expected inputs of equal length, found abcdef (6) and abcdefg (7)");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenRemoveDifferentCharacters_givenInputIsEmpty_thenEmptyStringIsReturned() {
-        final String first = "";
-        final String second = "";
-        final String output = StringUtils.removeDifferentCharacters(first, second);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveDifferentCharacters_givenFirstInputIsBlank_thenEmptyStringIsReturned() {
-        final String first = " ";
-        final String second = "a";
-        final String output = StringUtils.removeDifferentCharacters(first, second);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveDifferentCharacters_givenSecondInputIsBlank_thenEmptyStringIsReturned() {
-        final String first = "a";
-        final String second = " ";
-        final String output = StringUtils.removeDifferentCharacters(first, second);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveDifferentCharacters_givenFirstInputIsNull_thenExceptionIsThrown() {
-        final String first = null;
-        final String second = "abcdef";
-        assertThatThrownBy(() -> StringUtils.removeDifferentCharacters(first, second))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Inputs must not be null");
-    }
-
-    @Test
-    void whenRemoveDifferentCharacters_givenSecondInputIsNull_thenExceptionIsThrown() {
-        final String first = "abcdef";
-        final String second = null;
-        assertThatThrownBy(() -> StringUtils.removeDifferentCharacters(first, second))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Inputs must not be null");
-    }
-
-    @Test
-    void whenRemoveLastCharacter_givenString_thenStringIsReturnedWithoutLastCharacter() {
-        final String input = "abc";
+    @ParameterizedTest
+    @CsvSource({
+        "abc,ab",   // Normal input
+        "a,''",     // Single character
+        "'  ',' '", // Multiple blank spaces
+        "'',''",    // Empty
+        "' ',''",   // Blank
+        ",''",      // Null
+    })
+    void testRemoveLastCharacter(final String input, final String expected) {
         final String output = StringUtils.removeLastCharacter(input);
         assertThat(output)
-            .isEqualTo("ab");
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenRemoveLastCharacter_givenBlankStringWithMultipleSpaces_thenStringIsReturnedWithoutLastCharacter() {
-        final String input = "  ";
-        final String output = StringUtils.removeLastCharacter(input);
+    @ParameterizedTest
+    @CsvSource({
+        "abcd,2,ab",    // String of length 4, removing 2
+        "'   ',2,' '",  // String of length 3, blank spaces, removing 2
+        "'',2,''",      // Empty
+        "' ',1,''",     // Blank
+        ",3,''",        // Null
+    })
+    void testRemoveLastCharacters(final String input, final int numberOfCharactersToRemove, final String expected) {
+        final String output = StringUtils.removeLastCharacters(input, numberOfCharactersToRemove);
         assertThat(output)
-            .isEqualTo(" ");
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenRemoveLastCharacter_givenStringWithOneCharacter_thenEmptyStringIsReturned() {
-        final String input = "a";
-        final String output = StringUtils.removeLastCharacter(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveLastCharacter_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String output = StringUtils.removeLastCharacter(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveLastCharacter_givenNullString_thenEmptyStringIsReturned() {
-        final String input = null;
-        final String output = StringUtils.removeLastCharacter(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveLastCharacters_givenString_andRemovingTwoCharacters_thenStringIsReturnedWithoutLastTwoCharacters() {
-        final String input = "abcd";
-        final String output = StringUtils.removeLastCharacters(input, 2);
-        assertThat(output)
-            .isEqualTo("ab");
-    }
-
-    @Test
-    void whenRemoveLastCharacters_givenStringWithBlankSpaces_andRemovingTwoCharacters_thenStringIsReturnedWithoutTwoLastCharacters() {
-        final String input = "   ";
-        final String output = StringUtils.removeLastCharacters(input, 2);
-        assertThat(output)
-            .isEqualTo(" ");
-    }
-
-    @Test
-    void whenRemoveLastCharacters_givenString_andRemovingNegativeCharacters_thenExceptionIsThrown() {
-        final String input = "   ";
-        assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, -1))
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+        "a|2|Cannot remove 2 characters from input of length: 1",  // Removing too many characters
+        "abcd|-1|Must remove at least 1 character, found: -1",     // Removing negative characters
+    })
+    void testRemoveLastCharacters_givenInvalidInputs(final String input, final int numberOfCharactersToRemove, final String errorMessage) {
+        assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, numberOfCharactersToRemove))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Must remove at least 1 character, found: -1");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenRemoveLastCharacters_givenStringWithOneCharacter_andRemovingTwoCharacters_thenExceptionIsThrown() {
-        final String input = "a";
-        assertThatThrownBy(() -> StringUtils.removeLastCharacters(input, 2))
+    @ParameterizedTest
+    @CsvSource({
+        "abcdef,def,xxx,3,abcxxx",                      // Single matching substring
+        "abcdefghidefjkl,def,xxx,3,abcxxxghidefjkl",    // Multiple matching substrings
+        "abcdefghidefjkl,def,xxx,9,abcdefghixxxjkl",    // Multiple matching substrings (other index)
+        "'',def,xxx,3,''",                              // Empty
+        "' ',def,xxx,3,''",                             // Blank
+        ",def,xxx,3,''",                                // Null
+    })
+    void testReplaceAtIndex(final String input, final String subString, final String replacement, final int indexOfSubString, final String expected) {
+        final String output = StringUtils.replaceAtIndex(input, subString, replacement, indexOfSubString);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+        "abcdefghi|def|-1|Expected index to be between 0 and 6, found: -1",                     // Negative index
+        "abcdefghi|def|7|Expected index to be between 0 and 6, found: 7",                       // Out of bounds index
+        "abcdefghi|def|0|Expected to find subString 'def' at index 0, instead found: 'abc'",    // Incorrect index
+        "abcdefghi|yyy|3|Expected to find subString 'yyy' at index 3, instead found: 'def'",    // Substring does not exist
+    })
+    void testReplaceAtIndex_givenInvalidInputs(final String input, final String subString, final int indexOfSubString, final String errorMessage) {
+        assertThatThrownBy(() -> StringUtils.replaceAtIndex(input, subString, "xxx", indexOfSubString))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Cannot remove 2 characters from input of length: 1");
+            .hasMessage(errorMessage);
     }
 
-    @Test
-    void whenRemoveLastCharacters_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String output = StringUtils.removeLastCharacters(input, 2);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenRemoveLastCharacters_givenNullString_thenEmptyStringIsReturned() {
-        final String input = null;
-        final String output = StringUtils.removeLastCharacters(input, 2);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenStringWithSingleSubString_andSubStringPositionIsKnown_thenSubStringIsReplaced() {
-        final String input = "abcdef";
-        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
-        assertThat(output)
-            .isEqualTo("abcxxx");
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenStringWithMultipleSubString_andFirstSubStringPositionIsKnown_thenSubStringIsReplaced() {
-        final String input = "abcdefghidefjkl";
-        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
-        assertThat(output)
-            .isEqualTo("abcxxxghidefjkl");
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenStringWithMultipleSubString_andSecondSubStringPositionIsKnown_thenSubStringIsReplaced() {
-        final String input = "abcdefghidefjkl";
-        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 9);
-        assertThat(output)
-            .isEqualTo("abcdefghixxxjkl");
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenNegativeIndex_thenExceptionIsThrown() {
-        final String input = "abcdefghi";
-        assertThatThrownBy(() -> StringUtils.replaceAtIndex(input, "def", "xxx", -1))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Expected index to be between 0 and 6, found: -1");
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenOutOfBoundsIndex_thenExceptionIsThrown() {
-        final String input = "abcdefghi";
-        assertThatThrownBy(() -> StringUtils.replaceAtIndex(input, "def", "xxx", 7))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Expected index to be between 0 and 6, found: 7");
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenIncorrectIndex_thenExceptionIsThrown() {
-        final String input = "abcdefghi";
-        assertThatThrownBy(() -> StringUtils.replaceAtIndex(input, "def", "xxx", 0))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Expected to find subString 'def' at index 0, instead found: 'abc'");
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenSubStringDoesNotExist_thenExceptionIsThrown() {
-        final String input = "abcdefghi";
-        assertThatThrownBy(() -> StringUtils.replaceAtIndex(input, "yyy", "xxx", 3))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Expected to find subString 'yyy' at index 3, instead found: 'def'");
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenBlankString_thenEmptyStringIsReturned() {
-        final String input = " ";
-        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenReplaceAtIndex_givenNullString_thenEmptyStringIsReturned() {
-        final String input = null;
-        final String output = StringUtils.replaceAtIndex(input, "def", "xxx", 3);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenSort_givenUnsortedString_thenSortedStringIsReturned() {
-        final String input = "fedcba";
+    @ParameterizedTest
+    @CsvSource({
+        "fedcba,abcdef",    // Unsorted string
+        "abcdef,abcdef",    // Sorted string
+        "'',''",            // Empty
+        "' ',' '",          // Blank
+        ",''",              // Null
+    })
+    void testSort(final String input, final String expected) {
         final String output = StringUtils.sort(input);
         assertThat(output)
-            .isEqualTo("abcdef");
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenSort_givenSortedString_thenStringIsReturnedWithoutChange() {
-        final String input = "abcdef";
-        final String output = StringUtils.sort(input);
-        assertThat(output)
-            .isEqualTo(input);
-    }
-
-    @Test
-    void whenSort_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String output = StringUtils.sort(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenSort_givenBlankString_thenEmptyStringIsReturned() {
-        final String input = " ";
-        final String output = StringUtils.sort(input);
-        assertThat(output)
-            .isEqualTo(input)
-            .isBlank();
-    }
-
-    @Test
-    void whenSplitOnNewLines_givenStringWithThreeLines_thenThreeStringsAreReturned() {
-        final String input = """
-            line1
-            line2
-            line3""";
+    @ParameterizedTest
+    @MethodSource("provideForSplitOnNewLines")
+    void testSplitOnNewLines(final String input, final String[] expected) {
         final String[] output = StringUtils.splitOnNewLines(input);
         assertThat(output)
-            .hasSize(3)
-            .containsExactly("line1", "line2", "line3");
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenSplitOnNewLines_givenStringWith1Line_thenInputStringIsReturned() {
-        final String input = "line1";
-        final String[] output = StringUtils.splitOnNewLines(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly(input);
+    private static Stream<Arguments> provideForSplitOnNewLines() {
+        return Stream.of(
+            // Input has multiple lines
+            Arguments.of("""        
+                line1
+                line2
+                line3""", new String[] {"line1", "line2", "line3"}),
+            Arguments.of("line1", new String[] {"line1"}),              // Input has single line
+            Arguments.of("line1 line2", new String[] {"line1 line2"}),  // Input has single line with whitespaces
+            Arguments.of("", new String[0]),                            // Empty
+            Arguments.of(" ", new String[] {" "}),                      // Blank
+            Arguments.of(null, new String[0])                           // Null
+        );
     }
 
-    @Test
-    void whenSplitOnNewLines_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String[] output = StringUtils.splitOnNewLines(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly(input);
-    }
-
-    @Test
-    void whenSplitOnNewLines_givenBlankString_thenBlankStringIsReturned() {
-        final String input = " ";
-        final String[] output = StringUtils.splitOnNewLines(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly(" ");
-    }
-
-    @Test
-    void whenSplitOnNewLines_givenNullString_thenEmptyStringArrayIsReturned() {
-        final String input = null;
-        final String[] output = StringUtils.splitOnNewLines(input);
-        assertThat(output)
-            .isEmpty();
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenStringWithoutWhitespace_thenStringIsReturned() {
-        final String input = "abc";
+    @ParameterizedTest
+    @MethodSource("provideForSplitOnWhitespace")
+    void testSplitOnWhitespace(final String input, final String[] expected) {
         final String[] output = StringUtils.splitOnWhitespace(input);
         assertThat(output)
-            .hasSize(1)
-            .containsExactly(input);
+            .isEqualTo(expected);
     }
 
-    @Test
-    void whenSplitOnWhitespace_givenStringWithOneWhitespace_thenTwoStringsAreReturned() {
-        final String input = "abc def";
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .hasSize(2)
-            .containsExactly("abc", "def");
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenStringWithOneWhitespaceOfMultipleSpaces_thenTwoStringsAreReturned() {
-        final String input = "abc   def";
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .hasSize(2)
-            .containsExactly("abc", "def");
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenStringWithMultipleWhitespace_thenMultipleStringsAreReturned() {
-        final String input = "a bc def ghij";
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .hasSize(4)
-            .containsExactly("a", "bc", "def", "ghij");
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenEmptyString_thenEmptyStringIsReturned() {
-        final String input = "";
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly(input);
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenBlankString_thenEmptyStringIsReturned() {
-        final String input = " ";
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .hasSize(1)
-            .containsExactly("");
-    }
-
-    @Test
-    void whenSplitOnWhitespace_givenNullString_thenEmptyStringArrayIsReturned() {
-        final String input = null;
-        final String[] output = StringUtils.splitOnWhitespace(input);
-        assertThat(output)
-            .isEmpty();
+    private static Stream<Arguments> provideForSplitOnWhitespace() {
+        return Stream.of(
+            Arguments.of("abc", new String[] {"abc"}),                                  // Input has no whitespace
+            Arguments.of("abc def", new String[] {"abc", "def"}),                       // Input has single whitespace
+            Arguments.of("abc   def", new String[] {"abc", "def"}),                     // Input has single whitespace with multiple spaces
+            Arguments.of("a bc def ghij", new String[] {"a", "bc", "def", "ghij"}),     // Input has multiple whitespaces
+            Arguments.of("", new String[] {""}),                                        // Empty
+            Arguments.of(" ", new String[] {""}),                                       // Blank
+            Arguments.of(null, new String[0])                                           // Null
+        );
     }
 }

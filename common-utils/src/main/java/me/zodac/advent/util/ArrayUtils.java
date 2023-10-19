@@ -27,34 +27,12 @@ public final class ArrayUtils {
 
     private static final boolean[] EMPTY_BOOLEAN_ARRAY = new boolean[0];
     private static final boolean[][] EMPTY_2D_BOOLEAN_ARRAY = new boolean[0][0];
+    private static final Boolean[][] EMPTY_2D_BOOLEAN_OBJECT_ARRAY = new Boolean[0][0];
     private static final char[][] EMPTY_2D_CHAR_ARRAY = new char[0][0];
+    private static final Integer[][] EMPTY_2D_INTEGER_ARRAY = new Integer[0][0];
 
     private ArrayUtils() {
 
-    }
-
-    /**
-     * For a 2D char array, checks whether that the length of each of the inner arrays are different.
-     *
-     * @param input the input 2D char array to check
-     * @return {@code true} if any of the inner array lengths differ
-     */
-    public static boolean areColumnLengthsDifferent(final char[][] input) {
-        if (input.length == 0) {
-            return false;
-        }
-
-        final int firstLength = input[0].length;
-
-        for (int i = 1; i < input.length; i++) {
-            final char[] element = input[i];
-
-            if (element.length != firstLength) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -88,6 +66,10 @@ public final class ArrayUtils {
      * @return the 2D {@link Boolean} array
      */
     public static Boolean[][] convertToArrayOfBooleanArrays(final List<String> input, final char symbolSignifyingTrue) {
+        if (input.isEmpty() || input.getFirst().isEmpty()) {
+            return EMPTY_2D_BOOLEAN_OBJECT_ARRAY.clone();
+        }
+
         final int outerLength = input.size();
         final int innerLength = input
             .stream()
@@ -142,7 +124,7 @@ public final class ArrayUtils {
      * @return the 2D char array
      */
     public static char[][] convertToArrayOfCharArrays(final List<String> input) {
-        if (input.isEmpty() || input.get(0).isEmpty()) {
+        if (input.isEmpty() || input.getFirst().isEmpty()) {
             return EMPTY_2D_CHAR_ARRAY.clone();
         }
 
@@ -189,10 +171,17 @@ public final class ArrayUtils {
      *     ]
      * </pre>
      *
+     * <p>
+     * If any character in an input {@link String} is not a valid {@link Integer}, a value of <b>0</b> will be set for that character.
+     *
      * @param input the input {@link List} of {@link String}s
      * @return the 2D {@link Integer} array
      */
     public static Integer[][] convertToArrayOfIntegerArrays(final List<String> input) {
+        if (input.isEmpty() || input.getFirst().isEmpty()) {
+            return EMPTY_2D_INTEGER_ARRAY.clone();
+        }
+
         final int outerLength = input.size();
         final int innerLength = input
             .stream()
@@ -204,16 +193,20 @@ public final class ArrayUtils {
 
         for (int i = 0; i < input.size(); i++) {
             final String line = input.get(i);
-            arrayOfIntegerArrays[i] = convertToArrayOfIntegerss(line);
+            arrayOfIntegerArrays[i] = convertToArrayOfIntegers(line);
         }
 
         return arrayOfIntegerArrays;
     }
 
-    private static Integer[] convertToArrayOfIntegerss(final CharSequence input) {
+    private static Integer[] convertToArrayOfIntegers(final CharSequence input) {
         final Integer[] integerArray = new Integer[input.length()];
         for (int i = 0; i < input.length(); i++) {
-            integerArray[i] = Integer.parseInt(String.valueOf(input.charAt(i)));
+            try {
+                integerArray[i] = Integer.parseInt(String.valueOf(input.charAt(i)));
+            } catch (final NumberFormatException e) {
+                integerArray[i] = 0;
+            }
         }
         return integerArray;
     }
@@ -439,8 +432,8 @@ public final class ArrayUtils {
      * @return the transposed 2D array
      */
     public static char[][] transpose(final char[][] input) {
-        if (input.length == 0 || input[0].length == 0) {
-            return input;
+        if (input == null || input.length == 0 || input[0].length == 0) {
+            return EMPTY_2D_CHAR_ARRAY.clone();
         }
 
         final int outerLength = input.length;
