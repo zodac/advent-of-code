@@ -22,22 +22,16 @@
         <!-- Project Properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-release>21</java-release>
-        <!--suppress UnresolvedMavenProperty, files are only used in child modules -->
-        <ci-config-directory>${project.parent.basedir}/ci</ci-config-directory>
-
-        <!-- License Properties -->
-        <license-file>${ci-config-directory}/license-template.txt</license-file>
-        <license-header-definition-file>${ci-config-directory}/license-header-definition.txt</license-header-definition-file>
-
-        <!-- Lint Properties -->
-        <!-- All disabled by default, activated through profiles -->
-        <skip-linters>true</skip-linters>
 
         <!-- Test Properties -->
         <!-- All disabled by default, activated through profiles -->
         <skip-tests>true</skip-tests>
         <!-- Adding so Maven plugins will not copy/compile test resources -->
         <maven.test.skip>${skip-tests}</maven.test.skip>
+
+        <!-- Lint Properties -->
+        <!-- All disabled by default, activated through profiles -->
+        <skip-linters>true</skip-linters>
 
         <!-- Test 3PP Versions -->
         <assertj-core.version>3.24.2</assertj-core.version>
@@ -70,7 +64,11 @@
         <spotbugs-maven-plugin.version>4.7.3.6</spotbugs-maven-plugin.version>
 
         <!-- Linter Properties -->
+        <!--suppress UnresolvedMavenProperty, files are only used in child modules -->
+        <ci-config-directory>${project.parent.basedir}/ci</ci-config-directory>
         <checkstyle-file>${ci-config-directory}/checkstyle.xml</checkstyle-file>
+        <license-file>${ci-config-directory}/license-template.txt</license-file>
+        <license-header-definition-file>${ci-config-directory}/license-header-definition.txt</license-header-definition-file>
         <pmd-ruleset>${ci-config-directory}/pmd-ruleset.xml</pmd-ruleset>
         <pitest-test-strength-threshold>100</pitest-test-strength-threshold>
         <spotbugs-include-file>${ci-config-directory}/spotbugs-include-filter-file.xml</spotbugs-include-file>
