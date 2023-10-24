@@ -328,12 +328,6 @@
                     <artifactId>pitest-maven</artifactId>
                     <version>${pitest-maven.version}</version>
                     <configuration>
-<!--                        <excludedMethods>-->
-<!--                            <param>canEqual</param>-->
-<!--                            <param>equals</param>-->
-<!--                            <param>hashCode</param>-->
-<!--                            <param>toString</param>-->
-<!--                        </excludedMethods>-->
                         <failWhenNoMutations>false</failWhenNoMutations>
                         <outputFormats>html</outputFormats>
                         <skip>${skip-linters}</skip>
