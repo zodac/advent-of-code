@@ -22,12 +22,12 @@
         <!-- Project Properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-release>21</java-release>
+        <!--suppress UnresolvedMavenProperty, files are only used in child modules -->
+        <ci-config-directory>${project.parent.basedir}/ci</ci-config-directory>
 
         <!-- License Properties -->
-        <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
-        <license-file>${project.parent.basedir}/lint/license-template.txt</license-file>
-        <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
-        <license-header-definition-file>${project.parent.basedir}/lint/license-header-definition.txt</license-header-definition-file>
+        <license-file>${ci-config-directory}/license-template.txt</license-file>
+        <license-header-definition-file>${ci-config-directory}/license-header-definition.txt</license-header-definition-file>
 
         <!-- Lint Properties -->
         <!-- All disabled by default, activated through profiles -->
@@ -70,15 +70,11 @@
         <spotbugs-maven-plugin.version>4.7.3.6</spotbugs-maven-plugin.version>
 
         <!-- Linter Properties -->
-        <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
-        <checkstyle-file>${project.parent.basedir}/lint/checkstyle.xml</checkstyle-file>
-        <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
-        <pmd-ruleset>${project.parent.basedir}/lint/pmd-ruleset.xml</pmd-ruleset>
+        <checkstyle-file>${ci-config-directory}/checkstyle.xml</checkstyle-file>
+        <pmd-ruleset>${ci-config-directory}/pmd-ruleset.xml</pmd-ruleset>
         <pitest-test-strength-threshold>100</pitest-test-strength-threshold>
-        <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
-        <spotbugs-include-file>${project.parent.basedir}/lint/spotbugs-include-filter-file.xml</spotbugs-include-file>
-        <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
-        <spotbugs-exclude-file>${project.parent.basedir}/lint/spotbugs-exclude-filter-file.xml</spotbugs-exclude-file>
+        <spotbugs-include-file>${ci-config-directory}/spotbugs-include-filter-file.xml</spotbugs-include-file>
+        <spotbugs-exclude-file>${ci-config-directory}/spotbugs-exclude-filter-file.xml</spotbugs-exclude-file>
     </properties>
 
     <dependencyManagement>
@@ -278,7 +274,7 @@
                         <configLocation>${checkstyle-file}</configLocation>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
                         <!--suppress UnresolvedMavenProperty, file is only used in child modules -->
-                        <propertyExpansion>checkstyle.config.path=${project.parent.basedir}/lint</propertyExpansion>
+                        <propertyExpansion>checkstyle.config.path=${ci-config-directory}</propertyExpansion>
                         <skip>${skip-linters}</skip>
                         <violationSeverity>info</violationSeverity>
                     </configuration>
@@ -332,12 +328,12 @@
                     <artifactId>pitest-maven</artifactId>
                     <version>${pitest-maven.version}</version>
                     <configuration>
-                        <excludedMethods>
-                            <param>canEqual</param>
-                            <param>equals</param>
-                            <param>hashCode</param>
-                            <param>toString</param>
-                        </excludedMethods>
+<!--                        <excludedMethods>-->
+<!--                            <param>canEqual</param>-->
+<!--                            <param>equals</param>-->
+<!--                            <param>hashCode</param>-->
+<!--                            <param>toString</param>-->
+<!--                        </excludedMethods>-->
                         <failWhenNoMutations>false</failWhenNoMutations>
                         <outputFormats>html</outputFormats>
                         <skip>${skip-linters}</skip>
