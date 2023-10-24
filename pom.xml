@@ -22,6 +22,7 @@
         <!-- Project Properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-release>21</java-release>
+        <maven-release>3.9.4</maven-release>
 
         <!-- Test Properties -->
         <!-- All disabled by default, activated through profiles -->
@@ -41,6 +42,7 @@
         <build-helper-maven-plugin.version>3.4.0</build-helper-maven-plugin.version>
         <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
         <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
         <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
@@ -293,6 +295,49 @@
                             <version>${checkstyle.version}</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+
+                <!-- Manual execution: -->
+                <!-- mvn enforcer:enforce -Dlint -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${maven-enforcer-plugin.version}</version>
+                    <configuration>
+                        <rules>
+                            <banDynamicVersions>
+                                <excludedScopes/>
+                                <ignores>
+                                    <!-- Format: <ignore>groupId[:artifactId[:version[:type[:scope:[classifier]]]]]</ignore> -->
+                                    <!-- Exclude our own JARs optimised by ProGuard -->
+                                    <ignore>me.zodac:folding-stats-*:*:jar:*:optimized</ignore>
+                                </ignores>
+                            </banDynamicVersions>
+                            <bannedDependencies>
+                                <excludes>
+                                    <!-- Ban JUnit4, to not conflict with JUnit5 -->
+                                    <exclude>junit:junit</exclude>
+                                    <exclude>junit:junit-dep</exclude>
+                                </excludes>
+                            </bannedDependencies>
+                            <dependencyConvergence/>
+                            <requireJavaVersion>
+                                <version>[${java-release},)</version>
+                            </requireJavaVersion>
+                            <requireMavenVersion>
+                                <version>[${maven-release},4.0)</version>
+                            </requireMavenVersion>
+                        </rules>
+                        <skip>${skip-linters}</skip>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <phase>validate</phase>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <!-- Manual execution: -->
