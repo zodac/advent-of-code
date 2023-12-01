@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Solution for 2056, Day 1.
+ * Solution for 2023, Day 1.
  *
  * @see <a href="https://adventofcode.com/2023/day/1">AoC 2023, Day 1</a>
  */
