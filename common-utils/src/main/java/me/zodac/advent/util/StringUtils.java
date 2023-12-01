@@ -73,7 +73,20 @@ public final class StringUtils {
     }
 
     /**
-     * Parses the input {@link String} and returns any {@link Integer} values in the order provided.
+     * Parses the input {@link String} and returns any {@link Integer} values (of any length) in the order provided. Assumes that each 'word' within
+     * the {@code input} is a valid {@link Integer}, not that each character may be a sepsrate {@link Integer}.
+     *
+     * <p>
+     * For example, given the {@code input}:
+     * <pre>
+     *     123 456 7 89
+     * </pre>
+     *
+     * <p>
+     * The output would be the four groupings converted to {@link Integer}s, not all 9 digits as {@link Integer}s, returning:
+     * <pre>
+     *     [123, 456, 7, 89]
+     * </pre>
      *
      * @param input the {@link String} to check
      * @return the found {@link Integer}s
