@@ -20,11 +20,17 @@ package me.zodac.advent.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import me.zodac.advent.pojo.tuple.Pair;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -472,5 +478,51 @@ class StringUtilsTest {
             Arguments.of(" ", new String[] {""}),                                       // Blank
             Arguments.of(null, new String[0])                                           // Null
         );
+    }
+
+    @Test
+    void testMethodsAgainstBigNaughtListOfStrings() {
+        for (final String naughtyString : getBigNaughtyListOfStrings()) {
+            if (!naughtyString.isBlank()) {
+                StringUtils.commonChars("myTest", naughtyString);
+
+                if (naughtyString.length() % 2 == 0) {
+                    StringUtils.bisect(naughtyString);
+                }
+            }
+
+            StringUtils.collectIntegersInOrder(naughtyString);
+            StringUtils.containsAllCharacters("myTest", naughtyString);
+            StringUtils.containsAny("myTest", naughtyString);
+            StringUtils.containsDuplicates(naughtyString);
+            StringUtils.countVowels(naughtyString);
+            StringUtils.findFirstFullyUpperCaseWord(naughtyString);
+            StringUtils.hasRepeatedCharacterInOrder(naughtyString);
+            StringUtils.hasRepeatedCharacterPairWithNoOverlap(naughtyString);
+            StringUtils.hasSandwichCharacters(naughtyString);
+            StringUtils.isInteger(naughtyString);
+            StringUtils.removeLastCharacter(naughtyString);
+            StringUtils.removeLastCharacters(naughtyString, 1);
+            StringUtils.sort(naughtyString);
+            StringUtils.splitOnNewLines(naughtyString);
+            StringUtils.splitOnWhitespace(naughtyString);
+
+            // Not testing due to how specific the methods are
+            // StringUtils.lookAndSay
+            // StringUtils.removeDifferentCharacters
+            // StringUtils.replaceAtIndex
+        }
+    }
+
+    private static List<String> getBigNaughtyListOfStrings() {
+        try {
+            final Path path = Paths.get(ClassLoader.getSystemResource("blns.txt").toURI());
+            return Files.readAllLines(path)
+                .stream()
+                .filter(s -> !s.isEmpty() && s.charAt(0) == '#' || s.isBlank())
+                .toList();
+        } catch (final IOException | URISyntaxException e) {
+            throw new AssertionError(e);
+        }
     }
 }
