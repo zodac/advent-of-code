@@ -1,5 +1,6 @@
 # Advent Of Code: Java Edition
 
+![](https://img.shields.io/badge/2023%20⭐-0-red)
 ![](https://img.shields.io/badge/2022%20⭐-28-yellow)
 ![](https://img.shields.io/badge/2021%20⭐-19-orange)
 ![](https://img.shields.io/badge/2020%20⭐-0-red)
@@ -47,6 +48,15 @@ module matching the module name in the source code. For example, for **2015, Day
 The source code is released under the [BSD Zero Clause License](https://opensource.org/licenses/0BSD).
 
 ## Progress And Ranks
+
+<details>
+    <summary>2022 Results</summary>
+
+| Day                                          | Part 1 | Part 2 |
+|:---------------------------------------------|-------:|-------:|
+| [Day 1](https://adventofcode.com/2023/day/1) |        |        |
+
+</details>
 
 <details>
     <summary>2022 Results</summary>
