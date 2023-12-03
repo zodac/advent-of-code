@@ -1,0 +1,155 @@
+/*
+ * BSD Zero Clause License
+ *
+ * Copyright (c) 2021-2023 zodac.me
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+ * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+package me.zodac.advent;
+
+import java.util.List;
+import java.util.Set;
+import me.zodac.advent.pojo.Point;
+import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
+import me.zodac.advent.pojo.grid.CharacterGrid;
+
+/**
+ * Solution for 2023, Day 3.
+ *
+ * @see <a href="https://adventofcode.com/2023/day/3">[2023: 03] Gear Ratios</a>
+ */
+public final class Day03 {
+
+    private static final char DEFAULT_SYMBOL = '.';
+    private static final char GEAR_SYMBOL = '*';
+    private static final int EXPECTED_NUMBER_OF_NUMBERS_FOR_GEAR_RATIO = 2;
+
+    private Day03() {
+
+    }
+
+    /**
+     * Given a {@link CharacterGrid}, any non-digit {@link Character} that is not {@link #DEFAULT_SYMBOL} is considered an engine part. If an engine
+     * part is touching a number (meaning any of the 8 adjacent points overlaps any digit), then that number is considered an engine part number. This
+     * method retrieves all those part numbers, then sums their values.
+     *
+     * @param characterGrid the {@link CharacterGrid}
+     * @return the sum of all engine part numbers
+     * @see Point#getAdjacentPoints(AdjacentPointsSelector)
+     */
+    public static long sumOfAllPartNumbers(final CharacterGrid characterGrid) {
+        long total = 0L;
+
+        for (int row = 0; row < characterGrid.numberOfRows(); row++) {
+            for (int column = 0; column < characterGrid.numberOfColumns(); column++) {
+                final Point partPoint = Point.of(row, column);
+                final char character = characterGrid.at(partPoint);
+
+                if (isNotEnginePart(character)) {
+                    continue;
+                }
+
+                total += findSumOfNumbersForPart(characterGrid, partPoint);
+            }
+        }
+
+        return total;
+    }
+
+    private static boolean isNotEnginePart(final char character) {
+        return character == DEFAULT_SYMBOL || Character.isDigit(character);
+    }
+
+    private static long findSumOfNumbersForPart(final CharacterGrid characterGrid, final Point partPoint) {
+        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, characterGrid.numberOfRows());
+        final Set<Point> adjacentPoints = partPoint.getAdjacentPoints(adjacentPointsSelector);
+
+        return adjacentPoints
+            .stream()
+            .filter(point -> Character.isDigit(characterGrid.at(point)))
+            .mapToInt(point -> findNumberInRow(characterGrid, point))
+            .distinct()
+            .sum();
+    }
+
+    private static int findNumberInRow(final CharacterGrid characterGrid, final Point pointOfKnownDigit) {
+        int startColumn;
+        int endColumn;
+
+        for (startColumn = pointOfKnownDigit.y(); startColumn > 0; startColumn--) {
+            if (!Character.isDigit(characterGrid.at(pointOfKnownDigit.x(), startColumn - 1))) {
+                break;
+            }
+        }
+
+        for (endColumn = pointOfKnownDigit.y(); endColumn < characterGrid.numberOfColumns() - 1; endColumn++) {
+            if (!Character.isDigit(characterGrid.getRow(pointOfKnownDigit.x())[endColumn + 1])) {
+                break;
+            }
+        }
+
+        final StringBuilder stringBuilder = new StringBuilder();
+        for (int column = startColumn; column <= endColumn; column++) {
+            stringBuilder.append(characterGrid.at(pointOfKnownDigit.x(), column));
+        }
+
+        return Integer.parseInt(stringBuilder.toString());
+    }
+
+    /**
+     * Given a {@link CharacterGrid}, any {@link #GEAR_SYMBOL} is considered an engine gear. If that gear has exactly 2 touching numbers (meaning 2 of
+     * the 8 adjacent points overlaps any digit), then we can calculate a gear ratio for that gear by calculating the product of the 2 numbers
+     * touching the gear. These gear ratios are then summed and returned.
+     *
+     * @param characterGrid the {@link CharacterGrid}
+     * @return the sum of all gear ratios
+     * @see Point#getAdjacentPoints(AdjacentPointsSelector)
+     */
+    public static long sumOfAllGearRatios(final CharacterGrid characterGrid) {
+        long total = 0L;
+
+        for (int row = 0; row < characterGrid.numberOfRows(); row++) {
+            for (int column = 0; column < characterGrid.numberOfColumns(); column++) {
+                final Point gearPoint = Point.of(row, column);
+                final char character = characterGrid.at(gearPoint);
+
+                if (isNotGear(character)) {
+                    continue;
+                }
+
+                total += findSumOfGearRatios(characterGrid, gearPoint);
+            }
+        }
+        return total;
+    }
+
+    private static boolean isNotGear(final char character) {
+        return character != GEAR_SYMBOL;
+    }
+
+    private static long findSumOfGearRatios(final CharacterGrid characterGrid, final Point gearPoint) {
+        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, characterGrid.numberOfRows());
+        final Set<Point> adjacentPoints = gearPoint.getAdjacentPoints(adjacentPointsSelector);
+
+        final List<Integer> gearRatioValues = adjacentPoints
+            .stream()
+            .filter(point -> Character.isDigit(characterGrid.at(point)))
+            .map(point -> findNumberInRow(characterGrid, point))
+            .distinct()
+            .toList();
+
+        return gearRatioValues.size() == EXPECTED_NUMBER_OF_NUMBERS_FOR_GEAR_RATIO
+            ? (long) gearRatioValues.getFirst() * gearRatioValues.getLast()
+            : 0L;
+    }
+}

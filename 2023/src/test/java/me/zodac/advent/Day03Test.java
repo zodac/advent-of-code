@@ -22,45 +22,47 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import me.zodac.advent.input.ExampleInput;
 import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.pojo.grid.CharacterGrid;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day01}.
+ * Tests to verify answers for {@link Day03}.
  */
-public class Day01Test {
+public class Day03Test {
 
-    private static final String INPUT_FILENAME = "day01.txt";
-    private static final String INPUT_FILENAME_PART_2 = "day01_2.txt";
+    private static final String INPUT_FILENAME = "day03.txt";
 
     @Test
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final CharacterGrid characterGrid = CharacterGrid.parse(values);
 
-        final long sumOfFrequencies = Day01.sumAllCalibrationValues(values, false);
-        assertThat(sumOfFrequencies)
-            .isEqualTo(142L);
+        final long sumOfPartNumbers = Day03.sumOfAllPartNumbers(characterGrid);
+        assertThat(sumOfPartNumbers)
+            .isEqualTo(4_361L);
 
-        final List<String> values2 = ExampleInput.readLines(INPUT_FILENAME_PART_2);
-        final long sumOfCalibrationValues = Day01.sumAllCalibrationValues(values2, true);
-        assertThat(sumOfCalibrationValues)
-            .isEqualTo(281L);
+        final long sumOfGearRatios = Day03.sumOfAllGearRatios(characterGrid);
+        assertThat(sumOfGearRatios)
+            .isEqualTo(467_835L);
     }
 
     @Test
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final CharacterGrid characterGrid = CharacterGrid.parse(values);
 
-        final long sumOfFrequencies = Day01.sumAllCalibrationValues(values, false);
-        assertThat(sumOfFrequencies)
-            .isEqualTo(54_450L);
+        final long sumOfPartNumbers = Day03.sumOfAllPartNumbers(characterGrid);
+        assertThat(sumOfPartNumbers)
+            .isEqualTo(498_559L);
     }
 
     @Test
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final CharacterGrid characterGrid = CharacterGrid.parse(values);
 
-        final long sumOfCalibrationValues = Day01.sumAllCalibrationValues(values, true);
-        assertThat(sumOfCalibrationValues)
-            .isEqualTo(54_265L);
+        final long sumOfGearRatios = Day03.sumOfAllGearRatios(characterGrid);
+        assertThat(sumOfGearRatios)
+            .isEqualTo(72_246_648L);
     }
 }

@@ -24,7 +24,7 @@ import me.zodac.advent.pojo.Point;
  *
  * @param <E> the type of the {@link Point}s on the {@link CoordinateGrid}
  */
-abstract class CoordinateGrid<E> {
+abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, IntegerGrid {
 
     /**
      * The length (or width) of the {@link CoordinateGrid}.
@@ -242,7 +242,7 @@ abstract class CoordinateGrid<E> {
      *
      * @return the number of rows
      */
-    public int size() {
+    public int numberOfRows() {
         return grid.length;
     }
 
@@ -251,7 +251,7 @@ abstract class CoordinateGrid<E> {
      *
      * @return the number of columns
      */
-    public int innerSize() {
+    public int numberOfColumns() {
         return grid[0].length;
     }
 
@@ -267,12 +267,22 @@ abstract class CoordinateGrid<E> {
     }
 
     /**
+     * Returns the value at the given {@link Point}.
+     *
+     * @param point the {@link Point}
+     * @return the value
+     */
+    public E at(final Point point) {
+        return grid[point.x()][point.y()];
+    }
+
+    /**
      * Returns the row of values at the given {@code row}.
      *
      * @param row the row
      * @return the values
      */
-    public E[] atRow(final int row) {
+    public E[] getRow(final int row) {
         return grid[row];
     }
 }

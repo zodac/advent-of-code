@@ -39,12 +39,12 @@ public class Day02Test {
             .map(BallGame::parse)
             .toList();
 
-        final long sumOfFrequencies = Day02.sumOfIdsOfPossibleGames(values);
-        assertThat(sumOfFrequencies)
+        final long sumOfIds = Day02.sumOfIdsOfPossibleGames(values);
+        assertThat(sumOfIds)
             .isEqualTo(8L);
 
-        final long result = Day02.sumOfPowersOfGames(values);
-        assertThat(result)
+        final long sumOfPowers = Day02.sumOfPowersOfGames(values);
+        assertThat(sumOfPowers)
             .isEqualTo(2_286L);
     }
 
@@ -67,8 +67,8 @@ public class Day02Test {
             .map(BallGame::parse)
             .toList();
 
-        final long result = Day02.sumOfPowersOfGames(values);
-        assertThat(result)
+        final long sumOfPowers = Day02.sumOfPowersOfGames(values);
+        assertThat(sumOfPowers)
             .isEqualTo(56_322L);
     }
 }
