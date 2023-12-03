@@ -44,14 +44,14 @@ touch "./${year}/src/test/resources/day${day_long}.txt"
 echo -e "\t- Creating actual input file"
 if [[ -z "${AOC_COOKIE}" ]]; then
   echo -e "\t\tNo cookie set for AOC, cannot create actual input file"
+else
+  curl --silent --header "Cookie: session=${AOC_COOKIE}" "https://adventofcode.com/${year}/day/${day}/input" > "./advent-of-code-inputs/${year}/day${day_long}.txt" || exit 1
+  cd ./advent-of-code-inputs || exit 1
+  git add "${year}/day${day_long}.txt"
+  git commit -m "Adding input for ${year}, Day ${day}"
+  git push
+  cd .. || exit 1
 fi
-
-curl --silent --header "Cookie: session=${AOC_COOKIE}" "https://adventofcode.com/${year}/day/${day}/input" > "./advent-of-code-inputs/${year}/day${day_long}.txt"
-cd ./advent-of-code-inputs || exit 1
-git add "${year}/day${day_long}.txt"
-git commit -m "Adding input for ${year}, Day ${day}"
-git push
-cd .. || exit 1
 
 echo -e "\t- Retrieving title"
 title=$(curl --silent "https://adventofcode.com/${year}/day/${day}" | grep '<h2>' | awk '{split($0,a,"<h2>")} END{print a[2]}' | awk '{split($0,a,"</h2>")} END{print a[1]}' | cut -d ':' -f2 | cut -d '-' -f1 | awk '{$1=$1;print}')
