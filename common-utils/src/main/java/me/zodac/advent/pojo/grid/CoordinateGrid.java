@@ -17,7 +17,6 @@
 
 package me.zodac.advent.pojo.grid;
 
-import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
 
 /**
@@ -38,22 +37,15 @@ abstract class CoordinateGrid<E> {
     protected final E[][] grid;
 
     /**
-     * The minimum value required to be considered an overlap.
-     */
-    protected final int valueSignifyingOverlap;
-
-    /**
      * Constructor that creates the internal {@code grid} and initialises the data.
      *
-     * @param gridSize               the size of the {@link CoordinateGrid}.
-     * @param grid                   the actual {@link CoordinateGrid} represented as a 2D array.
-     * @param initialValue           the initial value for each {@link Point} in the {@link CoordinateGrid}
-     * @param valueSignifyingOverlap when counting how many overlaps has occurred, this is the minimum value required to be considered an overlap
+     * @param gridSize     the size of the {@link CoordinateGrid}.
+     * @param grid         the actual {@link CoordinateGrid} represented as a 2D array.
+     * @param initialValue the initial value for each {@link Point} in the {@link CoordinateGrid}
      */
-    CoordinateGrid(final int gridSize, final E[][] grid, final E initialValue, final int valueSignifyingOverlap) {
+    CoordinateGrid(final int gridSize, final E[][] grid, final E initialValue) {
         this.gridSize = gridSize;
         this.grid = grid.clone();
-        this.valueSignifyingOverlap = valueSignifyingOverlap;
 
         for (int row = 0; row < gridSize; row++) {
             for (int column = 0; column < gridSize; column++) {
@@ -65,13 +57,11 @@ abstract class CoordinateGrid<E> {
     /**
      * Default constructor.
      *
-     * @param grid                   the actual {@link CoordinateGrid} represented as a 2D array.
-     * @param valueSignifyingOverlap when counting how many overlaps has occurred, this is the minimum value required to be considered an overlap
+     * @param grid the actual {@link CoordinateGrid} represented as a 2D array.
      */
-    CoordinateGrid(final E[][] grid, final int valueSignifyingOverlap) {
+    CoordinateGrid(final E[][] grid) {
         gridSize = grid.length;
         this.grid = grid.clone();
-        this.valueSignifyingOverlap = valueSignifyingOverlap;
     }
 
     /**
@@ -89,29 +79,6 @@ abstract class CoordinateGrid<E> {
             }
         }
 
-        return count;
-    }
-
-    /**
-     * Returns the number of points on the {@link CoordinateGrid} that have {@link Point}s that have been set more than a minimum
-     * amount {@code valueSignifyingOverlap}.
-     *
-     * <p>
-     * As a {@link Line} is drawn or {@link Point}s are set, each {@link Point} has its value updated. If
-     * that value is over {@code valueSignifyingOverlap}, the {@link Point} has an overlap.
-     *
-     * @return the number of {@link Point} with overlaps
-     */
-    public int numberOfOverlaps() {
-        int count = 0;
-
-        for (int row = 0; row < gridSize; row++) {
-            for (int column = 0; column < gridSize; column++) {
-                if (valueAt(row, column) >= valueSignifyingOverlap) {
-                    count++;
-                }
-            }
-        }
         return count;
     }
 
@@ -215,7 +182,7 @@ abstract class CoordinateGrid<E> {
     }
 
     /**
-     * Calculates the value at a specific {@link Point}.
+     * Calculates the value at a specific point.
      *
      * @param row    the x coordinate
      * @param column the y coordinate
@@ -248,7 +215,7 @@ abstract class CoordinateGrid<E> {
     }
 
     /**
-     * Checks if the input {@link Point} is one of the corners of the {@link CoordinateGrid}.
+     * Checks if the input point is one of the corners of the {@link CoordinateGrid}.
      *
      * @param row    the x coordinate
      * @param column the y coordinate
@@ -268,5 +235,44 @@ abstract class CoordinateGrid<E> {
      */
     public E[][] getGrid() {
         return grid.clone();
+    }
+
+    /**
+     * Returns the number of rows in the {@link CoordinateGrid}.
+     *
+     * @return the number of rows
+     */
+    public int size() {
+        return grid.length;
+    }
+
+    /**
+     * Returns the number of columns in the {@link CoordinateGrid}.
+     *
+     * @return the number of columns
+     */
+    public int innerSize() {
+        return grid[0].length;
+    }
+
+    /**
+     * Returns the value at the given ({@code row}, {@code column}).
+     *
+     * @param row    the row
+     * @param column the column
+     * @return the value
+     */
+    public E at(final int row, final int column) {
+        return grid[row][column];
+    }
+
+    /**
+     * Returns the row of values at the given {@code row}.
+     *
+     * @param row the row
+     * @return the values
+     */
+    public E[] atRow(final int row) {
+        return grid[row];
     }
 }

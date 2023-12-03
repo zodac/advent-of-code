@@ -28,14 +28,12 @@ import me.zodac.advent.util.ArrayUtils;
  */
 public final class BooleanGrid extends CoordinateGrid<Boolean> {
 
-    private static final int NUMBER_SIGNIFYING_OVERLAP = 1;
-
     private BooleanGrid(final int gridSize) {
-        super(gridSize, new Boolean[gridSize][gridSize], false, NUMBER_SIGNIFYING_OVERLAP);
+        super(gridSize, new Boolean[gridSize][gridSize], false);
     }
 
     private BooleanGrid(final Boolean[][] grid) {
-        super(grid, NUMBER_SIGNIFYING_OVERLAP);
+        super(grid);
     }
 
     /**
@@ -92,7 +90,7 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
      * <b>NOTE:</b> All {@link Point}s are updated at the same time, so we do not make a change and use the new value for another {@link Point}.
      *
      * @return the updated {@link BooleanGrid}
-     * @see Point#getNeighbours(boolean, int)
+     * @see Point#getAdjacentPoints(AdjacentPointsSelector)
      */
     public BooleanGrid playGameOfLife() {
         return playGameOfLife(false);
@@ -118,7 +116,7 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
      *
      * @param cornersAlwaysOn the corners of the {@link BooleanGrid} are always <b>ON</b>
      * @return the updated {@link BooleanGrid}
-     * @see Point#getNeighbours(boolean, int)
+     * @see Point#getAdjacentPoints(AdjacentPointsSelector)
      */
     public BooleanGrid playGameOfLife(final boolean cornersAlwaysOn) {
         final Boolean[][] newGrid = new Boolean[gridSize][gridSize];
@@ -133,7 +131,9 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
                 final Point currentPoint = Point.of(x, y);
                 final boolean isSet = grid[x][y];
 
-                final Set<Point> neighbours = currentPoint.getNeighbours(false, gridSize);
+                final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, gridSize);
+                final Set<Point> neighbours = currentPoint.getAdjacentPoints(adjacentPointsSelector);
+
                 final int numberOfSetNeighbours = countSetPoints(neighbours);
 
                 if (isSet) {
@@ -168,7 +168,7 @@ public final class BooleanGrid extends CoordinateGrid<Boolean> {
      * {@inheritDoc}
      *
      * <p>
-     * If the value of the {@link me.zodac.advent.pojo.Point} is {@code true} returns <b>1</b>, else returns <b>0</b>.
+     * If the value at the point is {@code true} returns <b>1</b>, else returns <b>0</b>.
      */
     @Override
     public int valueAt(final int row, final int column) {

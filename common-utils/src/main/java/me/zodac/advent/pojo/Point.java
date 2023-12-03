@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 
 /**
  * Simple POJO defining a point on a coordinate system.
@@ -30,12 +31,6 @@ import java.util.regex.Pattern;
  * @param y the Y coordinate
  */
 public record Point(int x, int y) {
-
-    /**
-     * Defines the 2D grid that the {@link Point} is on as having infinite bounds. For example, this would allow us to consider all neighbours, not
-     * just ones within a range.
-     */
-    public static final int INFINITE_GRID_SIZE = -1;
 
     private static final Pattern POINT_DELIMITER_PATTERN = Pattern.compile(" -> ");
     private static final int DEFAULT_MOVE_DISTANCE = 1;
@@ -177,76 +172,73 @@ public record Point(int x, int y) {
     }
 
     /**
-     * Returns a {@link Set} of the direct neighbours for a {@link Point}. Can return up to 4 neighbours and itself, depending on where the input is
-     * located. Assumes the {@link Point}s are on a bounded 2D array, with a size of {@code gridSize}.
+     * Returns a {@link Set} of the adjacent {@link Point}s for the current {@link Point}.
      *
-     * @param includeSelf whether to include the input itself as a 'neighbour'
-     * @param gridSize    the limits of the 2D array for the {@link Point}s
-     * @return the neighbouring {@link Point}s (and self if chosen)
+     * @param adjacentPointsSelector definition of what to consider an adjacent {@link Point}
+     * @return the adjacent {@link Point}s according to the {@link AdjacentPointsSelector}
      */
-    public Set<Point> getDirectNeighbours(final boolean includeSelf, final int gridSize) {
-        final int row = x;
-        final int column = y;
+    public Set<Point> getAdjacentPoints(final AdjacentPointsSelector adjacentPointsSelector) {
+        final Set<Point> adjacentPoints = new HashSet<>();
 
-        final Set<Point> neighbours = new HashSet<>();
-        neighbours.add(of(next(row, gridSize), column));
-        neighbours.add(of(previous(row, gridSize), column));
-        neighbours.add(of(row, next(column, gridSize)));
-        neighbours.add(of(row, previous(column, gridSize)));
-
-        if (includeSelf) {
-            neighbours.add(this);
-        } else {
-            // Remove current point, in case it was added in above calculations
-            neighbours.remove(this);
+        // Current point
+        if (adjacentPointsSelector.includeSelf()) {
+            adjacentPoints.add(this);
         }
-        return neighbours;
+
+        // 'Directly' adjacent points (left, right, up, down)
+        final Set<Point> directAdjacentPoints = getDirectAdjacentPoints(adjacentPointsSelector);
+        adjacentPoints.addAll(directAdjacentPoints);
+
+        // Diagonally adjacent points
+        if (adjacentPointsSelector.includeDiagonals()) {
+            final Set<Point> diagonalAdjacentPoints = getDiagonalAdjacentPoints(adjacentPointsSelector);
+            adjacentPoints.addAll(diagonalAdjacentPoints);
+        }
+
+        return adjacentPoints;
     }
 
-    /**
-     * Returns a {@link Set} of the neighbours for a {@link Point}. Can return up to 8 neighbours and itself, depending on where the input is located.
-     * Assumes the {@link Point}s are on a bounded 2D array, with a size of {@code gridSize}.
-     *
-     * @param includeSelf whether to include the input itself as a 'neighbour'
-     * @param gridSize    the limits of the 2D array for the {@link Point}s
-     * @return the neighbouring {@link Point}s (and self if chosen)
-     */
-    public Set<Point> getNeighbours(final boolean includeSelf, final int gridSize) {
-        final int row = x;
-        final int column = y;
+    private Set<Point> getDirectAdjacentPoints(final AdjacentPointsSelector adjacentPointsSelector) {
+        final Set<Point> adjacentPoints = new HashSet<>();
 
-        final Set<Point> neighbours = new HashSet<>();
-        neighbours.add(of(next(row, gridSize), column));
-        neighbours.add(of(previous(row, gridSize), column));
-        neighbours.add(of(row, next(column, gridSize)));
-        neighbours.add(of(row, previous(column, gridSize)));
-        neighbours.add(of(next(row, gridSize), next(column, gridSize)));
-        neighbours.add(of(previous(row, gridSize), previous(column, gridSize)));
-        neighbours.add(of(next(row, gridSize), previous(column, gridSize)));
-        neighbours.add(of(previous(row, gridSize), next(column, gridSize)));
-
-        if (includeSelf) {
-            neighbours.add(this);
-        } else {
-            // Remove current point, in case it was added in above calculations
-            neighbours.remove(this);
+        if (adjacentPointsSelector.allowOutOfBounds() || x + 1 < adjacentPointsSelector.gridSize()) {
+            adjacentPoints.add(of(x + 1, y));
         }
-        return neighbours;
+
+        if (adjacentPointsSelector.allowOutOfBounds() || x - 1 >= 0) {
+            adjacentPoints.add(of(x - 1, y));
+        }
+
+        if (adjacentPointsSelector.allowOutOfBounds() || y + 1 < adjacentPointsSelector.gridSize()) {
+            adjacentPoints.add(of(x, y + 1));
+        }
+
+        if (adjacentPointsSelector.allowOutOfBounds() || y - 1 >= 0) {
+            adjacentPoints.add(of(x, y - 1));
+        }
+
+        return adjacentPoints;
     }
 
-    private static int next(final int rowOrColumn, final int gridSize) {
-        if (gridSize == INFINITE_GRID_SIZE) {
-            return rowOrColumn + 1;
+    private Set<Point> getDiagonalAdjacentPoints(final AdjacentPointsSelector adjacentPointsSelector) {
+        final Set<Point> adjacentPoints = new HashSet<>();
+
+        if (adjacentPointsSelector.allowOutOfBounds() || (x + 1 < adjacentPointsSelector.gridSize() && y + 1 < adjacentPointsSelector.gridSize())) {
+            adjacentPoints.add(of(x + 1, y + 1));
         }
 
-        return Math.min(rowOrColumn + 1, (gridSize - 1));
-    }
-
-    private static int previous(final int rowOrColumn, final int gridSize) {
-        if (gridSize == INFINITE_GRID_SIZE) {
-            return rowOrColumn - 1;
+        if (adjacentPointsSelector.allowOutOfBounds() || (x - 1 >= 0 && y - 1 >= 0)) {
+            adjacentPoints.add(of(x - 1, y - 1));
         }
 
-        return Math.max(rowOrColumn - 1, 0);
+        if (adjacentPointsSelector.allowOutOfBounds() || (x + 1 < adjacentPointsSelector.gridSize() && y - 1 >= 0)) {
+            adjacentPoints.add(of(x + 1, y - 1));
+        }
+
+        if (adjacentPointsSelector.allowOutOfBounds() || (x - 1 >= 0 && y + 1 < adjacentPointsSelector.gridSize())) {
+            adjacentPoints.add(of(x - 1, y + 1));
+        }
+
+        return adjacentPoints;
     }
 }

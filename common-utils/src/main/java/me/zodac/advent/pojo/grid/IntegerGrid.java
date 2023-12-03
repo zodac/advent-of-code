@@ -31,11 +31,11 @@ public final class IntegerGrid extends CoordinateGrid<Integer> {
     private static final int NUMBER_SIGNIFYING_OVERLAP = 2;
 
     private IntegerGrid(final int gridSize) {
-        super(gridSize, new Integer[gridSize][gridSize], 0, NUMBER_SIGNIFYING_OVERLAP);
+        super(gridSize, new Integer[gridSize][gridSize], 0);
     }
 
     private IntegerGrid(final Integer[][] grid) {
-        super(grid, NUMBER_SIGNIFYING_OVERLAP);
+        super(grid);
     }
 
     /**
@@ -77,10 +77,33 @@ public final class IntegerGrid extends CoordinateGrid<Integer> {
     }
 
     /**
+     * Returns the number of points on the {@link CoordinateGrid} that have {@link Point}s that have been set more than the minimum
+     * amount {@link #NUMBER_SIGNIFYING_OVERLAP}.
+     *
+     * <p>
+     * As a {@link Line} is drawn or {@link Point}s are set, each {@link Point} has its value updated. If that value is over
+     * {@link #NUMBER_SIGNIFYING_OVERLAP}, the {@link Point} has an overlap.
+     *
+     * @return the number of {@link Point} with overlaps
+     */
+    public int numberOfOverlaps() {
+        int count = 0;
+
+        for (int row = 0; row < gridSize; row++) {
+            for (int column = 0; column < gridSize; column++) {
+                if (valueAt(row, column) >= NUMBER_SIGNIFYING_OVERLAP) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    /**
      * {@inheritDoc}
      *
      * <p>
-     * Uses the {@link Integer} value of the {@link Point}.
+     * Uses the {@link Integer} value at the point.
      */
     @Override
     public int valueAt(final int row, final int column) {

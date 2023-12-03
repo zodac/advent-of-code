@@ -29,6 +29,7 @@ public final class ArrayUtils {
     private static final boolean[][] EMPTY_2D_BOOLEAN_ARRAY = new boolean[0][0];
     private static final Boolean[][] EMPTY_2D_BOOLEAN_OBJECT_ARRAY = new Boolean[0][0];
     private static final char[][] EMPTY_2D_CHAR_ARRAY = new char[0][0];
+    private static final Character[][] EMPTY_2D_CHARACTER_ARRAY = new Character[0][0];
     private static final Integer[][] EMPTY_2D_INTEGER_ARRAY = new Integer[0][0];
 
     private ArrayUtils() {
@@ -209,6 +210,72 @@ public final class ArrayUtils {
             }
         }
         return integerArray;
+    }
+
+    /**
+     * Converts the provided {@link List} of {@link String}s into a 2D {@link Character} array. We assume each character in the {@link String} is a
+     * {@link Character}, there is no support for multiple-digit {@link Character}s.
+     *
+     * <p>
+     * Given a {@link List} as follows:
+     * <pre>
+     *     [
+     *      "abcd",
+     *      "efg",
+     *      "hi",
+     *      "jkl"
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * The result will be:
+     * <pre>
+     *     [
+     *      [a, b, c, d],
+     *      [e, f, g],
+     *      [h, i],
+     *      [j, k, l]
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * If any character in an input {@link String} is not a valid {@link Character}, a value of <b>'0''</b> will be set for that character.
+     *
+     * @param input the input {@link List} of {@link String}s
+     * @return the 2D {@link Character} array
+     */
+    public static Character[][] convertToArrayOfCharacterArrays(final List<String> input) {
+        if (input.isEmpty() || input.getFirst().isEmpty()) {
+            return EMPTY_2D_CHARACTER_ARRAY.clone();
+        }
+
+        final int outerLength = input.size();
+        final int innerLength = input
+            .stream()
+            .mapToInt(String::length)
+            .max()
+            .orElse(outerLength);
+
+        final Character[][] arrayOfCharacterArrays = new Character[outerLength][innerLength];
+
+        for (int i = 0; i < input.size(); i++) {
+            final String line = input.get(i);
+            arrayOfCharacterArrays[i] = convertToArrayOfCharacters(line);
+        }
+
+        return arrayOfCharacterArrays;
+    }
+
+    private static Character[] convertToArrayOfCharacters(final CharSequence input) {
+        final Character[] characterArray = new Character[input.length()];
+        for (int i = 0; i < input.length(); i++) {
+            try {
+                characterArray[i] = input.charAt(i);
+            } catch (final NumberFormatException e) {
+                characterArray[i] = 0;
+            }
+        }
+        return characterArray;
     }
 
     /**

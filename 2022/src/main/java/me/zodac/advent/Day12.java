@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 import me.zodac.advent.search.BreadthFirstSearcher;
 
 /**
@@ -91,7 +92,7 @@ public final class Day12 {
         long minDistance = Long.MAX_VALUE;
         for (final Point startingPoint : startPoints) {
             minDistance = Math.min(minDistance, BreadthFirstSearcher.findShortestDistance(startingPoint, endPoints, heightsByPoint,
-                (point) -> point.getDirectNeighbours(false, Point.INFINITE_GRID_SIZE)));
+                (point) -> point.getAdjacentPoints(AdjacentPointsSelector.createForUnboundedGrid(false, false))));
         }
         return minDistance;
     }
