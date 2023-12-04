@@ -49,7 +49,7 @@ else
   cd ./advent-of-code-inputs || exit 1
   git add "${year}/day${day_long}.txt"
   git commit -m "Adding input for ${year}, Day ${day}"
-  git push
+  git push --quiet
   cd .. || exit 1
 fi
 

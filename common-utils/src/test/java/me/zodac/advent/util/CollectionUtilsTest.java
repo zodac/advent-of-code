@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -168,5 +169,24 @@ class CollectionUtilsTest {
         assertThatThrownBy(() -> CollectionUtils.groupBySize(input, amountPerGroup))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(errorMessage);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForIntersection")
+    void testIntersection(final Set<String> first, final Set<String> second, final Set<String> expected) {
+        final Set<String> output = CollectionUtils.intersection(first, second);
+        assertThat(output)
+            .hasSameElementsAs(expected);
+    }
+
+    private static Stream<Arguments> provideForIntersection() {
+        return Stream.of(
+            Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b", "c"), Set.of("a", "b", "c")),                  // Both inputs match
+            Arguments.of(Set.of("a", "b", "c"), Set.of("b", "c", "a"), Set.of("a", "b", "c")),                  // Order insensitive
+            Arguments.of(Set.of("a", "b", "c"), Set.of("c", "d", "e", "f"), Set.of("c")),                       // Single match
+            Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b", "c", "d", "e", "f"), Set.of("a", "b", "c")),   // Multiple matches
+            Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b"), Set.of("a", "b")),                            // Second is a subset of first
+            Arguments.of(Set.of("a", "b", "c"), Set.of("d", "e", "f"), Set.of())                                // No match
+        );
     }
 }

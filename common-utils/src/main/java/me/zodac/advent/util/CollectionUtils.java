@@ -20,9 +20,11 @@ package me.zodac.advent.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -199,5 +201,19 @@ public final class CollectionUtils {
         groups.add(group);
 
         return groups;
+    }
+
+    /**
+     * Returns the intersection of a {@link Set} and a {@link Collection}s - the common elements in both.
+     *
+     * @param first  the first {@link Set}
+     * @param second the second {@link Collection}
+     * @param <E>    the type of the {@link Set} and {@link Collection}
+     * @return the common elements between both {@link Set} and {@link Collection}
+     */
+    public static <E> Set<E> intersection(final Set<? extends E> first, final Collection<E> second) {
+        final Set<E> intersection = new HashSet<>(first);
+        intersection.retainAll(second);
+        return intersection;
     }
 }
