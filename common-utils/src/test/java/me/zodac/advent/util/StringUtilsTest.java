@@ -95,14 +95,6 @@ class StringUtilsTest {
             .hasSameElementsAs(expected);
     }
 
-    @ParameterizedTest
-    @MethodSource("provideForCommonChars_invalid")
-    void testCommonChars_givenInvalidInputs(final String first, final String[] others, final String errorMessage) {
-        assertThatThrownBy(() -> StringUtils.commonChars(first, others))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage(errorMessage);
-    }
-
     private static Stream<Arguments> provideForCommonChars() {
         return Stream.of(
             Arguments.of("abcd", new String[] {"aefg"}, Set.of('a')),                    // Single common character, 2 inputs
@@ -114,12 +106,23 @@ class StringUtilsTest {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("provideForCommonChars_invalid")
+    void testCommonChars_givenInvalidInputs(final String first, final String[] others, final String errorMessage) {
+        assertThatThrownBy(() -> StringUtils.commonChars(first, others))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(errorMessage);
+    }
+
     private static Stream<Arguments> provideForCommonChars_invalid() {
         return Stream.of(
             Arguments.of("abcd", new String[0], "Must have at least two strings to compare"),               // One input
-            Arguments.of("abc", new String[] {"def", "ghi", "", "jkl"}, "Input cannot be null or blank"),   // Empty
-            Arguments.of("abc", new String[] {"def", "ghi", " ", "jkl"}, "Input cannot be null or blank"),  // Blank
-            Arguments.of("abc", new String[] {"def", "ghi", null, "jkl"}, "Input cannot be null or blank")  // Null
+            Arguments.of("", new String[] {"def", "ghi", "jkl"}, "Input cannot be null or blank"),          // Empty first
+            Arguments.of(" ", new String[] {"def", "ghi", "jkl"}, "Input cannot be null or blank"),         // Blank first
+            Arguments.of(null, new String[] {"def", "ghi", "jkl"}, "Input cannot be null or blank"),        // Null first
+            Arguments.of("abc", new String[] {"def", "ghi", "", "jkl"}, "Input cannot be null or blank"),   // Empty other
+            Arguments.of("abc", new String[] {"def", "ghi", " ", "jkl"}, "Input cannot be null or blank"),  // Blank other
+            Arguments.of("abc", new String[] {"def", "ghi", null, "jkl"}, "Input cannot be null or blank")  // Null other
         );
     }
 

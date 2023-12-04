@@ -81,13 +81,13 @@ class Day05Test {
 
     private static Map<Integer, Deque<String>> getStacksById(final List<? extends List<String>> values) {
         final List<String> input = values.get(INDEX_OF_FIRST_GROUP);
-        final char[][] arrayOfCharArrays = ArrayUtils.convertToArrayOfCharArrays(input);
-        final char[][] reversedArrayOfCharArrays = ArrayUtils.reverseRows(arrayOfCharArrays);
-        final char[][] transposedArrayOfCharArrays = ArrayUtils.transpose(reversedArrayOfCharArrays);
+        final Character[][] arrayOfCharArrays = ArrayUtils.convertToArrayOfCharacterArrays(input);
+        final Character[][] reversedArrayOfCharArrays = ArrayUtils.reverseRows(arrayOfCharArrays);
+        final Character[][] transposedArrayOfCharArrays = ArrayUtils.transpose(reversedArrayOfCharArrays);
 
         // Filter and add to Map, keyed by ID
         final Map<Integer, Deque<String>> stacksById = new HashMap<>();
-        for (final char[] transposedCharArray : transposedArrayOfCharArrays) {
+        for (final Character[] transposedCharArray : transposedArrayOfCharArrays) {
             final char firstChar = transposedCharArray[0];
 
             if (Character.isDigit(firstChar)) {
@@ -98,7 +98,7 @@ class Day05Test {
         return stacksById;
     }
 
-    private static Deque<String> createStack(final char[] transposedCharArray) {
+    private static Deque<String> createStack(final Character[] transposedCharArray) {
         final Deque<String> stack = new ArrayDeque<>();
 
         // Skip first element as that is the stack ID

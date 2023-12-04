@@ -17,6 +17,7 @@
 
 package me.zodac.advent.util;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +29,6 @@ public final class ArrayUtils {
     private static final boolean[] EMPTY_BOOLEAN_ARRAY = new boolean[0];
     private static final boolean[][] EMPTY_2D_BOOLEAN_ARRAY = new boolean[0][0];
     private static final Boolean[][] EMPTY_2D_BOOLEAN_OBJECT_ARRAY = new Boolean[0][0];
-    private static final char[][] EMPTY_2D_CHAR_ARRAY = new char[0][0];
     private static final Character[][] EMPTY_2D_CHARACTER_ARRAY = new Character[0][0];
     private static final Integer[][] EMPTY_2D_INTEGER_ARRAY = new Integer[0][0];
 
@@ -97,7 +97,8 @@ public final class ArrayUtils {
     }
 
     /**
-     * Converts the provided {@link List} of {@link String}s into a 2D char array.
+     * Converts the provided {@link List} of {@link String}s into a 2D {@link Character} array. We assume each character in the {@link String} is a
+     * {@link Character}, there is no support for multiple-digit {@link Character}s.
      *
      * <p>
      * Given a {@link List} as follows:
@@ -114,19 +115,22 @@ public final class ArrayUtils {
      * The result will be:
      * <pre>
      *     [
-     *      ['a', 'b', 'c', 'd'],
-     *      ['e', 'f', 'g'],
-     *      ['h', 'i'],
-     *      ['j, 'k', 'l']
+     *      [a, b, c, d],
+     *      [e, f, g],
+     *      [h, i],
+     *      [j, k, l]
      *     ]
      * </pre>
      *
+     * <p>
+     * If any character in an input {@link String} is not a valid {@link Character}, a value of <b>'0''</b> will be set for that character.
+     *
      * @param input the input {@link List} of {@link String}s
-     * @return the 2D char array
+     * @return the 2D {@link Character} array
      */
-    public static char[][] convertToArrayOfCharArrays(final List<String> input) {
+    public static Character[][] convertToArrayOfCharacterArrays(final List<String> input) {
         if (input.isEmpty() || input.getFirst().isEmpty()) {
-            return EMPTY_2D_CHAR_ARRAY.clone();
+            return EMPTY_2D_CHARACTER_ARRAY.clone();
         }
 
         final int outerLength = input.size();
@@ -136,14 +140,22 @@ public final class ArrayUtils {
             .max()
             .orElse(outerLength);
 
-        final char[][] arrayOfCharArrays = new char[outerLength][innerLength];
+        final Character[][] arrayOfCharacterArrays = new Character[outerLength][innerLength];
 
         for (int i = 0; i < input.size(); i++) {
             final String line = input.get(i);
-            arrayOfCharArrays[i] = line.toCharArray();
+            arrayOfCharacterArrays[i] = convertToArrayOfCharacters(line);
         }
 
-        return arrayOfCharArrays;
+        return arrayOfCharacterArrays;
+    }
+
+    private static Character[] convertToArrayOfCharacters(final CharSequence input) {
+        final Character[] characterArray = new Character[input.length()];
+        for (int i = 0; i < input.length(); i++) {
+            characterArray[i] = input.charAt(i);
+        }
+        return characterArray;
     }
 
     /**
@@ -210,72 +222,6 @@ public final class ArrayUtils {
             }
         }
         return integerArray;
-    }
-
-    /**
-     * Converts the provided {@link List} of {@link String}s into a 2D {@link Character} array. We assume each character in the {@link String} is a
-     * {@link Character}, there is no support for multiple-digit {@link Character}s.
-     *
-     * <p>
-     * Given a {@link List} as follows:
-     * <pre>
-     *     [
-     *      "abcd",
-     *      "efg",
-     *      "hi",
-     *      "jkl"
-     *     ]
-     * </pre>
-     *
-     * <p>
-     * The result will be:
-     * <pre>
-     *     [
-     *      [a, b, c, d],
-     *      [e, f, g],
-     *      [h, i],
-     *      [j, k, l]
-     *     ]
-     * </pre>
-     *
-     * <p>
-     * If any character in an input {@link String} is not a valid {@link Character}, a value of <b>'0''</b> will be set for that character.
-     *
-     * @param input the input {@link List} of {@link String}s
-     * @return the 2D {@link Character} array
-     */
-    public static Character[][] convertToArrayOfCharacterArrays(final List<String> input) {
-        if (input.isEmpty() || input.getFirst().isEmpty()) {
-            return EMPTY_2D_CHARACTER_ARRAY.clone();
-        }
-
-        final int outerLength = input.size();
-        final int innerLength = input
-            .stream()
-            .mapToInt(String::length)
-            .max()
-            .orElse(outerLength);
-
-        final Character[][] arrayOfCharacterArrays = new Character[outerLength][innerLength];
-
-        for (int i = 0; i < input.size(); i++) {
-            final String line = input.get(i);
-            arrayOfCharacterArrays[i] = convertToArrayOfCharacters(line);
-        }
-
-        return arrayOfCharacterArrays;
-    }
-
-    private static Character[] convertToArrayOfCharacters(final CharSequence input) {
-        final Character[] characterArray = new Character[input.length()];
-        for (int i = 0; i < input.length(); i++) {
-            try {
-                characterArray[i] = input.charAt(i);
-            } catch (final NumberFormatException e) {
-                characterArray[i] = 0;
-            }
-        }
-        return characterArray;
     }
 
     /**
@@ -398,10 +344,11 @@ public final class ArrayUtils {
      * Given a 2D char array, returns the length of the longest inner char array.
      *
      * @param input the input 2D char array
+     * @param <E>   the type of the {@code input}
      * @return the length of the longest inner array
      * @throws IllegalArgumentException thrown if the input is {@code null} or an empty array
      */
-    public static int maxInnerLength(final char[][] input) {
+    public static <E> int maxInnerLength(final E[][] input) {
         if (input == null) {
             throw new IllegalArgumentException("Input cannot be null");
         }
@@ -435,17 +382,20 @@ public final class ArrayUtils {
      * </pre>
      *
      * @param input the input 2D char array
+     * @param <E>   the type of the {@code input}
      * @return the reversed 2D array
+     * @throws IllegalArgumentException thrown if the input is {@code null} or empty
      */
-    public static char[][] reverseRows(final char[][] input) {
+    @SuppressWarnings("unchecked")
+    public static <E> E[][] reverseRows(final E[][] input) {
         if (input == null || input.length == 0 || input[0].length == 0) {
-            return EMPTY_2D_CHAR_ARRAY.clone();
+            throw new IllegalArgumentException("Input cannot be null or empty");
         }
 
         final int outerLength = input.length;
         final int innerLength = maxInnerLength(input);
 
-        final char[][] output = new char[outerLength][innerLength];
+        final E[][] output = (E[][]) Array.newInstance(input[0][0].getClass(), outerLength, innerLength);
         for (int i = 0; i < outerLength; i++) {
             output[i] = input[outerLength - 1 - i];
         }
@@ -498,9 +448,9 @@ public final class ArrayUtils {
      * @param input the input 2D char array
      * @return the transposed 2D array
      */
-    public static char[][] transpose(final char[][] input) {
+    public static Character[][] transpose(final Character[][] input) {
         if (input == null || input.length == 0 || input[0].length == 0) {
-            return EMPTY_2D_CHAR_ARRAY.clone();
+            return EMPTY_2D_CHARACTER_ARRAY.clone();
         }
 
         final int outerLength = input.length;
@@ -509,7 +459,7 @@ public final class ArrayUtils {
             .max()
             .orElse(0);
 
-        final char[][] transposedArray = new char[innerLength][outerLength];
+        final Character[][] transposedArray = new Character[innerLength][outerLength];
         for (int i = 0; i < innerLength; i++) {
             for (int j = 0; j < outerLength; j++) {
                 if (i >= input[j].length) {

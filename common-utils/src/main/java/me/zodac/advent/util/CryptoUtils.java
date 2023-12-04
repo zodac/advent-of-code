@@ -18,7 +18,6 @@
 package me.zodac.advent.util;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  * Utility functions for cryptography.
@@ -52,10 +51,6 @@ public final class CryptoUtils {
     }
 
     private static String asHexString(final byte[] input) {
-        if (input == null || input.length == 0) {
-            throw new IllegalArgumentException("Input must have at least one element, found: " + Arrays.toString(input));
-        }
-
         // Taken from: https://stackoverflow.com/a/9655224/2000246
         final StringBuilder hex = new StringBuilder();
         for (final byte b : input) {

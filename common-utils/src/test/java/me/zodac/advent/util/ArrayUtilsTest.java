@@ -83,18 +83,18 @@ class ArrayUtilsTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideForConvertToArrayOfCharArrays")
-    void testConvertToArrayOfCharArrays(final List<String> input, final char[][] expected) {
-        final char[][] output = ArrayUtils.convertToArrayOfCharArrays(input);
+    @MethodSource("provideForConvertToArrayOfCharacterArrays")
+    void testConvertToArrayOfCharacterArrays(final List<String> input, final Character[][] expected) {
+        final Character[][] output = ArrayUtils.convertToArrayOfCharacterArrays(input);
         assertThat(output)
             .isDeepEqualTo(expected);
     }
 
-    private static Stream<Arguments> provideForConvertToArrayOfCharArrays() {
+    private static Stream<Arguments> provideForConvertToArrayOfCharacterArrays() {
         return Stream.of(
             // Valid list
             Arguments.of(List.of("abc", "def", "ghi"),
-                new char[][] {
+                new Character[][] {
                     {'a', 'b', 'c'},
                     {'d', 'e', 'f'},
                     {'g', 'h', 'i'}
@@ -102,7 +102,7 @@ class ArrayUtilsTest {
             ),
             // Valid list, where first string is longer than others
             Arguments.of(List.of("abcd", "efg", "hij"),
-                new char[][] {
+                new Character[][] {
                     {'a', 'b', 'c', 'd'},
                     {'e', 'f', 'g'},
                     {'h', 'i', 'j'}
@@ -110,14 +110,14 @@ class ArrayUtilsTest {
             ),
             // Valid list, where last string is longer than others
             Arguments.of(List.of("abc", "def", "ghij"),
-                new char[][] {
+                new Character[][] {
                     {'a', 'b', 'c'},
                     {'d', 'e', 'f'},
                     {'g', 'h', 'i', 'j'}
                 }
             ),
-            Arguments.of(List.of(""), new char[][] {}),     // List of empty string
-            Arguments.of(List.of(), new char[][] {})            // Empty list
+            Arguments.of(List.of(""), new Character[][] {}),              // List of empty string
+            Arguments.of(List.of(), new Character[][] {})                     // Empty list
         );
     }
 
@@ -312,7 +312,7 @@ class ArrayUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideForMaxInnerLength")
-    void testMaxInnerLength(final char[][] input, final int expected) {
+    void testMaxInnerLength(final Character[][] input, final int expected) {
         final int output = ArrayUtils.maxInnerLength(input);
         assertThat(output)
             .isEqualTo(expected);
@@ -320,16 +320,16 @@ class ArrayUtilsTest {
 
     private static Stream<Arguments> provideForMaxInnerLength() {
         return Stream.of(
-            Arguments.of(new char[][] {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}}, 3),  // Columns of equal length
-            Arguments.of(new char[][] {{'a', 'b'}}, 2),                                         // Single inner array
-            Arguments.of(new char[][] {{'a', 'b'}, {'c', 'd', 'e', 'f'}, {'g', 'h', 'i'}}, 4),  // Different column lengths
-            Arguments.of(new char[][] {{}, {}}, 0)                                              // Empty 2D array
+            Arguments.of(new Character[][] {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}}, 3),  // Columns of equal length
+            Arguments.of(new Character[][] {{'a', 'b'}}, 2),                                         // Single inner array
+            Arguments.of(new Character[][] {{'a', 'b'}, {'c', 'd', 'e', 'f'}, {'g', 'h', 'i'}}, 4),  // Different column lengths
+            Arguments.of(new Character[][] {{}, {}}, 0)                                              // Empty 2D array
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideForMaxInnerLength_invalid")
-    void testMaxInnerLength_givenInvalidInputs(final char[][] input, final String errorMessage) {
+    void testMaxInnerLength_givenInvalidInputs(final Character[][] input, final String errorMessage) {
         assertThatThrownBy(() -> ArrayUtils.maxInnerLength(input))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(errorMessage);
@@ -337,15 +337,15 @@ class ArrayUtilsTest {
 
     private static Stream<Arguments> provideForMaxInnerLength_invalid() {
         return Stream.of(
-            Arguments.of(new char[][] {}, "Cannot find max length of input: []"),   // Empty 1D array
-            Arguments.of(null, "Input cannot be null")                              // Null
+            Arguments.of(new Character[][] {}, "Cannot find max length of input: []"),   // Empty 1D array
+            Arguments.of(null, "Input cannot be null")                                   // Null
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideForReverseRows")
-    void testReverseRows(final char[][] input, final char[][] expected) {
-        final char[][] output = ArrayUtils.reverseRows(input);
+    <E> void testReverseRows(final E[][] input, final E[][] expected) {
+        final E[][] output = ArrayUtils.reverseRows(input);
         assertThat(output)
             .isDeepEqualTo(expected);
     }
@@ -354,12 +354,12 @@ class ArrayUtilsTest {
         return Stream.of(
             // Valid input
             Arguments.of(
-                new char[][] {
+                new Character[][] {
                     {'a', 'b', 'c'},
                     {'d', 'e', 'f'},
                     {'g', 'h', 'i'}
                 },
-                new char[][] {
+                new Character[][] {
                     {'g', 'h', 'i'},
                     {'d', 'e', 'f'},
                     {'a', 'b', 'c'}
@@ -367,20 +367,46 @@ class ArrayUtilsTest {
             ),
             // Different column lengths
             Arguments.of(
-                new char[][] {
+                new Character[][] {
                     {'a', 'b', 'c'},
                     {'d', 'e'},
                     {'f', 'g', 'h', 'i'}
                 },
-                new char[][] {
+                new Character[][] {
                     {'f', 'g', 'h', 'i'},
                     {'d', 'e'},
                     {'a', 'b', 'c'}
                 }
             ),
-            Arguments.of(new char[][] {}, new char[0][0]),         // Empty 1D array
-            Arguments.of(new char[][] {{}, {}}, new char[0][0]),   // Empty 2D array
-            Arguments.of(new char[][] {{}, {}}, new char[0][0])    // Null
+            // Different type
+            Arguments.of(
+                new Integer[][] {
+                    {1, 2, 3},
+                    {4, 5, 6},
+                    {7, 8, 9}
+                },
+                new Integer[][] {
+                    {7, 8, 9},
+                    {4, 5, 6},
+                    {1, 2, 3}
+                }
+            )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForReverseRows_invalid")
+    <E> void testReverseRows_givenInvalidInputs(final E[][] input, final String errorMessage) {
+        assertThatThrownBy(() -> ArrayUtils.reverseRows(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(errorMessage);
+    }
+
+    private static Stream<Arguments> provideForReverseRows_invalid() {
+        return Stream.of(
+            Arguments.of(new Character[][] {}, "Input cannot be null or empty"),         // Empty 1D array
+            Arguments.of(new Character[][] {{}, {}}, "Input cannot be null or empty"),   // Empty 2D array
+            Arguments.of(new Character[][] {{}, {}}, "Input cannot be null or empty")    // Null
         );
     }
 
@@ -405,8 +431,8 @@ class ArrayUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideForTranspose")
-    void testTranspose(final char[][] input, final char[][] expected) {
-        final char[][] output = ArrayUtils.transpose(input);
+    void testTranspose(final Character[][] input, final Character[][] expected) {
+        final Character[][] output = ArrayUtils.transpose(input);
         assertThat(output)
             .isDeepEqualTo(expected);
     }
@@ -415,17 +441,17 @@ class ArrayUtilsTest {
         return Stream.of(
             // Valid
             Arguments.of(
-                new char[][] {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, {'j', 'k', 'l'}},
-                new char[][] {{'a', 'd', 'g', 'j'}, {'b', 'e', 'h', 'k'}, {'c', 'f', 'i', 'l'}}
+                new Character[][] {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, {'j', 'k', 'l'}},
+                new Character[][] {{'a', 'd', 'g', 'j'}, {'b', 'e', 'h', 'k'}, {'c', 'f', 'i', 'l'}}
             ),
             // Valid with gaps
             Arguments.of(
-                new char[][] {{'a', 'b', 'c'}, {'d', 'e', 'f', 'g'}, {'h', 'i'}},
-                new char[][] {{'a', 'd', 'h'}, {'b', 'e', 'i'}, {'c', 'f', ' '}, {' ', 'g', ' '}}
+                new Character[][] {{'a', 'b', 'c'}, {'d', 'e', 'f', 'g'}, {'h', 'i'}},
+                new Character[][] {{'a', 'd', 'h'}, {'b', 'e', 'i'}, {'c', 'f', ' '}, {' ', 'g', ' '}}
             ),
-            Arguments.of(new char[][] {}, new char[0][0]),         // Empty 1D array
-            Arguments.of(new char[][] {{}, {}}, new char[0][0]),   // Empty 2D array
-            Arguments.of(null, new char[0][0])           // Null
+            Arguments.of(new Character[][] {}, new Character[0][0]),         // Empty 1D array
+            Arguments.of(new Character[][] {{}, {}}, new Character[0][0]),   // Empty 2D array
+            Arguments.of(null, new Character[0][0])                // Null
         );
     }
 }
