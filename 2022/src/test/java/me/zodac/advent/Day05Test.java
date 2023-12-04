@@ -83,7 +83,7 @@ class Day05Test {
         final List<String> input = values.get(INDEX_OF_FIRST_GROUP);
         final Character[][] arrayOfCharArrays = ArrayUtils.convertToArrayOfCharacterArrays(input);
         final Character[][] reversedArrayOfCharArrays = ArrayUtils.reverseRows(arrayOfCharArrays);
-        final Character[][] transposedArrayOfCharArrays = ArrayUtils.transpose(reversedArrayOfCharArrays);
+        final Character[][] transposedArrayOfCharArrays = ArrayUtils.transpose(reversedArrayOfCharArrays, ' ');
 
         // Filter and add to Map, keyed by ID
         final Map<Integer, Deque<String>> stacksById = new HashMap<>();

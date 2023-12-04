@@ -38,9 +38,9 @@ public final class SegmentedDisplay {
     private static final int COLUMNS_NEEDED_PER_CHARACTER = 5; // Includes one column of blank spaces
     private static final int DEFAULT_HEIGHT = 6;
 
-    private final boolean[][] array;
+    private final Boolean[][] array;
 
-    private SegmentedDisplay(final boolean[][] array) {
+    private SegmentedDisplay(final Boolean[][] array) {
         this.array = array.clone();
     }
 
@@ -51,8 +51,8 @@ public final class SegmentedDisplay {
      * @return the {@link SegmentedDisplay}
      */
     public static SegmentedDisplay create(final int numberOfCharacters) {
-        final boolean[][] array = new boolean[DEFAULT_HEIGHT][numberOfCharacters * COLUMNS_NEEDED_PER_CHARACTER];
-        final boolean[][] filledArray = ArrayUtils.deepFill(array, false);
+        final Boolean[][] array = new Boolean[DEFAULT_HEIGHT][numberOfCharacters * COLUMNS_NEEDED_PER_CHARACTER];
+        final Boolean[][] filledArray = ArrayUtils.deepFill(array, false);
         return new SegmentedDisplay(filledArray);
     }
 

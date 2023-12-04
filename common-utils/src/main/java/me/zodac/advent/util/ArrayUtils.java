@@ -26,8 +26,6 @@ import java.util.List;
  */
 public final class ArrayUtils {
 
-    private static final boolean[] EMPTY_BOOLEAN_ARRAY = new boolean[0];
-    private static final boolean[][] EMPTY_2D_BOOLEAN_ARRAY = new boolean[0][0];
     private static final Boolean[][] EMPTY_2D_BOOLEAN_OBJECT_ARRAY = new Boolean[0][0];
     private static final Character[][] EMPTY_2D_CHARACTER_ARRAY = new Character[0][0];
     private static final Integer[][] EMPTY_2D_INTEGER_ARRAY = new Integer[0][0];
@@ -225,7 +223,7 @@ public final class ArrayUtils {
     }
 
     /**
-     * Counts the number of elements along the end of a 2D array. This is calculated as:
+     * Counts the number of elements along the edge of a 2D array. This is calculated as:
      * <pre>
      *     (length - 1) * 4
      * </pre>
@@ -255,15 +253,17 @@ public final class ArrayUtils {
      *
      * @param input the input array
      * @param value the value to set in the array
+     * @param <E>   the type of the {@code input}
      * @return the filled array
+     * @throws IllegalArgumentException thrown if the input is {@code null} or empty
      */
-    public static boolean[][] deepFill(final boolean[][] input, final boolean value) {
+    public static <E> E[][] deepFill(final E[][] input, final E value) {
         if (input == null || input.length == 0 || input[0].length == 0) {
-            return EMPTY_2D_BOOLEAN_ARRAY.clone();
+            throw new IllegalArgumentException("Input cannot be null or empty");
         }
 
-        final boolean[][] array = deepCopy(input);
-        for (final boolean[] innerArray : array) {
+        final E[][] array = deepCopy(input);
+        for (final E[] innerArray : array) {
             for (int j = 0; j < array[0].length; j++) {
                 innerArray[j] = value;
             }
@@ -272,9 +272,10 @@ public final class ArrayUtils {
         return array;
     }
 
-    private static boolean[][] deepCopy(final boolean[][] input) {
+    @SuppressWarnings("Convert2MethodRef") // Suppressed as method reference causes an IntelliJ error
+    private static <E> E[][] deepCopy(final E[][] input) {
         return Arrays.stream(input)
-            .map(boolean[]::clone)
+            .map(array -> array.clone())
             .toArray(array -> input.clone());
     }
 
@@ -303,47 +304,9 @@ public final class ArrayUtils {
     }
 
     /**
-     * Flattens a 2D array into a 1D array. For example, given the input 2D array:
-     * <pre>
-     *     [
-     *       [true, true, true],
-     *       [false, false, false],
-     *       [true, false, true],
-     *     ]
-     * </pre>
+     * Given a 2D array, returns the length of the longest inner array.
      *
-     * <p>
-     * Then the output 1D array would be:
-     * <pre>
-     *     [true, true, true, false, false, false, true, false, true]
-     * </pre>
-     *
-     * @param input the input 2D array to flatten
-     * @return the flattened 1D array, or an empty array if input is {@code null} or empty
-     */
-    public static boolean[] flatten(final boolean[][] input) {
-        if (input == null || input.length == 0 || input[0].length == 0) {
-            return EMPTY_BOOLEAN_ARRAY.clone();
-        }
-
-        final int size = size(input);
-        final boolean[] output = new boolean[size];
-
-        int i = 0;
-        for (final boolean[] row : input) {
-            for (final boolean column : row) {
-                output[i] = column;
-                i++;
-            }
-        }
-
-        return output;
-    }
-
-    /**
-     * Given a 2D char array, returns the length of the longest inner char array.
-     *
-     * @param input the input 2D char array
+     * @param input the input 2D array
      * @param <E>   the type of the {@code input}
      * @return the length of the longest inner array
      * @throws IllegalArgumentException thrown if the input is {@code null} or an empty array
@@ -360,7 +323,7 @@ public final class ArrayUtils {
     }
 
     /**
-     * Given a 2D char array, reverses the order of the rows. For example, given the 2D array:
+     * Given a 2D array, reverses the order of the rows. For example, given the 2D array:
      * <pre>
      *     [
      *      ['a', 'b', 'c'],
@@ -381,12 +344,11 @@ public final class ArrayUtils {
      *     ]
      * </pre>
      *
-     * @param input the input 2D char array
+     * @param input the input 2D array
      * @param <E>   the type of the {@code input}
      * @return the reversed 2D array
      * @throws IllegalArgumentException thrown if the input is {@code null} or empty
      */
-    @SuppressWarnings("unchecked")
     public static <E> E[][] reverseRows(final E[][] input) {
         if (input == null || input.length == 0 || input[0].length == 0) {
             throw new IllegalArgumentException("Input cannot be null or empty");
@@ -395,7 +357,7 @@ public final class ArrayUtils {
         final int outerLength = input.length;
         final int innerLength = maxInnerLength(input);
 
-        final E[][] output = (E[][]) Array.newInstance(input[0][0].getClass(), outerLength, innerLength);
+        final E[][] output = create2DimensionalArray(input[0][0].getClass(), outerLength, innerLength);
         for (int i = 0; i < outerLength; i++) {
             output[i] = input[outerLength - 1 - i];
         }
@@ -403,26 +365,7 @@ public final class ArrayUtils {
     }
 
     /**
-     * Counts the number of elements in a 2D array. Used when there is no guarantee that the rows of a 2D array are a consistent length.
-     *
-     * @param input the array to check
-     * @return the number of elements in the array, or <b>0</b> if the input is {@code null}
-     */
-    public static int size(final boolean[][] input) {
-        if (input == null) {
-            return 0;
-        }
-
-        int size = 0;
-        for (final boolean[] row : input) {
-            size += row.length;
-        }
-
-        return size;
-    }
-
-    /**
-     * Tranposes the provided 2D char array. A transpose 'flips' the 2D array along the diagonal axis. For example, given the 2D array:
+     * Tranposes the provided 2D array. A transpose 'flips' the 2D array along the diagonal axis. For example, given the 2D array:
      * <pre>
      *     [
      *      ['a', 'b', 'c'],
@@ -443,14 +386,17 @@ public final class ArrayUtils {
      * </pre>
      *
      * <p>
-     * <b>NOTE:</b> If the inner arrays are of different lengths, the shorter arrays will be filled with blank characters to fill them up.
+     * <b>NOTE:</b> If the inner arrays are of different lengths, the shorter arrays will be filled with {@code blankSpaceValue} to fill them up.
      *
-     * @param input the input 2D char array
+     * @param input           the input 2D array
+     * @param blankSpaceValue the value to 'fill' in any gaps in the transposed array
+     * @param <E>             the type of the {@code input}
      * @return the transposed 2D array
+     * @throws IllegalArgumentException thrown if the input is {@code null} or empty
      */
-    public static Character[][] transpose(final Character[][] input) {
+    public static <E> E[][] transpose(final E[][] input, final E blankSpaceValue) {
         if (input == null || input.length == 0 || input[0].length == 0) {
-            return EMPTY_2D_CHARACTER_ARRAY.clone();
+            throw new IllegalArgumentException("Input cannot be null or empty");
         }
 
         final int outerLength = input.length;
@@ -459,11 +405,12 @@ public final class ArrayUtils {
             .max()
             .orElse(0);
 
-        final Character[][] transposedArray = new Character[innerLength][outerLength];
+        // Flipping inner and outer lengths for the new 2D array
+        final E[][] transposedArray = create2DimensionalArray(input[0][0].getClass(), innerLength, outerLength);
         for (int i = 0; i < innerLength; i++) {
             for (int j = 0; j < outerLength; j++) {
                 if (i >= input[j].length) {
-                    transposedArray[i][j] = ' ';
+                    transposedArray[i][j] = blankSpaceValue;
                 } else {
                     transposedArray[i][j] = input[j][i];
                 }
@@ -471,5 +418,10 @@ public final class ArrayUtils {
         }
 
         return transposedArray;
+    }
+
+    @SuppressWarnings("unchecked") // Creating a 2D array of a generic type
+    private static <E> E[][] create2DimensionalArray(final Class<?> arrayClass, final int outerLength, final int innerLength) {
+        return (E[][]) Array.newInstance(arrayClass, outerLength, innerLength);
     }
 }

@@ -211,42 +211,55 @@ class ArrayUtilsTest {
 
     @Test
     void whenDeepFill_givenValidInput_thenNewFilledArrayIsReturned_andOriginalArrayIsUnchanged() {
-        final boolean[][] input = new boolean[3][3];
-        final boolean[][] output = ArrayUtils.deepFill(input, true);
+        final Boolean[][] input = new Boolean[3][3];
+        final Boolean[][] output = ArrayUtils.deepFill(input, true);
         assertThat(output)
-            .contains(new boolean[] {true, true, true}, atIndex(0))
-            .contains(new boolean[] {true, true, true}, atIndex(1))
-            .contains(new boolean[] {true, true, true}, atIndex(2));
+            .contains(new Boolean[] {true, true, true}, atIndex(0))
+            .contains(new Boolean[] {true, true, true}, atIndex(1))
+            .contains(new Boolean[] {true, true, true}, atIndex(2));
 
-        final boolean[][] secondOutput = ArrayUtils.deepFill(input, false);
+        final Boolean[][] secondOutput = ArrayUtils.deepFill(input, false);
         assertThat(secondOutput)
-            .contains(new boolean[] {false, false, false}, atIndex(0))
-            .contains(new boolean[] {false, false, false}, atIndex(1))
-            .contains(new boolean[] {false, false, false}, atIndex(2));
+            .contains(new Boolean[] {false, false, false}, atIndex(0))
+            .contains(new Boolean[] {false, false, false}, atIndex(1))
+            .contains(new Boolean[] {false, false, false}, atIndex(2));
 
         // Confirm new 2D array is not modified if original array is modified
         output[0][0] = true;
         assertThat(secondOutput)
-            .contains(new boolean[] {false, false, false}, atIndex(0))
-            .contains(new boolean[] {false, false, false}, atIndex(1))
-            .contains(new boolean[] {false, false, false}, atIndex(2));
+            .contains(new Boolean[] {false, false, false}, atIndex(0))
+            .contains(new Boolean[] {false, false, false}, atIndex(1))
+            .contains(new Boolean[] {false, false, false}, atIndex(2));
     }
 
     @ParameterizedTest
     @MethodSource("provideForDeepFill")
-    void testForDeepFill(final boolean[][] input, final boolean value, final boolean[][] expected) {
-        final boolean[][] output = ArrayUtils.deepFill(input, value);
+    <E> void testForDeepFill(final E[][] input, final E value, final E[][] expected) {
+        final E[][] output = ArrayUtils.deepFill(input, value);
         assertThat(output)
             .isDeepEqualTo(expected);
     }
 
     private static Stream<Arguments> provideForDeepFill() {
         return Stream.of(
-            Arguments.of(new boolean[2][2], false, new boolean[][] {{false, false}, {false, false}}),           // Same column lengths
-            Arguments.of(new boolean[3][2], true, new boolean[][] {{true, true}, {true, true}, {true, true}}),  // Different column lengths
-            Arguments.of(new boolean[][] {}, true, new boolean[0][0]),                                          // Empty 1D array
-            Arguments.of(new boolean[][] {{}, {}}, true, new boolean[0][0]),                                    // Empty 2D array
-            Arguments.of(null, true, new boolean[0][0])                                                         // Null
+            Arguments.of(new Boolean[2][2], false, new Boolean[][] {{false, false}, {false, false}}),           // Same column lengths
+            Arguments.of(new Boolean[3][2], true, new Boolean[][] {{true, true}, {true, true}, {true, true}})   // Different column lengths
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForDeepFill_invalid")
+    <E> void testForDeepFill_givenInvalidInputs(final E[][] input, final E value, final String errorMessage) {
+        assertThatThrownBy(() -> ArrayUtils.deepFill(input, value))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(errorMessage);
+    }
+
+    private static Stream<Arguments> provideForDeepFill_invalid() {
+        return Stream.of(
+            Arguments.of(new Boolean[][] {}, true, "Input cannot be null or empty"),        // Empty 1D array
+            Arguments.of(new Boolean[][] {{}, {}}, true, "Input cannot be null or empty"),  // Empty 2D array
+            Arguments.of(null, true, "Input cannot be null or empty")                       // Null
         );
     }
 
@@ -281,32 +294,6 @@ class ArrayUtilsTest {
             Arguments.of(new int[] {1, 2, 3}, 3, "No value in input is greater than 3"),    // No value above threshold
             Arguments.of(new int[] {}, 1, "Input cannot be null or empty"),                         // Empty array
             Arguments.of(null, 1, "Input cannot be null or empty")                                  // Null
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideForFlatten")
-    void testFlatten(final boolean[][] input, final boolean[] expected) {
-        final boolean[] output = ArrayUtils.flatten(input);
-        assertThat(output)
-            .isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> provideForFlatten() {
-        return Stream.of(
-            // Valid array
-            Arguments.of(
-                new boolean[][] {{true, true, true}, {false, false, false}, {true, false, true}},
-                new boolean[] {true, true, true, false, false, false, true, false, true}
-            ),
-            // Columns with different lengths
-            Arguments.of(
-                new boolean[][] {{true, true, true}, {false, false}, {true}},
-                new boolean[] {true, true, true, false, false, true}
-            ),
-            Arguments.of(new boolean[][] {}, new boolean[0]),                     // Empty 1D array
-            Arguments.of(new boolean[][] {{}, {}}, new boolean[0]),     // Empty 2D array
-            Arguments.of(null, new boolean[0])                          // Null
         );
     }
 
@@ -411,28 +398,9 @@ class ArrayUtilsTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideForSize")
-    void testSize(final boolean[][] input, final int expected) {
-        final int output = ArrayUtils.size(input);
-        assertThat(output)
-            .isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> provideForSize() {
-        return Stream.of(
-            Arguments.of(new boolean[][] {{true, true, true}, {false, false, false}, {true, false, true}}, 9),  // Valid array
-            Arguments.of(new boolean[][] {{true, true, true}, {false, false}, {true}}, 6),                      // Different column lengths
-            Arguments.of(new boolean[][] {{}, {false, false}, {true}}, 3),                                      // Empty row
-            Arguments.of(new boolean[][] {}, 0),                                                                // Empty 1D array
-            Arguments.of(new boolean[][] {{}, {}}, 0),                                                          // Empty 2D array
-            Arguments.of(null, 0)                                                                               // Null
-        );
-    }
-
-    @ParameterizedTest
     @MethodSource("provideForTranspose")
-    void testTranspose(final Character[][] input, final Character[][] expected) {
-        final Character[][] output = ArrayUtils.transpose(input);
+    <E> void testTranspose(final E[][] input, final E blankSpaceValue, final E[][] expected) {
+        final E[][] output = ArrayUtils.transpose(input, blankSpaceValue);
         assertThat(output)
             .isDeepEqualTo(expected);
     }
@@ -442,16 +410,37 @@ class ArrayUtilsTest {
             // Valid
             Arguments.of(
                 new Character[][] {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, {'j', 'k', 'l'}},
+                ' ',
                 new Character[][] {{'a', 'd', 'g', 'j'}, {'b', 'e', 'h', 'k'}, {'c', 'f', 'i', 'l'}}
             ),
             // Valid with gaps
             Arguments.of(
                 new Character[][] {{'a', 'b', 'c'}, {'d', 'e', 'f', 'g'}, {'h', 'i'}},
+                ' ',
                 new Character[][] {{'a', 'd', 'h'}, {'b', 'e', 'i'}, {'c', 'f', ' '}, {' ', 'g', ' '}}
             ),
-            Arguments.of(new Character[][] {}, new Character[0][0]),         // Empty 1D array
-            Arguments.of(new Character[][] {{}, {}}, new Character[0][0]),   // Empty 2D array
-            Arguments.of(null, new Character[0][0])                // Null
+            // Different type with gaps
+            Arguments.of(
+                new Integer[][] {{1, 2, 3}, {4, 5, 6, 7}, {8, 9}},
+                0,
+                new Integer[][] {{1, 4, 8}, {2, 5, 9}, {3, 6, 0}, {0, 7, 0}}
+            )                    // Null
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForTranspose_invalid")
+    <E> void testTranspose_givenInvalidInputs(final E[][] input, final E blankSpaceValue, final String errorMessage) {
+        assertThatThrownBy(() -> ArrayUtils.transpose(input, blankSpaceValue))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(errorMessage);
+    }
+
+    private static Stream<Arguments> provideForTranspose_invalid() {
+        return Stream.of(
+            Arguments.of(new Character[][] {}, ' ', "Input cannot be null or empty"),       // Empty 1D array
+            Arguments.of(new Character[][] {{}, {}}, ' ', "Input cannot be null or empty"), // Empty 2D array
+            Arguments.of(null, ' ', "Input cannot be null or empty")                        // Null
         );
     }
 }
