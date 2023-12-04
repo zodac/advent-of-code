@@ -42,10 +42,10 @@ public final class ArrayUtils {
      * Given a {@link List} as follows, with a {@code symbolSignifyingTrue} of <b>a</b>:
      * <pre>
      *     [
-     *      "abbb",
-     *      "bab",
-     *      "aa",
-     *      "bbb"
+     *       "abbb",
+     *       "bab",
+     *       "aa",
+     *       "bbb"
      *     ]
      * </pre>
      *
@@ -53,10 +53,10 @@ public final class ArrayUtils {
      * The result will be:
      * <pre>
      *     [
-     *      [TRUE, FALSE, FALSE, FALSE],
-     *      [FALSE, TRUE, FALSE],
-     *      [TRUE, TRUE],
-     *      [FALSE, FALSE, FALSE]
+     *       [TRUE, FALSE, FALSE, FALSE],
+     *       [FALSE, TRUE, FALSE],
+     *       [TRUE, TRUE],
+     *       [FALSE, FALSE, FALSE]
      *     ]
      * </pre>
      *
@@ -102,10 +102,10 @@ public final class ArrayUtils {
      * Given a {@link List} as follows:
      * <pre>
      *     [
-     *      "abcd",
-     *      "efg",
-     *      "hi",
-     *      "jkl"
+     *       "abcd",
+     *       "efg",
+     *       "hi",
+     *       "jkl"
      *     ]
      * </pre>
      *
@@ -113,10 +113,10 @@ public final class ArrayUtils {
      * The result will be:
      * <pre>
      *     [
-     *      [a, b, c, d],
-     *      [e, f, g],
-     *      [h, i],
-     *      [j, k, l]
+     *       ['a', 'b', 'c', 'd'],
+     *       ['e', 'f', 'g'],
+     *       ['h', 'i'],
+     *       ['j, 'k', 'l']
      *     ]
      * </pre>
      *
@@ -164,10 +164,10 @@ public final class ArrayUtils {
      * Given a {@link List} as follows:
      * <pre>
      *     [
-     *      "1234",
-     *      "567",
-     *      "89",
-     *      "012"
+     *       "1234",
+     *       "567",
+     *       "89",
+     *       "012"
      *     ]
      * </pre>
      *
@@ -175,10 +175,10 @@ public final class ArrayUtils {
      * The result will be:
      * <pre>
      *     [
-     *      [1, 2, 3, 4],
-     *      [5, 6, 7],
-     *      [8, 9],
-     *      [0, 1, 2]
+     *       [1, 2, 3, 4],
+     *       [5, 6, 7],
+     *       [8, 9],
+     *       [0, 1, 2]
      *     ]
      * </pre>
      *
