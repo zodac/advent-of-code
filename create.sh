@@ -30,9 +30,13 @@ echo -e "\t- Creating actual input file"
 if [[ -z "${AOC_COOKIE}" ]]; then
   echo -e "\t\tNo cookie set for AOC, cannot create actual input file"
 else
-  output=$(curl --user-agent "https://github.com/zodac/advent-of-code by zodac" --silent --header "Cookie: session=${AOC_COOKIE}" -w "%{http_code}" "https://adventofcode.com/${year}/day/${day}/input")
-  http_status_code=$(echo "${output}" | tail -1)
+  output=$(curl \
+          --user-agent "https://github.com/zodac/advent-of-code by zodac" \
+          --silent --header "Cookie: session=${AOC_COOKIE}" \
+          --write-out "%{http_code}" \
+          "https://adventofcode.com/${year}/day/${day}/input")
 
+  http_status_code=$(echo "${output}" | tail -1)
   if [[ ${http_status_code} != "200" ]]; then
     echo "Invalid response code for input ${http_status_code}"
     exit 1;
@@ -47,7 +51,12 @@ else
 fi
 
 echo -e "\t- Retrieving title"
-title_output=$(curl --user-agent "https://github.com/zodac/advent-of-code by zodac" --silent -w "%{http_code}" "https://adventofcode.com/${year}/day/${day}")
+title_output=$(curl \
+              --user-agent "https://github.com/zodac/advent-of-code by zodac" \
+              --silent \
+              --write-out "%{http_code}" \
+              "https://adventofcode.com/${year}/day/${day}")
+
 title_http_status_code=$(echo "${output}" | tail -1)
 if [[ ${title_http_status_code} != "200" ]]; then
   echo "Invalid response code for title ${http_status_code}"

@@ -1,6 +1,6 @@
 # Advent Of Code: Java Edition
 
-![](https://img.shields.io/badge/2023%20⭐-16-orange)
+![](https://img.shields.io/badge/2023%20⭐-18-orange)
 ![](https://img.shields.io/badge/2022%20⭐-28-yellow)
 ![](https://img.shields.io/badge/2021%20⭐-19-orange)
 ![](https://img.shields.io/badge/2020%20⭐-0-red)
@@ -38,10 +38,13 @@ own input files.
 
 ## Input Files
 
-As requested by the creator of Advent of Code, no individual input files are included in this repository. My specific inputs are included as a git
-submodule in the `advent-of-code-inputs` directory. Feel free to provide your own inputs in that directory. Each year's inputs should be placed in a
-module matching the module name in the source code. For example, for **2015, Day 01**, its input should be available at:
-`advent-of-code/advent-of-code-inputs/2015/Day01.txt`.
+As requested by the creator of [Advent of Code](https://adventofcode.com/), no individual input files are included in this repository. My specific
+inputs are included as a git submodule in the `advent-of-code-inputs` directory. Feel free to provide your own inputs in that directory. Each year's
+inputs should be placed in a module matching the module name in the source code. For example, for **2015, Day 01**, its input should be available
+at: `advent-of-code/advent-of-code-inputs/2015/day01.txt`.
+
+I use the [create.sh script](./create.sh) to generate a template for my solution files, and it also retrieves the input for the problem and commits it
+to the git submodule. This requires an environment variable `AOC_COOKIE` to be set, with your own [Advent of Code](https://adventofcode.com/) cookie.
 
 ## License
 
