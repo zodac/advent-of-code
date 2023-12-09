@@ -33,35 +33,49 @@ public final class Day06 {
 
     }
 
-    private record Race(long time, long distance) {
-
+    /**
+     * We are given a {@link List} of {@link String}s, representing a number of {@link Race}s. For each {@link Race} we can 'charge' up our velocity,
+     * and use the remaining time to complete the required distance. We count the number of ways to win the {@link Race}s, then multiply them up.
+     *
+     * <p>
+     * if {@code isMultipleRaces} is {@code true}, each column of the input is referring to a separate {@link Race}, otherwise all columns should be
+     * concatenated to create one large {@link Race}.
+     *
+     * @param values          the input {@link Race}s
+     * @param isMultipleRaces whether the input is multiple {@link Race}s or a single large {@link Race}
+     * @return the number of ways to win the supplied{@link Race}s
+     */
+    public static long countNumberOfWaysToWin(final List<String> values, final boolean isMultipleRaces) {
+        return parseRaces(values, isMultipleRaces)
+            .stream()
+            .mapToLong(Day06::countWaysToWinRace)
+            .reduce(1L, (first, second) -> first * second);
     }
 
-    /**
-     * Part 1.
-     *
-     * @param values the input values
-     * @return the part 1 result
-     */
-    public static long part1(final List<String> values) {
-        final Collection<Race> races = new ArrayList<>();
-
+    private static Collection<Race> parseRaces(final List<String> values, final boolean isMultipleRaces) {
         final List<Long> times = StringUtils.collectNumbersInOrder(values.getFirst());
         final List<Long> distances = StringUtils.collectNumbersInOrder(values.getLast());
+        final Collection<Race> races = new ArrayList<>();
 
-        for (int i = 0; i < times.size(); i++) {
-            races.add(new Race(times.get(i), distances.get(i)));
+        if (isMultipleRaces) {
+            for (int i = 0; i < times.size(); i++) {
+                races.add(new Race(times.get(i), distances.get(i)));
+            }
+        } else {
+            final StringBuilder timeBuilder = new StringBuilder();
+            final StringBuilder distanceBuilder = new StringBuilder();
+            for (int i = 0; i < times.size(); i++) {
+                timeBuilder.append(times.get(i));
+                distanceBuilder.append(distances.get(i));
+            }
+
+            races.add(new Race(Long.parseLong(timeBuilder.toString()), Long.parseLong(distanceBuilder.toString())));
         }
 
-        long total = 1;
-        for (final Race race : races) {
-            final long val = countWinningOptions(race);
-            total *= val;
-        }
-        return total;
+        return races;
     }
 
-    private static long countWinningOptions(final Race race) {
+    private static long countWaysToWinRace(final Race race) {
         int count = 0;
         for (int timeToHold = 1; timeToHold < race.time - 1; timeToHold++) {
             final long remainingTime = race.time - timeToHold;
@@ -75,23 +89,12 @@ public final class Day06 {
     }
 
     /**
-     * Part 2.
+     * Simple record defining a race.
      *
-     * @param values the input values
-     * @return the part 2 result
+     * @param time     the time available
+     * @param distance the distance to travel
      */
-    public static long part2(final List<String> values) {
-        final List<Long> times = StringUtils.collectNumbersInOrder(values.getFirst());
-        final List<Long> distances = StringUtils.collectNumbersInOrder(values.getLast());
+    private record Race(long time, long distance) {
 
-        final StringBuilder timeBuilder = new StringBuilder();
-        final StringBuilder distanceBuilder = new StringBuilder();
-        for (int i = 0; i < times.size(); i++) {
-            timeBuilder.append(times.get(i));
-            distanceBuilder.append(distances.get(i));
-        }
-
-        final Race race = new Race(Long.parseLong(timeBuilder.toString()), Long.parseLong(distanceBuilder.toString()));
-        return countWinningOptions(race);
     }
 }

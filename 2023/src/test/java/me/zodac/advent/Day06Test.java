@@ -35,11 +35,11 @@ public class Day06Test {
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day06.part1(values);
+        final long part1Result = Day06.countNumberOfWaysToWin(values, true);
         assertThat(part1Result)
             .isEqualTo(288L);
 
-        final long part2Result = Day06.part2(values);
+        final long part2Result = Day06.countNumberOfWaysToWin(values, false);
         assertThat(part2Result)
             .isEqualTo(71_503L);
     }
@@ -48,7 +48,7 @@ public class Day06Test {
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day06.part1(values);
+        final long part1Result = Day06.countNumberOfWaysToWin(values, true);
         assertThat(part1Result)
             .isEqualTo(771_628L);
     }
@@ -57,7 +57,7 @@ public class Day06Test {
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part2Result = Day06.part2(values);
+        final long part2Result = Day06.countNumberOfWaysToWin(values, false);
         assertThat(part2Result)
             .isEqualTo(27_363_861L);
     }
