@@ -26,6 +26,40 @@ if [[ ! -d "./${year}" ]]; then
   exit 1
 fi
 
+echo -e "\t- Creating actual input file"
+if [[ -z "${AOC_COOKIE}" ]]; then
+  echo -e "\t\tNo cookie set for AOC, cannot create actual input file"
+else
+  output=$(curl --user-agent "https://github.com/zodac/advent-of-code by zodac" --silent --header "Cookie: session=${AOC_COOKIE}" -w "%{http_code}" "https://adventofcode.com/${year}/day/${day}/input")
+  http_status_code=$(echo "${output}" | tail -1)
+
+  if [[ ${http_status_code} != "200" ]]; then
+    echo "Invalid response code for input ${http_status_code}"
+    exit 1;
+  fi
+
+  echo "${output}" > "./advent-of-code-inputs/${year}/day${day_long}.txt" || exit 1
+  cd ./advent-of-code-inputs || exit 1
+  git add "${year}/day${day_long}.txt"
+  git commit --quiet -m "Adding input for ${year}, Day ${day}"
+  git push --quiet
+  cd .. || exit 1
+fi
+
+echo -e "\t- Retrieving title"
+title_output=$(curl --user-agent "https://github.com/zodac/advent-of-code by zodac" --silent -w "%{http_code}" "https://adventofcode.com/${year}/day/${day}")
+title_http_status_code=$(echo "${output}" | tail -1)
+if [[ ${title_http_status_code} != "200" ]]; then
+  echo "Invalid response code for title ${http_status_code}"
+  exit 1;
+fi
+
+title=$(echo "${title_output}" | grep '<h2>' | awk '{split($0,a,"<h2>")} END{print a[2]}' | awk '{split($0,a,"</h2>")} END{print a[1]}' | cut -d ':' -f2 | cut -d '-' -f1 | awk '{$1=$1;print}')
+sed -i -e "s|%TITLE%|${title}|g" "./${year}/src/main/java/me/zodac/advent/Day${day_long}.java"
+
+echo -e "\t- Creating example input file"
+touch "./${year}/src/test/resources/day${day_long}.txt"
+
 echo -e "\t- Creating Java source file"
 cp ./templates/Day.java "./${year}/src/main/java/me/zodac/advent/Day${day_long}.java"
 sed -i -e "s|%YEAR%|${year}|g" "./${year}/src/main/java/me/zodac/advent/Day${day_long}.java"
@@ -37,22 +71,3 @@ cp ./templates/DayTest.java "./${year}/src/test/java/me/zodac/advent/Day${day_lo
 sed -i -e "s|%YEAR%|${year}|g" "./${year}/src/test/java/me/zodac/advent/Day${day_long}Test.java"
 sed -i -e "s|%DAY%|${day}|g" "./${year}/src/test/java/me/zodac/advent/Day${day_long}Test.java"
 sed -i -e "s|%DAY_LONG%|${day_long}|g" "./${year}/src/test/java/me/zodac/advent/Day${day_long}Test.java"
-
-echo -e "\t- Creating example input file"
-touch "./${year}/src/test/resources/day${day_long}.txt"
-
-echo -e "\t- Creating actual input file"
-if [[ -z "${AOC_COOKIE}" ]]; then
-  echo -e "\t\tNo cookie set for AOC, cannot create actual input file"
-else
-  curl --silent --header "Cookie: session=${AOC_COOKIE}" "https://adventofcode.com/${year}/day/${day}/input" > "./advent-of-code-inputs/${year}/day${day_long}.txt" || exit 1
-  cd ./advent-of-code-inputs || exit 1
-  git add "${year}/day${day_long}.txt"
-  git commit -m "Adding input for ${year}, Day ${day}"
-  git push --quiet
-  cd .. || exit 1
-fi
-
-echo -e "\t- Retrieving title"
-title=$(curl --silent "https://adventofcode.com/${year}/day/${day}" | grep '<h2>' | awk '{split($0,a,"<h2>")} END{print a[2]}' | awk '{split($0,a,"</h2>")} END{print a[1]}' | cut -d ':' -f2 | cut -d '-' -f1 | awk '{$1=$1;print}')
-sed -i -e "s|%TITLE%|${title}|g" "./${year}/src/main/java/me/zodac/advent/Day${day_long}.java"

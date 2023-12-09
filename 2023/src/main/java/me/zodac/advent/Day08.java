@@ -17,16 +17,16 @@
 
 package me.zodac.advent;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
- * Solution for %YEAR%, Day %DAY%.
+ * Solution for 2023, Day 8.
  *
- * @see <a href="https://adventofcode.com/%YEAR%/day/%DAY%">[%YEAR%: %DAY_LONG%] %TITLE%</a>
+ * @see <a href="https://adventofcode.com/2023/day/8">[2023: 08] Haunted Wasteland</a>
  */
-public final class Day%DAY_LONG% {
+public final class Day08 {
 
-    private Day%DAY_LONG%() {
+    private Day08() {
 
     }
 
@@ -36,7 +36,7 @@ public final class Day%DAY_LONG% {
      * @param values the input values
      * @return the part 1 result
      */
-    public static long part1(final List<String> values) {
+    public static long part1(final Collection<String> values) {
         return 0L;
     }
 
@@ -46,7 +46,7 @@ public final class Day%DAY_LONG% {
      * @param values the input values
      * @return the part 2 result
      */
-    public static long part2(final List<String> values) {
+    public static long part2(final Collection<String> values) {
         return 0L;
     }
 }
