@@ -19,7 +19,6 @@ package me.zodac.advent.pojo;
 
 import java.util.ArrayList;
 import java.util.List;
-import me.zodac.advent.Colour;
 import me.zodac.advent.util.StringUtils;
 
 /**

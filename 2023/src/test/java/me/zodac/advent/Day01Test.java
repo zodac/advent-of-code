@@ -34,14 +34,13 @@ public class Day01Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
-
-        final long sumOfFrequencies = Day01.sumAllCalibrationValues(values, false);
+        final List<String> valuesPart1 = ExampleInput.readLines(INPUT_FILENAME);
+        final long sumOfFrequencies = Day01.sumAllCalibrationValues(valuesPart1, false);
         assertThat(sumOfFrequencies)
             .isEqualTo(142L);
 
-        final List<String> values2 = ExampleInput.readLines(INPUT_FILENAME_PART_2);
-        final long sumOfCalibrationValues = Day01.sumAllCalibrationValues(values2, true);
+        final List<String> valuesPart2 = ExampleInput.readLines(INPUT_FILENAME_PART_2);
+        final long sumOfCalibrationValues = Day01.sumAllCalibrationValues(valuesPart2, true);
         assertThat(sumOfCalibrationValues)
             .isEqualTo(281L);
     }

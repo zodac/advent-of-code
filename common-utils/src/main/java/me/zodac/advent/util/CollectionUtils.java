@@ -104,7 +104,7 @@ public final class CollectionUtils {
         }
 
         final List<? extends E> modifiableInput = new ArrayList<>(input);
-        final E firstElement = modifiableInput.remove(0);
+        final E firstElement = modifiableInput.removeFirst();
         final List<List<E>> returnValue = new ArrayList<>();
         final List<List<E>> permutations = generatePermutations(modifiableInput);
 

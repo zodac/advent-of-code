@@ -52,6 +52,19 @@ public final class MathUtils {
     }
 
     /**
+     * Checks the provided {@link Number}s for any value that is not the supplied {@code allowedValue}.
+     *
+     * @param numbers      the {@link Number}s to check
+     * @param allowedValue the allowed value
+     * @return {@code true} if any value is not <b>0</b>
+     */
+    public static <T> boolean containsAnyNotAllowedValue(final Collection<T> numbers, final T allowedValue) {
+        return numbers
+            .stream()
+            .anyMatch(number -> number != allowedValue);
+    }
+
+    /**
      * Sums up the number of elements needed to traverse an infinite 2D array diagonally to reach the wanted {@code row} and {@code column}. For
      * example:
      *
@@ -92,36 +105,36 @@ public final class MathUtils {
     }
 
     /**
-     * Calculates the Greatest Common Divisor (also known as the Highest Common Factor) of the provided {@code int}s.
+     * Calculates the Greatest Common Divisor (also known as the Highest Common Factor) of the provided {@code long}s.
      *
-     * @param first  the first {@code int}, so at least one value is provided
-     * @param others the {@code int}s to check
-     * @return the GCD of the provided {@code int}s
+     * @param first  the first {@code long}, so at least one value is provided
+     * @param others the {@code long}s to check
+     * @return the GCD of the provided {@code long}s
      * @see <a href="https://en.wikipedia.org/wiki/Greatest_common_divisor">Greatest Common Divisor</a>
      */
-    public static int greatestCommonDivisor(final int first, final int... others) {
-        int gcd = first;
-        for (final int input : others) {
+    public static long greatestCommonDivisor(final long first, final long... others) {
+        long gcd = first;
+        for (final long input : others) {
             gcd = gcd(gcd, input);
         }
 
         return gcd;
     }
 
-    private static int gcd(final int x, final int y) {
+    private static long gcd(final long x, final long y) {
         return (y == 0) ? x : gcd(y, x % y);
     }
 
     /**
-     * Checks if the given {@link Integer} is between two other {@link Integer}s.
+     * Checks if the given {@link Long} is between two other {@link Long}s.
      *
-     * @param start the start of the {@link Integer} range
-     * @param end   the end of the {@link Integer} range
+     * @param start the start of the {@link Long} range
+     * @param end   the end of the {@link Long} range
      * @param input the value to check
-     * @return {@code true} if the input is within the {@link Integer} range
+     * @return {@code true} if the input is within the {@link Long} range
      * @throws IllegalArgumentException thrown if the {@code end} value is less than the {@code start} value
      */
-    public static boolean isBetween(final int start, final int end, final int input) {
+    public static boolean isBetween(final long start, final long end, final long input) {
         if (end < start) {
             throw new IllegalArgumentException(String.format("Cannot have end %s less than start %s", end, start));
         }
@@ -151,32 +164,32 @@ public final class MathUtils {
     }
 
     /**
-     * Calculates the Lowest Common Multiple (also known as Least Common Multiple) of the provided {@link Integer}s.
+     * Calculates the Lowest Common Multiple (also known as Least Common Multiple) of the provided {@link Long}s.
      *
-     * @param inputs the {@link Integer}s to check
-     * @return the LCM of the provided {@link Integer}s
+     * @param inputs the {@link Long}s to check
+     * @return the LCM of the provided {@link Long}s
      * @throws IllegalArgumentException thrown if the input {@link Collection#isEmpty()}
      * @see <a href="https://en.wikipedia.org/wiki/Least_common_multiple">Lower Common Multiple</a>
      */
-    public static long lowestCommonMultiple(final Collection<Integer> inputs) {
+    public static long lowestCommonMultiple(final Collection<Long> inputs) {
         if (inputs.isEmpty()) {
             throw new IllegalArgumentException("Input cannot be empty");
         }
 
-        int lcm = 1;
-        for (final int input : inputs) {
+        long lcm = 1;
+        for (final long input : inputs) {
             lcm = lcm(lcm, input);
         }
 
         return lcm;
     }
 
-    private static int lcm(final int number1, final int number2) {
+    private static long lcm(final long number1, final long number2) {
         if (number1 == 0 || number2 == 0) {
             return 0;
         }
 
-        final int gcd = greatestCommonDivisor(number1, number2);
+        final long gcd = greatestCommonDivisor(number1, number2);
         return Math.abs(number1 * number2) / gcd;
     }
 

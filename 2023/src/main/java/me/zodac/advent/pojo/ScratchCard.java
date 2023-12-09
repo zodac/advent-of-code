@@ -31,7 +31,7 @@ import me.zodac.advent.util.StringUtils;
  * @param id      the ID of the {@link ScratchCard}
  * @param winners the drawn digits that were winners
  */
-public record ScratchCard(int id, Set<Integer> winners) {
+public record ScratchCard(int id, Set<Long> winners) {
 
     private static final Pattern VALID_SCRATCHCARD = Pattern.compile("Card\\s+(?<id>\\d+):\\s+(?<winners>(\\d+\\s+)*)\\|(?<drawn>(\\s+\\d+)*)");
 
@@ -52,8 +52,8 @@ public record ScratchCard(int id, Set<Integer> winners) {
         }
 
         final int id = Integer.parseInt(matcher.group("id"));
-        final List<Integer> winningDigits = StringUtils.collectIntegersInOrder(matcher.group("winners"));
-        final List<Integer> drawnDigits = StringUtils.collectIntegersInOrder(matcher.group("drawn"));
+        final List<Long> winningDigits = StringUtils.collectNumbersInOrder(matcher.group("winners"));
+        final List<Long> drawnDigits = StringUtils.collectNumbersInOrder(matcher.group("drawn"));
         return new ScratchCard(id, CollectionUtils.intersection(new HashSet<>(winningDigits), drawnDigits));
     }
 

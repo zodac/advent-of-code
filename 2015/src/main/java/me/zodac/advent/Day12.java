@@ -43,9 +43,9 @@ public final class Day12 {
      * @return the sum of all numbers
      */
     public static long sumOfAllNumbers(final String input) {
-        return StringUtils.collectIntegersInOrder(input)
+        return StringUtils.collectNumbersInOrder(input)
             .stream()
-            .mapToLong(Integer::intValue)
+            .mapToLong(l -> l)
             .sum();
     }
 

@@ -30,18 +30,20 @@ import org.junit.jupiter.api.Test;
 public class Day08Test {
 
     private static final String INPUT_FILENAME = "day08.txt";
+    private static final String INPUT_FILENAME_PART_2 = "day08_2.txt";
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final List<String> valuesPart1 = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day08.part1(values);
+        final long part1Result = Day08.part1(valuesPart1);
         assertThat(part1Result)
-            .isEqualTo(0L);
+            .isEqualTo(6L);
 
-        final long part2Result = Day08.part2(values);
+        final List<String> valuesPart2 = ExampleInput.readLines(INPUT_FILENAME_PART_2);
+        final long part2Result = Day08.part2(valuesPart2);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(6L);
     }
 
     @Test
@@ -50,7 +52,7 @@ public class Day08Test {
 
         final long part1Result = Day08.part1(values);
         assertThat(part1Result)
-            .isEqualTo(0L);
+            .isEqualTo(14_893L);
     }
 
     @Test
@@ -59,6 +61,6 @@ public class Day08Test {
 
         final long part2Result = Day08.part2(values);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(10_241_191_004_509L);
     }
 }

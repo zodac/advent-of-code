@@ -50,7 +50,7 @@ public final class Day11 {
      * @return the product of the {@link Monkey#numberOfInspections()} of the {@value #NUMBER_OF_MONKEYS_TO_CHECK} most active {@link Monkey}s
      */
     public static long productOfActiveMonkeys(final Map<Integer, Monkey> monkeysById, final int rounds) {
-        final List<Integer> monkeyDivisors = monkeysById
+        final List<Long> monkeyDivisors = monkeysById
             .values()
             .stream()
             .map(Monkey::divisorTest)

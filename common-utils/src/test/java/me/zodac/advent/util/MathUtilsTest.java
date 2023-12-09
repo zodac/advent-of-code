@@ -53,6 +53,24 @@ class MathUtilsTest {
     }
 
     @ParameterizedTest
+    @MethodSource("provideForContainsAnyNotAllowedValue")
+    void testContainsAnyNotAllowedValue(final List<? super Long> input, final long allowedValue, final boolean expected) {
+        final boolean output = MathUtils.containsAnyNotAllowedValue(input, allowedValue);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForContainsAnyNotAllowedValue() {
+        return Stream.of(
+            Arguments.of(List.of(0L, 0L), 0L, false),      // List only contains allowed value multiple times
+            Arguments.of(List.of(0L), 0L, false),     // List only contains allowed value a single time
+            Arguments.of(List.of(), 0L, false),          // List is empty
+            Arguments.of(List.of(1L, 2L, 3L), 0L, true),    // List only contains non-allowed values
+            Arguments.of(List.of(0L, 1L, 2L), 0L, true)     // List contains allowed and non-allowed values
+        );
+    }
+
+    @ParameterizedTest
     @CsvSource({
         "2,4,13",   // Valid
         "1,1,0",    // Valid origin
@@ -76,21 +94,22 @@ class MathUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideForGreatestCommonDivisor")
-    void testGreatestCommonDivisor(final int input, final int[] additionalInputs, final int expected) {
-        final int output = MathUtils.greatestCommonDivisor(input, additionalInputs);
+    void testGreatestCommonDivisor(final long input, final long[] additionalInputs, final long expected) {
+        final long output = MathUtils.greatestCommonDivisor(input, additionalInputs);
         assertThat(output)
             .isEqualTo(expected);
     }
 
     private static Stream<Arguments> provideForGreatestCommonDivisor() {
         return Stream.of(
-            Arguments.of(9, new int[] {36, 54, 99}, 9),     // Input is divisor of additional inputs
-            Arguments.of(36, new int[] {54, 90}, 18),       // Input and additional inputs share divisor
-            Arguments.of(5, new int[0], 5),                 // Input with no additional inputs
-            Arguments.of(9, new int[] {0, 36}, 9),          // Input contains zeros
-            Arguments.of(0, new int[] {0, 0}, 0),           // Input only has 0s
-            Arguments.of(9, new int[] {-36, 54, 99}, 9),    // Input contains single negative number
-            Arguments.of(9, new int[] {-36, -54, -99}, 9)   // Input contains only negative numbers
+            Arguments.of(9L, new long[] {36L, 54, 99}, 9L),                                             // Input is divisor of others
+            Arguments.of(36L, new long[] {54L, 90}, 18L),                                               // All inputs share divisor
+            Arguments.of(5L, new long[] {}, 5L),                                                        // Input with no additional inputs
+            Arguments.of(9L, new long[] {0L, 36L}, 9L),                                                 // Input contains zeros
+            Arguments.of(0L, new long[] {0L, 0L}, 0L),                                                  // Input only has 0s
+            Arguments.of(9L, new long[] {-36L, 54L, 99L}, 9L),                                          // Single negative number
+            Arguments.of(9L, new long[] {-36L, -54L, -99L}, 9L),                                        // Only negative numbers
+            Arguments.of(10_241_191_004_509L, new long[] {20_482_382_009_018L}, 10_241_191_004_509L)    // Input greater than int value
         );
     }
 
@@ -149,7 +168,7 @@ class MathUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideForLowestCommonMultiple")
-    void testLowestCommonMultiple(final List<Integer> input, final int expected) {
+    void testLowestCommonMultiple(final List<Long> input, final long expected) {
         final long output = MathUtils.lowestCommonMultiple(input);
         assertThat(output)
             .isEqualTo(expected);
@@ -157,16 +176,17 @@ class MathUtilsTest {
 
     private static Stream<Arguments> provideForLowestCommonMultiple() {
         return Stream.of(
-            Arguments.of(List.of(6, 9, 18, 15, 27, 54), 270),   // Multiple inputs with common divisors
-            Arguments.of(List.of(1, 0, 3), 0),                  // Inputs including 0
-            Arguments.of(List.of(5), 5),                    // Single input
-            Arguments.of(List.of(7, 13, 29), 2_639)             // Inputs are prime numbers
+            Arguments.of(List.of(6L, 9L, 18L, 15L, 27L, 54L), 270L),                    // Multiple inputs with common divisors
+            Arguments.of(List.of(1L, 0L, 3L), 0L),                                      // Inputs including 0
+            Arguments.of(List.of(5L), 5L),                                           // Single input
+            Arguments.of(List.of(7L, 13L, 29L), 2_639L),                                // Inputs are prime numbers
+            Arguments.of(List.of(10_241_191_004_509L, 20_482_382_009_018L), 877_580L)   // Input greater than int value
         );
     }
 
     @Test
     void testLowestCommonMultiple_givenInvalidInputs() {
-        final List<Integer> input = List.of();
+        final List<Long> input = List.of();
         assertThatThrownBy(() -> MathUtils.lowestCommonMultiple(input))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Input cannot be empty");

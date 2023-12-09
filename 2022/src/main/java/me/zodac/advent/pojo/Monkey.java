@@ -102,10 +102,7 @@ public final class Monkey {
         }
 
         final int id = Integer.parseInt(matcher.group(1));
-        final List<Long> currentItems = StringUtils.collectIntegersInOrder(matcher.group(2))
-            .stream()
-            .map(i -> (long) i)
-            .toList();
+        final List<Long> currentItems = StringUtils.collectNumbersInOrder(matcher.group(2));
 
         final String operationString = matcher.group(5);
         final MathOperation mathOperation;
@@ -200,9 +197,9 @@ public final class Monkey {
     /**
      * The {@code divisorTest} value.
      *
-     * @return the {@code divisorTest} value.
+     * @return the {@code divisorTest} value
      */
-    public int divisorTest() {
+    public long divisorTest() {
         return divisorTest;
     }
 }

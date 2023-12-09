@@ -25,40 +25,40 @@ import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day05}.
+ * Tests to verify answers for {@link Day06}.
  */
-public class Day05Test {
+public class Day06Test {
 
-    private static final String INPUT_FILENAME = "day05.txt";
+    private static final String INPUT_FILENAME = "day06.txt";
 
     @Test
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day05.part1(values);
+        final long part1Result = Day06.part1(values);
         assertThat(part1Result)
-            .isEqualTo(35);
+            .isEqualTo(288L);
 
-        final long part2Result = Day05.part2(values);
+        final long part2Result = Day06.part2(values);
         assertThat(part2Result)
-            .isEqualTo(46L);
+            .isEqualTo(71_503L);
     }
 
     @Test
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day05.part1(values);
+        final long part1Result = Day06.part1(values);
         assertThat(part1Result)
-            .isEqualTo(178_159_714L);
+            .isEqualTo(771_628L);
     }
 
     @Test
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part2Result = Day05.part2(values);
+        final long part2Result = Day06.part2(values);
         assertThat(part2Result)
-            .isEqualTo(100_165_128L);
+            .isEqualTo(27_363_861L);
     }
 }

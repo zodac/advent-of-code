@@ -21,19 +21,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * Utility class with {@link String}-based functions.
  */
 public final class StringUtils {
+
+    private static final Comparator<Long> IN_ASCENDING_ORDER_OF_LONGS = Long::compare;
+    private static final Comparator<Long> IN_DESCENDING_ORDER_OF_LONGS = IN_ASCENDING_ORDER_OF_LONGS.reversed();
 
     /**
      * Pattern defining a valid positive or negative number.
@@ -73,8 +80,44 @@ public final class StringUtils {
     }
 
     /**
-     * Parses the input {@link String} and returns any {@link Integer} values (of any length) in the order provided. Assumes that each 'word' within
-     * the {@code input} is a valid {@link Integer}, not that each character may be a sepsrate {@link Integer}.
+     * Returns the frequency of the {@link Character}s in the given {@link String}. The frequencies will be sorted in descending order of the counts,
+     * and not related to the placement of any {@link Character}.
+     *
+     * <p>
+     * For example, given the input {@code "hello world"}, we would return the following frequencies:
+     * <pre>
+     *     [
+     *      3,  // 'l'
+     *      2,  // 'o'
+     *      1,  // ' '
+     *      1,  // 'h'
+     *      1,  // 'e'
+     *      1,  // 'w'
+     *      1,  // 'r'
+     *      1   // 'd'
+     *     ]
+     * </pre>
+     *
+     * @param input the {@link String} to check
+     * @return the frequency of the {@link Character}s
+     */
+    public static List<Long> characterFrequency(final String input) {
+        if (input == null || input.isBlank()) {
+            return List.of();
+        }
+
+        return input.chars()
+            .mapToObj(character -> (char) character)
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+            .values()
+            .stream()
+            .sorted(IN_DESCENDING_ORDER_OF_LONGS)
+            .toList();
+    }
+
+    /**
+     * Parses the input {@link String} and returns any {@link Long} values (of any length) in the order provided. Assumes that each 'word' within
+     * the {@code input} is a valid {@link Long}, not that each character may be a sepsrate {@link Long}.
      *
      * <p>
      * For example, given the {@code input}:
@@ -83,26 +126,26 @@ public final class StringUtils {
      * </pre>
      *
      * <p>
-     * The output would be the four groupings converted to {@link Integer}s, not all 9 digits as {@link Integer}s, returning:
+     * The output would be the four groupings converted to {@link Long}s, not all 9 digits as {@link Long}s, returning:
      * <pre>
      *     [123, 456, 7, 89]
      * </pre>
      *
      * @param input the {@link String} to check
-     * @return the found {@link Integer}s
+     * @return the found {@link Long}s
      */
-    public static List<Integer> collectIntegersInOrder(final String input) {
+    public static List<Long> collectNumbersInOrder(final String input) {
         if (input == null || input.isBlank()) {
             return Collections.emptyList();
         }
 
         final Matcher matcher = NUMBER_PATTERN.matcher(input);
 
-        final List<Integer> numbers = new ArrayList<>();
+        final List<Long> numbers = new ArrayList<>();
         while (matcher.find()) {
             final String value = matcher.group();
-            if (isInteger(value)) {
-                numbers.add(Integer.parseInt(value));
+            if (isLong(value)) {
+                numbers.add(Long.parseLong(value));
             }
         }
 
@@ -346,6 +389,21 @@ public final class StringUtils {
     }
 
     /**
+     * Checks if the input {@link String} is a valid {@link Long}.
+     *
+     * @param input the {@link String} to check
+     * @return {@code true} if the input is an {@link Long}
+     */
+    public static boolean isLong(final String input) {
+        try {
+            Long.parseLong(input);
+            return true;
+        } catch (final NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
      * Performs the 'lookAndSay' sequence on the input {@link String} of numbers.
      *
      * <p>
@@ -388,6 +446,34 @@ public final class StringUtils {
             output.append(count).append(currentChar);
         }
         return output.toString();
+    }
+
+    /**
+     * Checks the {@code input} {@link String} for the most common {@link Character}.
+     *
+     * <p>
+     * For example, given the input {@code "hello world"}, the most common {@link Character} is <b>'l'</b>.
+     *
+     * <p>
+     * If there are multiple {@link Character}s which are equally the most common, the first occurring character is returned.
+     *
+     * @param input the input {@link String}
+     * @return the most commonly occurring {@link Character} in the {@code input}
+     * @throws IllegalArgumentException if the {@code input} is {@code null} or {@link String#isBlank()}
+     */
+    public static char mostOccurringCharacter(final String input) {
+        if (input == null || input.isBlank()) {
+            throw new IllegalArgumentException("Input cannot be null or blank");
+        }
+
+        return input.chars()
+            .mapToObj(x -> (char) x)
+            .collect(Collectors.groupingBy(x -> x, Collectors.counting()))
+            .entrySet()
+            .stream()
+            .max(Map.Entry.comparingByValue())
+            .orElseThrow(() -> new IllegalArgumentException("Input cannot be null or blank"))
+            .getKey();
     }
 
     /**

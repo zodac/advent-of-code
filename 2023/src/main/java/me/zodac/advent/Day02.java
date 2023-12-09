@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 import me.zodac.advent.pojo.BallGame;
+import me.zodac.advent.pojo.Colour;
 
 /**
  * Solution for 2023, Day 2.

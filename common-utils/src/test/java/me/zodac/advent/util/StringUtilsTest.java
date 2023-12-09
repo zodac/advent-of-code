@@ -66,24 +66,42 @@ class StringUtilsTest {
     }
 
     @ParameterizedTest
+    @MethodSource("provideForCharacterFrequency")
+    void testCharacterFrequency(final String input, final List<Long> expected) {
+        final List<Long> output = StringUtils.characterFrequency(input);
+        assertThat(output)
+            .hasSameElementsAs(expected);
+    }
+
+    private static Stream<Arguments> provideForCharacterFrequency() {
+        return Stream.of(
+            Arguments.of("hello world", List.of(3L, 2L, 1L, 1L, 1L, 1L, 1L, 1L, 1L)),   // Multiple characters with varying frequencies
+            Arguments.of("abcde", List.of(1L, 1L, 1L, 1L, 1L)),                         // Multiple characters with same frequency
+            Arguments.of("", List.of()),                                                // Empty
+            Arguments.of(" ", List.of()),                                               // Blank
+            Arguments.of(null, List.of())                                               // Null
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("provideForCollectNumbersInOrder")
-    void testCollectNumbersInOrder(final String input, final List<Integer> expected) {
-        final List<Integer> output = StringUtils.collectIntegersInOrder(input);
+    void testCollectNumbersInOrder(final String input, final List<Long> expected) {
+        final List<Long> output = StringUtils.collectNumbersInOrder(input);
         assertThat(output)
             .hasSameElementsAs(expected);
     }
 
     private static Stream<Arguments> provideForCollectNumbersInOrder() {
         return Stream.of(
-            Arguments.of("1", List.of(1)),                              // Single integer
-            Arguments.of("1 23 456", List.of(1, 23, 456)),                  // Multiple integers
-            Arguments.of("1 -23 456", List.of(1, -23, 456)),                // Negative integer
-            Arguments.of("1 and 23 and 456", List.of(1, 23, 456)),          // Integers and words
-            Arguments.of("1 23 456 9999999999999999", List.of(1, 23, 456)), // Multiple integers and valid long
-            Arguments.of("No numbers here", List.of()),                     // No integers
-            Arguments.of("", List.of()),                                    // Empty
-            Arguments.of(" ", List.of()),                                   // Blank
-            Arguments.of(null, List.of())                                   // Null
+            Arguments.of("1", List.of(1L)),                                                         // Single number
+            Arguments.of("1 23 456", List.of(1L, 23L, 456L)),                                           // Multiple numbers
+            Arguments.of("1 -23 456", List.of(1L, -23L, 456L)),                                         // Negative number
+            Arguments.of("1 and 23 and 456", List.of(1L, 23L, 456L)),                                   // Numbers and words
+            Arguments.of("1 23 456 9999999999999999", List.of(1L, 23L, 456L, 9_999_999_999_999_999L)),  // Multiple integers and long
+            Arguments.of("No numbers here", List.of()),                                                 // No numbers
+            Arguments.of("", List.of()),                                                                // Empty
+            Arguments.of(" ", List.of()),                                                               // Blank
+            Arguments.of(null, List.of())                                                               // Null
         );
     }
 
@@ -308,6 +326,26 @@ class StringUtilsTest {
 
     @ParameterizedTest
     @CsvSource({
+        "123,true",                                 // Valid integer
+        "-123,true",                                // Valid negative integer
+        "9999999999999999,true",                    // Valid long, but too large for integer
+        "-9999999999999999,true",                   // Valid negative long, but too large for integer
+        "99999999999999999999999999999999,false",   // Value too large for long
+        "3.14,false",                               // Valid float
+        "2/3,false",                                // Valid fraction
+        "abc,false",                                // Invalid numeric value
+        "'',false",                                 // Empty
+        "' ',false",                                // Blank
+        ",false",                                   // Null
+    })
+    void testIsLong(final String input, final boolean expected) {
+        final boolean output = StringUtils.isLong(input);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
         "1211,111221",      // Valid
         "132211,11132221",  // Valid, but longer
     })
@@ -327,6 +365,30 @@ class StringUtilsTest {
     })
     void testLookAndSay_givenInvalidInputs(final String input, final String errorMessage) {
         assertThatThrownBy(() -> StringUtils.lookAndSay(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(errorMessage);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hello world,l",    // Input with single most occurring character
+        "abcdef,a",         // Input with all characters equally occurring
+        "abbcddef,b",       // Input with multiple most equally occurring
+    })
+    void testMostOccurringCharacter(final String input, final char expected) {
+        final char output = StringUtils.mostOccurringCharacter(input);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "'',Input cannot be null or blank",             // Empty
+        "' ',Input cannot be null or blank",            // Blank
+        ",Input cannot be null or blank",               // Null
+    })
+    void testMostOccurringCharacter_givenInvalidInputs(final String input, final String errorMessage) {
+        assertThatThrownBy(() -> StringUtils.mostOccurringCharacter(input))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(errorMessage);
     }
@@ -494,7 +556,7 @@ class StringUtilsTest {
                 }
             }
 
-            StringUtils.collectIntegersInOrder(naughtyString);
+            StringUtils.collectNumbersInOrder(naughtyString);
             StringUtils.containsAllCharacters("myTest", naughtyString);
             StringUtils.containsAny("myTest", naughtyString);
             StringUtils.containsDuplicates(naughtyString);
