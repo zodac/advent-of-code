@@ -54,7 +54,7 @@ class MathUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideForContainsAnyNotAllowedValue")
-    void testContainsAnyNotAllowedValue(final List<? super Long> input, final long allowedValue, final boolean expected) {
+    void testContainsAnyNotAllowedValue(final List<Long> input, final long allowedValue, final boolean expected) {
         final boolean output = MathUtils.containsAnyNotAllowedValue(input, allowedValue);
         assertThat(output)
             .isEqualTo(expected);

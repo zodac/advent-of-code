@@ -56,12 +56,13 @@ public final class MathUtils {
      *
      * @param numbers      the {@link Number}s to check
      * @param allowedValue the allowed value
+     * @param <T>          the type of the {@link Number}
      * @return {@code true} if any value is not <b>0</b>
      */
-    public static <T> boolean containsAnyNotAllowedValue(final Collection<T> numbers, final T allowedValue) {
+    public static <T extends Number> boolean containsAnyNotAllowedValue(final Collection<T> numbers, final T allowedValue) {
         return numbers
             .stream()
-            .anyMatch(number -> number != allowedValue);
+            .anyMatch(number -> !number.equals(allowedValue));
     }
 
     /**

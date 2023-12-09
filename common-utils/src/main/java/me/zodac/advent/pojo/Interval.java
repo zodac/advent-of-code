@@ -50,6 +50,7 @@ public record Interval(long start, long end) {
     /**
      * Creates an {@link Interval} with a single value.
      *
+     * @param value the start and end value
      * @return the {@link Interval}
      */
     public static Interval singular(final long value) {
@@ -62,7 +63,7 @@ public record Interval(long start, long end) {
      * @return the {@link Interval}
      */
     public static Interval empty() {
-        return singular(0);
+        return singular(0L);
     }
 
     /**
@@ -73,10 +74,12 @@ public record Interval(long start, long end) {
      */
     public Interval intersect(final Interval other) {
         if (other.start > end || start > other.end) {
-            return new Interval(0L, 0L);
+            return empty();
         }
 
-        return new Interval(Math.max(start, other.start()), Math.min(end, other.end));
+        final long newStart = Math.max(start, other.start());
+        final long newEnd = Math.min(end, other.end);
+        return closedInterval(newStart, newEnd);
     }
 
     /**
