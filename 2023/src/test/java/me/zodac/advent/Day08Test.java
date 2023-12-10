@@ -36,12 +36,12 @@ public class Day08Test {
     void example() {
         final List<String> valuesPart1 = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day08.part1(valuesPart1);
+        final long part1Result = Day08.countStepsToReachEndNode(valuesPart1);
         assertThat(part1Result)
             .isEqualTo(6L);
 
         final List<String> valuesPart2 = ExampleInput.readLines(INPUT_FILENAME_PART_2);
-        final long part2Result = Day08.part2(valuesPart2);
+        final long part2Result = Day08.countStepsToReachAllEndNodesAtSameTime(valuesPart2);
         assertThat(part2Result)
             .isEqualTo(6L);
     }
@@ -50,7 +50,7 @@ public class Day08Test {
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day08.part1(values);
+        final long part1Result = Day08.countStepsToReachEndNode(values);
         assertThat(part1Result)
             .isEqualTo(14_893L);
     }
@@ -59,7 +59,7 @@ public class Day08Test {
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part2Result = Day08.part2(values);
+        final long part2Result = Day08.countStepsToReachAllEndNodesAtSameTime(values);
         assertThat(part2Result)
             .isEqualTo(10_241_191_004_509L);
     }

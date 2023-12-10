@@ -17,8 +17,6 @@
 
 package me.zodac.advent.pojo;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import me.zodac.advent.util.StringUtils;
@@ -26,12 +24,12 @@ import me.zodac.advent.util.StringUtils;
 /**
  * Class defining a game of Camel Cards, where each game includes a hand of cards, a wager, and some definition of the game.
  *
- * @param type       the hand's {@link Type}
- * @param hand       the cards in the hand
- * @param wager      the amount in the wager
- * @param withJokers whether this game has Jokers, or Jacks
+ * @param camelCardType the hand's {@link CamelCardType}
+ * @param hand          the cards in the hand
+ * @param wager         the amount in the wager
+ * @param withJokers    whether this game has Jokers, or Jacks
  */
-public record CamelCard(Type type, String hand, long wager, boolean withJokers) implements Comparable<CamelCard> {
+public record CamelCard(CamelCardType camelCardType, String hand, long wager, boolean withJokers) implements Comparable<CamelCard> {
 
     private static final int NUMBER_OF_CARDS_IN_HAND = 5;
     private static final String ALL_JOKERS_HAND = "J".repeat(NUMBER_OF_CARDS_IN_HAND);
@@ -59,27 +57,27 @@ public record CamelCard(Type type, String hand, long wager, boolean withJokers) 
         final long wager = Long.parseLong(inputTokens[1]);
 
         if (!withJokers || !JOKER_MATCHER.matcher(hand).find()) {
-            return new CamelCard(Type.getByHand(hand), hand, wager, withJokers);
+            return new CamelCard(CamelCardType.getByHand(hand), hand, wager, withJokers);
         }
 
         if (ALL_JOKERS_HAND.equals(hand)) {
-            return new CamelCard(Type.FIVE_OF_A_KIND, hand, wager, true);
+            return new CamelCard(CamelCardType.FIVE_OF_A_KIND, hand, wager, true);
         }
 
         if (mostOccurringCard == JOKER_SYMBOL) {
             final char secondMostOccurringCard = StringUtils.mostOccurringCharacter(JOKER_MATCHER.matcher(hand).replaceAll(""));
             final String handWithoutJokers = JOKER_MATCHER.matcher(hand).replaceAll(String.valueOf(secondMostOccurringCard));
-            return new CamelCard(Type.getByHand(handWithoutJokers), hand, wager, true);
+            return new CamelCard(CamelCardType.getByHand(handWithoutJokers), hand, wager, true);
         }
 
         final String handWithoutJokers = JOKER_MATCHER.matcher(hand).replaceAll(String.valueOf(mostOccurringCard));
-        return new CamelCard(Type.getByHand(handWithoutJokers), hand, wager, true);
+        return new CamelCard(CamelCardType.getByHand(handWithoutJokers), hand, wager, true);
     }
 
     @Override
     public int compareTo(final CamelCard other) {
-        if (type != other.type) {
-            return Integer.compare(type.getStrength(), other.type.getStrength());
+        if (camelCardType != other.camelCardType) {
+            return Integer.compare(camelCardType.getStrength(), other.camelCardType.getStrength());
         }
 
         // Same hand type, compare card by card
@@ -102,36 +100,5 @@ public record CamelCard(Type type, String hand, long wager, boolean withJokers) 
         }
 
         return VALUE_FOR_FACE_CARD.getOrDefault(card, Character.getNumericValue(card));
-    }
-
-    private enum Type {
-        FIVE_OF_A_KIND(6, List.of(5L)),
-        FOUR_OF_A_KIND(5, List.of(4L, 1L)),
-        FULL_HOUSE(4, List.of(3L, 2L)),
-        THREE_OF_A_KIND(3, List.of(3L, 1L, 1L)),
-        TWO_PAIR(2, List.of(2L, 2L, 1L)),
-        ONE_PAIR(1, List.of(2L, 1L, 1L, 1L)),
-        HIGH_CARD(0, List.of(1L, 1L, 1L, 1L, 1L));
-
-        private final int strength;
-        private final List<Long> expectedCardFrequencies;
-
-        Type(final int strength, final List<Long> expectedCardFrequencies) {
-            this.strength = strength;
-            this.expectedCardFrequencies = expectedCardFrequencies;
-        }
-
-        private int getStrength() {
-            return strength;
-        }
-
-        private static Type getByHand(final String hand) {
-            final List<Long> cardFrequencies = StringUtils.characterFrequency(hand);
-
-            return Arrays.stream(values())
-                .filter(type -> type.expectedCardFrequencies.equals(cardFrequencies))
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Invalid %s: '%s'", Type.class.getSimpleName(), hand)));
-        }
     }
 }
