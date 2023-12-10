@@ -62,6 +62,7 @@ public final class Day06 {
                 races.add(new Race(times.get(i), distances.get(i)));
             }
         } else {
+            // Concatenate all time values and distance values to make one large race definition
             final StringBuilder timeBuilder = new StringBuilder();
             final StringBuilder distanceBuilder = new StringBuilder();
             for (int i = 0; i < times.size(); i++) {

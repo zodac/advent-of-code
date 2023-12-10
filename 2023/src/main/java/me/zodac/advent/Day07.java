@@ -17,14 +17,9 @@
 
 package me.zodac.advent;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 import me.zodac.advent.pojo.CamelCard;
-import me.zodac.advent.util.StringUtils;
 
 /**
  * Solution for 2023, Day 7.
@@ -38,36 +33,16 @@ public final class Day07 {
     }
 
     /**
-     * Part 1.
+     * Given a {@link Collection} of {@link String}s which represent {@link CamelCard}s, all {@link CamelCard}s are sorted, then the winnings are
+     * calculated. This is done by multiplying the {@link CamelCard}'s rank (its place in a sorted {@link List}) with the {@link CamelCard#wager()}.
      *
-     * @param values the input values
-     * @return the part 1 result
+     * @param values     the {@link String}s representing {@link CamelCard}s
+     * @param withJokers whether the {@link CamelCard}s consider a <b>'J'</b> value to be a Joker, or a Jack
+     * @return the total winnings
      */
-    public static long part1(final Collection<String> values) {
+    public static long calculateTotalWinnings(final Collection<String> values, final boolean withJokers) {
         final List<CamelCard> sortedCards = values.stream()
-            .map((String input) -> CamelCard.parse(input, false))
-            .sorted()
-            .toList();
-
-        long totalWinnings = 0L;
-        for (int rank = 1; rank <= sortedCards.size(); rank++) {
-            final CamelCard camelCard = sortedCards.get(rank - 1);
-
-            totalWinnings += camelCard.wager() * rank;
-        }
-
-        return totalWinnings;
-    }
-
-    /**
-     * Part 2.
-     *
-     * @param values the input values
-     * @return the part 2 result
-     */
-    public static long part2(final Collection<String> values) {
-        final List<CamelCard> sortedCards = values.stream()
-            .map((String input) -> CamelCard.parse(input, true))
+            .map((String input) -> CamelCard.parse(input, withJokers))
             .sorted()
             .toList();
 

@@ -35,11 +35,11 @@ public class Day07Test {
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day07.part1(values);
+        final long part1Result = Day07.calculateTotalWinnings(values, false);
         assertThat(part1Result)
             .isEqualTo(6_440L);
 
-        final long part2Result = Day07.part2(values);
+        final long part2Result = Day07.calculateTotalWinnings(values, true);
         assertThat(part2Result)
             .isEqualTo(5_905L);
     }
@@ -48,7 +48,7 @@ public class Day07Test {
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day07.part1(values);
+        final long part1Result = Day07.calculateTotalWinnings(values, false);
         assertThat(part1Result)
             .isEqualTo(253_910_319L);
     }
@@ -57,7 +57,7 @@ public class Day07Test {
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part2Result = Day07.part2(values);
+        final long part2Result = Day07.calculateTotalWinnings(values, true);
         assertThat(part2Result)
             .isEqualTo(254_083_736L);
     }

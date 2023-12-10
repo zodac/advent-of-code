@@ -97,7 +97,7 @@ public final class Day05 {
     }
 
     private static Map<Mapping, List<String>> loadMappings(final List<String> values) {
-        final EnumMap<Mapping, List<String>> mappingsByName = new EnumMap<>(Mapping.class);
+        final Map<Mapping, List<String>> mappingsByName = new EnumMap<>(Mapping.class);
         Mapping currentMapping = Mapping.SEED_TO_SOIL; // Default value, expected to be overridden
 
         for (final String value : values.subList(2, values.size())) {
