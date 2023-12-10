@@ -21,9 +21,9 @@ import java.util.List;
 import me.zodac.advent.util.ArrayUtils;
 
 /**
- * Class defining a {@link CoordinateGrid} of {@link Character}s, where any point can have a {@link Character} value.
+ * Class defining a {@link Grid} of {@link Character}s, where any point can have a {@link Character} value.
  */
-public final class CharacterGrid extends CoordinateGrid<Character> {
+public final class CharacterGrid extends Grid<Character> {
 
     private CharacterGrid(final Character[][] grid) {
         super(grid);

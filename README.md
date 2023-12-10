@@ -1,6 +1,6 @@
 # Advent Of Code: Java Edition
 
-![](https://img.shields.io/badge/2023%20⭐-18-orange)
+![](https://img.shields.io/badge/2023%20⭐-20-orange)
 ![](https://img.shields.io/badge/2022%20⭐-28-yellow)
 ![](https://img.shields.io/badge/2021%20⭐-19-orange)
 ![](https://img.shields.io/badge/2020%20⭐-0-red)
@@ -55,17 +55,18 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 <details>
     <summary>2023 Results</summary>
 
-| Day                                          |   Part 1 |   Part 2 |
-|:---------------------------------------------|---------:|---------:|
-| [Day 1](https://adventofcode.com/2023/day/1) |  4,216 ⭐ |  6,251 ⭐ |
-| [Day 2](https://adventofcode.com/2023/day/2) |    697 ⭐ |    555 ⭐ |
-| [Day 3](https://adventofcode.com/2023/day/3) |  7,815 ⭐ |  5,683 ⭐ |
-| [Day 4](https://adventofcode.com/2023/day/4) |  1,382 ⭐ |  4,192 ⭐ |
-| [Day 5](https://adventofcode.com/2023/day/5) |  5,526 ⭐ | 13,381 ⭐ |
-| [Day 6](https://adventofcode.com/2023/day/6) | 20,700 ⭐ | 19,631 ⭐ |
-| [Day 7](https://adventofcode.com/2023/day/7) | 62,595 ⭐ | 57,325 ⭐ |
-| [Day 8](https://adventofcode.com/2023/day/8) | 58,501 ⭐ | 46,949 ⭐ |
-| [Day 9](https://adventofcode.com/2023/day/9) |  3,777 ⭐ |  3,923 ⭐ |
+| Day                                            |   Part 1 |   Part 2 |
+|:-----------------------------------------------|---------:|---------:|
+| [Day 1](https://adventofcode.com/2023/day/1)   |  4,216 ⭐ |  6,251 ⭐ |
+| [Day 2](https://adventofcode.com/2023/day/2)   |    697 ⭐ |    555 ⭐ |
+| [Day 3](https://adventofcode.com/2023/day/3)   |  7,815 ⭐ |  5,683 ⭐ |
+| [Day 4](https://adventofcode.com/2023/day/4)   |  1,382 ⭐ |  4,192 ⭐ |
+| [Day 5](https://adventofcode.com/2023/day/5)   |  5,526 ⭐ | 13,381 ⭐ |
+| [Day 6](https://adventofcode.com/2023/day/6)   | 20,700 ⭐ | 19,631 ⭐ |
+| [Day 7](https://adventofcode.com/2023/day/7)   | 62,595 ⭐ | 57,325 ⭐ |
+| [Day 8](https://adventofcode.com/2023/day/8)   | 58,501 ⭐ | 46,949 ⭐ |
+| [Day 9](https://adventofcode.com/2023/day/9)   |  3,777 ⭐ |  3,923 ⭐ |
+| [Day 10](https://adventofcode.com/2023/day/10) | 15,633 ⭐ |  9,375 ⭐ |
 
 </details>
 

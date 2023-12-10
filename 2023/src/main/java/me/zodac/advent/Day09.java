@@ -26,7 +26,7 @@ import me.zodac.advent.util.StringUtils;
 /**
  * Solution for 2023, Day 09.
  *
- * @see <a href="https://adventofcode.com/2023/day/09">[2023: 09] Mirage Maintenance</a>
+ * @see <a href="https://adventofcode.com/2023/day/9">[2023: 09] Mirage Maintenance</a>
  */
 public final class Day09 {
 

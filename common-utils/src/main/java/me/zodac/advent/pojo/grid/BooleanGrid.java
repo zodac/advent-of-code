@@ -24,9 +24,9 @@ import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.ArrayUtils;
 
 /**
- * Class defining a {@link CoordinateGrid} of {@link Boolean}s, where any point can have its value turned 'on' or 'off'.
+ * Class defining a {@link Grid} of {@link Boolean}s, where any point can have its value turned 'on' or 'off'.
  */
-public final class BooleanGrid extends CoordinateGrid<Boolean> {
+public final class BooleanGrid extends Grid<Boolean> {
 
     private BooleanGrid(final int gridSize) {
         super(gridSize, new Boolean[gridSize][gridSize], false);

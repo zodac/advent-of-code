@@ -24,9 +24,9 @@ import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.ArrayUtils;
 
 /**
- * Class defining a {@link CoordinateGrid} of {@link Integer}s, where any point can have an {@link Integer} value.
+ * Class defining a {@link Grid} of {@link Integer}s, where any point can have an {@link Integer} value.
  */
-public final class IntegerGrid extends CoordinateGrid<Integer> {
+public final class IntegerGrid extends Grid<Integer> {
 
     private static final int NUMBER_SIGNIFYING_OVERLAP = 2;
 
@@ -77,7 +77,7 @@ public final class IntegerGrid extends CoordinateGrid<Integer> {
     }
 
     /**
-     * Returns the number of points on the {@link CoordinateGrid} that have {@link Point}s that have been set more than the minimum
+     * Returns the number of points on the {@link Grid} that have {@link Point}s that have been set more than the minimum
      * amount {@link #NUMBER_SIGNIFYING_OVERLAP}.
      *
      * <p>

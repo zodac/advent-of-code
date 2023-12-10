@@ -27,8 +27,8 @@ import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 /**
  * Simple POJO defining a point on a coordinate system.
  *
- * @param x the X coordinate
- * @param y the Y coordinate
+ * @param x the X coordinate, or row
+ * @param y the Y coordinate, or column
  */
 public record Point(int x, int y) {
 
@@ -121,7 +121,7 @@ public record Point(int x, int y) {
      * @return the moved {@link Point}
      */
     public Point moveUp() {
-        return move(0, DEFAULT_MOVE_DISTANCE);
+        return move(-DEFAULT_MOVE_DISTANCE, 0);
     }
 
     /**
@@ -130,7 +130,7 @@ public record Point(int x, int y) {
      * @return the moved {@link Point}
      */
     public Point moveDown() {
-        return move(0, -DEFAULT_MOVE_DISTANCE);
+        return move(DEFAULT_MOVE_DISTANCE, 0);
     }
 
     /**
@@ -139,7 +139,7 @@ public record Point(int x, int y) {
      * @return the moved {@link Point}
      */
     public Point moveLeft() {
-        return move(-DEFAULT_MOVE_DISTANCE, 0);
+        return move(0, -DEFAULT_MOVE_DISTANCE);
     }
 
     /**
@@ -148,7 +148,7 @@ public record Point(int x, int y) {
      * @return the moved {@link Point}
      */
     public Point moveRight() {
-        return move(DEFAULT_MOVE_DISTANCE, 0);
+        return move(0, DEFAULT_MOVE_DISTANCE);
     }
 
     /**
@@ -158,7 +158,7 @@ public record Point(int x, int y) {
      * @return the moved {@link Point}
      */
     public Point moveUpLeft() {
-        return move(-DEFAULT_MOVE_DISTANCE, DEFAULT_MOVE_DISTANCE);
+        return move(-DEFAULT_MOVE_DISTANCE, -DEFAULT_MOVE_DISTANCE);
     }
 
     /**
@@ -168,6 +168,26 @@ public record Point(int x, int y) {
      * @return the moved {@link Point}
      */
     public Point moveUpRight() {
+        return move(-DEFAULT_MOVE_DISTANCE, DEFAULT_MOVE_DISTANCE);
+    }
+
+    /**
+     * Returns a new {@link Point} which has moved the current {@link Point} {@value DEFAULT_MOVE_DISTANCE} spaces {@link Direction#DOWN} and
+     * {@link Direction#LEFT}.
+     *
+     * @return the moved {@link Point}
+     */
+    public Point moveDownLeft() {
+        return move(DEFAULT_MOVE_DISTANCE, -DEFAULT_MOVE_DISTANCE);
+    }
+
+    /**
+     * Returns a new {@link Point} which has moved the current {@link Point} {@value DEFAULT_MOVE_DISTANCE} spaces {@link Direction#DOWN} and
+     * {@link Direction#RIGHT}.
+     *
+     * @return the moved {@link Point}
+     */
+    public Point moveDownRight() {
         return move(DEFAULT_MOVE_DISTANCE, DEFAULT_MOVE_DISTANCE);
     }
 
@@ -201,20 +221,20 @@ public record Point(int x, int y) {
     private Set<Point> getDirectAdjacentPoints(final AdjacentPointsSelector adjacentPointsSelector) {
         final Set<Point> adjacentPoints = new HashSet<>();
 
-        if (adjacentPointsSelector.allowOutOfBounds() || x + 1 < adjacentPointsSelector.gridSize()) {
-            adjacentPoints.add(of(x + 1, y));
+        if (adjacentPointsSelector.allowOutOfBounds() || x - DEFAULT_MOVE_DISTANCE >= 0) {
+            adjacentPoints.add(moveUp());
         }
 
-        if (adjacentPointsSelector.allowOutOfBounds() || x - 1 >= 0) {
-            adjacentPoints.add(of(x - 1, y));
+        if (adjacentPointsSelector.allowOutOfBounds() || x + DEFAULT_MOVE_DISTANCE < adjacentPointsSelector.gridSize()) {
+            adjacentPoints.add(moveDown());
         }
 
-        if (adjacentPointsSelector.allowOutOfBounds() || y + 1 < adjacentPointsSelector.gridSize()) {
-            adjacentPoints.add(of(x, y + 1));
+        if (adjacentPointsSelector.allowOutOfBounds() || y + DEFAULT_MOVE_DISTANCE < adjacentPointsSelector.gridSize()) {
+            adjacentPoints.add(moveRight());
         }
 
-        if (adjacentPointsSelector.allowOutOfBounds() || y - 1 >= 0) {
-            adjacentPoints.add(of(x, y - 1));
+        if (adjacentPointsSelector.allowOutOfBounds() || y - DEFAULT_MOVE_DISTANCE >= 0) {
+            adjacentPoints.add(moveLeft());
         }
 
         return adjacentPoints;
@@ -223,20 +243,24 @@ public record Point(int x, int y) {
     private Set<Point> getDiagonalAdjacentPoints(final AdjacentPointsSelector adjacentPointsSelector) {
         final Set<Point> adjacentPoints = new HashSet<>();
 
-        if (adjacentPointsSelector.allowOutOfBounds() || (x + 1 < adjacentPointsSelector.gridSize() && y + 1 < adjacentPointsSelector.gridSize())) {
-            adjacentPoints.add(of(x + 1, y + 1));
+        if (adjacentPointsSelector.allowOutOfBounds()
+            || (x - DEFAULT_MOVE_DISTANCE >= 0 && y + DEFAULT_MOVE_DISTANCE < adjacentPointsSelector.gridSize())) {
+            adjacentPoints.add(moveUpRight());
         }
 
-        if (adjacentPointsSelector.allowOutOfBounds() || (x - 1 >= 0 && y - 1 >= 0)) {
-            adjacentPoints.add(of(x - 1, y - 1));
+        if (adjacentPointsSelector.allowOutOfBounds()
+            || (x + DEFAULT_MOVE_DISTANCE < adjacentPointsSelector.gridSize() && y - DEFAULT_MOVE_DISTANCE >= 0)) {
+            adjacentPoints.add(moveDownLeft());
         }
 
-        if (adjacentPointsSelector.allowOutOfBounds() || (x + 1 < adjacentPointsSelector.gridSize() && y - 1 >= 0)) {
-            adjacentPoints.add(of(x + 1, y - 1));
+        if (adjacentPointsSelector.allowOutOfBounds()
+            || (x - DEFAULT_MOVE_DISTANCE >= 0 && y - DEFAULT_MOVE_DISTANCE >= 0)) {
+            adjacentPoints.add(moveUpLeft());
         }
 
-        if (adjacentPointsSelector.allowOutOfBounds() || (x - 1 >= 0 && y + 1 < adjacentPointsSelector.gridSize())) {
-            adjacentPoints.add(of(x - 1, y + 1));
+        if (adjacentPointsSelector.allowOutOfBounds()
+            || (x + DEFAULT_MOVE_DISTANCE < adjacentPointsSelector.gridSize() && y + DEFAULT_MOVE_DISTANCE < adjacentPointsSelector.gridSize())) {
+            adjacentPoints.add(moveDownRight());
         }
 
         return adjacentPoints;

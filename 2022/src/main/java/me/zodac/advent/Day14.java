@@ -161,17 +161,17 @@ public final class Day14 {
     // As the Y coordinate increases as you go down, but out Point values decrease as you go down, we use the 'UP'
     // direction in the logic below, which can be confusing!
     private static Point dropSandPoint(final Collection<? super Point> filledPoints, final Point startSandPoint) {
-        final Point possibleDownPoint = startSandPoint.moveUp();
+        final Point possibleDownPoint = startSandPoint.move(0, 1);
         if (!filledPoints.contains(possibleDownPoint)) {
             return possibleDownPoint;
         }
 
-        final Point possibleDownLeftPoint = startSandPoint.moveUpLeft();
+        final Point possibleDownLeftPoint = startSandPoint.move(-1, 1);
         if (!filledPoints.contains(possibleDownLeftPoint)) {
             return possibleDownLeftPoint;
         }
 
-        final Point possibleDownRightPoint = startSandPoint.moveUpRight();
+        final Point possibleDownRightPoint = startSandPoint.move(1, 1);
         if (!filledPoints.contains(possibleDownRightPoint)) {
             return possibleDownRightPoint;
         }

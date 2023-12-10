@@ -17,33 +17,35 @@
 
 package me.zodac.advent.pojo.grid;
 
+import java.util.HashSet;
+import java.util.Set;
 import me.zodac.advent.pojo.Point;
 
 /**
- * Abstract class defining a coordinate grid of {@link Point}s.
+ * Abstract class defining a grid of {@link Point}s.
  *
- * @param <E> the type of the {@link Point}s on the {@link CoordinateGrid}
+ * @param <E> the type of the {@link Point}s on the {@link Grid}
  */
-abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, IntegerGrid {
+abstract sealed class Grid<E> permits BooleanGrid, CharacterGrid, IntegerGrid {
 
     /**
-     * The length (or width) of the {@link CoordinateGrid}.
+     * The length (or width) of the {@link Grid}.
      */
     protected final int gridSize;
 
     /**
-     * The values of the {@link CoordinateGrid}.
+     * The values of the {@link Grid}.
      */
     protected final E[][] grid;
 
     /**
      * Constructor that creates the internal {@code grid} and initialises the data.
      *
-     * @param gridSize     the size of the {@link CoordinateGrid}.
-     * @param grid         the actual {@link CoordinateGrid} represented as a 2D array.
-     * @param initialValue the initial value for each {@link Point} in the {@link CoordinateGrid}
+     * @param gridSize     the size of the {@link Grid}.
+     * @param grid         the actual {@link Grid} represented as a 2D array.
+     * @param initialValue the initial value for each {@link Point} in the {@link Grid}
      */
-    CoordinateGrid(final int gridSize, final E[][] grid, final E initialValue) {
+    Grid(final int gridSize, final E[][] grid, final E initialValue) {
         this.gridSize = gridSize;
         this.grid = grid.clone();
 
@@ -57,17 +59,17 @@ abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, Inte
     /**
      * Default constructor.
      *
-     * @param grid the actual {@link CoordinateGrid} represented as a 2D array.
+     * @param grid the actual {@link Grid} represented as a 2D array.
      */
-    CoordinateGrid(final E[][] grid) {
+    Grid(final E[][] grid) {
         gridSize = grid.length;
         this.grid = grid.clone();
     }
 
     /**
-     * Count any {@link Point}s in the {@link CoordinateGrid}. The actual value of each {@link Point} is defined by {@link #valueAt(int, int)}.
+     * Count any {@link Point}s in the {@link Grid}. The actual value of each {@link Point} is defined by {@link #valueAt(int, int)}.
      *
-     * @return the sum of all {@link Point}s in the {@link CoordinateGrid}
+     * @return the sum of all {@link Point}s in the {@link Grid}
      * @see #valueAt(int, int)
      */
     public long sumValues() {
@@ -83,7 +85,7 @@ abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, Inte
     }
 
     /**
-     * Draws a box on the {@link CoordinateGrid}, where each {@link Point} is updated based according to the
+     * Draws a box on the {@link Grid}, where each {@link Point} is updated based according to the
      * {@link GridInstruction}. All values inside the box are also updated.
      *
      * <p>
@@ -182,7 +184,7 @@ abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, Inte
     }
 
     /**
-     * Calculates the value at a specific point.
+     * Calculates the numeric value at a specific point.
      *
      * @param row    the x coordinate
      * @param column the y coordinate
@@ -191,7 +193,7 @@ abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, Inte
     protected abstract int valueAt(int row, int column);
 
     /**
-     * Updates the {@link CoordinateGrid} at the provided {@link Point}.
+     * Updates the {@link Grid} at the provided {@link Point}.
      *
      * @param gridInstruction the {@link GridInstruction}
      * @param row             the x coordinate
@@ -200,7 +202,7 @@ abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, Inte
     protected abstract void updateGrid(GridInstruction gridInstruction, int row, int column);
 
     /**
-     * Sets the corners of the {@link CoordinateGrid} to the input {@code newValue}.
+     * Sets the corners of the {@link Grid} to the input {@code newValue}.
      *
      * @param newValue the new value for the corners
      * @return the updated {@code grid}
@@ -215,11 +217,11 @@ abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, Inte
     }
 
     /**
-     * Checks if the input point is one of the corners of the {@link CoordinateGrid}.
+     * Checks if the input point is one of the corners of the {@link Grid}.
      *
      * @param row    the x coordinate
      * @param column the y coordinate
-     * @return {@code true} if the input {@link Point} is a corner of the {@link CoordinateGrid}
+     * @return {@code true} if the input {@link Point} is a corner of the {@link Grid}
      */
     protected boolean isCorner(final int row, final int column) {
         return (row == 0 && column == 0)
@@ -229,16 +231,16 @@ abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, Inte
     }
 
     /**
-     * Returns the backing 2D array of the {@link CoordinateGrid}.
+     * Returns the backing 2D array of the {@link Grid}.
      *
-     * @return the {@link CoordinateGrid} as a 2D array
+     * @return the {@link Grid} as a 2D array
      */
     public E[][] getGrid() {
         return grid.clone();
     }
 
     /**
-     * Returns the number of rows in the {@link CoordinateGrid}.
+     * Returns the number of rows in the {@link Grid}.
      *
      * @return the number of rows
      */
@@ -247,7 +249,7 @@ abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, Inte
     }
 
     /**
-     * Returns the number of columns in the {@link CoordinateGrid}.
+     * Returns the number of columns in the {@link Grid}.
      *
      * @return the number of columns
      */
@@ -284,5 +286,28 @@ abstract sealed class CoordinateGrid<E> permits BooleanGrid, CharacterGrid, Inte
      */
     public E[] getRow(final int row) {
         return grid[row];
+    }
+
+    /**
+     * Searches through all values in the {@link Grid} looking for the {@code wantedValue}. Returns all {@link Point}s which contain the
+     * {@code wantedValue}.
+     *
+     * @param wantedValue the value to search for
+     * @return a {@link Set} of the {@link Point}s with the {@code wantedValue}
+     */
+    public Set<Point> findValue(final E wantedValue) {
+        final Set<Point> points = new HashSet<>();
+        for (int i = 0; i < grid.length; i++) {
+            final E[] row = grid[i];
+
+            for (int j = 0; j < row.length; j++) {
+                final E value = row[j];
+
+                if (value.equals(wantedValue)) {
+                    points.add(Point.of(i, j));
+                }
+            }
+        }
+        return points;
     }
 }
