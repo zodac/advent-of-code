@@ -18,7 +18,6 @@
 package me.zodac.advent.json;
 
 import me.zodac.advent.util.NumberUtils;
-import me.zodac.advent.util.StringUtils;
 
 /**
  * Implementation of {@link JsonElement} defining a single {@code int} value.

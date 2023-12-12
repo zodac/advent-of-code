@@ -18,8 +18,11 @@
 package me.zodac.advent.pojo.grid;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.util.ArrayUtils;
 
 /**
  * Abstract class defining a grid of {@link Point}s.
@@ -36,22 +39,22 @@ public class Grid<E> {
     /**
      * The values of the {@link Grid}.
      */
-    protected final E[][] grid;
+    protected final E[][] internalGrid;
 
     /**
      * Constructor that creates the internal {@code grid} and initialises the data.
      *
      * @param gridSize     the size of the {@link Grid}.
-     * @param grid         the actual {@link Grid} represented as a 2D array.
+     * @param internalGrid the actual {@link Grid} represented as a 2D array.
      * @param initialValue the initial value for each {@link Point} in the {@link Grid}
      */
-    Grid(final int gridSize, final E[][] grid, final E initialValue) {
+    public Grid(final int gridSize, final E[][] internalGrid, final E initialValue) {
         this.gridSize = gridSize;
-        this.grid = grid.clone();
+        this.internalGrid = internalGrid.clone();
 
         for (int row = 0; row < gridSize; row++) {
             for (int column = 0; column < gridSize; column++) {
-                this.grid[row][column] = initialValue;
+                this.internalGrid[row][column] = initialValue;
             }
         }
     }
@@ -59,11 +62,31 @@ public class Grid<E> {
     /**
      * Default constructor.
      *
-     * @param grid the actual {@link Grid} represented as a 2D array.
+     * @param internalGrid the actual {@link Grid} represented as a 2D array.
      */
-    Grid(final E[][] grid) {
-        gridSize = grid.length;
-        this.grid = grid.clone();
+    public Grid(final E[][] internalGrid) {
+        gridSize = internalGrid.length;
+        this.internalGrid = internalGrid.clone();
+    }
+
+    /**
+     * Given a {@link List}s of {@link String}s where each {@link String} represents a 2D array of {@link Character}s, we convert to a 2D array and
+     * create a new instance of {@link Grid}. Each value in the 2D array is determined by converting the {@link Character} using the {@code converter}
+     * {@link Function}.
+     *
+     * @param gridValues the {@link String}s representing a 2D array (where each character in the {@link String} is an element in the array)
+     * @param converter  the {@link Function} to convert a {@link Character} from the input into the correct type for the 2D array
+     * @param <E>        the type of the {@link Grid}
+     * @return the created {@link Grid}
+     * @throws IllegalArgumentException thrown if input is empty
+     * @see ArrayUtils#convertToArrayOfArrays(List, Function)
+     */
+    public static <E> E[][] parseGrid(final List<String> gridValues, final Function<? super Character, ? extends E> converter) {
+        if (gridValues.isEmpty()) {
+            throw new IllegalArgumentException("Input cannot be empty");
+        }
+
+        return ArrayUtils.convertToArrayOfArrays(gridValues, converter);
     }
 
     /**
@@ -191,7 +214,7 @@ public class Grid<E> {
      * @return the value
      */
     protected int valueAt(final int row, final int column) {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -202,7 +225,7 @@ public class Grid<E> {
      * @param column          the y coordinate
      */
     protected void updateGrid(final GridInstruction gridInstruction, final int row, final int column) {
-
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -212,12 +235,12 @@ public class Grid<E> {
      * @return the updated {@code grid}
      */
     protected E[][] updateCornersToValue(final E newValue) {
-        grid[0][0] = newValue;
-        grid[0][gridSize - 1] = newValue;
-        grid[gridSize - 1][0] = newValue;
-        grid[gridSize - 1][gridSize - 1] = newValue;
+        internalGrid[0][0] = newValue;
+        internalGrid[0][gridSize - 1] = newValue;
+        internalGrid[gridSize - 1][0] = newValue;
+        internalGrid[gridSize - 1][gridSize - 1] = newValue;
 
-        return grid.clone();
+        return internalGrid.clone();
     }
 
     /**
@@ -239,8 +262,8 @@ public class Grid<E> {
      *
      * @return the {@link Grid} as a 2D array
      */
-    public E[][] getGrid() {
-        return grid.clone();
+    public E[][] getInternalGrid() {
+        return internalGrid.clone();
     }
 
     /**
@@ -249,7 +272,7 @@ public class Grid<E> {
      * @return the number of rows
      */
     public int numberOfRows() {
-        return grid.length;
+        return internalGrid.length;
     }
 
     /**
@@ -258,7 +281,7 @@ public class Grid<E> {
      * @return the number of columns
      */
     public int numberOfColumns() {
-        return grid[0].length;
+        return internalGrid[0].length;
     }
 
     /**
@@ -269,7 +292,7 @@ public class Grid<E> {
      * @return the value
      */
     public E at(final int row, final int column) {
-        return grid[row][column];
+        return internalGrid[row][column];
     }
 
     /**
@@ -279,7 +302,7 @@ public class Grid<E> {
      * @return the value
      */
     public E at(final Point point) {
-        return grid[point.x()][point.y()];
+        return internalGrid[point.x()][point.y()];
     }
 
     /**
@@ -289,7 +312,7 @@ public class Grid<E> {
      * @return the values
      */
     public E[] getRow(final int row) {
-        return grid[row];
+        return internalGrid[row];
     }
 
     /**
@@ -301,8 +324,8 @@ public class Grid<E> {
      */
     public Set<Point> findValue(final E wantedValue) {
         final Set<Point> points = new HashSet<>();
-        for (int i = 0; i < grid.length; i++) {
-            final E[] row = grid[i];
+        for (int i = 0; i < internalGrid.length; i++) {
+            final E[] row = internalGrid[i];
 
             for (int j = 0; j < row.length; j++) {
                 final E value = row[j];
@@ -320,13 +343,13 @@ public class Grid<E> {
      */
     @SuppressWarnings("unused") // Only used for debugging
     public void print() {
-        for (final E[] row : grid) {
+        for (final E[] row : internalGrid) {
             for (final E val : row) {
                 //noinspection ALL: Printing to stdout for debugging
-                System.out.print(val);
+                System.out.print(val); // NOPMD: SystemPrintln - Printing to stdout for debugging
             }
             //noinspection ALL: Printing to stdout for debugging
-            System.out.println();
+            System.out.println(); // NOPMD: SystemPrintln - Printing to stdout for debugging
         }
     }
 }

@@ -92,7 +92,9 @@ public final class ArrayUtils {
      * </pre>
      *
      * @param input the input {@link List} of {@link String}s
-     * @return the 2D {@link Integer} array
+     * @param converter the {@link Function} to convert a {@link Character} from the input into the correct type for the 2D array
+     * @param <E> the type of the 2D array
+     * @return the 2D array
      */
     public static <E> E[][] convertToArrayOfArrays(final List<String> input, final Function<? super Character, ? extends E> converter) {
         if (input.isEmpty() || input.getFirst().isEmpty()) {
@@ -207,13 +209,6 @@ public final class ArrayUtils {
         throw new IllegalArgumentException(String.format("No value in input is greater than %s", thresholdValue));
     }
 
-    private static <E> int maxInnerLength(final E[][] input) {
-        return Arrays.stream(input)
-            .mapToInt(array -> array.length)
-            .max()
-            .orElseThrow(() -> new IllegalArgumentException("Cannot find max length of input: " + Arrays.deepToString(input)));
-    }
-
     /**
      * Given a 2D array, reverses the order of the rows. For example, given the 2D array:
      * <pre>
@@ -247,9 +242,7 @@ public final class ArrayUtils {
         }
 
         final int outerLength = input.length;
-        final int innerLength = maxInnerLength(input);
-
-        final E[][] output = create2DimensionalArray(input[0][0].getClass(), outerLength, innerLength);
+        final E[][] output = create2DimensionalArray(input[0][0].getClass(), outerLength, outerLength);
         for (int i = 0; i < outerLength; i++) {
             output[i] = input[outerLength - 1 - i];
         }
@@ -295,7 +288,7 @@ public final class ArrayUtils {
         final int innerLength = Arrays.stream(input)
             .mapToInt(array -> array.length)
             .max()
-            .orElse(0);
+            .orElse(outerLength);
 
         // Flipping inner and outer lengths for the new 2D array
         final E[][] transposedArray = create2DimensionalArray(input[0][0].getClass(), innerLength, outerLength);

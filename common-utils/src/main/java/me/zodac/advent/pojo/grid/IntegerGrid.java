@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.function.Function;
 import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.util.ArrayUtils;
 import me.zodac.advent.util.NumberUtils;
 
 /**
@@ -62,20 +61,11 @@ public final class IntegerGrid extends Grid<Integer> {
      * @param gridValues the {@link String}s representing a 2D array (where each character in the {@link String} is an element in the array)
      * @return the created {@link IntegerGrid}
      * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
-     * @see ArrayUtils#convertToArrayOfArrays(List, Function) 
+     * @see #parseGrid(List, Function)
      */
     public static IntegerGrid parse(final List<String> gridValues) {
-        if (gridValues.isEmpty()) {
-            throw new IllegalArgumentException("Input cannot be empty");
-        }
-
-        final int firstElementLength = gridValues.getFirst().length();
-        if (gridValues.size() != firstElementLength) {
-            throw new IllegalArgumentException(
-                String.format("Outer size must match inner size, found outer: %s, inner: %s", gridValues.size(), firstElementLength));
-        }
-
-        return new IntegerGrid(ArrayUtils.convertToArrayOfArrays(gridValues, (character -> NumberUtils.toIntOrDefault(character, 0))));
+        final Integer[][] internalArray = parseGrid(gridValues, (character -> NumberUtils.toIntOrDefault(character, 0)));
+        return new IntegerGrid(internalArray);
     }
 
     /**
@@ -109,7 +99,7 @@ public final class IntegerGrid extends Grid<Integer> {
      */
     @Override
     public int valueAt(final int row, final int column) {
-        return grid[row][column];
+        return internalGrid[row][column];
     }
 
     /**
@@ -126,9 +116,9 @@ public final class IntegerGrid extends Grid<Integer> {
     @Override
     protected void updateGrid(final GridInstruction gridInstruction, final int row, final int column) {
         switch (gridInstruction) {
-            case ON -> grid[row][column] = grid[row][column] + 1;
-            case OFF -> grid[row][column] = Math.max(0, grid[row][column] - 1); // Value should not be less than 0
-            case TOGGLE -> grid[row][column] = grid[row][column] + 2;
+            case ON -> internalGrid[row][column] = internalGrid[row][column] + 1;
+            case OFF -> internalGrid[row][column] = Math.max(0, internalGrid[row][column] - 1); // Value should not be less than 0
+            case TOGGLE -> internalGrid[row][column] = internalGrid[row][column] + 2;
             default -> throw new IllegalStateException("Cannot draw a box with instruction: " + gridInstruction);
         }
     }
@@ -150,7 +140,7 @@ public final class IntegerGrid extends Grid<Integer> {
         final Set<Point> points = line.getPointsInLine();
 
         for (final Point point : points) {
-            grid[point.y()][point.x()]++;
+            internalGrid[point.y()][point.x()]++;
         }
     }
 }

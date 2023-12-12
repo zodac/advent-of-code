@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.util.ArrayUtils;
 
 /**
  * Class defining a {@link Grid} of {@link Boolean}s, where any point can have its value turned 'on' or 'off'.
@@ -60,20 +59,11 @@ public final class BooleanGrid extends Grid<Boolean> {
      * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
      * @return the created {@link BooleanGrid}
      * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
-     * @see ArrayUtils#convertToArrayOfArrays(List, Function)
+     * @see #parseGrid(List, Function)
      */
     public static BooleanGrid parse(final List<String> gridValues, final char symbolSignifyingTrue) {
-        if (gridValues.isEmpty()) {
-            throw new IllegalArgumentException("Input cannot be empty");
-        }
-
-        final int firstElementSize = gridValues.getFirst().length();
-        if (gridValues.size() != firstElementSize) {
-            throw new IllegalArgumentException(
-                String.format("Outer size must match inner size, found outer: %s, inner: %s", gridValues.size(), firstElementSize));
-        }
-
-        return new BooleanGrid(ArrayUtils.convertToArrayOfArrays(gridValues, (character -> character == symbolSignifyingTrue)));
+        final Boolean[][] internalArray = parseGrid(gridValues, (character -> character == symbolSignifyingTrue));
+        return new BooleanGrid(internalArray);
     }
 
     /**
@@ -130,7 +120,7 @@ public final class BooleanGrid extends Grid<Boolean> {
                 }
 
                 final Point currentPoint = Point.of(x, y);
-                final boolean isSet = grid[x][y];
+                final boolean isSet = internalGrid[x][y];
 
                 final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, gridSize);
                 final Set<Point> neighbours = currentPoint.getAdjacentPoints(adjacentPointsSelector);
@@ -173,7 +163,7 @@ public final class BooleanGrid extends Grid<Boolean> {
      */
     @Override
     public int valueAt(final int row, final int column) {
-        return grid[row][column] ? 1 : 0;
+        return internalGrid[row][column] ? 1 : 0;
     }
 
     /**
@@ -190,9 +180,9 @@ public final class BooleanGrid extends Grid<Boolean> {
     @Override
     protected void updateGrid(final GridInstruction gridInstruction, final int row, final int column) {
         switch (gridInstruction) {
-            case ON -> grid[row][column] = true;
-            case OFF -> grid[row][column] = false;
-            case TOGGLE -> grid[row][column] = !grid[row][column];
+            case ON -> internalGrid[row][column] = true;
+            case OFF -> internalGrid[row][column] = false;
+            case TOGGLE -> internalGrid[row][column] = !internalGrid[row][column];
             default -> throw new IllegalStateException("Cannot draw a box with instruction: " + gridInstruction);
         }
     }

@@ -36,7 +36,7 @@ public final class NumberUtils {
         try {
             Integer.parseInt(input);
             return true;
-        } catch (final NumberFormatException e) {
+        } catch (final NumberFormatException ignored) {
             return false;
         }
     }
@@ -51,23 +51,39 @@ public final class NumberUtils {
         try {
             Long.parseLong(input);
             return true;
-        } catch (final NumberFormatException e) {
+        } catch (final NumberFormatException ignored) {
             return false;
         }
     }
 
-    public static int toIntOrDefault(final Object object, final int defaultValue) {
+    /**
+     * Converts the provided {@link Object} by converting it to a {@link String} then calling {@link Integer#parseInt(String)}. If it is an invalid
+     * {@link Integer}, the {@link NumberFormatException} will be handled and instead {@code defaultValue} will be returned.
+     *
+     * @param input        the {@link Object} to convert
+     * @param defaultValue the default {@link Integer} to return if the {@code input} is not a valid {@link Integer}
+     * @return the converted {@link Integer}, or {@code defaultValue}
+     */
+    public static int toIntOrDefault(final Object input, final int defaultValue) {
         try {
-            return Integer.parseInt(String.valueOf(object));
-        } catch (final NumberFormatException e) {
+            return Integer.parseInt(String.valueOf(input));
+        } catch (final NumberFormatException ignored) {
             return defaultValue;
         }
     }
 
-    public static long toLongOrDefault(final Object object, final long defaultValue) {
+    /**
+     * Converts the provided {@link Object} by converting it to a {@link String} then calling {@link Long#parseLong(String)}. If it is an invalid
+     * {@link Long}, the {@link NumberFormatException} will be handled and instead {@code defaultValue} will be returned.
+     *
+     * @param input        the {@link Object} to convert
+     * @param defaultValue the default {@link Long} to return if the {@code input} is not a valid {@link Long}
+     * @return the converted {@link Long}, or {@code defaultValue}
+     */
+    public static long toLongOrDefault(final Object input, final long defaultValue) {
         try {
-            return Long.parseLong(String.valueOf(object));
-        } catch (final NumberFormatException e) {
+            return Long.parseLong(String.valueOf(input));
+        } catch (final NumberFormatException ignored) {
             return defaultValue;
         }
     }

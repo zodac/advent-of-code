@@ -20,9 +20,11 @@ package me.zodac.advent.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -44,7 +46,7 @@ public final class CollectionUtils {
      * @return {@code true} if the {@link Collection} contains at least one duplicate
      */
     public static <T> boolean containsDuplicates(final Collection<T> input) {
-        if (input == null || input.isEmpty()) {
+        if (input.isEmpty()) {
             return false;
         }
 
@@ -59,16 +61,29 @@ public final class CollectionUtils {
      * @param extractionFunction the {@link Function} used to extract a value
      * @param <I>                the type of the input {@link Collection} of {@code elements}
      * @param <O>                the type of the output values which will be mapped by the {@link Function}
-     * @return the updated {@link Collection}, or an empty {@link Collection} if input is {@code null} or {@link Collection#isEmpty()}
+     * @return the updated {@link Collection}, or an empty {@link Collection} if input is {@link Collection#isEmpty()}
      */
     public static <I, O> List<O> extractValuesAsList(final Collection<I> elements, final Function<? super I, O> extractionFunction) {
-        if (elements == null || elements.isEmpty()) {
-            return List.of();
-        }
-
         return elements
             .stream()
             .map(extractionFunction)
+            .toList();
+    }
+
+    /**
+     * For the provided {@link Collection}, we return all elements that are less than the provided {@code value}. To support generic types, a
+     * {@link Comparator} is provided to do a comparision bewteen elements.
+     *
+     * @param values     the {@link Collection} to check
+     * @param value      the value to compare against
+     * @param comparator the {@link Comparator} defining how to compare the elements
+     * @param <E>        the type of the elements
+     * @return a {@link List} of all elements less than {@code value}
+     */
+    public static <E> List<E> findValuesLessThan(final Collection<E> values, final E value, final Comparator<? super E> comparator) {
+        return values
+            .stream()
+            .filter(v -> Objects.compare(value, v, comparator) == 1)
             .toList();
     }
 

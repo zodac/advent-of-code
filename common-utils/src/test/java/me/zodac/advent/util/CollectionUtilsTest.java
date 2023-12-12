@@ -20,10 +20,12 @@ package me.zodac.advent.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -37,7 +39,7 @@ class CollectionUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideForContainsDuplicates")
-    void testContainsDuplicates(final List<Integer> input, final boolean expected) {
+    <E> void testContainsDuplicates(final List<E> input, final boolean expected) {
         final boolean output = CollectionUtils.containsDuplicates(input);
         assertThat(output)
             .isEqualTo(expected);
@@ -45,43 +47,64 @@ class CollectionUtilsTest {
 
     private static Stream<Arguments> provideForContainsDuplicates() {
         return Stream.of(
-            Arguments.of(List.of(1, 2, 2), true),       // Input with single duplicate
-            Arguments.of(List.of(1, 1, 2, 2), true),    // Input with multiple duplicates
-            Arguments.of(List.of(1, 2, 3), false),      // Input with no duplicates
-            Arguments.of(List.of(), false),             // Empty
-            Arguments.of(null, false)                   // Null
+            Arguments.of(List.of(1, 2, 2), true),               // Integer input with single duplicate
+            Arguments.of(List.of(1, 1, 2, 2), true),            // Integer input with multiple duplicates
+            Arguments.of(List.of(1, 2, 3), false),              // Integer input with no duplicates
+            Arguments.of(List.of("a", "b", "c"), false),        // String input with no duplicates
+            Arguments.of(List.of("a", "b", "b"), true),         // String input with single duplicate
+            Arguments.of(List.of("a", "a", "b", "b"), true),    // String input with multiple duplicates
+            Arguments.of(List.of(), false)                      // Empty
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideForExtractValuesAsList")
-    void testExtractValuesAsList(final List<Long> input, final List<Integer> expected) {
-        final List<Integer> output = CollectionUtils.extractValuesAsList(input, Long::intValue);
+    <I, O> void testExtractValuesAsList(final List<I> input, final Function<? super I, O> extractionFunction, final List<? extends O> expected) {
+        final List<O> output = CollectionUtils.extractValuesAsList(input, extractionFunction);
         assertThat(output)
             .hasSameElementsAs(expected);
     }
 
     private static Stream<Arguments> provideForExtractValuesAsList() {
         return Stream.of(
-            Arguments.of(List.of(1L, 2L, 3L), List.of(1, 2, 3)),    // Collection of Long, extracting as Integers
-            Arguments.of(List.of(), List.of()),                     // Empty
-            Arguments.of(null, List.of())                 // Null
+            Arguments.of(List.of(1L, 2L, 3L), (Function<Long, Integer>) Long::intValue, List.of(1, 2, 3)),               // Long -> Integer
+            Arguments.of(List.of('a', 'b', 'c'), (Function<Character, String>) String::valueOf, List.of("a", "b", "c")), // Character -> String
+            Arguments.of(List.of(), (Function<Character, String>) String::valueOf, List.of())                            // Empty
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForFindValuesLessThan")
+    <E> void testFindValuesLessThan(final List<E> input, final E value, final Comparator<? super E> comparator, final List<? extends E> expected) {
+        final List<E> output = CollectionUtils.findValuesLessThan(input, value, comparator);
+        assertThat(output)
+            .hasSameElementsAs(expected);
+    }
+
+    private static Stream<Arguments> provideForFindValuesLessThan() {
+        return Stream.of(
+            Arguments.of(List.of(1, 2, 3), 2, (Comparator<Integer>) Integer::compareTo, List.of(1)),            // Integer, single match
+            Arguments.of(List.of(1, 2, 3), 5, (Comparator<Integer>) Integer::compareTo, List.of(1, 2, 3)),          // Integer, all matches
+            Arguments.of(List.of(1, 2, 3), 0, (Comparator<Integer>) Integer::compareTo, List.of()),                // Integer, no matches
+            Arguments.of(List.of("a", "b", "c"), "b", (Comparator<String>) String::compareTo, List.of("a")),    // String, single match
+            Arguments.of(List.of(), 0, (Comparator<Integer>) Integer::compareTo, List.of())                        // Empty
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideForGeneratePermutations")
-    void testGeneratePermutations(final List<String> input, final List<? extends List<String>> expected) {
-        final List<List<String>> output = CollectionUtils.generatePermutations(input);
+    <E> void testGeneratePermutations(final List<? extends E> input, final List<? extends List<E>> expected) {
+        final List<List<E>> output = CollectionUtils.generatePermutations(input);
         assertThat(output)
             .hasSameElementsAs(expected);
     }
 
     private static Stream<Arguments> provideForGeneratePermutations() {
         return Stream.of(
-            Arguments.of(List.of("a"), List.of(List.of("a"))),  // Single entry
+            Arguments.of(List.of("a"), List.of(List.of("a"))),  // Single String entry
+            Arguments.of(List.of(1), List.of(List.of(1))),      // Single Integer entry
             Arguments.of(List.of(), List.of(List.of())),               // Empty
-            // Multiple entries
+            // Multiple String entries
             Arguments.of(List.of("a", "b", "c"),
                 List.of(
                     List.of("a", "b", "c"),
@@ -91,46 +114,61 @@ class CollectionUtilsTest {
                     List.of("c", "a", "b"),
                     List.of("c", "b", "a")
                 )
+            ),
+            // Multiple Integer entries
+            Arguments.of(List.of(1, 2, 3),
+                List.of(
+                    List.of(1, 2, 3),
+                    List.of(1, 3, 2),
+                    List.of(2, 1, 3),
+                    List.of(2, 3, 1),
+                    List.of(3, 1, 2),
+                    List.of(3, 2, 1)
+                )
             )
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideForGetKeyByValue")
-    void testGetKeyByValue(final Map<String, ? super String> input, final String value, final Optional<String> expected) {
-        final Optional<String> output = CollectionUtils.getKeyByValue(input, value);
+    <K, V> void testGetKeyByValue(final Map<K, ? super V> input, final V value, final Optional<V> expected) {
+        final Optional<K> output = CollectionUtils.getKeyByValue(input, value);
         assertThat(output)
             .isEqualTo(expected);
     }
 
     private static Stream<Arguments> provideForGetKeyByValue() {
-        final Map<String, String> inputMap = Map.of("key1", "value1", "key2", "value2");
         return Stream.of(
-            Arguments.of(inputMap, "value2", Optional.of("key2")),  // Key exists
-            Arguments.of(inputMap, "value3", Optional.empty()),                  // Key doesn't exist
-            Arguments.of(Map.of(), "value1", Optional.empty())                   // Empty
+            Arguments.of(Map.of("key1", "value1", "key2", "value2"), "value2", Optional.of("key2")),    // String Key found
+            Arguments.of(Map.of("key1", "value1", "key2", "value2"), "value3", Optional.empty()),             // No String key found
+            Arguments.of(Map.of(1, 10, 2, 20), 20, Optional.of(2)),                                     // Integer key found
+            Arguments.of(Map.of(1, 10, 2, 20), 30, Optional.empty()),                                         // No Integer key found
+            Arguments.of(Map.of(), "value1", Optional.empty())                                                              // Empty
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideForMiddleValue")
-    void testMiddleValue(final List<String> input, final String expected) {
-        final String output = CollectionUtils.getMiddleValue(input);
+    <E extends Comparable<E>> void testMiddleValue(final List<E> input, final E expected) {
+        final E output = CollectionUtils.getMiddleValue(input);
         assertThat(output)
             .isEqualTo(expected);
     }
 
     private static Stream<Arguments> provideForMiddleValue() {
         return Stream.of(
-            Arguments.of(List.of("a", "b", "c"), "b"),  // Sorted list of odd size
-            Arguments.of(List.of("c", "a", "b"), "b"),  // Unsorted list of odd size
-            Arguments.of(List.of("a"), "a")         // List with single size
+            Arguments.of(List.of("a", "b", "c"), "b"),  // Sorted String list of odd size
+            Arguments.of(List.of("c", "a", "b"), "b"),  // Unsorted String list of odd size
+            Arguments.of(List.of("a"), "a"),        // List String with single size
+            Arguments.of(List.of(1, 2, 3), 2),          // Sorted Integer list of odd size
+            Arguments.of(List.of(3, 1, 2), 2),          // Unsorted Integer list of odd size
+            Arguments.of(List.of(1), 1)             // List Integer with single size
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideForMiddleValue_invalid")
-    void testMiddleValue_givenInvalidInputs(final List<String> input, final String errorMessage) {
+    <E extends Comparable<E>> void testMiddleValue_givenInvalidInputs(final List<E> input, final String errorMessage) {
         assertThatThrownBy(() -> CollectionUtils.getMiddleValue(input))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(errorMessage);
@@ -138,23 +176,25 @@ class CollectionUtilsTest {
 
     private static Stream<Arguments> provideForMiddleValue_invalid() {
         return Stream.of(
-            Arguments.of(List.of("a", "b"), "Expected list with positive odd size, found size: 2"),     // List of even size
+            Arguments.of(List.of("a", "b"), "Expected list with positive odd size, found size: 2"),     // String list of even size
+            Arguments.of(List.of(1, 2), "Expected list with positive odd size, found size: 2"),     // Integer list of even size
             Arguments.of(List.of(), "Expected list with positive odd size, found size: 0")              // Empty
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideForGroupBySize")
-    void testGroupBySize(final List<String> input, final int amountPerGroup, final List<? extends List<String>> expected) {
-        final List<List<String>> output = CollectionUtils.groupBySize(input, amountPerGroup);
+    <E> void testGroupBySize(final List<? extends E> input, final int amountPerGroup, final List<? extends List<E>> expected) {
+        final List<List<E>> output = CollectionUtils.groupBySize(input, amountPerGroup);
         assertThat(output)
             .hasSameElementsAs(expected);
     }
 
     private static Stream<Arguments> provideForGroupBySize() {
         return Stream.of(
-            Arguments.of(List.of("a", "b", "c", "d"), 2, List.of(List.of("a", "b"), List.of("c", "d"))),   // Divisible by amountPerGroup
-            Arguments.of(List.of(), 2, List.of(List.of()))                                                 // Empty
+            Arguments.of(List.of("a", "b", "c", "d"), 2, List.of(List.of("a", "b"), List.of("c", "d"))),    // Divisible by amountPerGroup
+            Arguments.of(List.of(1, 2, 3, 4), 2, List.of(List.of(1, 2), List.of(3, 4))),                    // Divisible by amountPerGroup
+            Arguments.of(List.of(), 2, List.of(List.of()))                                                  // Empty
         );
     }
 
@@ -173,20 +213,28 @@ class CollectionUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideForIntersection")
-    void testIntersection(final Set<String> first, final Set<String> second, final Set<String> expected) {
-        final Set<String> output = CollectionUtils.intersection(first, second);
+    <E> void testIntersection(final Set<? extends E> first, final Set<E> second, final Set<? extends E> expected) {
+        final Set<E> output = CollectionUtils.intersection(first, second);
         assertThat(output)
             .hasSameElementsAs(expected);
     }
 
     private static Stream<Arguments> provideForIntersection() {
         return Stream.of(
-            Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b", "c"), Set.of("a", "b", "c")),                  // Both inputs match
+            // Strings
+            Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b", "c"), Set.of("a", "b", "c")),           // Both inputs match
             Arguments.of(Set.of("a", "b", "c"), Set.of("b", "c", "a"), Set.of("a", "b", "c")),                  // Order insensitive
             Arguments.of(Set.of("a", "b", "c"), Set.of("c", "d", "e", "f"), Set.of("c")),                       // Single match
             Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b", "c", "d", "e", "f"), Set.of("a", "b", "c")),   // Multiple matches
             Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b"), Set.of("a", "b")),                            // Second is a subset of first
-            Arguments.of(Set.of("a", "b", "c"), Set.of("d", "e", "f"), Set.of())                                // No match
+            Arguments.of(Set.of("a", "b", "c"), Set.of("d", "e", "f"), Set.of()),                               // No match
+            // Integers
+            Arguments.of(Set.of(1, 2, 3), Set.of(1, 2, 3), Set.of(1, 2, 3)),            // Both inputs match
+            Arguments.of(Set.of(1, 2, 3), Set.of(2, 3, 1), Set.of(1, 2, 3)),            // Order insensitive
+            Arguments.of(Set.of(1, 2, 3), Set.of(3, 4, 5, 6), Set.of(3)),               // Single match
+            Arguments.of(Set.of(1, 2, 3), Set.of(1, 2, 3, 4, 5, 6), Set.of(1, 2, 3)),   // Multiple matches
+            Arguments.of(Set.of(1, 2, 3), Set.of(1, 2), Set.of(1, 2)),                  // Second is a subset of first
+            Arguments.of(Set.of(1, 2, 3), Set.of(4, 5, 6), Set.of())                    // No match
         );
     }
 }

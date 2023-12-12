@@ -18,7 +18,6 @@
 package me.zodac.advent.pojo.grid;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import me.zodac.advent.util.ArrayUtils;
 
@@ -41,42 +40,7 @@ public final class CharacterGrid extends Grid<Character> {
      * @see ArrayUtils#convertToArrayOfArrays(List, Function)
      */
     public static CharacterGrid parse(final List<String> gridValues) {
-        return parse(gridValues, Map.of());
-    }
-
-    /**
-     * Given a {@link List}s of {@link String}s where each {@link String} represents a 2D array of {@link Character}s, we convert to a 2D array and
-     * create a new instance of {@link CharacterGrid}.
-     *
-     * @param gridValues the {@link String}s representing a 2D array (where each character in the {@link String} is an element in the array)
-     * @return the created {@link CharacterGrid}
-     * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
-     * @see ArrayUtils#convertToArrayOfArrays(List, Function)
-     */
-    public static CharacterGrid parse(final List<String> gridValues, final Map<Character, Character> mapping) {
-        if (gridValues.isEmpty()) {
-            throw new IllegalArgumentException("Input cannot be empty");
-        }
-
-        final int firstElementLength = gridValues.getFirst().length();
-        if (gridValues.size() != firstElementLength) {
-            throw new IllegalArgumentException(
-                String.format("Outer size must match inner size, found outer: %s, inner: %s", gridValues.size(), firstElementLength));
-        }
-
-        final Character[][] internalArray = ArrayUtils.convertToArrayOfArrays(gridValues, (character -> character));
-
-        if (!mapping.isEmpty()) {
-            for (int i = 0; i < internalArray.length; i++) {
-                final Character[] row = internalArray[i];
-
-                for (int j = 0; j < row.length; j++) {
-                    final Character value = row[j];
-                    internalArray[i][j] = mapping.getOrDefault(value, value);
-                }
-            }
-        }
-
+        final Character[][] internalArray = parseGrid(gridValues, (character -> character));
         return new CharacterGrid(internalArray);
     }
 
@@ -88,11 +52,6 @@ public final class CharacterGrid extends Grid<Character> {
      */
     @Override
     public int valueAt(final int row, final int column) {
-        return grid[row][column];
-    }
-
-    @Override
-    protected void updateGrid(final GridInstruction gridInstruction, final int row, final int column) {
-        throw new UnsupportedOperationException();
+        return internalGrid[row][column];
     }
 }
