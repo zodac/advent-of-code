@@ -61,7 +61,7 @@ public final class IntegerGrid extends Grid<Integer> {
      * @param gridValues the {@link String}s representing a 2D array (where each character in the {@link String} is an element in the array)
      * @return the created {@link IntegerGrid}
      * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
-     * @see #parseGrid(List, Function)
+     * @see Grid#parseGrid(List, Function)
      */
     public static IntegerGrid parse(final List<String> gridValues) {
         final Integer[][] internalArray = parseGrid(gridValues, (character -> NumberUtils.toIntOrDefault(character, 0)));

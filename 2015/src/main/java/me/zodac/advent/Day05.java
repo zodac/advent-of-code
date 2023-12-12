@@ -76,6 +76,39 @@ public final class Day05 {
     }
 
     private static boolean isValidForPartTwo(final String input) {
-        return StringUtils.hasSandwichCharacters(input) && StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
+        return hasSandwichCharacters(input) && hasRepeatedCharacterPairWithNoOverlap(input);
+    }
+
+    private static boolean hasSandwichCharacters(final String input) {
+        if (input.isBlank()) {
+            return false;
+        }
+
+        final int stringLength = input.length();
+        for (int i = 2; i < stringLength; i++) {
+            if (input.charAt(i - 2) == input.charAt(i)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasRepeatedCharacterPairWithNoOverlap(final String input) {
+        if (input.isBlank()) {
+            return false;
+        }
+
+        final int stringLength = input.length();
+        for (int i = 1; i < stringLength; i++) {
+            final String remainderOfInput = input.substring(i + 1);
+            final String pair = String.format("%c%c", input.charAt(i - 1), input.charAt(i));
+
+            if (remainderOfInput.contains(pair)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

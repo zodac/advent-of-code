@@ -17,8 +17,6 @@
 
 package me.zodac.advent;
 
-import me.zodac.advent.util.StringUtils;
-
 /**
  * Solution for 2015, Day 10.
  *
@@ -36,13 +34,37 @@ public final class Day10 {
      * @param input              the {@link String} to perform the sequence on
      * @param numberOfExecutions the number of times to perform the sequence
      * @return the length of the end result after the sequence has been applied {@code numberOfExecutions} times
-     * @see StringUtils#lookAndSay(String)
      */
     public static long performLookAndSaySequenceAndReturnLength(final String input, final int numberOfExecutions) {
         String output = input;
         for (int i = 0; i < numberOfExecutions; i++) {
-            output = StringUtils.lookAndSay(output);
+            output = lookAndSay(output);
         }
         return output.length();
+    }
+
+    private static String lookAndSay(final String input) {
+        if (input.isBlank()) {
+            throw new IllegalArgumentException("Input cannot be blank");
+        }
+
+        final StringBuilder output = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            final char currentChar = input.charAt(i);
+
+            if (!Character.isDigit(currentChar)) {
+                throw new IllegalArgumentException(String.format("Character '%s' is not a valid integer", currentChar));
+            }
+
+            int count = 1;
+            while (i + 1 < input.length() && input.charAt(i + 1) == currentChar) {
+                i++; // If next char is same as current, move the pointer to the next char
+                count++;
+            }
+
+            output.append(count).append(currentChar);
+        }
+        return output.toString();
     }
 }

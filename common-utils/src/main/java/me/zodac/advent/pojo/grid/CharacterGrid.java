@@ -19,7 +19,6 @@ package me.zodac.advent.pojo.grid;
 
 import java.util.List;
 import java.util.function.Function;
-import me.zodac.advent.util.ArrayUtils;
 
 /**
  * Class defining a {@link Grid} of {@link Character}s, where any point can have a {@link Character} value.
@@ -37,7 +36,7 @@ public final class CharacterGrid extends Grid<Character> {
      * @param gridValues the {@link String}s representing a 2D array (where each character in the {@link String} is an element in the array)
      * @return the created {@link CharacterGrid}
      * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
-     * @see ArrayUtils#convertToArrayOfArrays(List, Function)
+     * @see Grid#parseGrid(List, Function)
      */
     public static CharacterGrid parse(final List<String> gridValues) {
         final Character[][] internalArray = parseGrid(gridValues, (character -> character));

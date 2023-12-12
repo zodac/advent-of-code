@@ -206,7 +206,7 @@ public final class PowerSetUtils {
         }
 
         final List<T> list = new ArrayList<>(input);
-        final T head = list.remove(0);
+        final T head = list.removeFirst();
         final List<T> remainder = new ArrayList<>(list);
 
         for (final List<T> subList : getPowerList(remainder)) {
@@ -251,7 +251,7 @@ public final class PowerSetUtils {
         }
 
         final List<T> list = new ArrayList<>(input);
-        final T head = list.remove(0);
+        final T head = list.removeFirst();
         final Set<T> remainder = new HashSet<>(list);
 
         for (final Set<T> subSet : getPowerSet(remainder)) {
@@ -272,7 +272,7 @@ public final class PowerSetUtils {
         final Map<G, Predicate<List<T>>> predicates = powerSetFilter.predicates();
         for (final Map.Entry<G, Predicate<List<T>>> predicateEntry : predicates.entrySet()) {
             final G group = predicateEntry.getKey();
-            final List<T> combinations = combinationsByGroup.get(group);
+            final List<T> combinations = combinationsByGroup.getOrDefault(group, new ArrayList<>());
             final Predicate<List<T>> predicateForGroup = predicateEntry.getValue();
 
             if (!predicateForGroup.test(combinations)) {

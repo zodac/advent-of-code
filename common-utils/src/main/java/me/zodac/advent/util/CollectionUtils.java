@@ -46,11 +46,7 @@ public final class CollectionUtils {
      * @return {@code true} if the {@link Collection} contains at least one duplicate
      */
     public static <T> boolean containsDuplicates(final Collection<T> input) {
-        if (input.isEmpty()) {
-            return false;
-        }
-
-        return input.stream().distinct().count() != input.size();
+        return !input.isEmpty() && input.stream().distinct().count() != input.size();
     }
 
     /**

@@ -59,7 +59,7 @@ public final class BooleanGrid extends Grid<Boolean> {
      * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
      * @return the created {@link BooleanGrid}
      * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
-     * @see #parseGrid(List, Function)
+     * @see Grid#parseGrid(List, Function)
      */
     public static BooleanGrid parse(final List<String> gridValues, final char symbolSignifyingTrue) {
         final Boolean[][] internalArray = parseGrid(gridValues, (character -> character == symbolSignifyingTrue));

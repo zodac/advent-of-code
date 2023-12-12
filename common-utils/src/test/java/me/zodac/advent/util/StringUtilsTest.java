@@ -259,62 +259,6 @@ class StringUtilsTest {
 
     @ParameterizedTest
     @CsvSource({
-        "abcdab,true",      // Pair and no overlap
-        "abab,true",        // Pair and no other characters
-        "aabcdaafgh,true",  // Repeated character pair and no overlap
-        "aaa,false",        // Pair, but overlapping
-        "abcdef,false",     // No pairs
-        "'',false",         // Empty
-        "' ',false",        // Blank
-    })
-    void testHasRepeatedCharacterPairWithNoOverlap(final String input, final boolean expected) {
-        final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
-        assertThat(output)
-            .isEqualTo(expected);
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "aba,true",         // Single sandwich
-        "abcdefgf,true",    // Single sandwich at end of string
-        "ababa,true",       // Multiple sandwiches
-        "aaa,true",         // Single sandwich of same characters
-        "abcdef,false",     // No sandwich
-        "'',false",         // Empty
-        "' ',false",        // Blank
-    })
-    void testHasSandwichCharacters(final String input, final boolean expected) {
-        final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isEqualTo(expected);
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "1211,111221",      // Valid
-        "132211,11132221",  // Valid, but longer
-    })
-    void testLookAndSay(final String input, final String expected) {
-        final String output = StringUtils.lookAndSay(input);
-        assertThat(output)
-            .isEqualTo(expected);
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "abc,Character 'a' is not a valid integer",     // No valid integer characters
-        "1322a11,Character 'a' is not a valid integer", // One invalid character
-        "'',Input cannot be blank",                     // Empty
-        "' ',Input cannot be blank",                    // Blank
-    })
-    void testLookAndSay_givenInvalidInputs(final String input, final String errorMessage) {
-        assertThatThrownBy(() -> StringUtils.lookAndSay(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage(errorMessage);
-    }
-
-    @ParameterizedTest
-    @CsvSource({
         "hello world,l",    // Input with single most occurring character
         "abcdef,a",         // Input with all characters equally occurring
         "abbcddef,b",       // Input with multiple most equally occurring
@@ -497,8 +441,6 @@ class StringUtilsTest {
             StringUtils.countVowels(naughtyString);
             StringUtils.findFirstFullyUpperCaseWord(naughtyString);
             StringUtils.hasRepeatedCharacterInOrder(naughtyString);
-            StringUtils.hasRepeatedCharacterPairWithNoOverlap(naughtyString);
-            StringUtils.hasSandwichCharacters(naughtyString);
             StringUtils.removeLastCharacter(naughtyString);
             StringUtils.removeLastCharacters(naughtyString, 1);
             StringUtils.sort(naughtyString);
@@ -506,7 +448,6 @@ class StringUtilsTest {
             StringUtils.splitOnWhitespace(naughtyString);
 
             // Not testing due to how specific the methods are
-            // StringUtils.lookAndSay
             // StringUtils.removeDifferentCharacters
             // StringUtils.replaceAtIndex
         }

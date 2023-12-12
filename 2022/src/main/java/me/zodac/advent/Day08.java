@@ -58,7 +58,7 @@ public final class Day08 {
      */
     public static long countTreesVisibleFromOutsideForest(final List<String> values) {
         final IntegerGrid forest = IntegerGrid.parse(values);
-        final Integer[][] trees = forest.getGrid();
+        final Integer[][] trees = forest.getInternalGrid();
 
         int innerCount = 0;
         for (int i = 1; i < trees.length - 1; i++) {
@@ -150,7 +150,7 @@ public final class Day08 {
      */
     public static long findHighestScenicScore(final List<String> values) {
         final IntegerGrid forest = IntegerGrid.parse(values);
-        final Integer[][] trees = forest.getGrid();
+        final Integer[][] trees = forest.getInternalGrid();
         long max = Long.MIN_VALUE;
 
         for (int i = 1; i < trees.length - 1; i++) {
