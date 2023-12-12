@@ -26,7 +26,7 @@ import me.zodac.advent.pojo.Point;
  *
  * @param <E> the type of the {@link Point}s on the {@link Grid}
  */
-abstract sealed class Grid<E> permits BooleanGrid, CharacterGrid, IntegerGrid {
+public class Grid<E> {
 
     /**
      * The length (or width) of the {@link Grid}.
@@ -190,7 +190,9 @@ abstract sealed class Grid<E> permits BooleanGrid, CharacterGrid, IntegerGrid {
      * @param column the y coordinate
      * @return the value
      */
-    protected abstract int valueAt(int row, int column);
+    protected int valueAt(final int row, final int column) {
+        return 0;
+    }
 
     /**
      * Updates the {@link Grid} at the provided {@link Point}.
@@ -199,7 +201,9 @@ abstract sealed class Grid<E> permits BooleanGrid, CharacterGrid, IntegerGrid {
      * @param row             the x coordinate
      * @param column          the y coordinate
      */
-    protected abstract void updateGrid(GridInstruction gridInstruction, int row, int column);
+    protected void updateGrid(final GridInstruction gridInstruction, final int row, final int column) {
+
+    }
 
     /**
      * Sets the corners of the {@link Grid} to the input {@code newValue}.
@@ -309,5 +313,20 @@ abstract sealed class Grid<E> permits BooleanGrid, CharacterGrid, IntegerGrid {
             }
         }
         return points;
+    }
+
+    /**
+     * Prints the content of the {@link Grid}.
+     */
+    @SuppressWarnings("unused") // Only used for debugging
+    public void print() {
+        for (final E[] row : grid) {
+            for (final E val : row) {
+                //noinspection ALL: Printing to stdout for debugging
+                System.out.print(val);
+            }
+            //noinspection ALL: Printing to stdout for debugging
+            System.out.println();
+        }
     }
 }

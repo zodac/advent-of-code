@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.zodac.advent.util.NumberUtils;
 import me.zodac.advent.util.StringUtils;
 
 /**
@@ -107,7 +108,7 @@ public final class Monkey {
         final String operationString = matcher.group(5);
         final MathOperation mathOperation;
         final int opValue;
-        if (StringUtils.isInteger(operationString)) {
+        if (NumberUtils.isInteger(operationString)) {
             mathOperation = MathOperation.get(matcher.group(4).charAt(0));
             opValue = Integer.parseInt(operationString);
         } else {

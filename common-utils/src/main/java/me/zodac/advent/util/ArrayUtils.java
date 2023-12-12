@@ -20,148 +20,23 @@ package me.zodac.advent.util;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Utility functions for arrays.
  */
 public final class ArrayUtils {
 
-    private static final Boolean[][] EMPTY_2D_BOOLEAN_OBJECT_ARRAY = new Boolean[0][0];
-    private static final Character[][] EMPTY_2D_CHARACTER_ARRAY = new Character[0][0];
-    private static final Integer[][] EMPTY_2D_INTEGER_ARRAY = new Integer[0][0];
-
     private ArrayUtils() {
 
     }
 
     /**
-     * Converts the provided {@link List} of {@link String}s to a 2D {@link Boolean} array. Each {@link String} will be converted to an array of
-     * {@link Boolean}s, where each character is compared to {@code symbolSignifyingTrue}.
+     * Converts the provided {@link List} of {@link String}s into a 2D array. We assume each character in the {@link String} is convertable to the
+     * wanted output type, and that conversion is defined by the provided {@link Function} {@code converter}.
      *
      * <p>
-     * Given a {@link List} as follows, with a {@code symbolSignifyingTrue} of <b>a</b>:
-     * <pre>
-     *     [
-     *       "abbb",
-     *       "bab",
-     *       "aa",
-     *       "bbb"
-     *     ]
-     * </pre>
-     *
-     * <p>
-     * The result will be:
-     * <pre>
-     *     [
-     *       [TRUE, FALSE, FALSE, FALSE],
-     *       [FALSE, TRUE, FALSE],
-     *       [TRUE, TRUE],
-     *       [FALSE, FALSE, FALSE]
-     *     ]
-     * </pre>
-     *
-     * @param input                the input {@link String}s
-     * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
-     * @return the 2D {@link Boolean} array
-     */
-    public static Boolean[][] convertToArrayOfBooleanArrays(final List<String> input, final char symbolSignifyingTrue) {
-        if (input.isEmpty() || input.getFirst().isEmpty()) {
-            return EMPTY_2D_BOOLEAN_OBJECT_ARRAY.clone();
-        }
-
-        final int outerLength = input.size();
-        final int innerLength = input
-            .stream()
-            .mapToInt(String::length)
-            .max()
-            .orElse(outerLength);
-
-        final Boolean[][] arrayOfBooleanArrays = new Boolean[outerLength][innerLength];
-
-        for (int i = 0; i < input.size(); i++) {
-            final String line = input.get(i);
-            arrayOfBooleanArrays[i] = convertToArrayOfBooleans(line, symbolSignifyingTrue);
-        }
-
-        return arrayOfBooleanArrays;
-    }
-
-    private static Boolean[] convertToArrayOfBooleans(final CharSequence input, final char symbolSignifyingTrue) {
-        final Boolean[] booleanArray = new Boolean[input.length()];
-        for (int i = 0; i < input.length(); i++) {
-            booleanArray[i] = input.charAt(i) == symbolSignifyingTrue;
-        }
-        return booleanArray;
-    }
-
-    /**
-     * Converts the provided {@link List} of {@link String}s into a 2D {@link Character} array. We assume each character in the {@link String} is a
-     * {@link Character}, there is no support for multiple-digit {@link Character}s.
-     *
-     * <p>
-     * Given a {@link List} as follows:
-     * <pre>
-     *     [
-     *       "abcd",
-     *       "efg",
-     *       "hi",
-     *       "jkl"
-     *     ]
-     * </pre>
-     *
-     * <p>
-     * The result will be:
-     * <pre>
-     *     [
-     *       ['a', 'b', 'c', 'd'],
-     *       ['e', 'f', 'g'],
-     *       ['h', 'i'],
-     *       ['j, 'k', 'l']
-     *     ]
-     * </pre>
-     *
-     * <p>
-     * If any character in an input {@link String} is not a valid {@link Character}, a value of <b>'0''</b> will be set for that character.
-     *
-     * @param input the input {@link List} of {@link String}s
-     * @return the 2D {@link Character} array
-     */
-    public static Character[][] convertToArrayOfCharacterArrays(final List<String> input) {
-        if (input.isEmpty() || input.getFirst().isEmpty()) {
-            return EMPTY_2D_CHARACTER_ARRAY.clone();
-        }
-
-        final int outerLength = input.size();
-        final int innerLength = input
-            .stream()
-            .mapToInt(String::length)
-            .max()
-            .orElse(outerLength);
-
-        final Character[][] arrayOfCharacterArrays = new Character[outerLength][innerLength];
-
-        for (int i = 0; i < input.size(); i++) {
-            final String line = input.get(i);
-            arrayOfCharacterArrays[i] = convertToArrayOfCharacters(line);
-        }
-
-        return arrayOfCharacterArrays;
-    }
-
-    private static Character[] convertToArrayOfCharacters(final CharSequence input) {
-        final Character[] characterArray = new Character[input.length()];
-        for (int i = 0; i < input.length(); i++) {
-            characterArray[i] = input.charAt(i);
-        }
-        return characterArray;
-    }
-
-    /**
-     * Converts the provided {@link List} of {@link String}s into a 2D {@link Integer} array. We assume each character in the {@link String} is a
-     * one-digit {@link Integer}, there is no support for multiple-digit {@link Integer}s.
-     *
-     * <p>
-     * Given a {@link List} as follows:
+     * Given a {@link List} as below, we would like to convert this to a 2D array of {@link Integer}. The input is:
      * <pre>
      *     [
      *       "1234",
@@ -169,6 +44,12 @@ public final class ArrayUtils {
      *       "89",
      *       "012"
      *     ]
+     * </pre>
+     *
+     * <p>
+     * We would also provide the following {@link Function} to convert each individual {@link Character} into an {@link Integer}:
+     * <pre>
+     *     character -> NumberUtils.toIntOrDefault(character, 0)
      * </pre>
      *
      * <p>
@@ -183,14 +64,39 @@ public final class ArrayUtils {
      * </pre>
      *
      * <p>
-     * If any character in an input {@link String} is not a valid {@link Integer}, a value of <b>0</b> will be set for that character.
+     * Similarly, given an input which we want to convert to a 2D array of {@link Boolean}s, we would have the following:
+     * <pre>
+     *     [
+     *       "abbb",
+     *       "bab",
+     *       "aa",
+     *       "bbb"
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * And the converter {@link Function}:
+     * <pre>
+     *     (character -> character == 'a'')
+     * </pre>
+     *
+     * <p>
+     * The result will be:
+     * <pre>
+     *     [
+     *       [TRUE, FALSE, FALSE, FALSE],
+     *       [FALSE, TRUE, FALSE],
+     *       [TRUE, TRUE],
+     *       [FALSE, FALSE, FALSE]
+     *     ]
+     * </pre>
      *
      * @param input the input {@link List} of {@link String}s
      * @return the 2D {@link Integer} array
      */
-    public static Integer[][] convertToArrayOfIntegerArrays(final List<String> input) {
+    public static <E> E[][] convertToArrayOfArrays(final List<String> input, final Function<? super Character, ? extends E> converter) {
         if (input.isEmpty() || input.getFirst().isEmpty()) {
-            return EMPTY_2D_INTEGER_ARRAY.clone();
+            throw new IllegalArgumentException("Input cannot be empty");
         }
 
         final int outerLength = input.size();
@@ -200,26 +106,24 @@ public final class ArrayUtils {
             .max()
             .orElse(outerLength);
 
-        final Integer[][] arrayOfIntegerArrays = new Integer[outerLength][innerLength];
+        // Retrieve the first converted character, so we can create the array with the correct type
+        final Class<?> firstThing = converter.apply(input.getFirst().charAt(0)).getClass();
+        final E[][] arrayOfCharacterArrays = create2DimensionalArray(firstThing, outerLength, innerLength);
 
         for (int i = 0; i < input.size(); i++) {
             final String line = input.get(i);
-            arrayOfIntegerArrays[i] = convertToArrayOfIntegers(line);
+            arrayOfCharacterArrays[i] = toArray(line, converter, firstThing);
         }
 
-        return arrayOfIntegerArrays;
+        return arrayOfCharacterArrays;
     }
 
-    private static Integer[] convertToArrayOfIntegers(final CharSequence input) {
-        final Integer[] integerArray = new Integer[input.length()];
+    private static <E> E[] toArray(final String input, final Function<? super Character, ? extends E> converter, final Class<?> convertedClass) {
+        final E[] array = createArray(convertedClass, input.length());
         for (int i = 0; i < input.length(); i++) {
-            try {
-                integerArray[i] = Integer.parseInt(String.valueOf(input.charAt(i)));
-            } catch (final NumberFormatException e) {
-                integerArray[i] = 0;
-            }
+            array[i] = converter.apply(input.charAt(i));
         }
-        return integerArray;
+        return array;
     }
 
     /**
@@ -233,8 +137,8 @@ public final class ArrayUtils {
      * @return the number of elements on the perimeter
      */
     public static <E> int countPerimeterElements(final E[][] input) {
-        if (input == null || input.length == 0) {
-            throw new IllegalArgumentException("Input cannot be null or empty");
+        if (input.length == 0) {
+            throw new IllegalArgumentException("Input cannot be empty");
         }
 
         final int outerLength = input.length;
@@ -255,11 +159,11 @@ public final class ArrayUtils {
      * @param value the value to set in the array
      * @param <E>   the type of the {@code input}
      * @return the filled array
-     * @throws IllegalArgumentException thrown if the input is {@code null} or empty
+     * @throws IllegalArgumentException thrown if the input is empty
      */
     public static <E> E[][] deepFill(final E[][] input, final E value) {
-        if (input == null || input.length == 0 || input[0].length == 0) {
-            throw new IllegalArgumentException("Input cannot be null or empty");
+        if (input.length == 0 || input[0].length == 0) {
+            throw new IllegalArgumentException("Input cannot be empty");
         }
 
         final E[][] array = deepCopy(input);
@@ -285,11 +189,11 @@ public final class ArrayUtils {
      * @param input          the input to check
      * @param thresholdValue the threshold value that any array entry must be greater than
      * @return the smallest index in the {@code int} array
-     * @throws IllegalArgumentException thrown if the input is {@code null}, empty or does not have any value greater than the {@code thresholdValue}
+     * @throws IllegalArgumentException thrown if the input is empty or does not have any value greater than the {@code thresholdValue}
      */
     public static int findSmallestIndexGreaterThanThreshold(final int[] input, final int thresholdValue) {
-        if (input == null || input.length == 0) {
-            throw new IllegalArgumentException("Input cannot be null or empty");
+        if (input.length == 0) {
+            throw new IllegalArgumentException("Input cannot be empty");
         }
 
         for (int i = 0; i < input.length; i++) {
@@ -303,19 +207,7 @@ public final class ArrayUtils {
         throw new IllegalArgumentException(String.format("No value in input is greater than %s", thresholdValue));
     }
 
-    /**
-     * Given a 2D array, returns the length of the longest inner array.
-     *
-     * @param input the input 2D array
-     * @param <E>   the type of the {@code input}
-     * @return the length of the longest inner array
-     * @throws IllegalArgumentException thrown if the input is {@code null} or an empty array
-     */
-    public static <E> int maxInnerLength(final E[][] input) {
-        if (input == null) {
-            throw new IllegalArgumentException("Input cannot be null");
-        }
-
+    private static <E> int maxInnerLength(final E[][] input) {
         return Arrays.stream(input)
             .mapToInt(array -> array.length)
             .max()
@@ -347,11 +239,11 @@ public final class ArrayUtils {
      * @param input the input 2D array
      * @param <E>   the type of the {@code input}
      * @return the reversed 2D array
-     * @throws IllegalArgumentException thrown if the input is {@code null} or empty
+     * @throws IllegalArgumentException thrown if the input is empty
      */
     public static <E> E[][] reverseRows(final E[][] input) {
-        if (input == null || input.length == 0 || input[0].length == 0) {
-            throw new IllegalArgumentException("Input cannot be null or empty");
+        if (input.length == 0 || input[0].length == 0) {
+            throw new IllegalArgumentException("Input cannot be empty");
         }
 
         final int outerLength = input.length;
@@ -392,11 +284,11 @@ public final class ArrayUtils {
      * @param blankSpaceValue the value to 'fill' in any gaps in the transposed array
      * @param <E>             the type of the {@code input}
      * @return the transposed 2D array
-     * @throws IllegalArgumentException thrown if the input is {@code null} or empty
+     * @throws IllegalArgumentException thrown if the input is empty
      */
     public static <E> E[][] transpose(final E[][] input, final E blankSpaceValue) {
-        if (input == null || input.length == 0 || input[0].length == 0) {
-            throw new IllegalArgumentException("Input cannot be null or empty");
+        if (input.length == 0 || input[0].length == 0) {
+            throw new IllegalArgumentException("Input cannot be empty");
         }
 
         final int outerLength = input.length;
@@ -418,6 +310,11 @@ public final class ArrayUtils {
         }
 
         return transposedArray;
+    }
+
+    @SuppressWarnings("unchecked") // Creating a 1D array of a generic type
+    private static <E> E[] createArray(final Class<?> arrayClass, final int length) {
+        return (E[]) Array.newInstance(arrayClass, length);
     }
 
     @SuppressWarnings("unchecked") // Creating a 2D array of a generic type

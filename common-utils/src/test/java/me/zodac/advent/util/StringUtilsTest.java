@@ -56,8 +56,7 @@ class StringUtilsTest {
     @CsvSource({
         "abcdefg,Cannot bisect input of length: 7", // Invalid length
         "'     ',Cannot bisect input of length: 5", // Blank, with invalid length
-        "'',Input cannot be null or empty",         // Empty
-        ",Input cannot be null or empty",           // Null
+        "'',Input cannot be empty",                 // Empty
     })
     void testBisect_givenInvalidInputs(final String input, final String errorMessage) {
         assertThatThrownBy(() -> StringUtils.bisect(input))
@@ -78,8 +77,7 @@ class StringUtilsTest {
             Arguments.of("hello world", List.of(3L, 2L, 1L, 1L, 1L, 1L, 1L, 1L, 1L)),   // Multiple characters with varying frequencies
             Arguments.of("abcde", List.of(1L, 1L, 1L, 1L, 1L)),                         // Multiple characters with same frequency
             Arguments.of("", List.of()),                                                // Empty
-            Arguments.of(" ", List.of()),                                               // Blank
-            Arguments.of(null, List.of())                                               // Null
+            Arguments.of(" ", List.of(1L))                                           // Blank
         );
     }
 
@@ -100,8 +98,7 @@ class StringUtilsTest {
             Arguments.of("1 23 456 9999999999999999", List.of(1L, 23L, 456L, 9_999_999_999_999_999L)),  // Multiple integers and long
             Arguments.of("No numbers here", List.of()),                                                 // No numbers
             Arguments.of("", List.of()),                                                                // Empty
-            Arguments.of(" ", List.of()),                                                               // Blank
-            Arguments.of(null, List.of())                                                               // Null
+            Arguments.of(" ", List.of())                                                                // Blank
         );
     }
 
@@ -134,13 +131,11 @@ class StringUtilsTest {
 
     private static Stream<Arguments> provideForCommonChars_invalid() {
         return Stream.of(
-            Arguments.of("abcd", new String[0], "Must have at least two strings to compare"),               // One input
-            Arguments.of("", new String[] {"def", "ghi", "jkl"}, "Input cannot be null or blank"),          // Empty first
-            Arguments.of(" ", new String[] {"def", "ghi", "jkl"}, "Input cannot be null or blank"),         // Blank first
-            Arguments.of(null, new String[] {"def", "ghi", "jkl"}, "Input cannot be null or blank"),        // Null first
-            Arguments.of("abc", new String[] {"def", "ghi", "", "jkl"}, "Input cannot be null or blank"),   // Empty other
-            Arguments.of("abc", new String[] {"def", "ghi", " ", "jkl"}, "Input cannot be null or blank"),  // Blank other
-            Arguments.of("abc", new String[] {"def", "ghi", null, "jkl"}, "Input cannot be null or blank")  // Null other
+            Arguments.of("abcd", new String[] {}, "Must have at least two strings to compare"),     // One input
+            Arguments.of("", new String[] {"def", "ghi", "jkl"}, "Input cannot be blank"),          // Empty first
+            Arguments.of(" ", new String[] {"def", "ghi", "jkl"}, "Input cannot be blank"),         // Blank first
+            Arguments.of("abc", new String[] {"def", "ghi", "", "jkl"}, "Input cannot be blank"),   // Empty other
+            Arguments.of("abc", new String[] {"def", "ghi", " ", "jkl"}, "Input cannot be blank")   // Blank other
         );
     }
 
@@ -159,13 +154,11 @@ class StringUtilsTest {
             Arguments.of("abcd", new String[] {"abc", "bcd", "def"}, false),    // 3 subStrings, only 2 exist in input
             Arguments.of("abcdef", new String[] {"abcdef"}, true),              // subString matches input
             Arguments.of("abcdef", new String[] {"abcdefghij"}, false),         // Input is subString of subString
-            Arguments.of("abcdef", new String[0], false),                       // No subString provided
+            Arguments.of("abcdef", new String[] {}, false),                     // No subString provided
             Arguments.of("abcdef", new String[] {""}, true),                    // Empty subString
             Arguments.of("abcdef", new String[] {" "}, false),                  // Blank subString
-            Arguments.of("abcdef", new String[] {null}, false),                 // Null subString
             Arguments.of("", new String[] {"abc"}, false),                      // Empty input
-            Arguments.of(" ", new String[] {"abc"}, false),                     // Blank input
-            Arguments.of(null, new String[] {"abc"}, false)                     // Null input
+            Arguments.of(" ", new String[] {"abc"}, false)                      // Blank input
         );
     }
 
@@ -186,13 +179,11 @@ class StringUtilsTest {
             Arguments.of("abcdef", new String[] {"ghi", "jkl", "mno"}, false),          // 3 subString, none exist in input
             Arguments.of("abcdef", new String[] {"abcdef"}, true),                      // subString matches input
             Arguments.of("abcdef", new String[] {"abcdefghij"}, false),                 // Input is subString of subString
-            Arguments.of("abcdef", new String[0], false),                               // No subString provided
+            Arguments.of("abcdef", new String[] {}, false),                             // No subString provided
             Arguments.of("abcdef", new String[] {""}, true),                            // Empty subString
             Arguments.of("abcdef", new String[] {" "}, false),                          // Blank subString
-            Arguments.of("abcdef", new String[] {null}, false),                         // Null subString
             Arguments.of("", new String[] {"abc"}, false),                              // Empty input
-            Arguments.of(" ", new String[] {"abc"}, false),                             // Blank input
-            Arguments.of(null, new String[] {"abc"}, false)                             // Null input
+            Arguments.of(" ", new String[] {"abc"}, false)                              // Blank input
         );
     }
 
@@ -202,7 +193,6 @@ class StringUtilsTest {
         "abc,false",    // No duplicates
         "'',false",     // Empty
         "' ',false",    // Blank
-        ",false",       // Null
     })
     void whenContainsDuplicates_givenString_thenCorrectValueIsReturned(final String input, final boolean expected) {
         final boolean output = StringUtils.containsDuplicates(input);
@@ -217,7 +207,6 @@ class StringUtilsTest {
         "aabcdeef,4",   // Repeated vowels
         "'',0",         // Empty
         "' ',0",        // Blank
-        ",0",           // Null
     })
     void testCountVowels(final String input, final long expected) {
         final long output = StringUtils.countVowels(input);
@@ -245,7 +234,6 @@ class StringUtilsTest {
         "This Is Not Uppercase",    // Input has uppercase characters but not a full uppercase word
         "''",                       // Empty
         "' '",                      // Blank
-        ",",                        // Null
     })
     void testFindFullyFirstUpperCaseWord_givenInvalidInputs(final String input) {
         final Optional<String> output = StringUtils.findFirstFullyUpperCaseWord(input);
@@ -262,7 +250,6 @@ class StringUtilsTest {
         "abcdef,false",     // No repeat
         "'',false",         // Empty
         "' ',false",        // Blank
-        ",false",           // Null
     })
     void testHasRepeatedCharacterInOrder(final String input, final boolean expected) {
         final boolean output = StringUtils.hasRepeatedCharacterInOrder(input);
@@ -279,7 +266,6 @@ class StringUtilsTest {
         "abcdef,false",     // No pairs
         "'',false",         // Empty
         "' ',false",        // Blank
-        ",false",           // Null
     })
     void testHasRepeatedCharacterPairWithNoOverlap(final String input, final boolean expected) {
         final boolean output = StringUtils.hasRepeatedCharacterPairWithNoOverlap(input);
@@ -296,50 +282,9 @@ class StringUtilsTest {
         "abcdef,false",     // No sandwich
         "'',false",         // Empty
         "' ',false",        // Blank
-        ",false",           // Null
     })
     void testHasSandwichCharacters(final String input, final boolean expected) {
         final boolean output = StringUtils.hasSandwichCharacters(input);
-        assertThat(output)
-            .isEqualTo(expected);
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "123,true",                                 // Valid integer
-        "-123,true",                                // Valid negative integer
-        "9999999999999999,false",                   // Valid long, but too large for integer
-        "-9999999999999999,false",                  // Valid negative long, but too large for integer
-        "99999999999999999999999999999999,false",   // Excessively large value
-        "3.14,false",                               // Valid float
-        "2/3,false",                                // Valid fraction
-        "abc,false",                                // Invalid numeric value
-        "'',false",                                 // Empty
-        "' ',false",                                // Blank
-        ",false",                                   // Null
-    })
-    void testIsInteger(final String input, final boolean expected) {
-        final boolean output = StringUtils.isInteger(input);
-        assertThat(output)
-            .isEqualTo(expected);
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "123,true",                                 // Valid integer
-        "-123,true",                                // Valid negative integer
-        "9999999999999999,true",                    // Valid long, but too large for integer
-        "-9999999999999999,true",                   // Valid negative long, but too large for integer
-        "99999999999999999999999999999999,false",   // Value too large for long
-        "3.14,false",                               // Valid float
-        "2/3,false",                                // Valid fraction
-        "abc,false",                                // Invalid numeric value
-        "'',false",                                 // Empty
-        "' ',false",                                // Blank
-        ",false",                                   // Null
-    })
-    void testIsLong(final String input, final boolean expected) {
-        final boolean output = StringUtils.isLong(input);
         assertThat(output)
             .isEqualTo(expected);
     }
@@ -359,9 +304,8 @@ class StringUtilsTest {
     @CsvSource({
         "abc,Character 'a' is not a valid integer",     // No valid integer characters
         "1322a11,Character 'a' is not a valid integer", // One invalid character
-        "'',Input cannot be null or blank",             // Empty
-        "' ',Input cannot be null or blank",            // Blank
-        ",Input cannot be null or blank",               // Null
+        "'',Input cannot be blank",                     // Empty
+        "' ',Input cannot be blank",                    // Blank
     })
     void testLookAndSay_givenInvalidInputs(final String input, final String errorMessage) {
         assertThatThrownBy(() -> StringUtils.lookAndSay(input))
@@ -383,9 +327,8 @@ class StringUtilsTest {
 
     @ParameterizedTest
     @CsvSource({
-        "'',Input cannot be null or blank",             // Empty
-        "' ',Input cannot be null or blank",            // Blank
-        ",Input cannot be null or blank",               // Null
+        "'',Input cannot be blank",             // Empty
+        "' ',Input cannot be blank",            // Blank
     })
     void testMostOccurringCharacter_givenInvalidInputs(final String input, final String errorMessage) {
         assertThatThrownBy(() -> StringUtils.mostOccurringCharacter(input))
@@ -409,11 +352,8 @@ class StringUtilsTest {
     }
 
     @ParameterizedTest
-    @CsvSource(delimiter = '|', value = {
-        "abcdef|abcdefg|Expected inputs of equal length, found abcdef (6) and abcdefg (7)", // Inputs of different length
-        "abcdef||Inputs must not be null",                                                  // First is null
-        "|abcdef|Inputs must not be null",                                                  // Second is null
-    })
+    // Inputs of different length
+    @CsvSource(delimiter = '|', value = "abcdef|abcdefg|Expected inputs of equal length, found abcdef (6) and abcdefg (7)")
     void testRemoveDifferentCharacters_givenInvalidInputs(final String first, final String second, final String errorMessage) {
         assertThatThrownBy(() -> StringUtils.removeDifferentCharacters(first, second))
             .isInstanceOf(IllegalArgumentException.class)
@@ -427,7 +367,6 @@ class StringUtilsTest {
         "'  ',' '", // Multiple blank spaces
         "'',''",    // Empty
         "' ',''",   // Blank
-        ",''",      // Null
     })
     void testRemoveLastCharacter(final String input, final String expected) {
         final String output = StringUtils.removeLastCharacter(input);
@@ -441,7 +380,6 @@ class StringUtilsTest {
         "'   ',2,' '",  // String of length 3, blank spaces, removing 2
         "'',2,''",      // Empty
         "' ',1,''",     // Blank
-        ",3,''",        // Null
     })
     void testRemoveLastCharacters(final String input, final int numberOfCharactersToRemove, final String expected) {
         final String output = StringUtils.removeLastCharacters(input, numberOfCharactersToRemove);
@@ -467,7 +405,6 @@ class StringUtilsTest {
         "abcdefghidefjkl,def,xxx,9,abcdefghixxxjkl",    // Multiple matching substrings (other index)
         "'',def,xxx,3,''",                              // Empty
         "' ',def,xxx,3,''",                             // Blank
-        ",def,xxx,3,''",                                // Null
     })
     void testReplaceAtIndex(final String input, final String subString, final String replacement, final int indexOfSubString, final String expected) {
         final String output = StringUtils.replaceAtIndex(input, subString, replacement, indexOfSubString);
@@ -494,7 +431,6 @@ class StringUtilsTest {
         "abcdef,abcdef",    // Sorted string
         "'',''",            // Empty
         "' ',' '",          // Blank
-        ",''",              // Null
     })
     void testSort(final String input, final String expected) {
         final String output = StringUtils.sort(input);
@@ -519,9 +455,8 @@ class StringUtilsTest {
                 line3""", new String[] {"line1", "line2", "line3"}),
             Arguments.of("line1", new String[] {"line1"}),              // Input has single line
             Arguments.of("line1 line2", new String[] {"line1 line2"}),  // Input has single line with whitespaces
-            Arguments.of("", new String[0]),                            // Empty
-            Arguments.of(" ", new String[] {" "}),                      // Blank
-            Arguments.of(null, new String[0])                           // Null
+            Arguments.of("", new String[] {""}),                        // Empty
+            Arguments.of(" ", new String[] {" "})                       // Blank
         );
     }
 
@@ -540,8 +475,7 @@ class StringUtilsTest {
             Arguments.of("abc   def", new String[] {"abc", "def"}),                     // Input has single whitespace with multiple spaces
             Arguments.of("a bc def ghij", new String[] {"a", "bc", "def", "ghij"}),     // Input has multiple whitespaces
             Arguments.of("", new String[] {""}),                                        // Empty
-            Arguments.of(" ", new String[] {""}),                                       // Blank
-            Arguments.of(null, new String[0])                                           // Null
+            Arguments.of(" ", new String[] {""})                                        // Blank
         );
     }
 
@@ -565,7 +499,6 @@ class StringUtilsTest {
             StringUtils.hasRepeatedCharacterInOrder(naughtyString);
             StringUtils.hasRepeatedCharacterPairWithNoOverlap(naughtyString);
             StringUtils.hasSandwichCharacters(naughtyString);
-            StringUtils.isInteger(naughtyString);
             StringUtils.removeLastCharacter(naughtyString);
             StringUtils.removeLastCharacters(naughtyString, 1);
             StringUtils.sort(naughtyString);

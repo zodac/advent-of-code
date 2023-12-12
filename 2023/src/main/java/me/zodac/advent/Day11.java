@@ -195,14 +195,4 @@ public final class Day11 {
             this.distanceFromSource = dis;
         }
     }
-
-    /**
-     * Part 2.
-     *
-     * @param values the input values
-     * @return the part 2 result
-     */
-    public static long part2(final List<String> values) {
-        return 0L;
-    }
 }

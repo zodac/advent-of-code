@@ -20,6 +20,7 @@ package me.zodac.advent;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.zodac.advent.util.NumberUtils;
 import me.zodac.advent.util.StringUtils;
 
 /**
@@ -84,7 +85,7 @@ public final class Day12 {
             while (integerMatcher.find()) {
                 final String value = integerMatcher.group(0);
 
-                if (StringUtils.isInteger(value)) {
+                if (NumberUtils.isInteger(value)) {
                     sumOfSubString += Integer.parseInt(value);
                 }
             }

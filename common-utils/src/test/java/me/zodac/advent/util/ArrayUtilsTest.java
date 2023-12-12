@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.atIndex;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,119 +37,89 @@ import org.junit.jupiter.params.provider.MethodSource;
 class ArrayUtilsTest {
 
     @ParameterizedTest
-    @MethodSource("provideForConvertToArrayOfBooleanArrays")
-    void testConvertToArrayOfBooleanArrays(final List<String> input, final char symbolForTrue, final Boolean[][] expected) {
-        final Boolean[][] output = ArrayUtils.convertToArrayOfBooleanArrays(input, symbolForTrue);
+    @MethodSource("provideForConvertToArrayOfArrays")
+    <E> void testConvertToArrayOfArrays(final List<String> input, final Function<? super Character, ? extends E> converter, final E[][] expected) {
+        final E[][] output = ArrayUtils.convertToArrayOfArrays(input, converter);
         assertThat(output)
             .isDeepEqualTo(expected);
     }
 
-    private static Stream<Arguments> provideForConvertToArrayOfBooleanArrays() {
+    private static Stream<Arguments> provideForConvertToArrayOfArrays() {
         return Stream.of(
-            // Valid list
-            Arguments.of(List.of("abb", "bab", "aaa"), 'a',
+            // Valid list of Booleans
+            Arguments.of(List.of("abb", "bab", "aaa"), (Function<Character, Boolean>) character -> character == 'a',
                 new Boolean[][] {
                     {Boolean.TRUE, Boolean.FALSE, Boolean.FALSE},
                     {Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
                     {Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}
                 }
             ),
-            // Valid list, where first string is longer than others
-            Arguments.of(List.of("abbb", "bab", "aaa"), 'a',
+            // Valid list of Booleans, where first string is longer than others
+            Arguments.of(List.of("abbb", "bab", "aaa"), (Function<Character, Boolean>) character -> character == 'a',
                 new Boolean[][] {
                     {Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
                     {Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
                     {Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}
                 }
             ),
-            // Valid list, where last string is longer than others
-            Arguments.of(List.of("abb", "bab", "aaaa"), 'a',
+            // Valid list of Booleans, where last string is longer than others
+            Arguments.of(List.of("abb", "bab", "aaaa"), (Function<Character, Boolean>) character -> character == 'a',
                 new Boolean[][] {
                     {Boolean.TRUE, Boolean.FALSE, Boolean.FALSE},
                     {Boolean.FALSE, Boolean.TRUE, Boolean.FALSE},
                     {Boolean.TRUE, Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}
                 }
             ),
-            // Valid list, with no matches
-            Arguments.of(List.of("abb", "bab", "aaa"), 'c',
+            // Valid list of Booleans, with no matches
+            Arguments.of(List.of("abb", "bab", "aaa"), (Function<Character, Boolean>) character -> character == 'c',
                 new Boolean[][] {
                     {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
                     {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
                     {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE}
                 }
             ),
-            Arguments.of(List.of(""), 'a', new Boolean[][] {}),         // List of empty string
-            Arguments.of(List.of(), 'a', new Boolean[][] {})                // Empty list
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideForConvertToArrayOfCharacterArrays")
-    void testConvertToArrayOfCharacterArrays(final List<String> input, final Character[][] expected) {
-        final Character[][] output = ArrayUtils.convertToArrayOfCharacterArrays(input);
-        assertThat(output)
-            .isDeepEqualTo(expected);
-    }
-
-    private static Stream<Arguments> provideForConvertToArrayOfCharacterArrays() {
-        return Stream.of(
-            // Valid list
-            Arguments.of(List.of("abc", "def", "ghi"),
+            // Valid list of Characters
+            Arguments.of(List.of("abc", "def", "ghi"), (Function<Character, Character>) character -> character,
                 new Character[][] {
                     {'a', 'b', 'c'},
                     {'d', 'e', 'f'},
                     {'g', 'h', 'i'}
                 }
             ),
-            // Valid list, where first string is longer than others
-            Arguments.of(List.of("abcd", "efg", "hij"),
+            // Valid list of Characters, where first string is longer than others
+            Arguments.of(List.of("abcd", "efg", "hij"), (Function<Character, Character>) character -> character,
                 new Character[][] {
                     {'a', 'b', 'c', 'd'},
                     {'e', 'f', 'g'},
                     {'h', 'i', 'j'}
                 }
             ),
-            // Valid list, where last string is longer than others
-            Arguments.of(List.of("abc", "def", "ghij"),
+            // Valid list of Characters, where last string is longer than others
+            Arguments.of(List.of("abc", "def", "ghij"), (Function<Character, Character>) character -> character,
                 new Character[][] {
                     {'a', 'b', 'c'},
                     {'d', 'e', 'f'},
                     {'g', 'h', 'i', 'j'}
                 }
             ),
-            Arguments.of(List.of(""), new Character[][] {}),              // List of empty string
-            Arguments.of(List.of(), new Character[][] {})                     // Empty list
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideForConvertToArrayOfIntegerArrays")
-    void testConvertToArrayOfIntegerArrays(final List<String> input, final Integer[][] expected) {
-        final Integer[][] output = ArrayUtils.convertToArrayOfIntegerArrays(input);
-        assertThat(output)
-            .isDeepEqualTo(expected);
-    }
-
-    private static Stream<Arguments> provideForConvertToArrayOfIntegerArrays() {
-        return Stream.of(
-            // Valid list
-            Arguments.of(List.of("123", "456", "789"),
+            // Valid list of Integers
+            Arguments.of(List.of("123", "456", "789"), (Function<Character, Integer>) character -> NumberUtils.toIntOrDefault(character, 0),
                 new Integer[][] {
                     {1, 2, 3},
                     {4, 5, 6},
                     {7, 8, 9}
                 }
             ),
-            // Valid list, where first string is longer than others
-            Arguments.of(List.of("1234", "567", "890"),
+            // Valid list of Integers, where first string is longer than others
+            Arguments.of(List.of("1234", "567", "890"), (Function<Character, Integer>) character -> NumberUtils.toIntOrDefault(character, 0),
                 new Integer[][] {
                     {1, 2, 3, 4},
                     {5, 6, 7},
                     {8, 9, 0}
                 }
             ),
-            // Valid list, where last string is longer than others
-            Arguments.of(List.of("123", "456", "7890"),
+            // Valid list of Integers, where last string is longer than others
+            Arguments.of(List.of("123", "456", "7890"), (Function<Character, Integer>) character -> NumberUtils.toIntOrDefault(character, 0),
                 new Integer[][] {
                     {1, 2, 3},
                     {4, 5, 6},
@@ -156,7 +127,7 @@ class ArrayUtilsTest {
                 }
             ),
             // List with some integers, some non-integers
-            Arguments.of(List.of("123", "4a6", "789"),
+            Arguments.of(List.of("123", "4a6", "789"), (Function<Character, Integer>) character -> NumberUtils.toIntOrDefault(character, 0),
                 new Integer[][] {
                     {1, 2, 3},
                     {4, 0, 6},
@@ -164,15 +135,40 @@ class ArrayUtilsTest {
                 }
             ),
             // No integers
-            Arguments.of(List.of("abc", "def", "ghi"),
+            Arguments.of(List.of("abc", "def", "ghi"), (Function<Character, Integer>) character -> NumberUtils.toIntOrDefault(character, 0),
                 new Integer[][] {
                     {0, 0, 0},
                     {0, 0, 0},
                     {0, 0, 0}
                 }
-            ),
-            Arguments.of(List.of(""), new Integer[][] {}),              // List of empty string
-            Arguments.of(List.of(), new Integer[][] {})                     // Empty list
+            )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForConvertToArrayOfArrays_invalid")
+    <E> void testConvertToArrayOfArrays_givenInvalidInputs(final List<String> input,
+                                                           final Function<? super Character, ? extends E> converter,
+                                                           final String errorMessage) {
+        assertThatThrownBy(() -> ArrayUtils.convertToArrayOfArrays(input, converter))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(errorMessage);
+    }
+
+    private static Stream<Arguments> provideForConvertToArrayOfArrays_invalid() {
+        return Stream.of(
+            // List of empty string for Boolean conversion
+            Arguments.of(List.of(""), (Function<Character, Boolean>) character -> character == 'a', "Input cannot be empty"),
+            // Empty list for Boolean conversion
+            Arguments.of(List.of(), (Function<Character, Boolean>) character -> character == 'a', "Input cannot be empty"),
+            // List of empty string for Character conversion
+            Arguments.of(List.of(""), (Function<Character, Character>) character -> character, "Input cannot be empty"),
+            // Empty list for Character conversion
+            Arguments.of(List.of(), (Function<Character, Character>) character -> character, "Input cannot be empty"),
+            // List of empty string for Integer conversion
+            Arguments.of(List.of(""), (Function<Character, Integer>) character -> NumberUtils.toIntOrDefault(character, 0), "Input cannot be empty"),
+            // Empty list for Integer conversion
+            Arguments.of(List.of(), (Function<Character, Integer>) character -> NumberUtils.toIntOrDefault(character, 0), "Input cannot be empty")
         );
     }
 
@@ -204,8 +200,8 @@ class ArrayUtilsTest {
     private static Stream<Arguments> provideForCountPerimeterElements_invalid() {
         return Stream.of(
             Arguments.of(new Integer[][] {{1, 2, 3, 4}, {5, 6}, {7, 8, 9}}, "Outer size must match inner size, found outer: 3, inner: 4"),
-            Arguments.of(new Integer[][] {}, "Input cannot be null or empty"),   // Empty 1D array
-            Arguments.of(null, "Input cannot be null or empty")                  // Empty 2D array
+            Arguments.of(new Integer[][] {}, "Input cannot be empty"),
+            Arguments.of(new Integer[][] {{}}, "Outer size must match inner size, found outer: 1, inner: 0")
         );
     }
 
@@ -257,9 +253,8 @@ class ArrayUtilsTest {
 
     private static Stream<Arguments> provideForDeepFill_invalid() {
         return Stream.of(
-            Arguments.of(new Boolean[][] {}, true, "Input cannot be null or empty"),        // Empty 1D array
-            Arguments.of(new Boolean[][] {{}, {}}, true, "Input cannot be null or empty"),  // Empty 2D array
-            Arguments.of(null, true, "Input cannot be null or empty")                       // Null
+            Arguments.of(new Boolean[][] {}, true, "Input cannot be empty"),        // Empty 1D array
+            Arguments.of(new Boolean[][] {{}, {}}, true, "Input cannot be empty")   // Empty 2D array
         );
     }
 
@@ -292,40 +287,7 @@ class ArrayUtilsTest {
     private static Stream<Arguments> provideFindSmallestIndexGreaterThanThreshold_invalid() {
         return Stream.of(
             Arguments.of(new int[] {1, 2, 3}, 3, "No value in input is greater than 3"),    // No value above threshold
-            Arguments.of(new int[] {}, 1, "Input cannot be null or empty"),                         // Empty array
-            Arguments.of(null, 1, "Input cannot be null or empty")                                  // Null
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideForMaxInnerLength")
-    void testMaxInnerLength(final Character[][] input, final int expected) {
-        final int output = ArrayUtils.maxInnerLength(input);
-        assertThat(output)
-            .isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> provideForMaxInnerLength() {
-        return Stream.of(
-            Arguments.of(new Character[][] {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}}, 3),  // Columns of equal length
-            Arguments.of(new Character[][] {{'a', 'b'}}, 2),                                         // Single inner array
-            Arguments.of(new Character[][] {{'a', 'b'}, {'c', 'd', 'e', 'f'}, {'g', 'h', 'i'}}, 4),  // Different column lengths
-            Arguments.of(new Character[][] {{}, {}}, 0)                                              // Empty 2D array
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideForMaxInnerLength_invalid")
-    void testMaxInnerLength_givenInvalidInputs(final Character[][] input, final String errorMessage) {
-        assertThatThrownBy(() -> ArrayUtils.maxInnerLength(input))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage(errorMessage);
-    }
-
-    private static Stream<Arguments> provideForMaxInnerLength_invalid() {
-        return Stream.of(
-            Arguments.of(new Character[][] {}, "Cannot find max length of input: []"),   // Empty 1D array
-            Arguments.of(null, "Input cannot be null")                                   // Null
+            Arguments.of(new int[] {}, 1, "Input cannot be empty")                          // Empty array
         );
     }
 
@@ -391,9 +353,8 @@ class ArrayUtilsTest {
 
     private static Stream<Arguments> provideForReverseRows_invalid() {
         return Stream.of(
-            Arguments.of(new Character[][] {}, "Input cannot be null or empty"),         // Empty 1D array
-            Arguments.of(new Character[][] {{}, {}}, "Input cannot be null or empty"),   // Empty 2D array
-            Arguments.of(new Character[][] {{}, {}}, "Input cannot be null or empty")    // Null
+            Arguments.of(new Character[][] {}, "Input cannot be empty"),         // Empty 1D array
+            Arguments.of(new Character[][] {{}, {}}, "Input cannot be empty")    // Empty 2D array
         );
     }
 
@@ -424,7 +385,7 @@ class ArrayUtilsTest {
                 new Integer[][] {{1, 2, 3}, {4, 5, 6, 7}, {8, 9}},
                 0,
                 new Integer[][] {{1, 4, 8}, {2, 5, 9}, {3, 6, 0}, {0, 7, 0}}
-            )                    // Null
+            )
         );
     }
 
@@ -438,9 +399,8 @@ class ArrayUtilsTest {
 
     private static Stream<Arguments> provideForTranspose_invalid() {
         return Stream.of(
-            Arguments.of(new Character[][] {}, ' ', "Input cannot be null or empty"),       // Empty 1D array
-            Arguments.of(new Character[][] {{}, {}}, ' ', "Input cannot be null or empty"), // Empty 2D array
-            Arguments.of(null, ' ', "Input cannot be null or empty")                        // Null
+            Arguments.of(new Character[][] {}, ' ', "Input cannot be empty"),       // Empty 1D array
+            Arguments.of(new Character[][] {{}, {}}, ' ', "Input cannot be empty")  // Empty 2D array
         );
     }
 }

@@ -36,7 +36,6 @@ import org.junit.jupiter.api.Test;
 class Day05Test {
 
     private static final String INPUT_FILENAME = "day05.txt";
-    private static final int INDEX_OF_FIRST_GROUP = 0;
     private static final int INDEX_OF_SECOND_GROUP = 1;
 
     @Test
@@ -80,8 +79,8 @@ class Day05Test {
     }
 
     private static Map<Integer, Deque<String>> getStacksById(final List<? extends List<String>> values) {
-        final List<String> input = values.get(INDEX_OF_FIRST_GROUP);
-        final Character[][] arrayOfCharArrays = ArrayUtils.convertToArrayOfCharacterArrays(input);
+        final List<String> input = values.getFirst();
+        final Character[][] arrayOfCharArrays = ArrayUtils.convertToArrayOfArrays(input, (character -> character));
         final Character[][] reversedArrayOfCharArrays = ArrayUtils.reverseRows(arrayOfCharArrays);
         final Character[][] transposedArrayOfCharArrays = ArrayUtils.transpose(reversedArrayOfCharArrays, ' ');
 

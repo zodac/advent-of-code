@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import me.zodac.advent.pojo.BitwiseOperator;
 import me.zodac.advent.pojo.tuple.Pair;
+import me.zodac.advent.util.NumberUtils;
 import me.zodac.advent.util.StringUtils;
 
 /**
@@ -103,7 +104,7 @@ public final class Day07 {
     }
 
     private int evaluateCommand(final String wantedLabel) {
-        if (StringUtils.isInteger(wantedLabel)) {
+        if (NumberUtils.isInteger(wantedLabel)) {
             return Integer.parseInt(wantedLabel);
         }
 
@@ -119,7 +120,7 @@ public final class Day07 {
         return switch (bitwiseOperator) {
             case NOT -> bitwiseOperator.calculate(List.of(getValue(commandTokens[1])));
             case AND, OR, LSHIFT, RSHIFT -> bitwiseOperator.calculate(List.of(getValue(commandTokens[0]), getValue(commandTokens[2])));
-            default -> StringUtils.isInteger(commandTokens[0]) ? Integer.parseInt(commandTokens[0]) : getValue(commandTokens[0]);
+            default -> NumberUtils.isInteger(commandTokens[0]) ? Integer.parseInt(commandTokens[0]) : getValue(commandTokens[0]);
         };
     }
 }

@@ -17,6 +17,7 @@
 
 package me.zodac.advent.json;
 
+import me.zodac.advent.util.NumberUtils;
 import me.zodac.advent.util.StringUtils;
 
 /**
@@ -34,7 +35,7 @@ public record JsonInteger(int value) implements JsonElement {
      * @throws IllegalArgumentException thrown if the input {@link String} cannot be parses as an {@code int}
      */
     public static JsonInteger create(final String value) {
-        if (!StringUtils.isInteger(value)) {
+        if (!NumberUtils.isInteger(value)) {
             throw new IllegalArgumentException(String.format("Cannot parse input '%s' as %s", value, JsonInteger.class.getSimpleName()));
         }
 

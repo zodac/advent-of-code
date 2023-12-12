@@ -20,6 +20,7 @@ package me.zodac.advent.pojo.grid;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.ArrayUtils;
 
@@ -59,7 +60,7 @@ public final class BooleanGrid extends Grid<Boolean> {
      * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
      * @return the created {@link BooleanGrid}
      * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
-     * @see ArrayUtils#convertToArrayOfBooleanArrays(List, char)
+     * @see ArrayUtils#convertToArrayOfArrays(List, Function)
      */
     public static BooleanGrid parse(final List<String> gridValues, final char symbolSignifyingTrue) {
         if (gridValues.isEmpty()) {
@@ -72,7 +73,7 @@ public final class BooleanGrid extends Grid<Boolean> {
                 String.format("Outer size must match inner size, found outer: %s, inner: %s", gridValues.size(), firstElementSize));
         }
 
-        return new BooleanGrid(ArrayUtils.convertToArrayOfBooleanArrays(gridValues, symbolSignifyingTrue));
+        return new BooleanGrid(ArrayUtils.convertToArrayOfArrays(gridValues, (character -> character == symbolSignifyingTrue)));
     }
 
     /**

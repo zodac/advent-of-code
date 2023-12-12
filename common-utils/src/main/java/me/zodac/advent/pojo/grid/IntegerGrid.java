@@ -19,9 +19,11 @@ package me.zodac.advent.pojo.grid;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.ArrayUtils;
+import me.zodac.advent.util.NumberUtils;
 
 /**
  * Class defining a {@link Grid} of {@link Integer}s, where any point can have an {@link Integer} value.
@@ -60,7 +62,7 @@ public final class IntegerGrid extends Grid<Integer> {
      * @param gridValues the {@link String}s representing a 2D array (where each character in the {@link String} is an element in the array)
      * @return the created {@link IntegerGrid}
      * @throws IllegalArgumentException thrown if input is empty, or the input {@link List} size does not match the length of the first {@link String}
-     * @see ArrayUtils#convertToArrayOfIntegerArrays(List)
+     * @see ArrayUtils#convertToArrayOfArrays(List, Function) 
      */
     public static IntegerGrid parse(final List<String> gridValues) {
         if (gridValues.isEmpty()) {
@@ -73,7 +75,7 @@ public final class IntegerGrid extends Grid<Integer> {
                 String.format("Outer size must match inner size, found outer: %s, inner: %s", gridValues.size(), firstElementLength));
         }
 
-        return new IntegerGrid(ArrayUtils.convertToArrayOfIntegerArrays(gridValues));
+        return new IntegerGrid(ArrayUtils.convertToArrayOfArrays(gridValues, (character -> NumberUtils.toIntOrDefault(character, 0))));
     }
 
     /**

@@ -20,7 +20,6 @@ package me.zodac.advent.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +50,6 @@ public final class StringUtils {
     private static final Pattern NEW_LINE_PATTERN = Pattern.compile("\\r?\\n");
     private static final Pattern FULLY_UPPERCASE_WORDS_PATTERN = Pattern.compile("(\\b[A-Z][A-Z]+\\b)");
     private static final Set<Character> VOWELS = Set.of('a', 'e', 'i', 'o', 'u');
-    private static final String[] EMPTY_STRING_ARRAY = new String[0];
     private static final String EMPTY_STRING = "";
     private static final int LENGTH_OF_SINGLE_CHARACTER = 1;
 
@@ -64,11 +62,11 @@ public final class StringUtils {
      *
      * @param input the {@link String} to split in half
      * @return the {@link String} halves as a {@link Pair}
-     * @throws IllegalArgumentException thrown if the input {@link String} does not have an even length, or if the input is {@code null}
+     * @throws IllegalArgumentException thrown if the input {@link String} does not have an even length
      */
     public static Pair<String, String> bisect(final String input) {
-        if (input == null || input.isEmpty()) {
-            throw new IllegalArgumentException("Input cannot be null or empty");
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException("Input cannot be empty");
         }
 
         if (MathUtils.isOdd(input.length())) {
@@ -80,8 +78,8 @@ public final class StringUtils {
     }
 
     /**
-     * Returns the frequency of the {@link Character}s in the given {@link String}. The frequencies will be sorted in descending order of the counts,
-     * and not related to the placement of any {@link Character}.
+     * Returns the frequency of the {@link Character}s in the given {@link CharSequence}. The frequencies will be sorted in descending order of the
+     * counts, and not related to the placement of any {@link Character}.
      *
      * <p>
      * For example, given the input {@code "hello world"}, we would return the following frequencies:
@@ -98,14 +96,10 @@ public final class StringUtils {
      *     ]
      * </pre>
      *
-     * @param input the {@link String} to check
+     * @param input the {@link CharSequence} to check
      * @return the frequency of the {@link Character}s
      */
-    public static List<Long> characterFrequency(final String input) {
-        if (input == null || input.isBlank()) {
-            return List.of();
-        }
-
+    public static List<Long> characterFrequency(final CharSequence input) {
         return input.chars()
             .mapToObj(character -> (char) character)
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
@@ -116,8 +110,8 @@ public final class StringUtils {
     }
 
     /**
-     * Parses the input {@link String} and returns any {@link Long} values (of any length) in the order provided. Assumes that each 'word' within
-     * the {@code input} is a valid {@link Long}, not that each character may be a sepsrate {@link Long}.
+     * Parses the input {@link CharSequence} and returns any {@link Long} values (of any length) in the order provided. Assumes that each 'word'
+     * within the {@code input} is a valid {@link Long}, not that each character may be a sepsrate {@link Long}.
      *
      * <p>
      * For example, given the {@code input}:
@@ -131,20 +125,16 @@ public final class StringUtils {
      *     [123, 456, 7, 89]
      * </pre>
      *
-     * @param input the {@link String} to check
+     * @param input the {@link CharSequence} to check
      * @return the found {@link Long}s
      */
-    public static List<Long> collectNumbersInOrder(final String input) {
-        if (input == null || input.isBlank()) {
-            return Collections.emptyList();
-        }
-
+    public static List<Long> collectNumbersInOrder(final CharSequence input) {
         final Matcher matcher = NUMBER_PATTERN.matcher(input);
 
         final List<Long> numbers = new ArrayList<>();
         while (matcher.find()) {
             final String value = matcher.group();
-            if (isLong(value)) {
+            if (NumberUtils.isLong(value)) {
                 numbers.add(Long.parseLong(value));
             }
         }
@@ -158,20 +148,20 @@ public final class StringUtils {
      * @param first  the first {@link String}
      * @param others any additional {@link String}s
      * @return a {@link Set} of the common {@link Character}s in all {@link String}s
-     * @throws IllegalArgumentException thrown if any input {@link String} is null or blank, or no vararg {@link String}s are provided
+     * @throws IllegalArgumentException thrown if any input {@link String} is blank, or no vararg {@link String}s are provided
      */
     public static Set<Character> commonChars(final String first, final String... others) {
         if (others.length == 0) {
             throw new IllegalArgumentException("Must have at least two strings to compare");
         }
 
-        if (first == null || first.isBlank()) {
-            throw new IllegalArgumentException("Input cannot be null or blank");
+        if (first.isBlank()) {
+            throw new IllegalArgumentException("Input cannot be blank");
         }
 
         for (final String other : others) {
-            if (other == null || other.isBlank()) {
-                throw new IllegalArgumentException("Input cannot be null or blank");
+            if (other.isBlank()) {
+                throw new IllegalArgumentException("Input cannot be blank");
             }
         }
 
@@ -201,22 +191,14 @@ public final class StringUtils {
      *
      * @param input      the {@link String} that should contain all characters in all {@code subStrings}
      * @param subStrings the {@link String}s that should be subsets of {@code input}, at least 1 must be provided
-     * @return {@code false} if any {@code subStrings} is not in the {@code input}, the {@code input} or any {@code subStrings} is {@code null}
+     * @return {@code false} if any {@code subStrings} is not in the {@code input}, or if no {@code varargs} are supplied
      */
     public static boolean containsAllCharacters(final String input, final String... subStrings) {
-        if (input == null) {
-            return false;
-        }
-
         if (subStrings.length == 0) {
             return false;
         }
 
         for (final String subString : subStrings) {
-            if (subString == null) {
-                return false;
-            }
-
             for (final char charToCheck : subString.toCharArray()) {
                 if (!input.contains(Character.toString(charToCheck))) {
                     return false;
@@ -234,15 +216,7 @@ public final class StringUtils {
      * @return {@code true} if any {@code subString} in contained in the {@code superString}
      */
     public static boolean containsAny(final String input, final String... subStrings) {
-        if (input == null) {
-            return false;
-        }
-
         for (final String subString : subStrings) {
-            if (subString == null) {
-                continue;
-            }
-
             if (input.contains(subString)) {
                 return true;
             }
@@ -257,7 +231,7 @@ public final class StringUtils {
      * @return {@code true} if the {@link String} contains at least one duplicate character
      */
     public static boolean containsDuplicates(final CharSequence input) {
-        return input != null && input.length() != input.chars().distinct().count();
+        return input.length() != input.chars().distinct().count();
     }
 
     /**
@@ -267,7 +241,7 @@ public final class StringUtils {
      * @return the number of vowels in the {@link String}
      */
     public static long countVowels(final String input) {
-        if (input == null || input.isBlank()) {
+        if (input.isBlank()) {
             return 0L;
         }
 
@@ -289,7 +263,7 @@ public final class StringUtils {
      * @throws IllegalArgumentException thrown if the {@code input} has no uppercase word
      */
     public static Optional<String> findFirstFullyUpperCaseWord(final String input) {
-        if (input == null || input.isBlank()) {
+        if (input.isBlank()) {
             return Optional.empty();
         }
 
@@ -310,7 +284,7 @@ public final class StringUtils {
      * @return {@code true} if there is at least one character repeated in order
      */
     public static boolean hasRepeatedCharacterInOrder(final String input) {
-        if (input == null || input.isBlank()) {
+        if (input.isBlank()) {
             return false;
         }
 
@@ -333,7 +307,7 @@ public final class StringUtils {
      * @return {@code true} if at least one pair of characters repeats without overlap in the {@link String}
      */
     public static boolean hasRepeatedCharacterPairWithNoOverlap(final String input) {
-        if (input == null || input.isBlank()) {
+        if (input.isBlank()) {
             return false;
         }
 
@@ -359,7 +333,7 @@ public final class StringUtils {
      * @return {@code true} if at least one set of 'sandwich' characters exist in the {@link String}
      */
     public static boolean hasSandwichCharacters(final String input) {
-        if (input == null || input.isBlank()) {
+        if (input.isBlank()) {
             return false;
         }
 
@@ -371,36 +345,6 @@ public final class StringUtils {
         }
 
         return false;
-    }
-
-    /**
-     * Checks if the input {@link String} is a valid {@link Integer}.
-     *
-     * @param input the {@link String} to check
-     * @return {@code true} if the input is an {@link Integer}
-     */
-    public static boolean isInteger(final String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (final NumberFormatException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Checks if the input {@link String} is a valid {@link Long}.
-     *
-     * @param input the {@link String} to check
-     * @return {@code true} if the input is an {@link Long}
-     */
-    public static boolean isLong(final String input) {
-        try {
-            Long.parseLong(input);
-            return true;
-        } catch (final NumberFormatException e) {
-            return false;
-        }
     }
 
     /**
@@ -421,11 +365,11 @@ public final class StringUtils {
      *
      * @param input the {@link String} input
      * @return the output of the 'lookAndSay' sequence
-     * @throws IllegalArgumentException thrown if the input is {@code null} or {@link String#isBlank()}, or any character is not a valid integer
+     * @throws IllegalArgumentException thrown if the input is {@link String#isBlank()}, or any character is not a valid integer
      */
     public static String lookAndSay(final String input) {
-        if (input == null || input.isBlank()) {
-            throw new IllegalArgumentException("Input cannot be null or blank");
+        if (input.isBlank()) {
+            throw new IllegalArgumentException("Input cannot be blank");
         }
 
         final StringBuilder output = new StringBuilder();
@@ -459,11 +403,11 @@ public final class StringUtils {
      *
      * @param input the input {@link String}
      * @return the most commonly occurring {@link Character} in the {@code input}
-     * @throws IllegalArgumentException if the {@code input} is {@code null} or {@link String#isBlank()}
+     * @throws IllegalArgumentException if the {@code input} {@link String#isBlank()}
      */
     public static char mostOccurringCharacter(final String input) {
-        if (input == null || input.isBlank()) {
-            throw new IllegalArgumentException("Input cannot be null or blank");
+        if (input.isBlank()) {
+            throw new IllegalArgumentException("Input cannot be blank");
         }
 
         return input.chars()
@@ -472,7 +416,7 @@ public final class StringUtils {
             .entrySet()
             .stream()
             .max(Map.Entry.comparingByValue())
-            .orElseThrow(() -> new IllegalArgumentException("Input cannot be null or blank"))
+            .orElseThrow(() -> new IllegalArgumentException("Input cannot be blank"))
             .getKey();
     }
 
@@ -488,13 +432,9 @@ public final class StringUtils {
      * @param first  the first {@link String}
      * @param second the second {@link String}
      * @return the {@link String} with any differences removed
-     * @throws IllegalArgumentException thrown if the two input {@link String}s do not have the same length, or if either input is {@code null}
+     * @throws IllegalArgumentException thrown if the two input {@link String}s do not have the same length
      */
     public static String removeDifferentCharacters(final String first, final String second) {
-        if (first == null || second == null) {
-            throw new IllegalArgumentException("Inputs must not be null");
-        }
-
         if (first.length() != second.length()) {
             throw new IllegalArgumentException(
                 String.format("Expected inputs of equal length, found %s (%s) and %s (%s)", first, first.length(), second, second.length()));
@@ -546,7 +486,7 @@ public final class StringUtils {
      * @throws IllegalArgumentException if the {@code numberOfCharactersToRemove} is less than 1, or is greater than the length of the {@code input}
      */
     public static String removeLastCharacters(final String input, final int numberOfCharactersToRemove) {
-        if (input == null || input.isEmpty()) {
+        if (input.isEmpty()) {
             return EMPTY_STRING;
         }
 
@@ -574,7 +514,7 @@ public final class StringUtils {
      * @throws IllegalArgumentException thrown if the index is invalid or the sub-string does not exist at that index
      */
     public static String replaceAtIndex(final String input, final CharSequence subString, final String replacement, final int indexOfSubString) {
-        if (input == null || input.isBlank()) {
+        if (input.isBlank()) {
             return EMPTY_STRING;
         }
 
@@ -602,13 +542,9 @@ public final class StringUtils {
      * </pre>
      *
      * @param input the {@link String} to sort
-     * @return the sorted {@link String}, or {@link #EMPTY_STRING} if the input is {@code null}
+     * @return the sorted {@link String}
      */
     public static String sort(final String input) {
-        if (input == null) {
-            return EMPTY_STRING;
-        }
-
         final char[] chars = input.toCharArray();
         Arrays.sort(chars);
         return String.copyValueOf(chars);
@@ -621,9 +557,6 @@ public final class StringUtils {
      * @return the array of split {@link String}s
      */
     public static String[] splitOnNewLines(final CharSequence input) {
-        if (input == null || input.isEmpty()) {
-            return EMPTY_STRING_ARRAY;
-        }
         return NEW_LINE_PATTERN.split(input);
     }
 
@@ -634,9 +567,6 @@ public final class StringUtils {
      * @return the array of split {@link String}s
      */
     public static String[] splitOnWhitespace(final String input) {
-        if (input == null) {
-            return EMPTY_STRING_ARRAY;
-        }
         return WHITESPACE_PATTERN.split(input.trim());
     }
 }
