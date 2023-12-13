@@ -21,7 +21,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import me.zodac.advent.pojo.MathOperation;
 
 /**
  * Utility class with {@link Math}-based functions.
@@ -35,20 +39,18 @@ public final class MathUtils {
     }
 
     /**
-     * Checks if any of the input {@code values} are less than the provided {@code lessThanValue}.
+     * Similar to a factorial, but using addition instead of multiplication. The equation 1 + 2 + 3 ... + n can be simplified to:
+     * <pre>
+     *     n*(n+1)/2
+     * </pre>
+     * We then round to the nearest whole number.
      *
-     * @param lessThanValue the value to compare against
-     * @param values        the values to check
-     * @return {@code true} if any of the input {@code values} are less than the provided {@code lessThanValue}
+     * @param value the value whose triangular number is to be found
+     * @return the triangular number for the input
+     * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
      */
-    public static boolean areAnyLessThan(final long lessThanValue, final long... values) {
-        for (final long value : values) {
-            if (value < lessThanValue) {
-                return true;
-            }
-        }
-
-        return false;
+    public static long calculateTriangularNumberValue(final int value) {
+        return Math.round(value * (value + 1) / TRIANGULAR_NUMBER_DENOMINATOR);
     }
 
     /**
@@ -233,17 +235,110 @@ public final class MathUtils {
     }
 
     /**
-     * Similar to a factorial, but using addition instead of multiplication. The equation 1 + 2 + 3 ... + n can be simplified to:
-     * <pre>
-     *     n*(n+1)/2
-     * </pre>
-     * We then round to the nearest whole number.
+     * Given a numeric sequence of {@link Long}s, the next value in the sequence is calculated based on the existing pattern.
      *
-     * @param value the value whose triangular number is to be found
-     * @return the triangular number for the input
-     * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
+     * <p>
+     * The value is determined by getting the diffs between each value in the sequence. Then the diffs of these diffs is also determined, and so on
+     * until a set of diffs is found with only <b>0</b> values. For example, given the sequence:
+     * <pre>
+     *     [0, 3, 6, 9, 12, 15]
+     * </pre>
+     *
+     * <p>
+     * The first set of diffs would be:
+     * <pre>
+     *     [3, 3, 3, 3, 3]
+     * </pre>
+     *
+     * <p>
+     * And the next set of diffs would be:
+     * <pre>
+     *     [0, 0, 0, 0]
+     * </pre>
+     *
+     * <p>
+     * Now that we have reached a steady state, we can work backwards. Since we know the next 'final' diff should also be <b>0</b>, we know that for
+     * the previous set of diffs the last value would need to be <b>3</b>. Similarly, we can work up to the initial sequence and realise the next
+     * value would be <b>18</b>.
+     *
+     * @param existingSequence the existing {@link Long} sequence
+     * @return the next value in the sequence
      */
-    public static long calculateTriangularNumberValue(final int value) {
-        return Math.round(value * (value + 1) / TRIANGULAR_NUMBER_DENOMINATOR);
+    public static long nextValueInSequence(final List<Long> existingSequence) {
+        return getValueInSequence(existingSequence, true);
+    }
+
+    /**
+     * Given a numeric sequence of {@link Long}s, the previous value in the sequence is calculated based on the existing pattern.
+     *
+     * <p>
+     * The value is determined by getting the diffs between each value in the sequence. Then the diffs of these diffs is also determined, and so on
+     * until a set of diffs is found with only <b>0</b> values. For example, given the sequence:
+     * <pre>
+     *     [0, 3, 6, 9, 12, 15]
+     * </pre>
+     *
+     * <p>
+     * The first set of diffs would be:
+     * <pre>
+     *     [3, 3, 3, 3, 3]
+     * </pre>
+     *
+     * <p>
+     * And the next set of diffs would be:
+     * <pre>
+     *     [0, 0, 0, 0]
+     * </pre>
+     *
+     * <p>
+     * Now that we have reached a steady state, we can work backwards. Since we know the previous 'final' diff should also be <b>0</b>, we know that
+     * for the previous set of diffs the last value would need to be <b>3</b>. Similarly, we can work up to the initial sequence and realise the next
+     * value would be <b>-3</b>.
+     *
+     * @param existingSequence the existing {@link Long} sequence
+     * @return the previous value in the sequence
+     */
+    public static long previousValueInSequence(final List<Long> existingSequence) {
+        return getValueInSequence(existingSequence, false);
+    }
+
+    private static long getValueInSequence(final List<Long> existingSequence, final boolean getNextValue) {
+        final List<List<Long>> allDiffs = new LinkedList<>();
+        // Variable to differentiate between going backwards or forwards for the sequence
+        final MathOperation operation = getNextValue ? MathOperation.PLUS : MathOperation.MINUS;
+        final Function<List<Long>, Long> retrievalFunction = getNextValue ? List::getLast : List::getFirst;
+        final BiConsumer<List<Long>, Long> additionConsumer = getNextValue ? List::addLast : List::addFirst;
+
+        List<Long> previousList = existingSequence;
+
+        do {
+            final List<Long> newDiffs = new ArrayList<>();
+            for (int i = 0; i < previousList.size() - 1; i++) {
+                newDiffs.add(previousList.get(i + 1) - previousList.get(i));
+            }
+
+            previousList = newDiffs;
+            allDiffs.add(newDiffs);
+        } while (containsAnyNotAllowedValue(allDiffs.getLast(), 0L));
+
+        final List<Long> lastDiffs = allDiffs.getLast();
+        additionConsumer.accept(lastDiffs, 0L);
+
+        for (int i = allDiffs.size() - 1; i > 0; i--) {
+            final List<Long> lastRemainingDiffs = allDiffs.get(i);
+            final List<Long> secondLastRemainingDiffs = allDiffs.get(i - 1);
+
+            final long currentLastRemainingDiff = retrievalFunction.apply(lastRemainingDiffs);
+            final long currentSecondLastRemainingDiff = retrievalFunction.apply(secondLastRemainingDiffs);
+
+            final long newDiff = operation.apply(currentSecondLastRemainingDiff, currentLastRemainingDiff);
+            additionConsumer.accept(secondLastRemainingDiffs, newDiff);
+        }
+
+        final List<Long> lastRemainingDiffs = allDiffs.getFirst();
+        final long currentLastRemainingDiff = retrievalFunction.apply(lastRemainingDiffs);
+        final long currentLastValue = retrievalFunction.apply(existingSequence);
+
+        return operation.apply(currentLastValue, currentLastRemainingDiff);
     }
 }

@@ -17,8 +17,7 @@
 
 package me.zodac.advent;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
 import me.zodac.advent.util.MathUtils;
 import me.zodac.advent.util.StringUtils;
@@ -35,108 +34,34 @@ public final class Day09 {
     }
 
     /**
-     * Part 1.
+     * Given a {@link Collection} of {@link String}s, where each {@link String} is a numeric sequence, we calculate the next value for each sequence,
+     * then sum these new values up.
      *
-     * @param values the input values
-     * @return the part 1 result
+     * @param numericSequences the input numeric sequences
+     * @return the sum of the next value for each sequence
+     * @see MathUtils#nextValueInSequence(List)
      */
-    public static long part1(final Iterable<String> values) {
-        long total = 0;
-
-        for (final String input : values) {
-            final List<Long> value = StringUtils.collectNumbersInOrder(input);
-            final List<List<Long>> allDiffs = new LinkedList<>();
-
-            List<Long> previousList = value;
-
-            do {
-                final List<Long> newDiffs = new ArrayList<>();
-                for (int i = 0; i < previousList.size() - 1; i++) {
-                    newDiffs.add(previousList.get(i + 1) - previousList.get(i));
-                }
-
-                previousList = newDiffs;
-                allDiffs.add(newDiffs);
-            } while (MathUtils.containsAnyNotAllowedValue(allDiffs.getLast(), 0L));
-
-            final List<Long> lastDiffs = allDiffs.getLast();
-            lastDiffs.add(0L);
-
-            for (int i = allDiffs.size() - 1; i > 0; i--) {
-                final List<Long> lastRemainingDiffs = allDiffs.get(i);
-                final List<Long> secondLastRemainingDiffs = allDiffs.get(i - 1);
-
-                final long currentLastRemainingDiff = lastRemainingDiffs.getLast();
-                final long currentSecondLastRemainingDiff = secondLastRemainingDiffs.getLast();
-
-                final long newDiff = currentSecondLastRemainingDiff + currentLastRemainingDiff;
-                secondLastRemainingDiffs.add(newDiff);
-            }
-
-            final List<Long> lastRemainingDiffs = allDiffs.getFirst();
-
-            final long currentLastRemainingDiff = lastRemainingDiffs.getLast();
-            final long currentLastValue = value.getLast();
-
-            final long newDiff = currentLastValue + currentLastRemainingDiff;
-            value.add(newDiff);
-
-            total += newDiff;
-        }
-
-        return total;
+    public static long sumOfNextValues(final Collection<String> numericSequences) {
+        return numericSequences
+            .stream()
+            .map(StringUtils::collectNumbersInOrder)
+            .mapToLong(MathUtils::nextValueInSequence)
+            .sum();
     }
 
     /**
-     * Part 2.
+     * Given a {@link Collection} of {@link String}s, where each {@link String} is a numeric sequence, we calculate the previous value for each
+     * sequence, then sum these new values up.
      *
-     * @param values the input values
-     * @return the part 2 result
+     * @param numericSequences the input numeric sequences
+     * @return the sum of the previous value for each sequence
+     * @see MathUtils#previousValueInSequence(List)
      */
-    public static long part2(final Iterable<String> values) {
-        long total = 0;
-
-        for (final String input : values) {
-            final List<Long> value = StringUtils.collectNumbersInOrder(input);
-            final List<List<Long>> allDiffs = new LinkedList<>();
-
-            List<Long> previousList = value;
-
-            do {
-                final List<Long> newDiffs = new ArrayList<>();
-                for (int i = 0; i < previousList.size() - 1; i++) {
-                    newDiffs.add(previousList.get(i + 1) - previousList.get(i));
-                }
-
-                previousList = newDiffs;
-                allDiffs.add(newDiffs);
-            } while (MathUtils.containsAnyNotAllowedValue(allDiffs.getLast(), 0L));
-
-            final List<Long> lastDiffs = allDiffs.getLast();
-            lastDiffs.addFirst(0L);
-
-            for (int i = allDiffs.size() - 1; i > 0; i--) {
-                final List<Long> lastRemainingDiffs = allDiffs.get(i);
-                final List<Long> secondLastRemainingDiffs = allDiffs.get(i - 1);
-
-                final long currentLastRemainingDiff = lastRemainingDiffs.getFirst();
-                final long currentSecondLastRemainingDiff = secondLastRemainingDiffs.getFirst();
-
-                final long newDiff = currentSecondLastRemainingDiff - currentLastRemainingDiff;
-                secondLastRemainingDiffs.addFirst(newDiff);
-            }
-
-            final List<Long> lastRemainingDiffs = allDiffs.getFirst();
-
-            final long currentLastRemainingDiff = lastRemainingDiffs.getFirst();
-            final long currentLastValue = value.getFirst();
-
-            final long newDiff = currentLastValue - currentLastRemainingDiff;
-            value.addFirst(newDiff);
-
-            total += newDiff;
-        }
-
-        return total;
+    public static long sumOfPreviousValues(final Collection<String> numericSequences) {
+        return numericSequences
+            .stream()
+            .map(StringUtils::collectNumbersInOrder)
+            .mapToLong(MathUtils::previousValueInSequence)
+            .sum();
     }
 }

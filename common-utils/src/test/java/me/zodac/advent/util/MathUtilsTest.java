@@ -34,22 +34,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 class MathUtilsTest {
 
     @ParameterizedTest
-    @MethodSource("provideForAreAnyLessThan")
-    void testAreAnyLessThan(final long input, final long[] values, final boolean expected) {
-        final boolean output = MathUtils.areAnyLessThan(input, values);
-        assertThat(output)
+    @CsvSource({
+        "6,21",     // Positive
+        "-6,15",    // Negative
+    })
+    void testCalculateTriangularNumberValue(final int input, final long expected) {
+        final long triangularNumber = MathUtils.calculateTriangularNumberValue(input);
+        assertThat(triangularNumber)
             .isEqualTo(expected);
-    }
-
-    private static Stream<Arguments> provideForAreAnyLessThan() {
-        return Stream.of(
-            Arguments.of(1L, new long[] {0L, 2L, 3L}, true),        // Positive input, positive value less than
-            Arguments.of(1L, new long[] {-1L, 2L, 3L}, true),       // Positive input, negative value less than
-            Arguments.of(-1L, new long[] {-2L, 2L, 3L}, true),      // Negative input, negative value less than
-            Arguments.of(1L, new long[] {1L, 2L, 3L}, false),       // Positive input, no values less than
-            Arguments.of(-2L, new long[] {-1L, 2L, 3L}, false),     // Negative input, no values less than
-            Arguments.of(-2L, new long[0], false)                   // Empty values
-        );
     }
 
     @ParameterizedTest
@@ -239,13 +231,44 @@ class MathUtilsTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
-        "6,21",     // Positive
-        "-6,15",    // Negative
-    })
-    void testTriangularNumber(final int input, final long expected) {
-        final long triangularNumber = MathUtils.calculateTriangularNumberValue(input);
-        assertThat(triangularNumber)
+    @MethodSource("provideForNextValueInSequence")
+    void testNextValueInSequence(final List<Long> sequence, final long expected) {
+        final long output = MathUtils.nextValueInSequence(sequence);
+        assertThat(output)
             .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForNextValueInSequence() {
+        return Stream.of(
+            Arguments.of(List.of(1L, 2L, 3L), 4L),
+            Arguments.of(List.of(2L, 4L, 6L), 8L),
+            Arguments.of(List.of(1L, 1L, 2L, 4L, 8L, 16L, 32L), 64L),
+            Arguments.of(List.of(4L, 8L, 12L, 16L), 20L),
+            Arguments.of(List.of(1L, 4L, 9L, 16L, 25L), 36L),
+            Arguments.of(List.of(0L, 3L, 6L, 9L, 12L, 15L), 18L),
+            Arguments.of(List.of(1L, 3L, 6L, 10L, 15L, 21L), 28L),
+            Arguments.of(List.of(10L, 13L, 16L, 21L, 30L, 45L), 68L)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForPreviousValueInSequence")
+    void testPreviousValueInSequence(final List<Long> sequence, final long expected) {
+        final long output = MathUtils.previousValueInSequence(sequence);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForPreviousValueInSequence() {
+        return Stream.of(
+            Arguments.of(List.of(2L, 3L, 4L), 1L),
+            Arguments.of(List.of(4L, 6L, 8L), 2L),
+            Arguments.of(List.of(1L, 2L, 4L, 8L, 16L, 32L, 64L), 1L),
+            Arguments.of(List.of(8L, 12L, 16L, 20L), 4L),
+            Arguments.of(List.of(4L, 9L, 16L, 25L, 36L), 1L),
+            Arguments.of(List.of(3L, 6L, 9L, 12L, 15L, 18L), 0L),
+            Arguments.of(List.of(3L, 6L, 10L, 15L, 21L, 28L), 1L),
+            Arguments.of(List.of(13L, 16L, 21L, 30L, 45L, 68L), 10L)
+        );
     }
 }

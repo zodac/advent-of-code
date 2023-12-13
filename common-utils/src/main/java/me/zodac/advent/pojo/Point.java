@@ -89,6 +89,18 @@ public record Point(int x, int y) {
     }
 
     /**
+     * Calculates the Manhatten distance between this {@link Point} and another. The Manhatten distance can be considered as how many spaces up/down
+     * and left/right between the {@link Point}s
+     *
+     * @param other the other {@link Point}
+     * @return the distance to the other {@link Point}
+     * @see <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Manhatten Distance</a>
+     */
+    public long distanceTo(final Point other) {
+        return Math.abs(x - other.x) + Math.abs(y - other.y);
+    }
+
+    /**
      * Returns a new {@link Point} which has moved the current {@link Point} {@value DEFAULT_MOVE_DISTANCE} spaces in the {@link Direction} specified.
      *
      * @param direction the {@link Direction} to move

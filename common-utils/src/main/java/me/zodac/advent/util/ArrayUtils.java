@@ -91,9 +91,9 @@ public final class ArrayUtils {
      *     ]
      * </pre>
      *
-     * @param input the input {@link List} of {@link String}s
+     * @param input     the input {@link List} of {@link String}s
      * @param converter the {@link Function} to convert a {@link Character} from the input into the correct type for the 2D array
-     * @param <E> the type of the 2D array
+     * @param <E>       the type of the 2D array
      * @return the 2D array
      */
     public static <E> E[][] convertToArrayOfArrays(final List<String> input, final Function<? super Character, ? extends E> converter) {
@@ -155,6 +155,20 @@ public final class ArrayUtils {
     }
 
     /**
+     * Creates a deep copy of the 2D array.
+     *
+     * @param input the 2D array to copy
+     * @param <E>   the type of the 2D array
+     * @return the copied 2D array
+     */
+    @SuppressWarnings("Convert2MethodRef") // Suppressed as method reference causes an IntelliJ error
+    public static <E> E[][] deepCopy(final E[][] input) {
+        return Arrays.stream(input)
+            .map(array -> array.clone())
+            .toArray(array -> input.clone());
+    }
+
+    /**
      * Given a 2D array, we create a new array and fill it with the provided {@code value}. The input array is unmodified.
      *
      * @param input the input array
@@ -176,13 +190,6 @@ public final class ArrayUtils {
         }
 
         return array;
-    }
-
-    @SuppressWarnings("Convert2MethodRef") // Suppressed as method reference causes an IntelliJ error
-    private static <E> E[][] deepCopy(final E[][] input) {
-        return Arrays.stream(input)
-            .map(array -> array.clone())
-            .toArray(array -> input.clone());
     }
 
     /**

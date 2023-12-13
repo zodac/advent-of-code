@@ -22,6 +22,7 @@ import static me.zodac.advent.util.CollectionUtils.extractValuesAsList;
 import java.util.Collection;
 import java.util.List;
 import me.zodac.advent.pojo.Ingredient;
+import me.zodac.advent.util.CollectionUtils;
 import me.zodac.advent.util.MathUtils;
 
 /**
@@ -134,7 +135,9 @@ public final class Day15 {
         final long totalFlavour = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::flavour));
         final long totalTexture = MathUtils.multiplyElementsThenSum(amounts, extractValuesAsList(ingredients, Ingredient::texture));
 
-        if (MathUtils.areAnyLessThan(0L, totalCapacity, totalDurability, totalFlavour, totalTexture)) {
+        final List<Long> valuesToCheck = List.of(totalCapacity, totalDurability, totalFlavour, totalTexture);
+        final List<Long> lessThanZero = CollectionUtils.findValuesLessThan(valuesToCheck, 0L, Long::compare);
+        if (!lessThanZero.isEmpty()) {
             return 0L;
         }
 

@@ -119,6 +119,7 @@ public final class Day08 {
         while (!current.name.endsWith(endStateSuffix)) {
             final int instructionIndex = count % instructions.length(); // modulo the instruction so we keep looping until the end state is found
             final char currentInstruction = instructions.charAt(instructionIndex);
+            count++;
 
             if (currentInstruction == LEFT_INSTRUCTION) {
                 current = getNode(nodesByName, current.left);
@@ -127,8 +128,6 @@ public final class Day08 {
             } else {
                 throw new IllegalStateException(String.format("Unable to parse instruction: '%s'", currentInstruction));
             }
-
-            count++;
         }
         return count;
     }
