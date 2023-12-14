@@ -326,46 +326,6 @@ public final class StringUtils {
     }
 
     /**
-     * Checks for the grouped frequencies of a {@code wantedCharacter} within a {@link String}.
-     *
-     * <p>
-     * For example, given the {@link String} {@code aabcdeafgaaahiaj}, and the {@code wantedCharacter} <b>'a'</b>, the frequencies would be:
-     * <pre>
-     *     [2, 1, 3, 1]
-     * </pre>
-     *
-     * @param input           the {@link String} to check
-     * @param wantedCharacter the wanted character within the {@link String}
-     * @return the frequencies of the {@code wantedCharacter}
-     */
-    public static List<Long> groupingsOfCharacter(final String input, final char wantedCharacter) {
-        final List<Long> frequenciesOfWantedCharacter = new ArrayList<>();
-
-        final char[] inputAsArray = input.toCharArray();
-        char currentCharacterInString = inputAsArray[0];
-        long currentCharacterCount = 0;
-
-        for (final char characterInString : inputAsArray) {
-            if (characterInString == currentCharacterInString) {
-                currentCharacterCount++;
-            } else {
-                if (currentCharacterInString == wantedCharacter) {
-                    frequenciesOfWantedCharacter.add(currentCharacterCount);
-                }
-
-                currentCharacterCount = 1;
-                currentCharacterInString = characterInString;
-            }
-        }
-
-        if (currentCharacterInString == wantedCharacter) {
-            frequenciesOfWantedCharacter.add(currentCharacterCount);
-        }
-
-        return frequenciesOfWantedCharacter;
-    }
-
-    /**
      * Checks if the provided {@link String} has at least one character repeated, in order. For example, <b>aabc</b> will return {@code true},
      * while <b>abac</b> will return {@code false}.
      *
