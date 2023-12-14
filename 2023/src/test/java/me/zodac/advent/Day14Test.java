@@ -39,7 +39,7 @@ public class Day14Test {
         assertThat(part1Result)
             .isEqualTo(136L);
 
-        final long part2Result = new Day14().part2(values);
+        final long part2Result = Day14.part2(values);
         assertThat(part2Result)
             .isEqualTo(64L);
     }
@@ -57,7 +57,7 @@ public class Day14Test {
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part2Result = new Day14().part2(values);
+        final long part2Result = Day14.part2(values);
         assertThat(part2Result)
             .isEqualTo(102_829L);
     }

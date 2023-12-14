@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import me.zodac.advent.pojo.RotationDirection;
 
 /**
  * Utility functions for arrays.
@@ -157,6 +158,46 @@ public final class ArrayUtils {
         for (int i = 0; i < outerLength; i++) {
             output[i] = input[outerLength - 1 - i];
         }
+        return output;
+    }
+
+    /**
+     * Rotates the provided 2D array 90° in the {@code rotationDirection}.
+     *
+     * @param input             the 2D array to rotate
+     * @param rotationDirection the direction in which to rotate the array
+     * @param <E>               the type of the 2D array
+     * @return the rotated array
+     * @throws IllegalArgumentException thrown if the input is empty or the number of rows and columns do not match
+     */
+    public static <E> E[][] rotate(final E[][] input, final RotationDirection rotationDirection) {
+        if (input.length == 0 || input[0].length == 0) {
+            throw new IllegalArgumentException("Input cannot be empty");
+        }
+
+        final int outerLength = input.length;
+        final int innerLength = Arrays.stream(input)
+            .mapToInt(array -> array.length)
+            .max()
+            .orElse(outerLength);
+
+        if (outerLength != innerLength) {
+            throw new IllegalArgumentException(
+                String.format("Expected outer and inner lengths to be equal, found: %d and %d", outerLength, innerLength));
+        }
+
+        final E[][] output = create2DimensionalArray(input[0][0].getClass(), innerLength, outerLength);
+
+        for (int row = 0; row < outerLength; row++) {
+            for (int column = 0; column < innerLength; column++) {
+                switch (rotationDirection) {
+                    case ANTI_CLOCKWISE -> output[row][column] = input[column][outerLength - row - 1];
+                    case CLOCKWISE -> output[column][outerLength - 1 - row] = input[row][column];
+                    default -> throw new IllegalArgumentException("Unable to handle rotation in direction: " + rotationDirection);
+                }
+            }
+        }
+
         return output;
     }
 

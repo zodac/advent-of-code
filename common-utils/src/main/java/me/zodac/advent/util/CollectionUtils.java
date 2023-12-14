@@ -215,6 +215,27 @@ public final class CollectionUtils {
     }
 
     /**
+     * Function that returns the index of a value within the provided {@link Collection}. To be used for implementations of {@link Collection} that do
+     * not have their own {@code #indexOf()} function, like {@link Set}.
+     *
+     * @param collection the {@link Collection} to check
+     * @param wantedValue      the value to look for
+     * @param <E>        the type of the {@link Collection}
+     * @return the index of the {@code value}, or <b>-1</b>
+     */
+    // TODO: Remove Iterables
+    public static <E> int indexOf(final Iterable<? extends E> collection, final E wantedValue) {
+        int result = 0;
+        for (final E element : collection) {
+            if (element.equals(wantedValue)) {
+                return result;
+            }
+            result++;
+        }
+        return -1;
+    }
+
+    /**
      * Returns the intersection of a {@link Set} and a {@link Collection}s - the common elements in both.
      *
      * @param first  the first {@link Set}

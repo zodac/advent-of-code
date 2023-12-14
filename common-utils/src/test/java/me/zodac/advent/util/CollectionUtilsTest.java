@@ -21,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -219,10 +221,34 @@ class CollectionUtilsTest {
             .hasSameElementsAs(expected);
     }
 
+    @ParameterizedTest
+    @MethodSource("provideForIndexOf")
+    <E> void testIndexOf(final Set<? extends E> input, final E wantedValue, final int expected) {
+        final int output = CollectionUtils.indexOf(input, wantedValue);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForIndexOf() {
+        final Set<String> unsequencedSet = new HashSet<>(4);
+        unsequencedSet.add("a");
+        unsequencedSet.add("b");
+        unsequencedSet.add("c");
+        unsequencedSet.add("d");
+
+        return Stream.of(
+            Arguments.of(unsequencedSet, "c", 2),                                // Unsequenced set, order not guaranteed
+            Arguments.of(new LinkedHashSet<>(List.of("a", "b", "c", "d")), "b", 1),     // Sequenced set
+            Arguments.of(new LinkedHashSet<>(List.of("a", "b", "c", "d")), "e", -1),    // Value doesn't exist
+            Arguments.of(new LinkedHashSet<>(List.of(1, 2, 3, 4)), 4, 3),               //Integers
+            Arguments.of(Set.of(), 2, -1)                                               // Empty
+        );
+    }
+
     private static Stream<Arguments> provideForIntersection() {
         return Stream.of(
             // Strings
-            Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b", "c"), Set.of("a", "b", "c")),           // Both inputs match
+            Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b", "c"), Set.of("a", "b", "c")),                  // Both inputs match
             Arguments.of(Set.of("a", "b", "c"), Set.of("b", "c", "a"), Set.of("a", "b", "c")),                  // Order insensitive
             Arguments.of(Set.of("a", "b", "c"), Set.of("c", "d", "e", "f"), Set.of("c")),                       // Single match
             Arguments.of(Set.of("a", "b", "c"), Set.of("a", "b", "c", "d", "e", "f"), Set.of("a", "b", "c")),   // Multiple matches

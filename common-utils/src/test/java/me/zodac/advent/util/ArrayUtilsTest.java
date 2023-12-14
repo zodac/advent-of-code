@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import me.zodac.advent.pojo.RotationDirection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -219,6 +220,84 @@ class ArrayUtilsTest {
         return Stream.of(
             Arguments.of(new Character[][] {}, "Input cannot be empty"),         // Empty 1D array
             Arguments.of(new Character[][] {{}, {}}, "Input cannot be empty")    // Empty 2D array
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForRotate")
+    <E> void testRotate(final E[][] input, final RotationDirection rotationDirection, final E[][] expected) {
+        final E[][] output = ArrayUtils.rotate(input, rotationDirection);
+        assertThat(output)
+            .isDeepEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForRotate() {
+        return Stream.of(
+            // Valid Character input, anti-clockwise rotation
+            Arguments.of(
+                new Character[][] {
+                    {'a', 'b', 'c'},
+                    {'d', 'e', 'f'},
+                    {'g', 'h', 'i'}
+                },
+                RotationDirection.ANTI_CLOCKWISE,
+                new Character[][] {
+                    {'c', 'f', 'i'},
+                    {'b', 'e', 'h'},
+                    {'a', 'd', 'g'}
+                }
+            ),
+            // Valid Character input, clockwise rotation
+            Arguments.of(
+                new Character[][] {
+                    {'a', 'b', 'c'},
+                    {'d', 'e', 'f'},
+                    {'g', 'h', 'i'}
+                },
+                RotationDirection.CLOCKWISE,
+                new Character[][] {
+                    {'g', 'd', 'a'},
+                    {'h', 'e', 'b'},
+                    {'i', 'f', 'c'}
+                }
+            ),
+            // Different type
+            Arguments.of(
+                new Integer[][] {
+                    {1, 2, 3},
+                    {4, 5, 6},
+                    {7, 8, 9}
+                },
+                RotationDirection.CLOCKWISE,
+                new Integer[][] {
+                    {7, 4, 1},
+                    {8, 5, 2},
+                    {9, 6, 3}
+                }
+            )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForRotate_invalid")
+    <E> void testRotate_givenInvalidInputs(final E[][] input, final RotationDirection rotationDirection, final String errorMessage) {
+        assertThatThrownBy(() -> ArrayUtils.rotate(input, rotationDirection))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(errorMessage);
+    }
+
+    private static Stream<Arguments> provideForRotate_invalid() {
+        return Stream.of(
+            // Different column lengths for 2D array
+            Arguments.of(
+                new Character[][] {
+                    {'a', 'b', 'c'},
+                    {'d', 'e'},
+                    {'f', 'g', 'h', 'i'}
+                }, RotationDirection.CLOCKWISE, "Expected outer and inner lengths to be equal, found: 3 and 4"
+            ),
+            Arguments.of(new Character[][] {}, RotationDirection.CLOCKWISE, "Input cannot be empty"),       // Empty 1D array
+            Arguments.of(new Character[][] {{}, {}}, RotationDirection.CLOCKWISE, "Input cannot be empty")  // Empty 2D array
         );
     }
 

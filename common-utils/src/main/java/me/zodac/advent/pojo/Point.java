@@ -18,10 +18,12 @@
 package me.zodac.advent.pojo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 
 /**
@@ -207,10 +209,10 @@ public record Point(int x, int y) {
      * Returns a {@link Set} of the adjacent {@link Point}s for the current {@link Point}.
      *
      * @param adjacentPointsSelector definition of what to consider an adjacent {@link Point}
-     * @return the adjacent {@link Point}s according to the {@link AdjacentPointsSelector}
+     * @return a {@link Stream} of the adjacent {@link Point}s according to the {@link AdjacentPointsSelector}
      */
-    public Set<Point> getAdjacentPoints(final AdjacentPointsSelector adjacentPointsSelector) {
-        final Set<Point> adjacentPoints = new HashSet<>();
+    public Stream<Point> getAdjacentPoints(final AdjacentPointsSelector adjacentPointsSelector) {
+        final Collection<Point> adjacentPoints = new HashSet<>();
 
         // Current point
         if (adjacentPointsSelector.includeSelf()) {
@@ -227,7 +229,7 @@ public record Point(int x, int y) {
             adjacentPoints.addAll(diagonalAdjacentPoints);
         }
 
-        return adjacentPoints;
+        return adjacentPoints.stream();
     }
 
     private Set<Point> getDirectAdjacentPoints(final AdjacentPointsSelector adjacentPointsSelector) {

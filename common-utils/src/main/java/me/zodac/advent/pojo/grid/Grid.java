@@ -22,12 +22,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.pojo.RotationDirection;
 import me.zodac.advent.util.ArrayUtils;
 
 /**
@@ -305,10 +304,10 @@ public class Grid<E> {
      * {@code wantedValue}.
      *
      * @param wantedValue the value to search for
-     * @return a {@link Set} of the {@link Point}s with the {@code wantedValue}
+     * @return a {@link Stream} of the {@link Point}s with the {@code wantedValue}
      */
-    public Set<Point> findValue(final E wantedValue) {
-        final Set<Point> points = new HashSet<>();
+    public Stream<Point> findValue(final E wantedValue) {
+        final Collection<Point> points = new HashSet<>();
         for (int i = 0; i < internalGrid.length; i++) {
             final E[] row = internalGrid[i];
 
@@ -320,7 +319,7 @@ public class Grid<E> {
                 }
             }
         }
-        return points;
+        return points.stream();
     }
 
     /**
@@ -379,6 +378,17 @@ public class Grid<E> {
     }
 
     /**
+     * Rotates the provided {@link Grid} 90° in the {@code rotationDirection}.
+     *
+     * @param rotationDirection the direction in which to rotate the array
+     * @return the rotated {@link Grid}
+     * @see ArrayUtils#rotate(Object[][], RotationDirection)
+     */
+    public Grid<E> rotate(final RotationDirection rotationDirection) {
+        return new Grid<>(ArrayUtils.rotate(internalGrid, rotationDirection));
+    }
+
+    /**
      * Prints the content of the {@link Grid}.
      *
      * @param withHeaders whether to also print numeric headers for each column and row
@@ -412,6 +422,8 @@ public class Grid<E> {
             //noinspection ALL
             System.out.println(); // NOPMD
         }
+        //noinspection ALL
+        System.out.println(); // NOPMD
     }
 
     @Override

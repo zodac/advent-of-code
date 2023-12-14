@@ -18,7 +18,6 @@
 package me.zodac.advent;
 
 import java.util.List;
-import java.util.Set;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 import me.zodac.advent.pojo.grid.CharacterGrid;
@@ -72,10 +71,9 @@ public final class Day03 {
 
     private static long findSumOfNumbersForPart(final CharacterGrid characterGrid, final Point partPoint) {
         final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, characterGrid.numberOfRows());
-        final Set<Point> adjacentPoints = partPoint.getAdjacentPoints(adjacentPointsSelector);
 
-        return adjacentPoints
-            .stream()
+        return partPoint
+            .getAdjacentPoints(adjacentPointsSelector)
             .filter(point -> Character.isDigit(characterGrid.at(point)))
             .mapToInt(point -> findNumberInRow(characterGrid, point))
             .distinct()
@@ -139,10 +137,9 @@ public final class Day03 {
 
     private static long findSumOfGearRatios(final CharacterGrid characterGrid, final Point gearPoint) {
         final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, characterGrid.numberOfRows());
-        final Set<Point> adjacentPoints = gearPoint.getAdjacentPoints(adjacentPointsSelector);
 
-        final List<Integer> gearRatioValues = adjacentPoints
-            .stream()
+        final List<Integer> gearRatioValues = gearPoint
+            .getAdjacentPoints(adjacentPointsSelector)
             .filter(point -> Character.isDigit(characterGrid.at(point)))
             .map(point -> findNumberInRow(characterGrid, point))
             .distinct()

@@ -17,9 +17,7 @@
 
 package me.zodac.advent.pojo.grid;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 import me.zodac.advent.pojo.Point;
 
@@ -128,26 +126,19 @@ public final class BooleanGrid extends Grid<Boolean> {
                 final boolean isSet = internalGrid[x][y];
 
                 final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, gridSize);
-                final Set<Point> neighbours = currentPoint.getAdjacentPoints(adjacentPointsSelector);
-
-                final int numberOfSetNeighbours = countSetPoints(neighbours);
+                final int valueOfSetNeighbours = currentPoint.getAdjacentPoints(adjacentPointsSelector)
+                    .mapToInt(point -> EVALUATOR.apply(at(point)))
+                    .sum();
 
                 if (isSet) {
-                    newGrid[x][y] = numberOfSetNeighbours == 2 || numberOfSetNeighbours == 3;
+                    newGrid[x][y] = valueOfSetNeighbours == 2 || valueOfSetNeighbours == 3;
                 } else {
-                    newGrid[x][y] = numberOfSetNeighbours == 3;
+                    newGrid[x][y] = valueOfSetNeighbours == 3;
                 }
             }
         }
 
         return new BooleanGrid(newGrid);
-    }
-
-    private int countSetPoints(final Collection<Point> points) {
-        return points
-            .stream()
-            .mapToInt(point -> EVALUATOR.apply(at(point)))
-            .sum();
     }
 
     /**

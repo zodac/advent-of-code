@@ -17,13 +17,12 @@
 
 package me.zodac.advent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import me.zodac.advent.pojo.RotationDirection;
 import me.zodac.advent.pojo.grid.CharacterGrid;
-import me.zodac.advent.util.ArrayUtils;
+import me.zodac.advent.pojo.grid.Grid;
+import me.zodac.advent.search.CycleFinder;
+import me.zodac.advent.search.CycleResult;
 
 /**
  * Solution for 2023, Day 14.
@@ -32,9 +31,13 @@ import me.zodac.advent.util.ArrayUtils;
  */
 public final class Day14 {
 
-//    private Day14() {
-//
-//    }
+    private static final char EMPTY_SYMBOL = '.';
+    private static final char ROCK_SYMBOL = 'O';
+    private static final int NUMBER_OF_CYCLES = 1_000_000_000;
+
+    private Day14() {
+
+    }
 
     /**
      * Part 1.
@@ -43,43 +46,9 @@ public final class Day14 {
      * @return the part 1 result
      */
     public static long part1(final List<String> values) {
-        final Character[][] grid = CharacterGrid.parse(values).getInternalGrid();
-        final Character[][] northTurn = new Day14().sendNorth(grid);
+        final Grid<Character> grid = CharacterGrid.parse(values);
+        final Grid<Character> northTurn = sendNorth(grid);
         return calculateLoad(northTurn);
-    }
-
-    int norths = 0;
-    int souths = 0;
-    int wests = 0;
-    int easts = 0;
-
-    private class Final {
-
-        final Character[][] grid;
-
-        public Final(final Character[][] grid) {
-            this.grid = ArrayUtils.deepCopy(grid);
-        }
-
-        @Override
-        public boolean equals(final Object object) {
-            if (this == object) {
-                return true;
-            }
-            if (!(object instanceof final Final aFinal)) {
-                return false;
-            }
-            return Arrays.deepEquals(grid, aFinal.grid);
-        }
-
-        @Override
-        public int hashCode() {
-            return Arrays.deepHashCode(grid);
-        }
-
-        public Character[][] getGrid() {
-            return grid;
-        }
     }
 
     /**
@@ -88,52 +57,40 @@ public final class Day14 {
      * @param values the input values
      * @return the part 2 result
      */
-    public long part2(final List<String> values) {
-        final Character[][] grid = CharacterGrid.parse(values).getInternalGrid();
-        Character[][] finalGrid = ArrayUtils.deepCopy(grid);
-        Final f = new Final(finalGrid);
-        final int cycles = 1_000_000_000;
-//        final int cycles = 1000;
-//        final int cycles = 3;
+    public static long part2(final List<String> values) {
+        final Grid<Character> grid = CharacterGrid.parse(values);
 
-        final List<Final> seen = new ArrayList<>();
-        int cycleStart = 0;
+        final CycleResult<Grid<Character>> cycleResult = CycleFinder.findCycleResult(
+            grid,
+            Day14::performCycle,
+            NUMBER_OF_CYCLES
+        );
 
-        while(true) {
-            final Character[][] northTurn = sendNorth(finalGrid);
-            final Character[][] westTurn = sendWest(northTurn);
-            final Character[][] southTurn = sendSouth(westTurn);
-            final Character[][] eastTurn = sendEast(southTurn);
-
-            if (Arrays.deepEquals(eastTurn, finalGrid)) {
-                break;
-            }
-
-            finalGrid = ArrayUtils.deepCopy(eastTurn);
-            f = new Final(finalGrid);
-
-            int index = seen.indexOf(f);
-            if (index != -1) {
-                cycleStart = index;
-                break;
-            }
-            seen.add(f);
+        if (!cycleResult.doesCycleExist()) {
+            throw new IllegalStateException(String.format("Unable to find cycle in %s iterations", NUMBER_OF_CYCLES));
         }
 
-        finalGrid = seen.get((cycleStart + ((cycles - cycleStart) % (seen.size() - cycleStart))) - 1).getGrid();
-        return calculateLoad(finalGrid);
+        return calculateLoad(cycleResult.cycleValue());
     }
 
-    private static long calculateLoad(final Character[][] grid) {
+    private static Grid<Character> performCycle(final Grid<Character> startGrid) {
+        final Grid<Character> northTurn = sendNorth(startGrid);
+        final Grid<Character> westTurn = sendNorth(northTurn.rotate(RotationDirection.CLOCKWISE));
+        final Grid<Character> southTurn = sendNorth(westTurn.rotate(RotationDirection.CLOCKWISE));
+        final Grid<Character> eastTurn = sendNorth(southTurn.rotate(RotationDirection.CLOCKWISE));
+        return eastTurn.rotate(RotationDirection.CLOCKWISE);
+    }
+
+    private static long calculateLoad(final Grid<Character> grid) {
         int multiplier = 1;
 
         long total = 0;
-        for (int i = grid.length - 1; i >= 0; i--) {
-            final Character[] row = grid[i];
+        for (int i = grid.numberOfRows() - 1; i >= 0; i--) {
+            final Character[] row = grid.getRow(i);
             int rocks = 0;
 
             for (final char c : row) {
-                if (c == 'O') {
+                if (c == ROCK_SYMBOL) {
                     rocks++;
                 }
             }
@@ -144,183 +101,35 @@ public final class Day14 {
         return total;
     }
 
-    final Map<Character[][], Character[][]> north = new HashMap<>();
-    final Map<Character[][], Character[][]> south = new HashMap<>();
-    final Map<Character[][], Character[][]> east = new HashMap<>();
-    final Map<Character[][], Character[][]> west = new HashMap<>();
+    private static Grid<Character> sendNorth(final Grid<Character> grid) {
+        final Character[][] internalGrid = grid.getInternalGrid();
+        final Character[][] newGrid = new Character[internalGrid.length][internalGrid[0].length];
+        System.arraycopy(internalGrid[0], 0, newGrid[0], 0, internalGrid[0].length);
 
-    private Character[][] sendNorth(final Character[][] grid) {
-        if (north.containsKey(grid)) {
-            norths++;
-            return north.get(grid);
-        }
+        for (int row = 1; row < internalGrid.length; row++) {
+            for (int column = 0; column < internalGrid[0].length; column++) {
+                final char current = internalGrid[row][column];
 
-        final Character[][] newGrid = new Character[grid.length][grid[0].length];
-        System.arraycopy(grid[0], 0, newGrid[0], 0, grid[0].length);
-
-        for (int row = 1; row < grid.length; row++) {
-            for (int column = 0; column < grid[0].length; column++) {
-                final char current = grid[row][column];
-
-                if (current == 'O') {
+                if (current == ROCK_SYMBOL) {
                     final int newRow = findFirstEmptyRowGoingNorth(newGrid, row, column);
-                    newGrid[row][column] = '.';
-                    newGrid[newRow][column] = 'O';
+                    newGrid[row][column] = EMPTY_SYMBOL;
+                    newGrid[newRow][column] = ROCK_SYMBOL;
                 } else {
                     newGrid[row][column] = current;
                 }
             }
         }
 
-        final Character[][] updatedGrid = ArrayUtils.deepCopy(newGrid);
-        north.put(grid, updatedGrid);
-        return updatedGrid;
-    }
-
-
-    private Character[][] sendSouth(final Character[][] grid) {
-        if (south.containsKey(grid)) {
-            souths++;
-            return south.get(grid);
-        }
-
-        final Character[][] newGrid = new Character[grid.length][grid[0].length];
-        System.arraycopy(grid[grid.length - 1], 0, newGrid[newGrid.length - 1], 0, grid[0].length);
-
-        for (int row = grid.length - 2; row >= 0; row--) {
-            for (int column = 0; column < grid[0].length; column++) {
-                final char current = grid[row][column];
-
-                if (current == 'O') {
-                    final int newRow = findFirstEmptyRowGoingSouth(newGrid, row, column);
-                    newGrid[row][column] = '.';
-                    newGrid[newRow][column] = 'O';
-                } else {
-                    newGrid[row][column] = current;
-                }
-            }
-        }
-
-        final Character[][] updatedGrid = ArrayUtils.deepCopy(newGrid);
-        south.put(grid, updatedGrid);
-        return updatedGrid;
-    }
-
-    private Character[][] sendWest(final Character[][] grid) {
-        if (west.containsKey(grid)) {
-            wests++;
-            return west.get(grid);
-        }
-        final Character[][] newGrid = new Character[grid.length][grid[0].length];
-
-        for (int column = 0; column < 1; column++) {
-            for (int row = 0; row < grid.length; row++) {
-                newGrid[row][column] = grid[row][column];
-            }
-        }
-
-        for (int column = 1; column < grid[0].length; column++) {
-            for (int row = 0; row < grid.length; row++) {
-                final char current = grid[row][column];
-
-                if (current == 'O') {
-                    final int newColumn = findFirstEmptyColumnGoingWest(newGrid, row, column);
-                    newGrid[row][column] = '.';
-                    newGrid[row][newColumn] = 'O';
-                } else {
-                    newGrid[row][column] = current;
-                }
-            }
-        }
-
-        final Character[][] updatedGrid = ArrayUtils.deepCopy(newGrid);
-        west.put(grid, updatedGrid);
-        return updatedGrid;
-    }
-
-    private Character[][] sendEast(final Character[][] grid) {
-        if (east.containsKey(grid)) {
-            easts++;
-            return east.get(grid);
-        }
-        final Character[][] newGrid = new Character[grid.length][grid[0].length];
-
-        for (int column = grid.length - 1; column < grid.length; column++) {
-            for (int row = 0; row < grid.length; row++) {
-                newGrid[row][column] = grid[row][column];
-            }
-        }
-
-        for (int column = grid[0].length - 2; column >= 0; column--) {
-            for (int row = 0; row < grid.length; row++) {
-                final char current = grid[row][column];
-
-                if (current == 'O') {
-                    final int newColumn = findFirstEmptyColumnGoingEast(newGrid, row, column);
-                    newGrid[row][column] = '.';
-                    newGrid[row][newColumn] = 'O';
-                } else {
-                    newGrid[row][column] = current;
-                }
-            }
-        }
-
-        final Character[][] updatedGrid = ArrayUtils.deepCopy(newGrid);
-        east.put(grid, updatedGrid);
-        return updatedGrid;
-    }
-
-    private static int findFirstEmptyColumnGoingWest(Character[][] newGrid, int row, int startColumn) {
-        int newColumn = startColumn;
-        for (int i = startColumn - 1; i >= 0; i--) {
-            final char previousColumnCharacter = newGrid[row][i];
-            if (previousColumnCharacter != '#' && previousColumnCharacter != 'O') {
-                newColumn--;
-            } else {
-                break;
-            }
-        }
-
-        return newColumn;
-    }
-
-    private static int findFirstEmptyColumnGoingEast(Character[][] newGrid, int row, int startColumn) {
-        int newColumn = startColumn;
-        for (int i = startColumn + 1; i < newGrid[newGrid.length - 1].length; i++) {
-            final char nextColumnCharacter = newGrid[row][i];
-            if (nextColumnCharacter != '#' && nextColumnCharacter != 'O') {
-                newColumn++;
-            } else {
-                break;
-            }
-        }
-
-        return newColumn;
+        return new Grid<>(newGrid);
     }
 
     private static int findFirstEmptyRowGoingNorth(final Character[][] newGrid, final int startRow, final int column) {
         int newRow = startRow;
         for (int i = startRow - 1; i >= 0; i--) {
-            final char previousRowCharacter = newGrid[i][column];
-            if (previousRowCharacter != '#' && previousRowCharacter != 'O') {
-                newRow--;
-            } else {
+            if (newGrid[i][column] != EMPTY_SYMBOL) {
                 break;
             }
-        }
-
-        return newRow;
-    }
-
-    private static int findFirstEmptyRowGoingSouth(final Character[][] newGrid, final int startRow, final int column) {
-        int newRow = startRow;
-        for (int i = startRow + 1; i < newGrid.length; i++) {
-            final char nextRowCharacter = newGrid[i][column];
-            if (nextRowCharacter != '#' && nextRowCharacter != 'O') {
-                newRow++;
-            } else {
-                break;
-            }
+            newRow--;
         }
 
         return newRow;
