@@ -35,15 +35,15 @@ public class Day11Test {
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day11.part1(values, 2);
+        final long part1Result = Day11.sumOfDistancesBetweenGalaxies(values, 2);
         assertThat(part1Result)
             .isEqualTo(374L);
 
-        final long part2Result = Day11.part1(values, 10);
+        final long part2Result = Day11.sumOfDistancesBetweenGalaxies(values, 10);
         assertThat(part2Result)
             .isEqualTo(1_030L);
 
-        final long part2Result2 = Day11.part1(values, 100);
+        final long part2Result2 = Day11.sumOfDistancesBetweenGalaxies(values, 100);
         assertThat(part2Result2)
             .isEqualTo(8_410L);
     }
@@ -52,7 +52,7 @@ public class Day11Test {
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day11.part1(values, 2);
+        final long part1Result = Day11.sumOfDistancesBetweenGalaxies(values, 2);
         assertThat(part1Result)
             .isEqualTo(10_289_334L);
     }
@@ -61,7 +61,7 @@ public class Day11Test {
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part2Result = Day11.part1(values, 1_000_000);
+        final long part2Result = Day11.sumOfDistancesBetweenGalaxies(values, 1_000_000);
         assertThat(part2Result)
             .isEqualTo(649_862_989_626L);
     }

@@ -17,10 +17,16 @@
 
 package me.zodac.advent.pojo.grid;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.ArrayUtils;
 
@@ -318,6 +324,61 @@ public class Grid<E> {
     }
 
     /**
+     * Iterates through all columns of the {@link Grid}, and checks whether they pass the provided {@link Predicate}. If they pass, the index of that
+     * column is returned.
+     *
+     * @param predicate the {@link Predicate} to test all columns against
+     * @return a {@link Stream} of indexes of all matching columns
+     */
+    public Stream<Integer> findColumnsWith(final Predicate<? super E> predicate) {
+        final Collection<Integer> matchingColumns = new ArrayList<>();
+        for (int i = 0; i < internalGrid[0].length; i++) {
+            boolean match = true;
+
+            for (final E[] characters : internalGrid) {
+                final E value = characters[i];
+                if (!predicate.test(value)) {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match) {
+                matchingColumns.add(i);
+            }
+        }
+        return matchingColumns.stream();
+    }
+
+    /**
+     * Iterates through all rows of the {@link Grid}, and checks whether they pass the provided {@link Predicate}. If they pass, the index of that
+     * row is returned.
+     *
+     * @param predicate the {@link Predicate} to test all rows against
+     * @return a {@link Stream} of indexes of all matching rows
+     */
+    public Stream<Integer> findRowsWith(final Predicate<? super E> predicate) {
+        final Collection<Integer> matchingRows = new HashSet<>();
+        for (int i = 0; i < internalGrid.length; i++) {
+            final E[] row = internalGrid[i];
+            boolean match = true;
+
+            for (final E value : row) {
+                if (!predicate.test(value)) {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match) {
+                matchingRows.add(i);
+            }
+
+        }
+        return matchingRows.stream();
+    }
+
+    /**
      * Prints the content of the {@link Grid}.
      *
      * @param withHeaders whether to also print numeric headers for each column and row
@@ -351,5 +412,23 @@ public class Grid<E> {
             //noinspection ALL
             System.out.println(); // NOPMD
         }
+    }
+
+    @Override
+    public boolean equals(final Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (!(object instanceof final Grid<?> otherGrid)) {
+            return false;
+        }
+
+        return Arrays.deepEquals(internalGrid, otherGrid.internalGrid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(internalGrid);
     }
 }

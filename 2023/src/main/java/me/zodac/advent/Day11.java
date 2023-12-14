@@ -18,14 +18,11 @@
 package me.zodac.advent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Queue;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.pojo.grid.CharacterGrid;
+import me.zodac.advent.util.CollectionUtils;
 
 /**
  * Solution for 2023, Day 11.
@@ -34,165 +31,89 @@ import me.zodac.advent.pojo.Point;
  */
 public final class Day11 {
 
+    private static final char GALAXY_SYMBOL = '#';
+
     private Day11() {
 
     }
 
-    private static <E> List<E> findValuesLessThan(final Collection<E> values, final E value, final Comparator<? super E> comparator) {
-        return values
-            .stream()
-            .filter(v -> Objects.compare(value, v, comparator) == 1)
-            .toList();
-    }
-
     /**
-     * Part 1.
+     * Given a {@link List} of {@link String}s representing space, each {@link #GALAXY_SYMBOL} represents a galaxy. In order to account for the
+     * expansion of space-time, any row or column that does not contain a galaxy needs to be replaced with {@code expansionSize} number of empty rows
+     * or columns.
      *
-     * @param values the input values
-     * @return the part 1 result
+     * <p>
+     * Once the expansion is complete, we count the distance from each galaxy to every other galaxy (in either direction, so only count the distance
+     * from galaxy A -> galaxy B once time), then sum up all these distances.
+     *
+     * @param values        the input space map
+     * @param expansionSize the number of additional rows/columns to add to any empty rows/columns
+     * @return the total distance between all galaxies
      */
-    public static long part1(final List<String> values, final int expansionSize) {
-        final List<List<Character>> grid = new ArrayList<>();
-        final List<Integer> emptyRows = new ArrayList<>();
-        final List<Integer> emptyColumns = new ArrayList<>();
+    public static long sumOfDistancesBetweenGalaxies(final List<String> values, final int expansionSize) {
+        final CharacterGrid characterGrid = CharacterGrid.parse(values);
+        final List<Integer> emptyRows = findRowsWithoutGalaxies(characterGrid);
+        final List<Integer> emptyColumns = findColumnsWithoutGalaxies(characterGrid);
+        final int actualExpansionSize = expansionSize - 1; // We are replacing rows/columns, not adding, so we don't count the existing ones
 
-        for (final String value : values) {
-            final List<Character> chars = new ArrayList<>();
-            for (final char ch : value.toCharArray()) {
-                chars.add(ch);
-            }
-
-            grid.add(chars);
-        }
-
-        for (int i = 0; i < grid.size(); i++) {
-            final List<Character> row = grid.get(i);
-            boolean hasNoGalaxies = true;
-
-            for (final Character value : row) {
-                if (value == '#') {
-                    hasNoGalaxies = false;
-                    break;
-                }
-            }
-
-            if (hasNoGalaxies) {
-                emptyRows.add(i);
-            }
-        }
-
-        for (int j = 0; j < grid.getFirst().size(); j++) {
-            boolean hasNoGalaxies = true;
-
-            for (final List<Character> characters : grid) {
-                final char value = characters.get(j);
-                if (value == '#') {
-                    hasNoGalaxies = false;
-                    break;
-                }
-            }
-
-            if (hasNoGalaxies) {
-                emptyColumns.add(j);
-            }
-        }
-
-        final List<Point> galaxies = new ArrayList<>();
-
-        for (int i = 0; i < grid.size(); i++) {
-            final List<Character> row = grid.get(i);
-
-            for (int j = 0; j < row.size(); j++) {
-                final char val = row.get(j);
-                if (val == '#') {
-                    final int extraColumns = (findValuesLessThan(emptyColumns, j, Integer::compareTo).size() * (expansionSize-1));
-                    final int extraRows = (findValuesLessThan(emptyRows, i, Integer::compareTo).size() * (expansionSize-1));
-                    galaxies.add(Point.of(i + extraRows, j + extraColumns));
-                }
-            }
-        }
+        final List<Point> galaxies = findGalaxies(characterGrid, emptyColumns, emptyRows, actualExpansionSize);
 
         long total = 0L;
 
         for (int i = 0; i < galaxies.size(); i++) {
             final Point currentGalaxy = galaxies.get(i);
 
-            for (int j = i + 1; j < galaxies.size(); j++) {
-                // final long val = pathExists(expandedGrid, currentGalaxy, galaxies.get(j));
-                final long val = calculateDistance(currentGalaxy, galaxies.get(j));
-                // System.out.printf("Galaxy #%d -> #%d: %d%n", (i + 1), (j + 1), val);
-                if (val != -1) {
-                    total += val;
-                }
-            }
+            total += galaxies.subList(i, galaxies.size())
+                .stream()
+                .mapToLong(currentGalaxy::distanceTo)
+                .sum();
         }
 
         return total;
     }
 
-    private static long calculateDistance(final Point first, final Point second) {
-        return Math.abs(first.x() - second.x()) + Math.abs(first.y() - second.y());
-    }
+    private static List<Point> findGalaxies(final CharacterGrid characterGrid,
+                                            final Collection<Integer> emptyColumns,
+                                            final Collection<Integer> emptyRows,
+                                            final int expansionSize) {
+        final List<Point> galaxies = new ArrayList<>();
 
-    private static Character[][] deepCopy(final Character[][] input) {
-        return Arrays.stream(input)
-            .map(Character[]::clone)
-            .toArray(array -> input.clone());
-    }
+        for (int rowIndex = 0; rowIndex < characterGrid.numberOfRows(); rowIndex++) {
+            final Character[] row = characterGrid.getRow(rowIndex);
 
-    private static int pathExists(Character[][] input, final Point start, final Point target) {
-        final Character[][] matrix = deepCopy(input);
-        Node source = new Node(start.x(), start.y(), 0);
-        Queue<Node> queue = new LinkedList<Node>();
-
-        int numOfRows = matrix.length;
-        int numOfColumns = matrix[0].length;
-
-        queue.add(source);
-
-        while (!queue.isEmpty()) {
-            Node popped = queue.poll();
-
-            if (popped.x == target.x() && popped.y == target.y()) {
-                return popped.distanceFromSource;
-            } else {
-                matrix[popped.x][popped.y] = '0';
-
-                List<Node> neighbourList = addNeighbours(popped, matrix, numOfRows, numOfColumns);
-                queue.addAll(neighbourList);
+            for (int columnIndex = 0; columnIndex < row.length; columnIndex++) {
+                final char val = row[columnIndex];
+                if (val == GALAXY_SYMBOL) {
+                    final Point galaxy = createGalaxyPoint(emptyRows, emptyColumns, rowIndex, columnIndex, expansionSize);
+                    galaxies.add(galaxy);
+                }
             }
         }
-        return -1;
+        return galaxies;
     }
 
-    private static List<Node> addNeighbours(Node poped, Character[][] matrix, final int numOfRows, final int numOfColumns) {
+    private static Point createGalaxyPoint(final Collection<Integer> emptyRows,
+                                           final Collection<Integer> emptyColumns,
+                                           final int rowIndex,
+                                           final int columnIndex,
+                                           final int expansionSize) {
+        final int emptyColumnsToAdd = CollectionUtils.findValuesLessThan(emptyColumns, columnIndex, Integer::compareTo).size();
+        final int emptyRowsToAdd = CollectionUtils.findValuesLessThan(emptyRows, rowIndex, Integer::compareTo).size();
 
-        List<Node> list = new LinkedList<Node>();
-
-        if ((poped.x - 1 >= 0 && poped.x - 1 < numOfRows) && matrix[poped.x - 1][poped.y] != '0') {
-            list.add(new Node(poped.x - 1, poped.y, poped.distanceFromSource + 1));
-        }
-        if ((poped.x + 1 >= 0 && poped.x + 1 < numOfRows) && matrix[poped.x + 1][poped.y] != '0') {
-            list.add(new Node(poped.x + 1, poped.y, poped.distanceFromSource + 1));
-        }
-        if ((poped.y - 1 >= 0 && poped.y - 1 < numOfColumns) && matrix[poped.x][poped.y - 1] != '0') {
-            list.add(new Node(poped.x, poped.y - 1, poped.distanceFromSource + 1));
-        }
-        if ((poped.y + 1 >= 0 && poped.y + 1 < numOfColumns) && matrix[poped.x][poped.y + 1] != '0') {
-            list.add(new Node(poped.x, poped.y + 1, poped.distanceFromSource + 1));
-        }
-        return list;
+        final int extraColumns = emptyColumnsToAdd * expansionSize;
+        final int extraRows = emptyRowsToAdd * expansionSize;
+        return Point.of(rowIndex + extraRows, columnIndex + extraColumns);
     }
 
-    static class Node {
-        int x;
-        int y;
-        int distanceFromSource;
+    private static List<Integer> findColumnsWithoutGalaxies(final CharacterGrid characterGrid) {
+        return characterGrid
+            .findColumnsWith(character -> character != GALAXY_SYMBOL)
+            .toList();
+    }
 
-        Node(int x, int y, int dis) {
-            this.x = x;
-            this.y = y;
-            this.distanceFromSource = dis;
-        }
+    private static List<Integer> findRowsWithoutGalaxies(final CharacterGrid characterGrid) {
+        return characterGrid
+            .findRowsWith(character -> character != GALAXY_SYMBOL)
+            .toList();
     }
 }
