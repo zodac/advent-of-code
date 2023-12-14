@@ -86,7 +86,7 @@ public enum CamelCardType {
      * @throws IllegalArgumentException thrown if there is no match for the hand
      */
     public static CamelCardType getByHand(final String hand) {
-        final List<Long> cardFrequencies = StringUtils.characterFrequency(hand);
+        final List<Long> cardFrequencies = StringUtils.characterFrequencies(hand);
 
         return Arrays.stream(values())
             .filter(camelCardType -> camelCardType.expectedCardFrequencies.equals(cardFrequencies))
