@@ -65,9 +65,90 @@ class StringUtilsTest {
     }
 
     @ParameterizedTest
+    @MethodSource("provideForBuildColumn")
+    void testBuildColumn(final List<String> input, final int index, final String expected) {
+        final String output = StringUtils.buildColumn(input, index);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForBuildColumn() {
+        return Stream.of(
+            // First index
+            Arguments.of(
+                List.of(
+                    "abc",
+                    "def",
+                    "ghi",
+                    "jkl"
+                ),
+                0,
+                "adgj"
+            ),
+            // Last index
+            Arguments.of(
+                List.of(
+                    "abc",
+                    "def",
+                    "ghi",
+                    "jkl"
+                ),
+                2,
+                "cfil"
+            ),
+            // Middle string shorter than others
+            Arguments.of(
+                List.of(
+                    "abc",
+                    "d",
+                    "ghi",
+                    "jkl"
+                ),
+                1,
+                "bhk"
+            ),
+            // Middle string shorter than others
+            Arguments.of(
+                List.of(
+                    "abc",
+                    "d",
+                    "ghi",
+                    "jkl"
+                ),
+                1,
+                "bhk"
+            ),
+            // Index too small
+            Arguments.of(
+                List.of(
+                    "abc",
+                    "def",
+                    "ghi",
+                    "jkl"
+                ),
+                -1,
+                ""
+            ),
+            // Index too large
+            Arguments.of(
+                List.of(
+                    "abc",
+                    "def",
+                    "ghi",
+                    "jkl"
+                ),
+                3,
+                ""
+            ),
+            // Empty
+            Arguments.of(List.of(), 0, "")
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("provideForCharacterFrequency")
     void testCharacterFrequency(final String input, final List<Long> expected) {
-        final List<Long> output = StringUtils.characterFrequency(input);
+        final List<Long> output = StringUtils.characterFrequencies(input);
         assertThat(output)
             .hasSameElementsAs(expected);
     }
@@ -78,6 +159,24 @@ class StringUtilsTest {
             Arguments.of("abcde", List.of(1L, 1L, 1L, 1L, 1L)),                         // Multiple characters with same frequency
             Arguments.of("", List.of()),                                                // Empty
             Arguments.of(" ", List.of(1L))                                           // Blank
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForCharacterIndexes")
+    void testCharacterIndexes(final String input, final char wantedChar, final Set<Integer> expected) {
+        final Set<Integer> output = StringUtils.characterIndexes(input, wantedChar);
+        assertThat(output)
+            .hasSameElementsAs(expected);
+    }
+
+    private static Stream<Arguments> provideForCharacterIndexes() {
+        return Stream.of(
+            Arguments.of("aabcdeafgaaahiaj", 'a', Set.of(0, 1, 6, 9, 10, 11, 14)),  // Multiple matches
+            Arguments.of("aabcdeafgaaahiaj", 'f', Set.of(7)),                       // Single match
+            Arguments.of("aabcdeafgaaahiaj", 'z', Set.of()),                        // No matches
+            Arguments.of("", 'a', Set.of()),                                        // Empty
+            Arguments.of(" ", 'a', Set.of())                                        // Blank
         );
     }
 
@@ -434,6 +533,8 @@ class StringUtilsTest {
                 }
             }
 
+            StringUtils.characterFrequencies(naughtyString);
+            StringUtils.characterIndexes(naughtyString, 'a');
             StringUtils.collectNumbersInOrder(naughtyString);
             StringUtils.containsAllCharacters("myTest", naughtyString);
             StringUtils.containsAny("myTest", naughtyString);
@@ -465,3 +566,4 @@ class StringUtilsTest {
         }
     }
 }
+

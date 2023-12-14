@@ -80,7 +80,7 @@ class Day05Test {
 
     private static Map<Integer, Deque<String>> getStacksById(final List<? extends List<String>> values) {
         final List<String> input = values.getFirst();
-        final Character[][] arrayOfCharArrays = ArrayUtils.convertToArrayOfArrays(input, (character -> character));
+        final Character[][] arrayOfCharArrays = ArrayUtils.toArrayOfArrays(input, (character -> character));
         final Character[][] reversedArrayOfCharArrays = ArrayUtils.reverseRows(arrayOfCharArrays);
         final Character[][] transposedArrayOfCharArrays = ArrayUtils.transpose(reversedArrayOfCharArrays, ' ');
 

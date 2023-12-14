@@ -52,7 +52,7 @@ public final class Day06 {
             booleanGrid.drawBox(first.x(), first.y(), second.x(), second.y(), instructionAndPoints.first());
         }
 
-        return booleanGrid.sumValues();
+        return booleanGrid.sumValues(BooleanGrid.EVALUATOR);
     }
 
     /**
@@ -71,6 +71,6 @@ public final class Day06 {
             integerGrid.drawBox(first.x(), first.y(), second.x(), second.y(), instructionAndPoints.first());
         }
 
-        return integerGrid.sumValues();
+        return integerGrid.sumValues(IntegerGrid.EVALUATOR);
     }
 }

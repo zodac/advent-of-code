@@ -79,28 +79,29 @@ public class Grid<E> {
      * @param <E>        the type of the {@link Grid}
      * @return the created {@link Grid}
      * @throws IllegalArgumentException thrown if input is empty
-     * @see ArrayUtils#convertToArrayOfArrays(List, Function)
+     * @see ArrayUtils#toArrayOfArrays(List, Function)
      */
     public static <E> E[][] parseGrid(final List<String> gridValues, final Function<? super Character, ? extends E> converter) {
         if (gridValues.isEmpty()) {
             throw new IllegalArgumentException("Input cannot be empty");
         }
 
-        return ArrayUtils.convertToArrayOfArrays(gridValues, converter);
+        return ArrayUtils.toArrayOfArrays(gridValues, converter);
     }
 
     /**
-     * Count any {@link Point}s in the {@link Grid}. The actual value of each {@link Point} is defined by {@link #valueAt(int, int)}.
+     * Count the value of all {@link Point}s in the {@link Grid}. The actual value of each {@link Point} is defined by the input {@code evaluator}.
      *
+     * @param evaluator {@link Function} used to convert the value of type {@code E} into an {@link Integer}
      * @return the sum of all {@link Point}s in the {@link Grid}
-     * @see #valueAt(int, int)
      */
-    public long sumValues() {
+    public long sumValues(final Function<? super E, Integer> evaluator) {
         int count = 0;
 
         for (int row = 0; row < gridSize; row++) {
             for (int column = 0; column < gridSize; column++) {
-                count += valueAt(row, column);
+                final E value = at(row, column);
+                count += evaluator.apply(value);
             }
         }
 
@@ -193,28 +194,6 @@ public class Grid<E> {
                 updateGrid(gridInstruction, x, y);
             }
         }
-    }
-
-    /**
-     * Calculates the value at a specific {@link Point}.
-     *
-     * @param point the {@link Point}
-     * @return the value
-     * @see #valueAt(int, int)
-     */
-    protected int valueAt(final Point point) {
-        return valueAt(point.x(), point.y());
-    }
-
-    /**
-     * Calculates the numeric value at a specific point.
-     *
-     * @param row    the x coordinate
-     * @param column the y coordinate
-     * @return the value
-     */
-    protected int valueAt(final int row, final int column) {
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -340,16 +319,37 @@ public class Grid<E> {
 
     /**
      * Prints the content of the {@link Grid}.
+     *
+     * @param withHeaders whether to also print numeric headers for each column and row
      */
     @SuppressWarnings("unused") // Only used for debugging
-    public void print() {
-        for (final E[] row : internalGrid) {
-            for (final E val : row) {
-                //noinspection ALL: Printing to stdout for debugging
-                System.out.print(val); // NOPMD: SystemPrintln - Printing to stdout for debugging
-            }
+    public void print(final boolean withHeaders) {
+        if (withHeaders) {
             //noinspection ALL: Printing to stdout for debugging
-            System.out.println(); // NOPMD: SystemPrintln - Printing to stdout for debugging
+            System.out.print(" | "); // NOPMD: SystemPrintln - Printing to stdout for debugging
+            for (int i = 0; i < internalGrid[0].length; i++) {
+                //noinspection ALL
+                System.out.print((i + 1) % 10); // NOPMD
+            }
+
+            //noinspection ALL: Printing to stdout for debugging
+            System.out.println("\n" + "-".repeat(internalGrid[0].length) + "---"); // NOPMD
+        }
+
+        for (int i = 0; i < internalGrid.length; i++) {
+            final E[] row = internalGrid[i];
+
+            if (withHeaders) {
+                //noinspection ALL
+                System.out.print((i + 1) % 10 + "| "); // NOPMD
+            }
+
+            for (final E val : row) {
+                //noinspection ALL
+                System.out.print(val); // NOPMD
+            }
+            //noinspection ALL
+            System.out.println(); // NOPMD
         }
     }
 }

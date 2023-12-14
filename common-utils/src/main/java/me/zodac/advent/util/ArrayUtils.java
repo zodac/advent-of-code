@@ -18,6 +18,7 @@
 package me.zodac.advent.util;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -29,103 +30,6 @@ public final class ArrayUtils {
 
     private ArrayUtils() {
 
-    }
-
-    /**
-     * Converts the provided {@link List} of {@link String}s into a 2D array. We assume each character in the {@link String} is convertable to the
-     * wanted output type, and that conversion is defined by the provided {@link Function} {@code converter}.
-     *
-     * <p>
-     * Given a {@link List} as below, we would like to convert this to a 2D array of {@link Integer}. The input is:
-     * <pre>
-     *     [
-     *       "1234",
-     *       "567",
-     *       "89",
-     *       "012"
-     *     ]
-     * </pre>
-     *
-     * <p>
-     * We would also provide the following {@link Function} to convert each individual {@link Character} into an {@link Integer}:
-     * <pre>
-     *     character -> NumberUtils.toIntOrDefault(character, 0)
-     * </pre>
-     *
-     * <p>
-     * The result will be:
-     * <pre>
-     *     [
-     *       [1, 2, 3, 4],
-     *       [5, 6, 7],
-     *       [8, 9],
-     *       [0, 1, 2]
-     *     ]
-     * </pre>
-     *
-     * <p>
-     * Similarly, given an input which we want to convert to a 2D array of {@link Boolean}s, we would have the following:
-     * <pre>
-     *     [
-     *       "abbb",
-     *       "bab",
-     *       "aa",
-     *       "bbb"
-     *     ]
-     * </pre>
-     *
-     * <p>
-     * And the converter {@link Function}:
-     * <pre>
-     *     (character -> character == 'a'')
-     * </pre>
-     *
-     * <p>
-     * The result will be:
-     * <pre>
-     *     [
-     *       [TRUE, FALSE, FALSE, FALSE],
-     *       [FALSE, TRUE, FALSE],
-     *       [TRUE, TRUE],
-     *       [FALSE, FALSE, FALSE]
-     *     ]
-     * </pre>
-     *
-     * @param input     the input {@link List} of {@link String}s
-     * @param converter the {@link Function} to convert a {@link Character} from the input into the correct type for the 2D array
-     * @param <E>       the type of the 2D array
-     * @return the 2D array
-     */
-    public static <E> E[][] convertToArrayOfArrays(final List<String> input, final Function<? super Character, ? extends E> converter) {
-        if (input.isEmpty() || input.getFirst().isEmpty()) {
-            throw new IllegalArgumentException("Input cannot be empty");
-        }
-
-        final int outerLength = input.size();
-        final int innerLength = input
-            .stream()
-            .mapToInt(String::length)
-            .max()
-            .orElse(outerLength);
-
-        // Retrieve the first converted character, so we can create the array with the correct type
-        final Class<?> firstThing = converter.apply(input.getFirst().charAt(0)).getClass();
-        final E[][] arrayOfCharacterArrays = create2DimensionalArray(firstThing, outerLength, innerLength);
-
-        for (int i = 0; i < input.size(); i++) {
-            final String line = input.get(i);
-            arrayOfCharacterArrays[i] = toArray(line, converter, firstThing);
-        }
-
-        return arrayOfCharacterArrays;
-    }
-
-    private static <E> E[] toArray(final String input, final Function<? super Character, ? extends E> converter, final Class<?> convertedClass) {
-        final E[] array = createArray(convertedClass, input.length());
-        for (int i = 0; i < input.length(); i++) {
-            array[i] = converter.apply(input.charAt(i));
-        }
-        return array;
     }
 
     /**
@@ -253,6 +157,126 @@ public final class ArrayUtils {
         for (int i = 0; i < outerLength; i++) {
             output[i] = input[outerLength - 1 - i];
         }
+        return output;
+    }
+
+    /**
+     * Converts the provided {@link List} of {@link String}s into a 2D array. We assume each character in the {@link String} is convertable to the
+     * wanted output type, and that conversion is defined by the provided {@link Function} {@code converter}.
+     *
+     * <p>
+     * Given a {@link List} as below, we would like to convert this to a 2D array of {@link Integer}. The input is:
+     * <pre>
+     *     [
+     *       "1234",
+     *       "567",
+     *       "89",
+     *       "012"
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * We would also provide the following {@link Function} to convert each individual {@link Character} into an {@link Integer}:
+     * <pre>
+     *     character -> NumberUtils.toIntOrDefault(character, 0)
+     * </pre>
+     *
+     * <p>
+     * The result will be:
+     * <pre>
+     *     [
+     *       [1, 2, 3, 4],
+     *       [5, 6, 7],
+     *       [8, 9],
+     *       [0, 1, 2]
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * Similarly, given an input which we want to convert to a 2D array of {@link Boolean}s, we would have the following:
+     * <pre>
+     *     [
+     *       "abbb",
+     *       "bab",
+     *       "aa",
+     *       "bbb"
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * And the converter {@link Function}:
+     * <pre>
+     *     (character -> character == 'a'')
+     * </pre>
+     *
+     * <p>
+     * The result will be:
+     * <pre>
+     *     [
+     *       [TRUE, FALSE, FALSE, FALSE],
+     *       [FALSE, TRUE, FALSE],
+     *       [TRUE, TRUE],
+     *       [FALSE, FALSE, FALSE]
+     *     ]
+     * </pre>
+     *
+     * @param input     the input {@link List} of {@link String}s
+     * @param converter the {@link Function} to convert a {@link Character} from the input {@link String}s into the correct type for the 2D array
+     * @param <E>       the type of the 2D array
+     * @return the 2D array
+     */
+    public static <E> E[][] toArrayOfArrays(final List<String> input, final Function<? super Character, ? extends E> converter) {
+        if (input.isEmpty() || input.getFirst().isEmpty()) {
+            throw new IllegalArgumentException("Input cannot be empty");
+        }
+
+        final int outerLength = input.size();
+        final int innerLength = input
+            .stream()
+            .mapToInt(String::length)
+            .max()
+            .orElse(outerLength);
+
+        // Retrieve the first converted character, so we can create the array with the correct type
+        final Class<?> firstThing = converter.apply(input.getFirst().charAt(0)).getClass();
+        final E[][] arrayOfCharacterArrays = create2DimensionalArray(firstThing, outerLength, innerLength);
+
+        for (int i = 0; i < input.size(); i++) {
+            final String line = input.get(i);
+            arrayOfCharacterArrays[i] = toArray(line, converter, firstThing);
+        }
+
+        return arrayOfCharacterArrays;
+    }
+
+    private static <E> E[] toArray(final String input, final Function<? super Character, ? extends E> converter, final Class<?> convertedClass) {
+        final E[] array = createArray(convertedClass, input.length());
+        for (int i = 0; i < input.length(); i++) {
+            array[i] = converter.apply(input.charAt(i));
+        }
+        return array;
+    }
+
+    /**
+     * Given a 2D array, converts the values to a {@link List} of {@link String}s.
+     *
+     * @param arrayOfArrays the 2D array
+     * @param converter     {@link Function} to convert a value of type {@code E} from the input 2D array into a {@link String} for the output
+     * @param <E>           the type of the {@code array}
+     * @return the {@link List} of {@link String}s
+     */
+    public static <E> List<String> toListOfStrings(final E[][] arrayOfArrays, final Function<? super E, String> converter) {
+        final List<String> output = new ArrayList<>();
+
+        for (final E[] row : arrayOfArrays) {
+            final StringBuilder rowBuilder = new StringBuilder();
+            for (final E element : row) {
+                final String newValue = converter.apply(element);
+                rowBuilder.append(newValue);
+            }
+            output.add(rowBuilder.toString());
+        }
+
         return output;
     }
 

@@ -28,6 +28,11 @@ import me.zodac.advent.pojo.Point;
  */
 public final class BooleanGrid extends Grid<Boolean> {
 
+    /**
+     * {@link Function} that is used to convert a specific point on the {@link BooleanGrid} to an {@link Integer} value.
+     */
+    public static final Function<Boolean, Integer> EVALUATOR = booleanValue -> booleanValue ? 1 : 0;
+
     private BooleanGrid(final int gridSize) {
         super(gridSize, new Boolean[gridSize][gridSize], false);
     }
@@ -62,7 +67,7 @@ public final class BooleanGrid extends Grid<Boolean> {
      * @see Grid#parseGrid(List, Function)
      */
     public static BooleanGrid parse(final List<String> gridValues, final char symbolSignifyingTrue) {
-        final Boolean[][] internalArray = parseGrid(gridValues, (character -> character == symbolSignifyingTrue));
+        final Boolean[][] internalArray = parseGrid(gridValues, character -> character == symbolSignifyingTrue);
         return new BooleanGrid(internalArray);
     }
 
@@ -141,7 +146,7 @@ public final class BooleanGrid extends Grid<Boolean> {
     private int countSetPoints(final Collection<Point> points) {
         return points
             .stream()
-            .mapToInt(this::valueAt)
+            .mapToInt(point -> EVALUATOR.apply(at(point)))
             .sum();
     }
 
@@ -153,17 +158,6 @@ public final class BooleanGrid extends Grid<Boolean> {
      */
     public BooleanGrid updateCorners(final Boolean newValue) {
         return new BooleanGrid(updateCornersToValue(newValue));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * If the value at the point is {@code true} returns <b>1</b>, else returns <b>0</b>.
-     */
-    @Override
-    public int valueAt(final int row, final int column) {
-        return internalGrid[row][column] ? 1 : 0;
     }
 
     /**

@@ -131,8 +131,8 @@ public final class MathUtils {
     /**
      * Checks if the given {@link Long} is between two other {@link Long}s.
      *
-     * @param start the start of the {@link Long} range
-     * @param end   the end of the {@link Long} range
+     * @param start the start of the {@link Long} range (inclusive)
+     * @param end   the end of the {@link Long} range (inclusive)
      * @param input the value to check
      * @return {@code true} if the input is within the {@link Long} range
      * @throws IllegalArgumentException thrown if the {@code end} value is less than the {@code start} value

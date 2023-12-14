@@ -39,12 +39,12 @@ public final class Day18 {
      * @return the number of {@link BooleanGrid} {@link Point}s that have been turned on
      */
     public static long playGameOfLife(final BooleanGrid initialState, final int numberOfIterations) {
-        BooleanGrid output = initialState;
+        BooleanGrid booleanGrid = initialState;
         for (int i = 0; i < numberOfIterations; i++) {
-            output = output.playGameOfLife();
+            booleanGrid = booleanGrid.playGameOfLife();
         }
 
-        return output.sumValues();
+        return booleanGrid.sumValues(BooleanGrid.EVALUATOR);
     }
 
     /**
@@ -59,11 +59,11 @@ public final class Day18 {
      * @see BooleanGrid#updateCorners(Boolean)
      */
     public static long playGameOfLifeWithCornersAlwaysOn(final BooleanGrid initialState, final int numberOfIterations) {
-        BooleanGrid output = initialState.updateCorners(true);
+        BooleanGrid booleanGrid = initialState.updateCorners(true);
         for (int i = 0; i < numberOfIterations; i++) {
-            output = output.playGameOfLife(true);
+            booleanGrid = booleanGrid.playGameOfLife(true);
         }
 
-        return output.sumValues();
+        return booleanGrid.sumValues(BooleanGrid.EVALUATOR);
     }
 }

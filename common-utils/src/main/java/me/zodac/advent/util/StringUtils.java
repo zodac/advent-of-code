@@ -78,6 +78,29 @@ public final class StringUtils {
     }
 
     /**
+     * Given a {@link Collection} of {@link String}s, we can build a column containing the character at the {@code columnIndex} for all
+     * {@link String}. If any of the {@link String}s do not have a character at the {@code columnIndex}, an {@link #EMPTY_STRING} will be used
+     * instead.
+     *
+     * @param inputs      the {@link String}s
+     * @param columnIndex the index of the wanted column
+     * @return the column of {@link String}s
+     */
+    public static String buildColumn(final Collection<String> inputs, final int columnIndex) {
+        if (inputs.isEmpty() || columnIndex < 0) {
+            return EMPTY_STRING;
+        }
+
+        final StringBuilder columnBuilder = new StringBuilder();
+
+        for (final String input : inputs) {
+            columnBuilder.append(columnIndex >= input.length() ? EMPTY_STRING : input.charAt(columnIndex));
+        }
+
+        return columnBuilder.toString();
+    }
+
+    /**
      * Returns the frequency of the {@link Character}s in the given {@link CharSequence}. The frequencies will be sorted in descending order of the
      * counts, and not related to the placement of any {@link Character}.
      *
@@ -99,7 +122,7 @@ public final class StringUtils {
      * @param input the {@link CharSequence} to check
      * @return the frequency of the {@link Character}s
      */
-    public static List<Long> characterFrequency(final CharSequence input) {
+    public static List<Long> characterFrequencies(final CharSequence input) {
         return input.chars()
             .mapToObj(character -> (char) character)
             .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
@@ -107,6 +130,32 @@ public final class StringUtils {
             .stream()
             .sorted(IN_DESCENDING_ORDER_OF_LONGS)
             .toList();
+    }
+
+    /**
+     * Given a {@link CharSequence}, returns the indices where the {@code wantedCharacter} can be found.
+     *
+     * <p>
+     * For example, given the {@link CharSequence} {@code aabcdeafgaaahiaj}, and the {@code wantedCharacter} <b>'a'</b>, the indices would be:
+     * <pre>
+     *     [0, 1, 6, 9, 10, 11, 14]
+     * </pre>
+     *
+     * @param input           the {@link CharSequence} to check
+     * @param wantedCharacter the character to find within the {@link CharSequence}
+     * @return the indices of the {@code wantedCharacter}
+     */
+    public static Set<Integer> characterIndexes(final CharSequence input, final char wantedCharacter) {
+        final Set<Integer> index = new HashSet<>();
+
+        for (int i = 0; i < input.length(); i++) {
+            final char characterInInput = input.charAt(i);
+            if (characterInInput == wantedCharacter) {
+                index.add(i);
+            }
+        }
+
+        return index;
     }
 
     /**
@@ -274,6 +323,46 @@ public final class StringUtils {
         }
 
         return Optional.of(matcher.group());
+    }
+
+    /**
+     * Checks for the grouped frequencies of a {@code wantedCharacter} within a {@link String}.
+     *
+     * <p>
+     * For example, given the {@link String} {@code aabcdeafgaaahiaj}, and the {@code wantedCharacter} <b>'a'</b>, the frequencies would be:
+     * <pre>
+     *     [2, 1, 3, 1]
+     * </pre>
+     *
+     * @param input           the {@link String} to check
+     * @param wantedCharacter the wanted character within the {@link String}
+     * @return the frequencies of the {@code wantedCharacter}
+     */
+    public static List<Long> groupingsOfCharacter(final String input, final char wantedCharacter) {
+        final List<Long> frequenciesOfWantedCharacter = new ArrayList<>();
+
+        final char[] inputAsArray = input.toCharArray();
+        char currentCharacterInString = inputAsArray[0];
+        long currentCharacterCount = 0;
+
+        for (final char characterInString : inputAsArray) {
+            if (characterInString == currentCharacterInString) {
+                currentCharacterCount++;
+            } else {
+                if (currentCharacterInString == wantedCharacter) {
+                    frequenciesOfWantedCharacter.add(currentCharacterCount);
+                }
+
+                currentCharacterCount = 1;
+                currentCharacterInString = characterInString;
+            }
+        }
+
+        if (currentCharacterInString == wantedCharacter) {
+            frequenciesOfWantedCharacter.add(currentCharacterCount);
+        }
+
+        return frequenciesOfWantedCharacter;
     }
 
     /**

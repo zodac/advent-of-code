@@ -39,18 +39,7 @@ public final class CharacterGrid extends Grid<Character> {
      * @see Grid#parseGrid(List, Function)
      */
     public static CharacterGrid parse(final List<String> gridValues) {
-        final Character[][] internalArray = parseGrid(gridValues, (character -> character));
+        final Character[][] internalArray = parseGrid(gridValues, character -> character);
         return new CharacterGrid(internalArray);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Uses the {@link Integer} value of the {@link Character} at the given point.
-     */
-    @Override
-    public int valueAt(final int row, final int column) {
-        return internalGrid[row][column];
     }
 }
