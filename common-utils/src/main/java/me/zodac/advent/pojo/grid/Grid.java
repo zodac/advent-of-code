@@ -440,11 +440,8 @@ public class Grid<E> {
     }
 
     @Override
-    public boolean equals(final Object object) {
-        if (this == object) {
-            return true;
-        }
-        return object instanceof final Grid<?> otherGrid && Arrays.deepEquals(internalGrid, otherGrid.internalGrid);
+    public boolean equals(final Object obj) {
+        return this == obj || (obj instanceof final Grid<?> otherGrid && Arrays.deepEquals(internalGrid, otherGrid.internalGrid));
     }
 
     @Override
