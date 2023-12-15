@@ -35,10 +35,7 @@ class Day07Test {
 
     @Test
     void example() {
-        final List<Integer> verticalLocations = ExampleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .stream()
-            .flatMap(List::stream)
-            .toList();
+        final List<Integer> verticalLocations = ExampleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME);
 
         final long minimumMoves1 = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
         assertThat(minimumMoves1)
@@ -51,10 +48,7 @@ class Day07Test {
 
     @Test
     void part1() {
-        final List<Integer> verticalLocations = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .stream()
-            .flatMap(List::stream)
-            .toList();
+        final List<Integer> verticalLocations = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME);
 
         final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
         assertThat(minimumMoves)
@@ -63,10 +57,7 @@ class Day07Test {
 
     @Test
     void part2() {
-        final List<Integer> verticalLocations = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .stream()
-            .flatMap(List::stream)
-            .toList();
+        final List<Integer> verticalLocations = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME);
 
         final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);
         assertThat(minimumMoves)

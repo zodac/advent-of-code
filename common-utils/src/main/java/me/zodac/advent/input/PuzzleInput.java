@@ -137,8 +137,22 @@ public final class PuzzleInput {
      * @see #readLines(String)
      * @see FileUtils#readSingleLineOfCommaSeparatedIntegers(Collection)
      */
-    public static List<List<Integer>> readSingleLineOfCommaSeparatedIntegers(final String inputFilePath) {
+    public static List<Integer> readSingleLineOfCommaSeparatedIntegers(final String inputFilePath) {
         final List<String> lines = readLines(inputFilePath);
         return FileUtils.readSingleLineOfCommaSeparatedIntegers(lines);
+    }
+
+    /**
+     * Reads all lines from a file in {@code src/main/resources} where each line is a row of comma-separated {@link Integer}s.
+     *
+     * @param resourceFilePath file path to be read
+     * @return a {@link List} of each line from the file as a {@link List} of {@link Integer}s, or {@link Collections#emptyList()} if an error occurs
+     * @throws IllegalArgumentException thrown if any value is not a valid {@link Integer} separated by commas
+     * @see #readLines(String)
+     * @see FileUtils#readSingleLineOfCommaSeparatedIntegers(Collection)
+     */
+    public static List<String> readSingleLineOfCommaSeparatedStrings(final String resourceFilePath) {
+        final List<String> lines = readLines(resourceFilePath);
+        return FileUtils.readSingleLineOfCommaSeparatedStrings(lines);
     }
 }

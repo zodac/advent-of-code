@@ -34,10 +34,7 @@ class Day06Test {
 
     @Test
     void example() {
-        final List<Integer> lanternValues = ExampleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .stream()
-            .flatMap(List::stream)
-            .toList();
+        final List<Integer> lanternValues = ExampleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME);
 
         final BigDecimal finalNumberOfLanterns1 = Day06.countLanternFishAfterDays(lanternValues, 80);
         assertThat(finalNumberOfLanterns1)
@@ -50,10 +47,7 @@ class Day06Test {
 
     @Test
     void part1() {
-        final List<Integer> lanternValues = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .stream()
-            .flatMap(List::stream)
-            .toList();
+        final List<Integer> lanternValues = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME);
 
         final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 80);
         assertThat(finalNumberOfLanterns)
@@ -62,10 +56,7 @@ class Day06Test {
 
     @Test
     void part2() {
-        final List<Integer> lanternValues = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .stream()
-            .flatMap(List::stream)
-            .toList();
+        final List<Integer> lanternValues = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME);
 
         final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 256);
         assertThat(finalNumberOfLanterns)

@@ -126,19 +126,41 @@ final class FileUtils {
     }
 
     /**
-     * Given a {@link Collection} of {@link String} lines from a file, where each line is a row of comma-separated {@link Integer}s, reads each line
-     * as a {@link List} of {@link Integer}, returning all lines as a {@link List} of {@link List}s.
+     * Given a {@link List} of {@link Integer} lines from a file, expects only a single line to exist, where that is a row of comma-separated
+     * {@link Integer}s. Returns the line as a {@link List} of {@link Integer}s.
      *
-     * @param lines the input {@link String} lines
-     * @return a {@link List} of each line from the file as a {@link List} of {@link Integer}s, or {@link Collections#emptyList()} if an error occurs
-     * @throws IllegalArgumentException thrown if any value is not a valid {@link Integer} separated by commas
+     * @param lines the input {@link Integer} lines
+     * @return the first line from the file as a {@link List} of {@link Integer}s
+     * @throws IllegalArgumentException thrown if there is more than one line, or the line is not a valid {@link Integer} separated by commas
      */
-    static List<List<Integer>> readSingleLineOfCommaSeparatedIntegers(final Collection<String> lines) {
+    static List<Integer> readSingleLineOfCommaSeparatedIntegers(final Collection<String> lines) {
         try {
             return lines
                 .stream()
                 .map(input -> Arrays.asList(input.split(",")))
                 .map(listOfStrings -> listOfStrings.stream().map(Integer::parseInt).toList())
+                .flatMap(Collection::stream)
+                .toList();
+        } catch (final NumberFormatException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    /**
+     * Given a {@link List} of {@link String} lines from a file, expects only a single line to exist, where that is a row of comma-separated
+     * {@link String}s. Returns the line as a {@link List} of {@link String}s.
+     *
+     * @param lines the input {@link String} lines
+     * @return the first line from the file as a {@link List} of {@link String}s
+     * @throws IllegalArgumentException thrown if there is more than one line, or the line is not a valid {@link String} separated by commas
+     */
+    static List<String> readSingleLineOfCommaSeparatedStrings(final Collection<String> lines) {
+        try {
+            return lines
+                .stream()
+                .map(input -> Arrays.asList(input.split(",")))
+                .map(listOfStrings -> listOfStrings.stream().toList())
+                .flatMap(Collection::stream)
                 .toList();
         } catch (final NumberFormatException e) {
             throw new IllegalArgumentException(e);

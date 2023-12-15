@@ -71,7 +71,8 @@ public final class Day14 {
      * Similarly, In order to avoid executing the cycle {@code numberOfCycles} times, we will attempt to search for a {@link Cycle}. If one is found,
      * we will be able to 'jump-ahead' to the result of {@code numberOfCycles} without having to execute each iteration.
      *
-     * @param grid the {@link Grid} of {@link Character}s
+     * @param grid           the {@link Grid} of {@link Character}s
+     * @param numberOfCycles the number of rotations to perform on the {@link Grid}
      * @return the load after {@code numberOfCycles} full rotations
      * @see CycleFinder
      */
