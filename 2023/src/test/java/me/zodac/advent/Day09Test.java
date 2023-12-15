@@ -34,13 +34,12 @@ public class Day09Test {
     @Test
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
-
-        final long part1Result = Day09.sumOfNextValues(values);
-        assertThat(part1Result)
+        final long sumOfNextValues = Day09.sumOfNextValues(values);
+        assertThat(sumOfNextValues)
             .isEqualTo(114L);
 
-        final long part2Result = Day09.sumOfPreviousValues(values);
-        assertThat(part2Result)
+        final long sumOfPreviousValues = Day09.sumOfPreviousValues(values);
+        assertThat(sumOfPreviousValues)
             .isEqualTo(2L);
     }
 
@@ -48,8 +47,8 @@ public class Day09Test {
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day09.sumOfNextValues(values);
-        assertThat(part1Result)
+        final long sumOfNextValues = Day09.sumOfNextValues(values);
+        assertThat(sumOfNextValues)
             .isEqualTo(2_038_472_161L);
     }
 
@@ -57,8 +56,8 @@ public class Day09Test {
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part2Result = Day09.sumOfPreviousValues(values);
-        assertThat(part2Result)
+        final long sumOfPreviousValues = Day09.sumOfPreviousValues(values);
+        assertThat(sumOfPreviousValues)
             .isEqualTo(1_091L);
     }
 }

@@ -70,6 +70,6 @@ public record ScratchCard(int id, Set<Long> winners) {
      * @return the points for the {@link ScratchCard}
      */
     public long calculatePoints() {
-        return winners.isEmpty() ? 0L : (long) StrictMath.pow(2, winners().size() - 1);
+        return winners.isEmpty() ? 0L : ((Double) StrictMath.pow(2L, winners().size() - 1)).longValue();
     }
 }

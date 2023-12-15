@@ -26,7 +26,7 @@ import java.util.Optional;
  * @param cycleSize       the size of the cycle/loop
  * @param <T>             the type of the final value
  */
-public record CycleResult<T>(Optional<T> finalCycleValue, int cycleSize) {
+public record Cycle<T>(Optional<T> finalCycleValue, int cycleSize) {
 
     /**
      * A cycle was found, and the {@code finalCycleValue} and {@code cycleSize} are populated.
@@ -34,24 +34,24 @@ public record CycleResult<T>(Optional<T> finalCycleValue, int cycleSize) {
      * @param finalCycleValue the final value at the end of the cycle
      * @param cycleSize       the size of the cycle/loop
      * @param <T>             the type of the {@code cycleValue}
-     * @return the successful {@link CycleResult}
+     * @return the successful {@link Cycle}
      */
-    public static <T> CycleResult<T> cycleFound(final T finalCycleValue, final int cycleSize) {
-        return new CycleResult<>(Optional.of(finalCycleValue), cycleSize);
+    public static <T> Cycle<T> cycleFound(final T finalCycleValue, final int cycleSize) {
+        return new Cycle<>(Optional.of(finalCycleValue), cycleSize);
     }
 
     /**
      * No cycle was found, and the {@code finalCycleValue} and {@code cycleSize} are no populated.
      *
      * @param <T> the type of the {@code cycleValue}
-     * @return the unsuccessful {@link CycleResult}
+     * @return the unsuccessful {@link Cycle}
      */
-    public static <T> CycleResult<T> noCycle() {
-        return new CycleResult<>(Optional.empty(), 0);
+    public static <T> Cycle<T> noCycle() {
+        return new Cycle<>(Optional.empty(), 0);
     }
 
     /**
-     * Checks if the {@link CycleResult} was successful and whether a cycle exists.
+     * Checks if the {@link Cycle} was successful and whether a cycle exists.
      *
      * @return {@code true} if a cycle exists and a {@link #cycleValue()} can be returned
      */

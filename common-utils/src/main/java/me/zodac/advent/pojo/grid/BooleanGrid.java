@@ -65,8 +65,8 @@ public final class BooleanGrid extends Grid<Boolean> {
      * @see Grid#parseGrid(List, Function)
      */
     public static BooleanGrid parse(final List<String> gridValues, final char symbolSignifyingTrue) {
-        final Boolean[][] internalArray = parseGrid(gridValues, character -> character == symbolSignifyingTrue);
-        return new BooleanGrid(internalArray);
+        final Grid<Boolean> booleanGrid = parseGrid(gridValues, character -> character == symbolSignifyingTrue);
+        return new BooleanGrid(booleanGrid.getInternalGrid());
     }
 
     /**

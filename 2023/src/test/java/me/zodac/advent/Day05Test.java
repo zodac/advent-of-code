@@ -35,12 +35,12 @@ public class Day05Test {
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day05.findLowestLocationForSeedNumbers(values);
-        assertThat(part1Result)
+        final long lowestLocationForSeedNumbers = Day05.findLowestLocationForSeedNumbers(values);
+        assertThat(lowestLocationForSeedNumbers)
             .isEqualTo(35L);
 
-        final long part2Result = Day05.findLowestLocationForSeedNumberIntervals(values);
-        assertThat(part2Result)
+        final long lowestLocationForSeedNumberIntervals = Day05.findLowestLocationForSeedNumberIntervals(values);
+        assertThat(lowestLocationForSeedNumberIntervals)
             .isEqualTo(46L);
     }
 
@@ -48,8 +48,8 @@ public class Day05Test {
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day05.findLowestLocationForSeedNumbers(values);
-        assertThat(part1Result)
+        final long lowestLocationForSeedNumbers = Day05.findLowestLocationForSeedNumbers(values);
+        assertThat(lowestLocationForSeedNumbers)
             .isEqualTo(178_159_714L);
     }
 
@@ -57,8 +57,8 @@ public class Day05Test {
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part2Result = Day05.findLowestLocationForSeedNumberIntervals(values);
-        assertThat(part2Result)
+        final long lowestLocationForSeedNumberIntervals = Day05.findLowestLocationForSeedNumberIntervals(values);
+        assertThat(lowestLocationForSeedNumberIntervals)
             .isEqualTo(100_165_128L);
     }
 }

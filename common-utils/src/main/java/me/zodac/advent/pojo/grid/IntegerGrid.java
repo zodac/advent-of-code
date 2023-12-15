@@ -69,8 +69,8 @@ public final class IntegerGrid extends Grid<Integer> {
      * @see Grid#parseGrid(List, Function)
      */
     public static IntegerGrid parse(final List<String> gridValues) {
-        final Integer[][] internalArray = parseGrid(gridValues, character -> NumberUtils.toIntOrDefault(character, 0));
-        return new IntegerGrid(internalArray);
+        final Grid<Integer> integerGrid = parseGrid(gridValues, character -> NumberUtils.toIntOrDefault(character, 0));
+        return new IntegerGrid(integerGrid.getInternalGrid());
     }
 
     /**

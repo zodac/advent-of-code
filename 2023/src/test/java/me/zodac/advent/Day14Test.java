@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import me.zodac.advent.input.ExampleInput;
 import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,16 +31,18 @@ import org.junit.jupiter.api.Test;
 public class Day14Test {
 
     private static final String INPUT_FILENAME = "day14.txt";
+    private static final int NUMBER_OF_CYCLES = 1_000_000_000;
 
     @Test
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final Grid<Character> characterGrid = Grid.parseGrid(values, character -> character);
 
-        final long part1Result = Day14.part1(values);
+        final long part1Result = Day14.countLoadAfterSingleNorthTurn(characterGrid);
         assertThat(part1Result)
             .isEqualTo(136L);
 
-        final long part2Result = Day14.part2(values);
+        final long part2Result = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
         assertThat(part2Result)
             .isEqualTo(64L);
     }
@@ -47,8 +50,9 @@ public class Day14Test {
     @Test
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final Grid<Character> characterGrid = Grid.parseGrid(values, character -> character);
 
-        final long part1Result = Day14.part1(values);
+        final long part1Result = Day14.countLoadAfterSingleNorthTurn(characterGrid);
         assertThat(part1Result)
             .isEqualTo(105_461L);
     }
@@ -56,8 +60,9 @@ public class Day14Test {
     @Test
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final Grid<Character> characterGrid = Grid.parseGrid(values, character -> character);
 
-        final long part2Result = Day14.part2(values);
+        final long part2Result = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
         assertThat(part2Result)
             .isEqualTo(102_829L);
     }

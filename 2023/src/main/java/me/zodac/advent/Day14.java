@@ -17,12 +17,10 @@
 
 package me.zodac.advent;
 
-import java.util.List;
 import me.zodac.advent.pojo.RotationDirection;
-import me.zodac.advent.pojo.grid.CharacterGrid;
 import me.zodac.advent.pojo.grid.Grid;
+import me.zodac.advent.search.Cycle;
 import me.zodac.advent.search.CycleFinder;
-import me.zodac.advent.search.CycleResult;
 
 /**
  * Solution for 2023, Day 14.
@@ -33,51 +31,65 @@ public final class Day14 {
 
     private static final char EMPTY_SYMBOL = '.';
     private static final char ROCK_SYMBOL = 'O';
-    private static final int NUMBER_OF_CYCLES = 1_000_000_000;
 
     private Day14() {
 
     }
 
     /**
-     * Part 1.
+     * Given a {@link Grid} of {@link Character}s, containing rocks ({@link #ROCK_SYMBOL}), we migrate all rocks north, until they no longer find an
+     * existing empty space ({@link #EMPTY_SYMBOL}), at which point they come to rest.
      *
-     * @param values the input values
-     * @return the part 1 result
+     * <p>
+     * Once the rocks are settled, we calculate the load of the full {@link Grid}, which is calculated as the sum of the load for each row. And each
+     * row's load is calculated as {@code numberOfRocks} * {@code rowMultiplier}. The {@code rowMultiplier} starts at <b>1</b> for the final row of
+     * the {@link Grid}, and increments by <b>1</b> as iterate up the {@link Grid}.
+     *
+     * @param grid the {@link Grid} of {@link Character}s
+     * @return the load after a single migration north
      */
-    public static long part1(final List<String> values) {
-        final Grid<Character> grid = CharacterGrid.parse(values);
-        final Grid<Character> northTurn = sendNorth(grid);
+    public static long countLoadAfterSingleNorthTurn(final Grid<Character> grid) {
+        final Grid<Character> northTurn = sendRocksNorth(grid);
         return calculateLoad(northTurn);
     }
 
     /**
-     * Part 2.
+     * Given a {@link Grid} of {@link Character}s, containing rocks ({@link #ROCK_SYMBOL}), we migrate all rocks for a full rotation: north -> west ->
+     * south -> east, in that order. Each rock will move in the given direction until they no longer find an existing empty space
+     * ({@link #EMPTY_SYMBOL}), at which point they come to rest. This will be repeated for {@code numberOfCycles} cycles.
      *
-     * @param values the input values
-     * @return the part 2 result
+     * <p>
+     * Once the rocks are settled, we calculate the load of the full {@link Grid}, which is calculated as the sum of the load for each row. And each
+     * row's load is calculated as {@code numberOfRocks} * {@code rowMultiplier}. The {@code rowMultiplier} starts at <b>1</b> for the final row of
+     * the {@link Grid}, and increments by <b>1</b> as iterate up the {@link Grid}.
+     *
+     * <p>
+     * Rather than moving the {@link Grid} elements in all four directions, we will only move them north, rotating the {@link Grid}
+     * {@link RotationDirection#CLOCKWISE} between each direction.
+     *
+     * <p>
+     * Similarly, In order to avoid executing the cycle {@code numberOfCycles} times, we will attempt to search for a {@link Cycle}. If one is found,
+     * we will be able to 'jump-ahead' to the result of {@code numberOfCycles} without having to execute each iteration.
+     *
+     * @param grid the {@link Grid} of {@link Character}s
+     * @return the load after {@code numberOfCycles} full rotations
+     * @see CycleFinder
      */
-    public static long part2(final List<String> values) {
-        final Grid<Character> grid = CharacterGrid.parse(values);
+    public static long calculateLoadAfterFullCycleOfTurns(final Grid<Character> grid, final int numberOfCycles) {
+        final Cycle<Grid<Character>> cycle = CycleFinder.findCycle(grid, Day14::performFullRotation, numberOfCycles);
 
-        final CycleResult<Grid<Character>> cycleResult = CycleFinder.findCycleResult(
-            grid,
-            Day14::performCycle,
-            NUMBER_OF_CYCLES
-        );
-
-        if (!cycleResult.doesCycleExist()) {
-            throw new IllegalStateException(String.format("Unable to find cycle in %s iterations", NUMBER_OF_CYCLES));
+        if (!cycle.doesCycleExist()) {
+            throw new IllegalStateException(String.format("Unable to find cycle in %s iterations", numberOfCycles));
         }
 
-        return calculateLoad(cycleResult.cycleValue());
+        return calculateLoad(cycle.cycleValue());
     }
 
-    private static Grid<Character> performCycle(final Grid<Character> startGrid) {
-        final Grid<Character> northTurn = sendNorth(startGrid);
-        final Grid<Character> westTurn = sendNorth(northTurn.rotate(RotationDirection.CLOCKWISE));
-        final Grid<Character> southTurn = sendNorth(westTurn.rotate(RotationDirection.CLOCKWISE));
-        final Grid<Character> eastTurn = sendNorth(southTurn.rotate(RotationDirection.CLOCKWISE));
+    private static Grid<Character> performFullRotation(final Grid<Character> startGrid) {
+        final Grid<Character> northTurn = sendRocksNorth(startGrid);
+        final Grid<Character> westTurn = sendRocksNorth(northTurn.rotate(RotationDirection.CLOCKWISE));
+        final Grid<Character> southTurn = sendRocksNorth(westTurn.rotate(RotationDirection.CLOCKWISE));
+        final Grid<Character> eastTurn = sendRocksNorth(southTurn.rotate(RotationDirection.CLOCKWISE));
         return eastTurn.rotate(RotationDirection.CLOCKWISE);
     }
 
@@ -101,7 +113,7 @@ public final class Day14 {
         return total;
     }
 
-    private static Grid<Character> sendNorth(final Grid<Character> grid) {
+    private static Grid<Character> sendRocksNorth(final Grid<Character> grid) {
         final Character[][] internalGrid = grid.getInternalGrid();
         final Character[][] newGrid = new Character[internalGrid.length][internalGrid[0].length];
         System.arraycopy(internalGrid[0], 0, newGrid[0], 0, internalGrid[0].length);

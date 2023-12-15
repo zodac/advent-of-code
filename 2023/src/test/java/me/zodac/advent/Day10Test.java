@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import me.zodac.advent.input.ExampleInput;
 import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.pojo.Pipe;
+import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -36,31 +38,37 @@ public class Day10Test {
     @Test
     void example() {
         final List<String> valuesPart1 = ExampleInput.readLines(INPUT_FILENAME_PART_1);
-        final long part1Result = Day10.part1(valuesPart1);
-        assertThat(part1Result)
+        final Grid<Pipe> pipeGridPart1 = Grid.parseGrid(valuesPart1, Pipe::get);
+
+        final long numberOfSteps = Day10.numberOfStepsToFurthestPartOfLoop(pipeGridPart1);
+        assertThat(numberOfSteps)
             .isEqualTo(8L);
 
         final List<String> valuesPart2 = new ArrayList<>(ExampleInput.readLines(INPUT_FILENAME_PART_2));
-        final long part2Result = Day10.part2(valuesPart2);
-        assertThat(part2Result)
+        final Grid<Pipe> pipeGridPart2 = Grid.parseGrid(valuesPart2, Pipe::get);
+
+        final long numberOfPointsInsidePipeLoop = Day10.numberOfPointsInsidePipeLoop(pipeGridPart2);
+        assertThat(numberOfPointsInsidePipeLoop)
             .isEqualTo(10L);
     }
 
     @Test
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME_PART_1);
+        final Grid<Pipe> pipeGrid = Grid.parseGrid(values, Pipe::get);
 
-        final long part1Result = Day10.part1(values);
-        assertThat(part1Result)
+        final long numberOfSteps = Day10.numberOfStepsToFurthestPartOfLoop(pipeGrid);
+        assertThat(numberOfSteps)
             .isEqualTo(6_812L);
     }
 
     @Test
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME_PART_1);
+        final Grid<Pipe> pipeGrid = Grid.parseGrid(values, Pipe::get);
 
-        final long part2Result = Day10.part2(values);
-        assertThat(part2Result)
+        final long numberOfPointsInsidePipeLoop = Day10.numberOfPointsInsidePipeLoop(pipeGrid);
+        assertThat(numberOfPointsInsidePipeLoop)
             .isEqualTo(527L);
     }
 }

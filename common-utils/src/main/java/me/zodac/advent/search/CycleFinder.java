@@ -37,21 +37,21 @@ public final class CycleFinder {
     /**
      * Given an {@code initialState}, we update this state {@code maximumIterations} number of times, using the provided {@code manipulator}
      * {@link Function}. If at any point we find this {@link Function} returns the same value as was seen previously, we assume a cycle has started.
-     * We can then find the first instance of this value occurring, and from that we can derive the {@link CycleResult}. We also perform a
-     * 'jump-ahead' to determine the expected value at the end of the {@code maximumIterations}, which is also included in the {@link CycleResult}.
+     * We can then find the first instance of this value occurring, and from that we can derive the {@link Cycle}. We also perform a
+     * 'jump-ahead' to determine the expected value at the end of the {@code maximumIterations}, which is also included in the {@link Cycle}.
      *
      * <p>
-     * If no cycle is found by the end of {@code maximumIterations}, we end and return {@link CycleResult#noCycle()}.
+     * If no cycle is found by the end of {@code maximumIterations}, we end and return {@link Cycle#noCycle()}.
      *
      * @param initialState      the initial state before starting the cycle
      * @param manipulator       the {@link Function} to perform on the initial state (and all intermediate states)
      * @param maximumIterations the number of times to perform the {@link Function}
      * @param <T>               the type of the input
-     * @return the {@link CycleResult}
+     * @return the {@link Cycle}
      */
-    public static <T> CycleResult<T> findCycleResult(final T initialState,
-                                                     final Function<? super T, ? extends T> manipulator,
-                                                     final int maximumIterations) {
+    public static <T> Cycle<T> findCycle(final T initialState,
+                                         final Function<? super T, ? extends T> manipulator,
+                                         final int maximumIterations) {
         int cycleStartIndex = DEFAULT_CYCLE_START_INDEX;
         final Set<T> seen = new LinkedHashSet<>();
         T mutableInput = initialState;
@@ -66,12 +66,12 @@ public final class CycleFinder {
         }
 
         if (cycleStartIndex == DEFAULT_CYCLE_START_INDEX) {
-            CycleResult.noCycle();
+            return Cycle.noCycle();
         }
 
         final int cycleSize = seen.size() - cycleStartIndex;
         final int index = (cycleStartIndex + ((maximumIterations - cycleStartIndex) % cycleSize)) - 1;
         final T finalCycleValue = new ArrayList<>(seen).get(index);
-        return CycleResult.cycleFound(finalCycleValue, cycleSize);
+        return Cycle.cycleFound(finalCycleValue, cycleSize);
     }
 }

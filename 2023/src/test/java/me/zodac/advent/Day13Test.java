@@ -35,12 +35,12 @@ public class Day13Test {
     void example() {
         final List<List<String>> values = ExampleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
 
-        final long part1Result = Day13.calculateSumOfReflectionValues(values);
-        assertThat(part1Result)
+        final long sumOfReflectionValues = Day13.calculateSumOfReflectionValues(values);
+        assertThat(sumOfReflectionValues)
             .isEqualTo(405L);
 
-        final long part2Result = Day13.calculateSumOfSecondReflectionValues(values);
-        assertThat(part2Result)
+        final long sumOfSecondReflectionValues = Day13.calculateSumOfSecondReflectionValues(values);
+        assertThat(sumOfSecondReflectionValues)
             .isEqualTo(400L);
     }
 
@@ -48,8 +48,8 @@ public class Day13Test {
     void part1() {
         final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
 
-        final long part1Result = Day13.calculateSumOfReflectionValues(values);
-        assertThat(part1Result)
+        final long sumOfReflectionValues = Day13.calculateSumOfReflectionValues(values);
+        assertThat(sumOfReflectionValues)
             .isEqualTo(43_614L);
     }
 
@@ -57,8 +57,8 @@ public class Day13Test {
     void part2() {
         final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
 
-        final long part2Result = Day13.calculateSumOfSecondReflectionValues(values);
-        assertThat(part2Result)
+        final long sumOfSecondReflectionValues = Day13.calculateSumOfSecondReflectionValues(values);
+        assertThat(sumOfSecondReflectionValues)
             .isEqualTo(36_771L);
     }
 }

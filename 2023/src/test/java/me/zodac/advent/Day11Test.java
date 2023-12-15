@@ -35,16 +35,16 @@ public class Day11Test {
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day11.sumOfDistancesBetweenGalaxies(values, 2);
-        assertThat(part1Result)
+        final long sumOfDistancesPart1 = Day11.sumOfDistancesBetweenGalaxies(values, 2);
+        assertThat(sumOfDistancesPart1)
             .isEqualTo(374L);
 
-        final long part2Result = Day11.sumOfDistancesBetweenGalaxies(values, 10);
-        assertThat(part2Result)
+        final long sumOfDistancesPart2Result1 = Day11.sumOfDistancesBetweenGalaxies(values, 10);
+        assertThat(sumOfDistancesPart2Result1)
             .isEqualTo(1_030L);
 
-        final long part2Result2 = Day11.sumOfDistancesBetweenGalaxies(values, 100);
-        assertThat(part2Result2)
+        final long sumOfDistancesPart2Result2 = Day11.sumOfDistancesBetweenGalaxies(values, 100);
+        assertThat(sumOfDistancesPart2Result2)
             .isEqualTo(8_410L);
     }
 
@@ -52,8 +52,8 @@ public class Day11Test {
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part1Result = Day11.sumOfDistancesBetweenGalaxies(values, 2);
-        assertThat(part1Result)
+        final long sumOfDistances = Day11.sumOfDistancesBetweenGalaxies(values, 2);
+        assertThat(sumOfDistances)
             .isEqualTo(10_289_334L);
     }
 
@@ -61,8 +61,8 @@ public class Day11Test {
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long part2Result = Day11.sumOfDistancesBetweenGalaxies(values, 1_000_000);
-        assertThat(part2Result)
+        final long sumOfDistances = Day11.sumOfDistancesBetweenGalaxies(values, 1_000_000);
+        assertThat(sumOfDistances)
             .isEqualTo(649_862_989_626L);
     }
 }

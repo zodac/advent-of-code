@@ -40,7 +40,7 @@ public final class CharacterGrid extends Grid<Character> {
      * @see Grid#parseGrid(List, Function)
      */
     public static CharacterGrid parse(final List<String> gridValues) {
-        final Character[][] internalArray = parseGrid(gridValues, character -> character);
-        return new CharacterGrid(internalArray);
+        final Grid<Character> characterGrid = parseGrid(gridValues, character -> character);
+        return new CharacterGrid(characterGrid.getInternalGrid());
     }
 }

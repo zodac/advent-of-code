@@ -86,12 +86,13 @@ public class Grid<E> {
      * @throws IllegalArgumentException thrown if input is empty
      * @see ArrayUtils#toArrayOfArrays(List, Function)
      */
-    public static <E> E[][] parseGrid(final List<String> gridValues, final Function<? super Character, ? extends E> converter) {
+    public static <E> Grid<E> parseGrid(final List<String> gridValues, final Function<? super Character, ? extends E> converter) {
         if (gridValues.isEmpty()) {
             throw new IllegalArgumentException("Input cannot be empty");
         }
 
-        return ArrayUtils.toArrayOfArrays(gridValues, converter);
+        final E[][] internalArray = ArrayUtils.toArrayOfArrays(gridValues, converter);
+        return new Grid<>(internalArray);
     }
 
     /**
@@ -213,6 +214,19 @@ public class Grid<E> {
     }
 
     /**
+     * Creates a copy of the existing {@link Grid}, then overwrites the value at the given {@link Point} with the supplied {@code value}.
+     *
+     * @param point the {@link Point} to update
+     * @param value the new value to be set
+     * @return the new {@link Grid}
+     */
+    public Grid<E> updateAt(final Point point, final E value) {
+        final E[][] newGrid = ArrayUtils.deepCopy(internalGrid);
+        newGrid[point.x()][point.y()] = value;
+        return new Grid<>(newGrid);
+    }
+
+    /**
      * Sets the corners of the {@link Grid} to the input {@code newValue}.
      *
      * @param newValue the new value for the corners
@@ -300,13 +314,12 @@ public class Grid<E> {
     }
 
     /**
-     * Searches through all values in the {@link Grid} looking for the {@code wantedValue}. Returns all {@link Point}s which contain the
-     * {@code wantedValue}.
+     * Searches through all values in the {@link Grid} looking for the {@code wantedValue}. Returns all {@link Point}s which contain the wanted value.
      *
-     * @param wantedValue the value to search for
-     * @return a {@link Stream} of the {@link Point}s with the {@code wantedValue}
+     * @param predicate the {@link Predicate} defining the wanted value
+     * @return a {@link Stream} of the {@link Point}s which match the {@link Predicate}
      */
-    public Stream<Point> findValue(final E wantedValue) {
+    public Stream<Point> findValue(final Predicate<? super E> predicate) {
         final Collection<Point> points = new HashSet<>();
         for (int i = 0; i < internalGrid.length; i++) {
             final E[] row = internalGrid[i];
@@ -314,7 +327,7 @@ public class Grid<E> {
             for (int j = 0; j < row.length; j++) {
                 final E value = row[j];
 
-                if (value.equals(wantedValue)) {
+                if (predicate.test(value)) {
                     points.add(Point.of(i, j));
                 }
             }
@@ -431,12 +444,7 @@ public class Grid<E> {
         if (this == object) {
             return true;
         }
-
-        if (!(object instanceof final Grid<?> otherGrid)) {
-            return false;
-        }
-
-        return Arrays.deepEquals(internalGrid, otherGrid.internalGrid);
+        return object instanceof final Grid<?> otherGrid && Arrays.deepEquals(internalGrid, otherGrid.internalGrid);
     }
 
     @Override
