@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import me.zodac.advent.pojo.Range;
 import me.zodac.advent.pojo.tuple.Pair;
 
@@ -38,16 +39,11 @@ public final class Day04 {
      * @return the number of complete overlaps
      * @see Range#hasCompleteOverlap(Range)
      */
-    public static long countCompleteOverlaps(final Iterable<Pair<Range, Range>> values) {
-        int count = 0;
-
-        for (final Pair<Range, Range> value : values) {
-            if (value.first().hasCompleteOverlap(value.second())) {
-                count++;
-            }
-        }
-
-        return count;
+    public static long countCompleteOverlaps(final Collection<Pair<Range, Range>> values) {
+        return values
+            .stream()
+            .filter(pair -> pair.first().hasCompleteOverlap(pair.second()))
+            .count();
     }
 
     /**
@@ -57,15 +53,10 @@ public final class Day04 {
      * @return the number of partial overlaps
      * @see Range#hasPartialOverlap(Range)
      */
-    public static long countPartialOverlaps(final Iterable<Pair<Range, Range>> values) {
-        int count = 0;
-
-        for (final Pair<Range, Range> value : values) {
-            if (value.first().hasPartialOverlap(value.second())) {
-                count++;
-            }
-        }
-
-        return count;
+    public static long countPartialOverlaps(final Collection<Pair<Range, Range>> values) {
+        return values
+            .stream()
+            .filter(pair -> pair.first().hasPartialOverlap(pair.second()))
+            .count();
     }
 }

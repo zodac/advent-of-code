@@ -117,7 +117,7 @@ public final class Day05 {
         return mappingsByName;
     }
 
-    private static long findMinimumLocationForSeed(final Map<Mapping, ? extends List<String>> mappingsByName, final Iterable<Interval> intervals) {
+    private static long findMinimumLocationForSeed(final Map<Mapping, ? extends List<String>> mappingsByName, final Collection<Interval> intervals) {
         long minimumLocation = Long.MAX_VALUE;
 
         for (final Interval seedInterval : intervals) {

@@ -146,7 +146,7 @@ class LoopFinder {
         };
     }
 
-    private static Pair<Point, Point> findNextPiece(final Iterable<Direction> directionsToCheck,
+    private static Pair<Point, Point> findNextPiece(final Collection<Direction> directionsToCheck,
                                                     final Pair<Point, Point> currentState,
                                                     final Map<Direction, Pair<Point, Pipe>> nextPointsByDirection) {
         for (final Direction directionToCheck : directionsToCheck) {

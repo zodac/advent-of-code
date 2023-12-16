@@ -64,7 +64,7 @@ public final class Day03 {
      * @param values the input {@link String}s
      * @return the sum of all common {@link Character} values
      */
-    public static long sumCommonCharacterValuesInStringHalves(final Iterable<String> values) {
+    public static long sumCommonCharacterValuesInStringHalves(final Collection<String> values) {
         long total = 0L;
 
         for (final String value : values) {
@@ -120,6 +120,6 @@ public final class Day03 {
 
     private static <E> E getFirst(final Set<E> set) {
         final List<E> temp = new ArrayList<>(set);
-        return temp.get(0);
+        return temp.getFirst();
     }
 }

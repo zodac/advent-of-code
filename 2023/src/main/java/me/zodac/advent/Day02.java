@@ -73,7 +73,7 @@ public final class Day02 {
      * @param ballGames the {@link BallGame}s to check
      * @return the sum of the 'power' of all {@link BallGame}s
      */
-    public static long sumOfPowersOfGames(final Iterable<BallGame> ballGames) {
+    public static long sumOfPowersOfGames(final Collection<BallGame> ballGames) {
         long total = 0L;
         for (final BallGame ballGame : ballGames) {
             final Map<Colour, Integer> minimumNeededCountByColour = new EnumMap<>(Colour.class);

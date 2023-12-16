@@ -41,7 +41,7 @@ public final class Day03 {
      * @param values the {@link Direction}s
      * @return the number of unique houses
      */
-    public static int countUniqueHouses(final Iterable<Direction> values) {
+    public static int countUniqueHouses(final Collection<Direction> values) {
         final Collection<Point> visitedHouses = new HashSet<>();
         Point currentPoint = Point.atOrigin();
 

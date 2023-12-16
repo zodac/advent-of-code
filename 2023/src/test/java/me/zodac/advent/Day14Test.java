@@ -38,12 +38,12 @@ public class Day14Test {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
         final Grid<Character> characterGrid = Grid.parseGrid(values, character -> character);
 
-        final long part1Result = Day14.countLoadAfterSingleNorthTurn(characterGrid);
-        assertThat(part1Result)
+        final long loadAfterSingleNorthTurn = Day14.countLoadAfterSingleNorthTurn(characterGrid);
+        assertThat(loadAfterSingleNorthTurn)
             .isEqualTo(136L);
 
-        final long part2Result = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
-        assertThat(part2Result)
+        final long loadAfterFullCycleOfTurns = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
+        assertThat(loadAfterFullCycleOfTurns)
             .isEqualTo(64L);
     }
 
@@ -52,8 +52,8 @@ public class Day14Test {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
         final Grid<Character> characterGrid = Grid.parseGrid(values, character -> character);
 
-        final long part1Result = Day14.countLoadAfterSingleNorthTurn(characterGrid);
-        assertThat(part1Result)
+        final long loadAfterSingleNorthTurn = Day14.countLoadAfterSingleNorthTurn(characterGrid);
+        assertThat(loadAfterSingleNorthTurn)
             .isEqualTo(105_461L);
     }
 
@@ -62,8 +62,8 @@ public class Day14Test {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
         final Grid<Character> characterGrid = Grid.parseGrid(values, character -> character);
 
-        final long part2Result = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
-        assertThat(part2Result)
+        final long loadAfterFullCycleOfTurns = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
+        assertThat(loadAfterFullCycleOfTurns)
             .isEqualTo(102_829L);
     }
 }

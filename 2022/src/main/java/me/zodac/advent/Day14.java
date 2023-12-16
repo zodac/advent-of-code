@@ -62,7 +62,7 @@ public final class Day14 {
      * @param values the input {@link Point}s
      * @return the total number of grains dropped before falling past the floor
      */
-    public static long countGrainsOfSandBeforeFallingPastTheFloor(final Iterable<? extends List<Point>> values) {
+    public static long countGrainsOfSandBeforeFallingPastTheFloor(final Collection<? extends List<Point>> values) {
         final Collection<Point> filledPoints = fillInputPoints(values);
 
         final int floor = filledPoints
@@ -108,14 +108,14 @@ public final class Day14 {
      * @param values the input {@link Point}s
      * @return the total number of grains dropped before reaching the {@link #SAND_SPAWN_POINT}
      */
-    public static long countGrainsOfSandBeforeReachingSandSpawnPoint(final Iterable<? extends List<Point>> values) {
+    public static long countGrainsOfSandBeforeReachingSandSpawnPoint(final Collection<? extends List<Point>> values) {
         final Collection<Point> filledPoints = fillInputPoints(values);
 
         final int floor = filledPoints
             .stream()
             .mapToInt(Point::y)
             .max()
-            .orElse(0) + 2; // Floor is two spaced below last filled Point
+            .orElse(0) + 2; // Floor is two spaces below last filled Point
 
         // Extend floor, to allow sand to keep heaping up
         final Collection<Point> extendedFloorPoints = generateFloorPoints(floor);
@@ -131,7 +131,7 @@ public final class Day14 {
         return filledPoints.size() - initialNumberOfFilledPoints;
     }
 
-    private static Collection<Point> fillInputPoints(final Iterable<? extends List<Point>> values) {
+    private static Collection<Point> fillInputPoints(final Collection<? extends List<Point>> values) {
         final Collection<Point> filledPoints = new HashSet<>();
 
         for (final List<Point> pointsForLine : values) {
@@ -158,8 +158,7 @@ public final class Day14 {
         return floorPoints;
     }
 
-    // As the Y coordinate increases as you go down, but out Point values decrease as you go down, we use the 'UP'
-    // direction in the logic below, which can be confusing!
+    // As the Y coordinate increases as you go down, but our Point values decrease as you go down, we use unexpected deltaX and deltaY values
     private static Point dropSandPoint(final Collection<? super Point> filledPoints, final Point startSandPoint) {
         final Point possibleDownPoint = startSandPoint.move(0, 1);
         if (!filledPoints.contains(possibleDownPoint)) {

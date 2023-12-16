@@ -72,7 +72,7 @@ public final class Day15 {
      * @param sequenceElements the input {@link SequenceElement}s from which to calculate the total focus power
      * @return the sum of focus powers
      */
-    public static long calculateTotalFocusPower(final Iterable<SequenceElement> sequenceElements) {
+    public static long calculateTotalFocusPower(final Collection<SequenceElement> sequenceElements) {
         final Map<Integer, Map<String, Integer>> boxes = new LinkedHashMap<>();
 
         for (final SequenceElement sequenceElement : sequenceElements) {

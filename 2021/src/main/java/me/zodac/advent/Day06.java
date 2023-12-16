@@ -19,6 +19,7 @@ package me.zodac.advent;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public final class Day06 {
      * @throws IllegalStateException possible to cause a long overflow if the number of {@code lanternfish} or {@code numberOfDays} is too high
      *                               (exponential growth, don't you know?)
      */
-    public static BigDecimal countLanternFishAfterDays(final Iterable<Integer> lanternFish, final int numberOfDays) {
+    public static BigDecimal countLanternFishAfterDays(final Collection<Integer> lanternFish, final int numberOfDays) {
         // Rather than storing the lanternfish themselves (which explodes in size), we group the fish by their timers and simply increment/decrement
         final BigDecimal[] lanternFishByTimer = new BigDecimal[NUMBER_OF_TIMERS_FOR_LANTERNFISH];
         Arrays.fill(lanternFishByTimer, BigDecimal.ZERO);

@@ -76,7 +76,7 @@ public final class Day13 {
         return routesIncludingSelf;
     }
 
-    private static Set<String> getAllSources(final Iterable<Route> routes) {
+    private static Set<String> getAllSources(final Collection<Route> routes) {
         final Set<String> sources = new HashSet<>();
         for (final Route route : routes) {
             sources.add(route.from());

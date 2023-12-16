@@ -59,7 +59,7 @@ public final class Day09 {
      * @param numberOfTails the number of tails following the head
      * @return the number of unique {@link Point}s visited by the last tail
      */
-    public static long uniquePointsVisitedByTail(final Iterable<Movement> movements, final int numberOfTails) {
+    public static long uniquePointsVisitedByTail(final Collection<Movement> movements, final int numberOfTails) {
         Point head = Point.atOrigin();
         final Point[] tails = createTails(numberOfTails);
 

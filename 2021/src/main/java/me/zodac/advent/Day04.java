@@ -19,6 +19,7 @@ package me.zodac.advent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +54,7 @@ public final class Day04 {
      * @return the final score of the first winning {@link BingoBoard}
      * @see BingoBoard#isWinner()
      */
-    public static long finalScoreOfFirstWinningBingoBoard(final Iterable<Integer> bingoNumbersToDraw, final List<String> bingoBoardValues) {
+    public static long finalScoreOfFirstWinningBingoBoard(final Collection<Integer> bingoNumbersToDraw, final List<String> bingoBoardValues) {
         final List<BingoBoard> bingoBoards = convertBingoBoards(bingoBoardValues);
         final Pair<Integer, Optional<BingoBoard>> firstWinningNumberAndBingoBoard = drawNumbersAndReturnFirstWinner(bingoNumbersToDraw, bingoBoards);
 
@@ -77,7 +78,7 @@ public final class Day04 {
      * @return the final score of the last winning {@link BingoBoard}
      * @see BingoBoard#isWinner()
      */
-    public static long finalScoreOfLastWinningBingoBoard(final Iterable<Integer> bingoNumbersToDraw, final List<String> bingoBoardValues) {
+    public static long finalScoreOfLastWinningBingoBoard(final Collection<Integer> bingoNumbersToDraw, final List<String> bingoBoardValues) {
         final List<BingoBoard> bingoBoards = convertBingoBoards(bingoBoardValues);
         final Pair<Integer, Optional<BingoBoard>> lastWinningNumberAndBingoBoard = drawNumbersAndReturnLastWinner(bingoNumbersToDraw, bingoBoards);
 
@@ -88,8 +89,8 @@ public final class Day04 {
         return lastWinningNumberAndBingoBoard.second().get().sum() * lastWinningNumberAndBingoBoard.first();
     }
 
-    private static Pair<Integer, Optional<BingoBoard>> drawNumbersAndReturnFirstWinner(final Iterable<Integer> pickedNumbers,
-                                                                                       final Iterable<BingoBoard> bingoBoards) {
+    private static Pair<Integer, Optional<BingoBoard>> drawNumbersAndReturnFirstWinner(final Collection<Integer> pickedNumbers,
+                                                                                       final Collection<BingoBoard> bingoBoards) {
         for (final int pickedNumber : pickedNumbers) {
             for (final BingoBoard bingoBoard : bingoBoards) {
                 bingoBoard.mark(pickedNumber);
@@ -103,7 +104,7 @@ public final class Day04 {
         return Pair.ofSingle(INVALID_WINNING_NUMBER);
     }
 
-    private static Pair<Integer, Optional<BingoBoard>> drawNumbersAndReturnLastWinner(final Iterable<Integer> bingoNumbers,
+    private static Pair<Integer, Optional<BingoBoard>> drawNumbersAndReturnLastWinner(final Collection<Integer> bingoNumbers,
                                                                                       final List<BingoBoard> bingoBoards) {
         Pair<Integer, Optional<BingoBoard>> lastWinner = Pair.ofSingle(INVALID_WINNING_NUMBER);
 

@@ -84,7 +84,7 @@ public final class Day14 {
         return Collections.max(scoresByReindeer.values());
     }
 
-    private static Collection<Reindeer> getFurthestReindeerForTime(final Iterable<Reindeer> reindeers, final int travelTime) {
+    private static Collection<Reindeer> getFurthestReindeerForTime(final Collection<Reindeer> reindeers, final int travelTime) {
         final Collection<Reindeer> furthestReindeers = new HashSet<>();
         long distanceOfFurthestReindeer = Long.MIN_VALUE;
 

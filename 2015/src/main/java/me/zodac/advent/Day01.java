@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public final class Day01 {
      * @param values the input defining whether to go up or down
      * @return the final floor
      */
-    public static int findResultFloor(final Iterable<Character> values) {
+    public static int findResultFloor(final Collection<Character> values) {
         int currentFloor = 0;
 
         for (final char character : values) {

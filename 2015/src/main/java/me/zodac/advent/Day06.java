@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.grid.BooleanGrid;
 import me.zodac.advent.pojo.grid.GridInstruction;
@@ -42,7 +43,7 @@ public final class Day06 {
      * @param instructionsAndPoints the {@link Point}s defining a box on the {@link BooleanGrid}, with the {@link GridInstruction}
      * @return the number of {@link BooleanGrid} {@link Point}s that have been turned on
      */
-    public static long countSwitchedOnLights(final Iterable<Triple<GridInstruction, Point, Point>> instructionsAndPoints) {
+    public static long countSwitchedOnLights(final Collection<Triple<GridInstruction, Point, Point>> instructionsAndPoints) {
         final BooleanGrid booleanGrid = BooleanGrid.ofSize(GRID_SIZE);
 
         for (final Triple<GridInstruction, Point, Point> instructionAndPoints : instructionsAndPoints) {
@@ -61,7 +62,7 @@ public final class Day06 {
      * @param instructionsAndPoints the {@link Point}s defining a box on the {@link IntegerGrid}, with the {@link GridInstruction}
      * @return the total value of all {@link IntegerGrid} {@link Point}s
      */
-    public static long calculateBrightness(final Iterable<Triple<GridInstruction, Point, Point>> instructionsAndPoints) {
+    public static long calculateBrightness(final Collection<Triple<GridInstruction, Point, Point>> instructionsAndPoints) {
         final IntegerGrid integerGrid = IntegerGrid.ofSize(GRID_SIZE);
 
         for (final Triple<GridInstruction, Point, Point> instructionAndPoints : instructionsAndPoints) {

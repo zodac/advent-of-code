@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.grid.AllowedLineType;
 import me.zodac.advent.pojo.grid.IntegerGrid;
@@ -41,7 +42,7 @@ public final class Day05 {
      * @see Line#isHorizontal()
      * @see Line#isVertical()
      */
-    public static int addHorizontalAndVerticalLinesAndReturnOverlap(final Iterable<Line> coordinateLines) {
+    public static int addHorizontalAndVerticalLinesAndReturnOverlap(final Collection<Line> coordinateLines) {
         final int maxGridSize = getMaxGridSize(coordinateLines);
         final IntegerGrid integerGrid = IntegerGrid.ofSize(maxGridSize);
 
@@ -62,7 +63,7 @@ public final class Day05 {
      * @see Line#isVertical()
      * @see Line#isPerfectDiagonal()
      */
-    public static int addAllLinesAndReturnOverlap(final Iterable<Line> coordinateLines) {
+    public static int addAllLinesAndReturnOverlap(final Collection<Line> coordinateLines) {
         final int maxGridSize = getMaxGridSize(coordinateLines);
         final IntegerGrid integerGrid = IntegerGrid.ofSize(maxGridSize);
 
@@ -73,7 +74,7 @@ public final class Day05 {
         return integerGrid.numberOfOverlaps();
     }
 
-    private static int getMaxGridSize(final Iterable<Line> coordinateLines) {
+    private static int getMaxGridSize(final Collection<Line> coordinateLines) {
         int max = 0;
         for (final Line coordinateLine : coordinateLines) {
             if (coordinateLine.maxCoordinateValue() > max) {

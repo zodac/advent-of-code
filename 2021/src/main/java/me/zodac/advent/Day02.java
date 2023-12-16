@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Movement;
 
@@ -43,7 +44,7 @@ public final class Day02 {
      * @param movements the {@link Movement}s to iterate over
      * @return the magnitude of all vertical and horizontal {@link Movement}s
      */
-    public static long magnitudeOfAllMovements(final Iterable<Movement> movements) {
+    public static long magnitudeOfAllMovements(final Collection<Movement> movements) {
         long horizontal = 0L;
         long vertical = 0L;
 
@@ -76,7 +77,7 @@ public final class Day02 {
      * @param movements the {@link Movement}s to iterate over
      * @return the magnitude of all vertical and horizontal {@link Movement}s
      */
-    public static long magnitudeOfAllMovementsWithAim(final Iterable<Movement> movements) {
+    public static long magnitudeOfAllMovementsWithAim(final Collection<Movement> movements) {
         long horizontal = 0L;
         long vertical = 0L;
         long aim = 0L;

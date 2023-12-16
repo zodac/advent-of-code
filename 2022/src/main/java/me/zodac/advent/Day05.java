@@ -18,6 +18,7 @@
 package me.zodac.advent;
 
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -72,7 +73,7 @@ public final class Day05 {
      * @return the final constructed {@link String} code
      */
     public static String moveElementsBetweenStacksLastInFirstOutOrderAndCreateCode(final Map<Integer, Deque<String>> stacksById,
-                                                                                   final Iterable<StackInstruction> stackInstructions) {
+                                                                                   final Collection<StackInstruction> stackInstructions) {
         return moveElementsBetweenStacks(stacksById, stackInstructions, false);
     }
 
@@ -110,12 +111,12 @@ public final class Day05 {
      * @return the final constructed {@link String} code
      */
     public static String moveElementsBetweenStacksRetainingOrderAndCreateCode(final Map<Integer, Deque<String>> stacksById,
-                                                                              final Iterable<StackInstruction> stackInstructions) {
+                                                                              final Collection<StackInstruction> stackInstructions) {
         return moveElementsBetweenStacks(stacksById, stackInstructions, true);
     }
 
     private static String moveElementsBetweenStacks(final Map<Integer, Deque<String>> stacksById,
-                                                    final Iterable<StackInstruction> stackInstructions,
+                                                    final Collection<StackInstruction> stackInstructions,
                                                     final boolean retainOrderOfMultipleElements
     ) {
         for (final StackInstruction stackInstruction : stackInstructions) {

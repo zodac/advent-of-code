@@ -18,6 +18,7 @@
 package me.zodac.advent;
 
 import java.nio.file.Files;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import me.zodac.advent.filesystem.Directory;
@@ -52,7 +53,7 @@ public final class Day07 {
      * @param commands the input {@link String}s
      * @return the total size of all valid {@link Directory}s
      */
-    public static long totalSizeOfDirectoriesOverThreshold(final Iterable<String> commands) {
+    public static long totalSizeOfDirectoriesOverThreshold(final Collection<String> commands) {
         final Map<String, Long> sizeByDirPath = getDirectorySizesByDirectoryPath(commands);
         return sizeByDirPath
             .values()
@@ -70,7 +71,7 @@ public final class Day07 {
      * @param commands the input {@link String}s
      * @return the size of the smallest {@link Directory} that can be deleted to free enough disk space
      */
-    public static long smallestDirectorySizeToDeleteToMeetSpaceRequirepments(final Iterable<String> commands) {
+    public static long smallestDirectorySizeToDeleteToMeetSpaceRequirements(final Collection<String> commands) {
         final Map<String, Long> directorySizeByPath = getDirectorySizesByDirectoryPath(commands);
 
         final long totalUsedSpace = directorySizeByPath.getOrDefault(Directory.ROOT_DIRECTORY_PATH, Long.MAX_VALUE);
@@ -86,7 +87,7 @@ public final class Day07 {
             .orElse(0L);
     }
 
-    private static Map<String, Long> getDirectorySizesByDirectoryPath(final Iterable<String> commands) {
+    private static Map<String, Long> getDirectorySizesByDirectoryPath(final Collection<String> commands) {
         final Map<String, Directory> dirsByPath = parseDirectoryStructure(commands);
 
         final Map<String, Long> directorySizeByPath = new HashMap<>();
@@ -97,7 +98,7 @@ public final class Day07 {
         return directorySizeByPath;
     }
 
-    private static Map<String, Directory> parseDirectoryStructure(final Iterable<String> commands) {
+    private static Map<String, Directory> parseDirectoryStructure(final Collection<String> commands) {
         final Map<String, Directory> directoriesByPath = new HashMap<>();
         final Directory rootDirectory = Directory.createRoot();
 

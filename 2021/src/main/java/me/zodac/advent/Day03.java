@@ -18,6 +18,7 @@
 package me.zodac.advent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.SequencedCollection;
 import me.zodac.advent.pojo.BitParityCount;
@@ -68,7 +69,7 @@ public final class Day03 {
      * @param binaryValues the values to be checked
      * @return the power consumption
      * @see BinaryConversionUtils
-     * @see BitParityCount#createForIndexOfBinaryValues(Iterable, int)
+     * @see BitParityCount#createForIndexOfBinaryValues(Collection, int)
      */
     public static long calculatePowerConsumption(final SequencedCollection<String> binaryValues) {
         if (binaryValues.isEmpty()) {
@@ -141,7 +142,7 @@ public final class Day03 {
      * @param binaryValues the values to be checked
      * @return the life support rating
      * @see BinaryConversionUtils
-     * @see BitParityCount#createForIndexOfBinaryValues(Iterable, int)
+     * @see BitParityCount#createForIndexOfBinaryValues(Collection, int)
      */
     public static long calculateLifeSupportRating(final SequencedCollection<String> binaryValues) {
         if (binaryValues.isEmpty()) {

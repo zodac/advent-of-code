@@ -222,17 +222,10 @@ public final class CollectionUtils {
      * @param wantedValue      the value to look for
      * @param <E>        the type of the {@link Collection}
      * @return the index of the {@code value}, or <b>-1</b>
+     * @see List#indexOf(Object)
      */
-    // TODO: Remove Iterables
-    public static <E> int indexOf(final Iterable<? extends E> collection, final E wantedValue) {
-        int result = 0;
-        for (final E element : collection) {
-            if (element.equals(wantedValue)) {
-                return result;
-            }
-            result++;
-        }
-        return -1;
+    public static <E> int indexOf(final Collection<? extends E> collection, final E wantedValue) {
+        return new ArrayList<>(collection).indexOf(wantedValue);
     }
 
     /**

@@ -89,7 +89,7 @@ public final class Day08 {
         return MathUtils.lowestCommonMultiple(countsForStartNodes);
     }
 
-    private static Map<String, Node> parseNodes(final Iterable<String> values) {
+    private static Map<String, Node> parseNodes(final Collection<String> values) {
         final Map<String, Node> nodesByName = new HashMap<>();
 
         for (final String value : values) {

@@ -64,7 +64,7 @@ public final class Day19 {
      * @param replacements the possible {@link Replacement}s
      * @return the number of distinct replacement molecules that can be generated
      */
-    public static long numberOfDistinctReplacementMolecules(final String molecule, final Iterable<Replacement<String>> replacements) {
+    public static long numberOfDistinctReplacementMolecules(final String molecule, final Collection<Replacement<String>> replacements) {
         final Collection<String> newMolecules = new HashSet<>();
         for (final Replacement<String> replacement : replacements) {
             int indexInMolecule = molecule.indexOf(replacement.source());
@@ -86,7 +86,7 @@ public final class Day19 {
      *
      * <p>
      * Rather than convert the input to the wanted output by applying all combinations of replacements, we work backwards on the output. Similar to
-     * {@link #numberOfDistinctReplacementMolecules(String, Iterable)}, we will attempt to replace the input until we are left only with the
+     * {@link #numberOfDistinctReplacementMolecules(String, Collection)}, we will attempt to replace the input until we are left only with the
      * {@code input}.
      *
      * <p>
@@ -100,7 +100,7 @@ public final class Day19 {
      */
     public static long minimumStepsToCreateOutputFromInput(final String input,
                                                            final String wantedMolecule,
-                                                           final Iterable<Replacement<String>> replacements) {
+                                                           final Collection<Replacement<String>> replacements) {
         String remainingMolecule = wantedMolecule;
         int count = 0;
 

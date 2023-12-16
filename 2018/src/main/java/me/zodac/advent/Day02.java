@@ -46,7 +46,7 @@ public final class Day02 {
      * @param boxIds the {@link String}s of the box IDs
      * @return the checksum of the box IDs
      */
-    public static long checksumOfBoxIds(final Iterable<String> boxIds) {
+    public static long checksumOfBoxIds(final Collection<String> boxIds) {
         int numberOfDoubleCharacters = 0;
         int numberOfTripleCharacters = 0;
 

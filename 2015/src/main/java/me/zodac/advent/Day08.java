@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 /**
@@ -47,7 +48,7 @@ public final class Day08 {
      * @param values the {@link String}s
      * @return the difference between the length of the literal and in-memory {@link String}s
      */
-    public static long calculateDiffOfLiteralAndInMemoryLength(final Iterable<? extends CharSequence> values) {
+    public static long calculateDiffOfLiteralAndInMemoryLength(final Collection<? extends CharSequence> values) {
         int totalLiteralLength = 0;
         int totalInMemoryLength = 0;
 
@@ -85,7 +86,7 @@ public final class Day08 {
      * @param values the {@link String}s
      * @return the difference between the length of the escaped and literal {@link String}s
      */
-    public static long calculateDiffOfEscapedAndLiteralLength(final Iterable<String> values) {
+    public static long calculateDiffOfEscapedAndLiteralLength(final Collection<String> values) {
         int totalEscapedLength = 0;
         int totalLiteralLength = 0;
 

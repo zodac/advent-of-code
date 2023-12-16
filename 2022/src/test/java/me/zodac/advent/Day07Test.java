@@ -35,12 +35,12 @@ class Day07Test {
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
 
-        final long result1 = Day07.totalSizeOfDirectoriesOverThreshold(values);
-        assertThat(result1)
+        final long totalSize = Day07.totalSizeOfDirectoriesOverThreshold(values);
+        assertThat(totalSize)
             .isEqualTo(95_437L);
 
-        final long result2 = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirepments(values);
-        assertThat(result2)
+        final long smallestDirectorySize = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirements(values);
+        assertThat(smallestDirectorySize)
             .isEqualTo(24_933_642L);
     }
 
@@ -48,8 +48,8 @@ class Day07Test {
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long result = Day07.totalSizeOfDirectoriesOverThreshold(values);
-        assertThat(result)
+        final long totalSize = Day07.totalSizeOfDirectoriesOverThreshold(values);
+        assertThat(totalSize)
             .isEqualTo(1_648_397L);
     }
 
@@ -57,8 +57,8 @@ class Day07Test {
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
 
-        final long result = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirepments(values);
-        assertThat(result)
+        final long smallestDirectorySize = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirements(values);
+        assertThat(smallestDirectorySize)
             .isEqualTo(1_815_525L);
     }
 }

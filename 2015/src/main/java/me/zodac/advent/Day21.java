@@ -44,7 +44,7 @@ public final class Day21 {
      * @param boss                  the boss {@link Warrior} to defeat
      * @return the cost of the cheapest {@link Equipment} combination that successfully defeats the {@link Warrior}
      */
-    public static long costOfCheapestEquipmentThatDefeatsBoss(final Iterable<? extends List<Equipment>> equipmentCombinations,
+    public static long costOfCheapestEquipmentThatDefeatsBoss(final Collection<? extends List<Equipment>> equipmentCombinations,
                                                               final Warrior boss) {
         int lowestCost = Integer.MAX_VALUE;
 
@@ -92,7 +92,7 @@ public final class Day21 {
             .orElse(0L);
     }
 
-    private static Triple<Integer, Integer, Integer> getTotalEquipmentStats(final Iterable<? extends Equipment> equipments) {
+    private static Triple<Integer, Integer, Integer> getTotalEquipmentStats(final Collection<? extends Equipment> equipments) {
         int totalCost = 0;
         int totalAttack = 0;
         int totalDefence = 0;

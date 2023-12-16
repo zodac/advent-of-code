@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public final class Day07 {
      * @param values the input {@link String} values
      * @return the created {@link Day07} instance
      */
-    public static Day07 create(final Iterable<String> values) {
+    public static Day07 create(final Collection<String> values) {
         final Map<String, Pair<BitwiseOperator, String>> commandByLabel = new HashMap<>();
         for (final String value : values) {
             final String[] commandAndOutputLabel = OUTPUT_PATTERN.split(value, 2);

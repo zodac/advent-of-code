@@ -17,11 +17,13 @@
 
 package me.zodac.advent.pojo;
 
+import java.util.Collection;
+
 /**
  * Simple POJO keeping track of the count of the bit parity (the '0's and '1's) of a binary {@link String}.
  *
  * @param zeros the number of zeros
- * @param ones the number of ones
+ * @param ones  the number of ones
  */
 public record BitParityCount(int zeros, int ones) {
 
@@ -29,7 +31,7 @@ public record BitParityCount(int zeros, int ones) {
     private static final char ONE_BIT = '1';
 
     /**
-     * Given an {@link Iterable} of {@link String} binary values, we calculate the {@link BitParityCount} for a specific {@code index} of all values.
+     * Given a {@link Collection} of {@link String} binary values, we calculate the {@link BitParityCount} for a specific {@code index} of all values.
      *
      * <p>
      * For example, take the input:
@@ -49,7 +51,7 @@ public record BitParityCount(int zeros, int ones) {
      * @param index        the index of the bit we are interested in
      * @return the {@link BitParityCount} for the index of the provided binary {@link String}s.
      */
-    public static BitParityCount createForIndexOfBinaryValues(final Iterable<String> binaryValues, final int index) {
+    public static BitParityCount createForIndexOfBinaryValues(final Collection<String> binaryValues, final int index) {
         int zeros = 0;
         int ones = 0;
 

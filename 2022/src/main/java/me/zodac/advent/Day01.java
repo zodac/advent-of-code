@@ -54,7 +54,7 @@ public final class Day01 {
      * @param values the input calorie values
      * @return the sum of the calories in the largest group (by value, not size)
      */
-    public static long valueOfLargestGroupOfCalories(final Iterable<String> values) {
+    public static long valueOfLargestGroupOfCalories(final Collection<String> values) {
         return getCalorieTotals(values)
             .stream()
             .mapToLong(l -> l)
@@ -85,7 +85,7 @@ public final class Day01 {
      * @param numberOfGroups the number of the largest groups to count
      * @return the sum of the calories in the largest {@code numberOfGroups} groups (by value, not size)
      */
-    public static long valueOfLargestGroupsOfCalories(final Iterable<String> values, final int numberOfGroups) {
+    public static long valueOfLargestGroupsOfCalories(final Collection<String> values, final int numberOfGroups) {
         return getCalorieTotals(values)
             .stream()
             .sorted(Collections.reverseOrder())
@@ -94,7 +94,7 @@ public final class Day01 {
             .sum();
     }
 
-    private static Collection<Long> getCalorieTotals(final Iterable<String> values) {
+    private static Collection<Long> getCalorieTotals(final Collection<String> values) {
         final Collection<Long> elves = new ArrayList<>();
 
         long currentTotal = 0L;

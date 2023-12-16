@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -82,14 +83,11 @@ public final class Day02 {
      * @param values the rock-paper-scissors games
      * @return the final score following the guide with player moves
      */
-    public static long finalScoreFollowingGuideWithMoves(final Iterable<String> values) {
-        long total = 0L;
-
-        for (final String value : values) {
-            total += PART_1_VALUES.getOrDefault(value, 0);
-        }
-
-        return total;
+    public static long finalScoreFollowingGuideWithMoves(final Collection<String> values) {
+        return values
+            .stream()
+            .mapToInt(value -> PART_1_VALUES.getOrDefault(value, 0))
+            .sum();
     }
 
     /**
@@ -124,13 +122,10 @@ public final class Day02 {
      * @param values the rock-paper-scissors games
      * @return the final score following the guide with end results
      */
-    public static long finalScoreFollowingGuideWithResults(final Iterable<String> values) {
-        long total = 0L;
-
-        for (final String value : values) {
-            total += PART_2_VALUES.getOrDefault(value, 0);
-        }
-
-        return total;
+    public static long finalScoreFollowingGuideWithResults(final Collection<String> values) {
+        return values
+            .stream()
+            .mapToInt(value -> PART_2_VALUES.getOrDefault(value, 0))
+            .sum();
     }
 }

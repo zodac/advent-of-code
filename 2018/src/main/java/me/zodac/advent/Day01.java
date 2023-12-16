@@ -59,7 +59,7 @@ public final class Day01 {
      * @return the first frequency reached twice
      * @throws IllegalArgumentException thrown if the provided input does not have any frequency that is reached twice
      */
-    public static long findFirstFrequencyReachedTwice(final Iterable<Integer> frequencies) {
+    public static long findFirstFrequencyReachedTwice(final Collection<Integer> frequencies) {
         final Collection<Integer> reachedFrequencies = new HashSet<>();
         int currentFrequency = 0;
         reachedFrequencies.add(currentFrequency);
