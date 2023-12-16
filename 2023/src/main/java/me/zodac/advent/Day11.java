@@ -79,7 +79,7 @@ public final class Day11 {
         final List<Point> galaxies = new ArrayList<>();
 
         for (int rowIndex = 0; rowIndex < characterGrid.numberOfRows(); rowIndex++) {
-            final Character[] row = characterGrid.getRow(rowIndex);
+            final Character[] row = characterGrid.rowAt(rowIndex);
 
             for (int columnIndex = 0; columnIndex < row.length; columnIndex++) {
                 final char val = row[columnIndex];

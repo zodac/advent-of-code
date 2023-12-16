@@ -83,7 +83,7 @@ public class Loop {
     public int countPointsInsideLoop() {
         int numberOfPointsInsidePipeLoop = 0;
         for (int rowIndex = 0; rowIndex < grid.numberOfRows(); rowIndex++) {
-            final Pipe[] row = grid.getRow(rowIndex);
+            final Pipe[] row = grid.rowAt(rowIndex);
             numberOfPointsInsidePipeLoop += countPointsInsidePipeLoopForRow(row, rowIndex);
         }
         return numberOfPointsInsidePipeLoop;

@@ -309,7 +309,7 @@ public class Grid<E> {
      * @param row the row
      * @return the values
      */
-    public E[] getRow(final int row) {
+    public E[] rowAt(final int row) {
         return internalGrid[row];
     }
 

@@ -99,7 +99,7 @@ public final class Day14 {
 
         long total = 0;
         for (int i = grid.numberOfRows() - 1; i >= 0; i--) {
-            final Character[] row = grid.getRow(i);
+            final Character[] row = grid.rowAt(i);
             int rocks = 0;
 
             for (final char c : row) {

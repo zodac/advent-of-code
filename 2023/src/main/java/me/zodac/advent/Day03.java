@@ -91,7 +91,7 @@ public final class Day03 {
         }
 
         for (endColumn = pointOfKnownDigit.y(); endColumn < characterGrid.numberOfColumns() - 1; endColumn++) {
-            if (!Character.isDigit(characterGrid.getRow(pointOfKnownDigit.x())[endColumn + 1])) {
+            if (!Character.isDigit(characterGrid.rowAt(pointOfKnownDigit.x())[endColumn + 1])) {
                 break;
             }
         }
