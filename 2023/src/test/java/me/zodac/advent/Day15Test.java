@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import me.zodac.advent.input.ExampleInput;
 import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.pojo.SequenceElement;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,7 +34,10 @@ public class Day15Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME);
+        final List<SequenceElement> values = ExampleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME)
+            .stream()
+            .map(SequenceElement::parse)
+            .toList();
 
         final long sumOfHashAlgorithms = Day15.calculateSumOfHashAlgorithms(values);
         assertThat(sumOfHashAlgorithms)
@@ -46,7 +50,10 @@ public class Day15Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME);
+        final List<SequenceElement> values = PuzzleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME)
+            .stream()
+            .map(SequenceElement::parse)
+            .toList();
 
         final long sumOfHashAlgorithms = Day15.calculateSumOfHashAlgorithms(values);
         assertThat(sumOfHashAlgorithms)
@@ -55,7 +62,10 @@ public class Day15Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME);
+        final List<SequenceElement> values = PuzzleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME)
+            .stream()
+            .map(SequenceElement::parse)
+            .toList();
 
         final long totalFocusPower = Day15.calculateTotalFocusPower(values);
         assertThat(totalFocusPower)

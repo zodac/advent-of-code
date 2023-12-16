@@ -17,13 +17,10 @@
 
 package me.zodac.advent;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import me.zodac.advent.pojo.SequenceElement;
 
 /**
  * Solution for 2023, Day 15.
@@ -32,113 +29,70 @@ import java.util.regex.Pattern;
  */
 public final class Day15 {
 
-    private static final Pattern LENS_PATTERN = Pattern.compile("([a-z]*)([=-])(\\d?)");
-    private static final int HASH_ALGORITHM_MULTIPLIER = 17;
-    private static final int HASH_ALGORITHM_MODULO = 256;
-    private static final int NUMBER_OF_BOXES = 256;
-
     private Day15() {
 
     }
 
     /**
-     * For each {@link String}, we calculate the HASH algorithm, by performing the following.
-     * <ul>
-     *     <li>Start the {@code counter} at <b>0</b></li>
-     *      <li>For each {@link Character}:
-     *      <ol>
-     *          <li>Get the {@link #getAsciiValue(char)}, add to the {@code counter}</li>
-     *          <li>Multiple the {@code counter} by {@link #HASH_ALGORITHM_MULTIPLIER}</li>
-     *          <li>Get the remainder of the {@code counter} after dividing by {@link #HASH_ALGORITHM_MODULO}</li>
-     *      </ol>
-     *     </li>
-     * </ul>
+     * For each {@link SequenceElement}, we calculate the HASH algorithm, using {@link SequenceElement#calculateHashOfSequenceElement()}.
+     * We then sum these values up.
      *
-     * <p>
-     * Sum these values up.
-     *
-     * @param values the input values to HASH
+     * @param sequenceElements the input {@link SequenceElement}s to hash
      * @return the sum of all HASH values
      */
-    public static long calculateSumOfHashAlgorithms(final Collection<String> values) {
-        return values
+    public static long calculateSumOfHashAlgorithms(final Collection<SequenceElement> sequenceElements) {
+        return sequenceElements
             .stream()
-            .mapToInt(Day15::calculateHash)
+            .mapToInt(SequenceElement::calculateHashOfSequenceElement)
             .sum();
     }
 
-    private static int calculateHash(final String input) {
-        int current = 0;
-        for (final char c : input.toCharArray()) {
-            current += getAsciiValue(c);
-            current *= HASH_ALGORITHM_MULTIPLIER;
-            current = current % HASH_ALGORITHM_MODULO;
-        }
-        return current;
-    }
-
-    private static int getAsciiValue(final char c) {
-        return c;
-    }
-
     /**
-     * Part 2.
+     * For each {@link SequenceElement}, we calculate the HASH algorithm of the {@link SequenceElement#label()}, which defined which 'box' the
+     * {@link SequenceElement} belongs to. There are 256 boxes, <b>0</b>-<b>255</b>. Based on the {@link SequenceElement#operation()}, we populate the
+     * boxes based on the following rules:
+     * <ul>
+     *     <li>{@link SequenceElement#isAddOperation()}: If no {@link SequenceElement} with a matching {@link SequenceElement#label()} already exists,
+     *     the current {@link SequenceElement} is appended to the box</li>
+     *     <li>{@link SequenceElement#isAddOperation()}: If a {@link SequenceElement} with a matching {@link SequenceElement#label()} already exists,
+     *     the current {@link SequenceElement} overwrites the existing value</li>
+     *     <li>{@link SequenceElement#isRemoveOperation()}: If a {@link SequenceElement} with a matching {@link SequenceElement#label()} already
+     *     exists, it is removed from the box</li>
+     * </ul>
      *
-     * @param values the input values
-     * @return the part 2 result
+     * <p>
+     * Once the boxes have all been filled, the focus power of all {@link SequenceElement}s in each box is calculated by:
+     * <pre>
+     *     (@code boxNumber + 1) * (@code indexOfElementInBox + 1) * {@code focalLengthOfElement}
+     * </pre>
+     *
+     * <p>
+     * The total focus power of each box is then summed up and returned.
+     *
+     * @param sequenceElements the input {@link SequenceElement}s from which to calculate the total focus power
+     * @return the sum of focus powers
      */
-    public static long calculateTotalFocusPower(final Iterable<String> values) {
-        final Map<Integer, List<String>> boxes = new LinkedHashMap<>();
-        for (int i = 0; i < NUMBER_OF_BOXES; i++) {
-            boxes.put(i, new ArrayList<>());
-        }
+    public static long calculateTotalFocusPower(final Iterable<SequenceElement> sequenceElements) {
+        final Map<Integer, Map<String, Integer>> boxes = new LinkedHashMap<>();
 
-        for (final String value : values) {
-            final Matcher matcher = LENS_PATTERN.matcher(value);
+        for (final SequenceElement sequenceElement : sequenceElements) {
+            final int box = sequenceElement.calculateHashOfLabel();
+            final Map<String, Integer> currentBox = boxes.getOrDefault(box, new LinkedHashMap<>());
 
-            if (!matcher.find()) {
-                throw new IllegalArgumentException("Unable to find match in input: " + value);
+            if (sequenceElement.isAddOperation()) {
+                final int focalLength = sequenceElement.focalLength()
+                    .orElseThrow(() -> new IllegalStateException("Cannot find focalLength for add operation: " + sequenceElement));
+                currentBox.put(sequenceElement.label(), focalLength);
+            } else if (sequenceElement.isRemoveOperation()) {
+                currentBox.remove(sequenceElement.label());
             }
-
-            final String label = matcher.group(1);
-            final int box = calculateHash(label);
-            final List<String> currentBox = boxes.getOrDefault(box, new ArrayList<>());
-            final int index = getIndex(currentBox, label);
-
-            if (index != -1) {
-                currentBox.remove(index);
-            }
-
-            if (value.contains("=")) {
-                if (index == -1) {
-                    currentBox.add(value);
-                } else {
-                    currentBox.add(index, value);
-                }
-                boxes.put(box, currentBox);
-            } else if (value.contains("-")) {
-                if (index != -1L) {
-                    boxes.put(box, currentBox);
-                }
-            }
+            boxes.put(box, currentBox);
         }
 
         return calculateFocusPower(boxes);
     }
 
-    private static int getIndex(final List<String> currentBox, final String label) {
-        for (int i = 0; i < currentBox.size(); i++) {
-            final String value = currentBox.get(i);
-            final String tokens = value.split("=")[0];
-            if (label.equalsIgnoreCase(tokens)) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    private static long calculateFocusPower(final Map<Integer, ? extends List<String>> boxes) {
+    private static long calculateFocusPower(final Map<Integer, ? extends Map<String, Integer>> boxes) {
         return boxes
             .entrySet()
             .stream()
@@ -146,21 +100,16 @@ public final class Day15 {
             .sum();
     }
 
-    private static Long calculateFocusPowerForBox(final Map.Entry<Integer, ? extends List<String>> entry) {
+    private static Long calculateFocusPowerForBox(final Map.Entry<Integer, ? extends Map<String, Integer>> boxEntry) {
         long boxTotal = 0L;
 
-        final List<String> value = entry.getValue();
-        if (value.isEmpty()) {
-            return boxTotal;
+        final int boxMultiplier = boxEntry.getKey() + 1;
+        int slot = 1;
+        for (final int focalLength : boxEntry.getValue().values()) {
+            boxTotal += ((long) boxMultiplier * slot * focalLength);
+            slot++;
         }
 
-        final int boxMultiplier = entry.getKey() + 1;
-        for (int slot = 0; slot < value.size(); slot++) {
-            final String s = value.get(slot);
-            final int focalLength = Integer.parseInt(s.substring(s.length() - 1));
-
-            boxTotal += ((long) boxMultiplier * (slot + 1) * focalLength);
-        }
         return boxTotal;
     }
 }

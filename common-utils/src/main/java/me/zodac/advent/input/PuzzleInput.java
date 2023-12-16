@@ -29,6 +29,7 @@ import java.util.function.Predicate;
  * Utility class with functions for reading {@link String}s from {@code Advent of Code} input files. The puzzle inputs are retrieved from the
  * {@value #INPUTS_DIRECTORY_NAME} directory, <b>not</b> from the calling {@link Class}'s module itself.
  */
+// TODO: Combine this with ExampleInput
 public final class PuzzleInput {
 
     private static final String INPUTS_DIRECTORY_NAME = "advent-of-code-inputs";

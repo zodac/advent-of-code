@@ -133,6 +133,7 @@ final class FileUtils {
      * @return the first line from the file as a {@link List} of {@link Integer}s
      * @throws IllegalArgumentException thrown if there is more than one line, or the line is not a valid {@link Integer} separated by commas
      */
+    // TODO: Return all lines, let the caller reduce to a single line
     static List<Integer> readSingleLineOfCommaSeparatedIntegers(final Collection<String> lines) {
         try {
             return lines
@@ -154,6 +155,7 @@ final class FileUtils {
      * @return the first line from the file as a {@link List} of {@link String}s
      * @throws IllegalArgumentException thrown if there is more than one line, or the line is not a valid {@link String} separated by commas
      */
+    // TODO: Return all lines, let the caller reduce to a single line
     static List<String> readSingleLineOfCommaSeparatedStrings(final Collection<String> lines) {
         try {
             return lines
