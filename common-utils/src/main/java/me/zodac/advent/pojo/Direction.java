@@ -79,4 +79,19 @@ public enum Direction {
             .findAny()
             .orElseThrow(() -> new IllegalArgumentException(String.format("Invalid %s: '%s'", Direction.class.getSimpleName(), input)));
     }
+
+    /**
+     * Returns the opposite {@link Direction} for the current {@link Direction}.
+     *
+     * @return the opposite {@link Direction}
+     */
+    public Direction getOpposite() {
+        return switch (this) {
+            case DOWN -> UP;
+            case LEFT -> RIGHT;
+            case RIGHT -> LEFT;
+            case UP -> DOWN;
+            case INVALID -> INVALID;
+        };
+    }
 }

@@ -20,11 +20,15 @@ package me.zodac.advent.pojo.grid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.RotationDirection;
 import me.zodac.advent.util.ArrayUtils;
@@ -311,6 +315,58 @@ public class Grid<E> {
      */
     public E[] rowAt(final int row) {
         return internalGrid[row];
+    }
+
+    /**
+     * Checks if the given {@link Point} exists in the bounds of the {@link Grid}.
+     *
+     * @param point the {@link Point} to chec
+     * @return {@code true} if the {@link Point} is valid for this {@link Grid}
+     */
+    // TODO: Update all boundary checks to use this instead? Less efficient, but simpler
+    public boolean exists(final Point point) {
+        try {
+            at(point);
+            return true;
+        } catch (final ArrayIndexOutOfBoundsException ignored) {
+            return false;
+        }
+    }
+
+    /**
+     * Returns the {@link Point}s along the perimeter of the {@link Grid}, keyed by the source {@link Direction} the {@link Point}s came from. For
+     * example, any {@link Point}s from the top row will have the {@link Direction} {@link Direction#UP}, and so on.
+     *
+     * @return the {@link Point}s along the perimeter.
+     */
+    public Map<Direction, Set<Point>> getPerimeterPoints() {
+        final Map<Direction, Set<Point>> perimeterPointsByDirection = new EnumMap<>(Direction.class);
+
+        final Set<Point> firstRow = new HashSet<>();
+        for (int j = 0; j < numberOfColumns(); j++) {
+            firstRow.add(Point.of(0, j));
+        }
+        perimeterPointsByDirection.put(Direction.UP, firstRow);
+
+        final Set<Point> lastRow = new HashSet<>();
+        for (int j = 0; j < numberOfColumns(); j++) {
+            lastRow.add(Point.of(numberOfRows() - 1, j));
+        }
+        perimeterPointsByDirection.put(Direction.DOWN, lastRow);
+
+        final Set<Point> firstColumn = new HashSet<>();
+        for (int i = 0; i < numberOfRows(); i++) {
+            firstColumn.add(Point.of(i, 0));
+        }
+        perimeterPointsByDirection.put(Direction.LEFT, firstColumn);
+
+        final Set<Point> lastColumn = new HashSet<>();
+        for (int i = 0; i < numberOfRows(); i++) {
+            lastColumn.add(Point.of(i, numberOfColumns() - 1));
+        }
+        perimeterPointsByDirection.put(Direction.RIGHT, lastColumn);
+
+        return perimeterPointsByDirection;
     }
 
     /**

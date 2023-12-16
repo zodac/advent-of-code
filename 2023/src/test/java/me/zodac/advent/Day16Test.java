@@ -37,12 +37,12 @@ public class Day16Test {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
         final Grid<Character> grid = Grid.parseGrid(values, character -> character);
 
-        final long part1Result = Day16.part1(grid);
-        assertThat(part1Result)
+        final long numberOfPointsEnergisedByBeam = Day16.countNumberOfPointsEnergisedByBeam(grid);
+        assertThat(numberOfPointsEnergisedByBeam)
             .isEqualTo(46L);
 
-        final long part2Result = Day16.part2(grid);
-        assertThat(part2Result)
+        final long maxumberOfPointsEnergisedBySingleBeam = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
+        assertThat(maxumberOfPointsEnergisedBySingleBeam)
             .isEqualTo(51L);
     }
 
@@ -51,8 +51,8 @@ public class Day16Test {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
         final Grid<Character> grid = Grid.parseGrid(values, character -> character);
 
-        final long part1Result = Day16.part1(grid);
-        assertThat(part1Result)
+        final long numberOfPointsEnergisedByBeam = Day16.countNumberOfPointsEnergisedByBeam(grid);
+        assertThat(numberOfPointsEnergisedByBeam)
             .isEqualTo(7_199L);
     }
 
@@ -61,8 +61,8 @@ public class Day16Test {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
         final Grid<Character> grid = Grid.parseGrid(values, character -> character);
 
-        final long part2Result = Day16.part2(grid);
-        assertThat(part2Result)
+        final long maxumberOfPointsEnergisedBySingleBeam = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
+        assertThat(maxumberOfPointsEnergisedBySingleBeam)
             .isEqualTo(7_438L);
     }
 }

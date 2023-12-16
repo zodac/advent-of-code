@@ -18,14 +18,15 @@
 package me.zodac.advent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import me.zodac.advent.pojo.BeamStep;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.grid.Grid;
-import me.zodac.advent.pojo.tuple.Pair;
 
 /**
  * Solution for 2023, Day 16.
@@ -34,140 +35,141 @@ import me.zodac.advent.pojo.tuple.Pair;
  */
 public final class Day16 {
 
+    private static final char BACKWARDS_MIRROR_SYMBOL = '\\';
+    private static final char FORWARD_MIRROR_SYMBOL = '/';
+    private static final char HORIZONTAL_MIRROR_SYMBOL = '-';
+    private static final char VERTICAL_MIRROR_SYMBOL = '|';
+
     private Day16() {
 
     }
 
-    public record Beam(Point point, char value, Direction direction) {
-
+    /**
+     * Given a {@link Grid} of {@link Character}s, a beam of light will shine through the {@link Grid} in a given direction until it falls off the
+     * edge. If it encounters a mirror {@link Character} it is either reflected 90° ({@literal \}, {@literal /}) or split into two beams
+     * ({@literal |}, {@literal -}).
+     *
+     * <p>
+     * We start off the {@link Grid}, and come in at {@link Point} (0, 0) from the {@link Direction#LEFT}, and progress
+     * the beam. Once all beams have completed their movements, we sum all the {@link Point}s that were 'energised' by the beam.
+     *
+     * @param grid the input {@link Grid} for the beam to traverse
+     * @return the number of {@link Point}s the beams moved through
+     */
+    public static long countNumberOfPointsEnergisedByBeam(final Grid<Character> grid) {
+        final Map<Direction, Set<Point>> startPointsBySourceDirection = Map.of(Direction.LEFT, Set.of(Point.of(0, -1)));
+        return findMaxNumberOfEnergisedPoints(grid, startPointsBySourceDirection);
     }
 
     /**
-     * Part 1.
+     * Given a {@link Grid} of {@link Character}s, a beam of light will shine through the {@link Grid} in a given direction until it falls off the
+     * edge. If it encounters a mirror {@link Character} it is either reflected 90° ({@literal \}, {@literal /}) or split into two beams
+     * ({@literal |}, {@literal -}).
      *
-     * @param grid the input values
-     * @return the part 1 result
+     * <p>
+     * We consider all {@link Point}s along the perimeter to be a valid starting {@link Point}. For each, we will progress the beam,a nd
+     * We start off the {@link Grid}, and come in at {@link Point} (0, 0) from the {@link Direction#LEFT}, and progress
+     * the beam. Once all beams have completed their movements, we sum all the {@link Point}s that were 'energised' by the beam sum all the
+     * {@link Point}s that were 'energised' by the beam. We are only interested in the start {@link Point} that energises the most {@link Point}s, and
+     * we return that total.
+     *
+     * @param grid the input {@link Grid} for the beam to traverse
+     * @return the maximum number of {@link Point}s the beams moved through, for a single start {@link Point}
+     * @see Grid#getPerimeterPoints()
      */
-    public static long part1(final Grid<Character> grid) {
-        final Point start = Point.of(0, -1);
-        final Direction startDirection = Direction.RIGHT;
-        final Set<Point> energizedPoints = findEnergizedPoints(grid, start, startDirection);
-        return energizedPoints.size();
+    public static long countMaxNumberOfPointsEnergisedBySingleBeam(final Grid<Character> grid) {
+        final Map<Direction, Set<Point>> perimeterPoints = grid.getPerimeterPoints();
+        return findMaxNumberOfEnergisedPoints(grid, perimeterPoints);
     }
 
-    private static Set<Point> findEnergizedPoints(final Grid<Character> grid, final Point start, final Direction startDirection) {
-        final Set<Point> energizedPoints = new HashSet<>();
-        final Set<Beam> doneBeams = new HashSet<>();
+    private static long findMaxNumberOfEnergisedPoints(final Grid<Character> grid, final Map<Direction, Set<Point>> startPointsBySourceDirection) {
+        long maximumNumberOfEnergisedPoints = Long.MIN_VALUE;
+        for (final Map.Entry<Direction, Set<Point>> startPointsBySourceDirectionEntry : startPointsBySourceDirection.entrySet()) {
+            final Direction startDirection = startPointsBySourceDirectionEntry.getKey().getOpposite();
 
-        List<Beam> beams = new ArrayList<>();
-        beams.add(new Beam(start, '.', startDirection));
+            final long maxNumberOfEnergisedPointsForDirection = startPointsBySourceDirectionEntry.getValue()
+                .stream()
+                .mapToLong(startPoint -> findNumberOfEnergisedPoints(grid, startPoint, startDirection))
+                .max()
+                .orElse(0L);
 
-        int count = 0;
-        while (!beams.isEmpty()) {
-            energizedPoints.addAll(beams.stream().map(Beam::point).filter(p -> p.x() >= 0 && p.y() >= 0).collect(Collectors.toSet()));
-
-            List<Beam> newBeams = new ArrayList<>();
-            for (final Beam beam : beams) {
-                final Direction nextDirection;
-                if (beam.value == '.') {
-                    nextDirection = beam.direction();
-                } else if (beam.value == '/') {
-                    nextDirection = switch (beam.direction()) {
-                        case DOWN -> Direction.LEFT;
-                        case UP -> Direction.RIGHT;
-                        case RIGHT -> Direction.UP;
-                        case LEFT -> Direction.DOWN;
-                        default -> throw new RuntimeException();
-                    };
-                } else if (beam.value == '\\') {
-                    nextDirection = switch (beam.direction()) {
-                        case DOWN -> Direction.RIGHT;
-                        case UP -> Direction.LEFT;
-                        case RIGHT -> Direction.DOWN;
-                        case LEFT -> Direction.UP;
-                        default -> throw new RuntimeException();
-                    };
-                } else if (beam.value == '-' && !Set.of(Direction.LEFT, Direction.RIGHT).contains(beam.direction())) {
-                    nextDirection = Direction.RIGHT;
-
-                    try {
-                        final Point splitPoint = beam.point.move(Direction.LEFT);
-                        final Beam newBeam = new Beam(splitPoint, grid.at(splitPoint), Direction.LEFT);
-                        newBeams.add(newBeam);
-                    } catch (final ArrayIndexOutOfBoundsException e) {
-
-                    }
-                } else if (beam.value == '|' && !Set.of(Direction.UP, Direction.DOWN).contains(beam.direction())) {
-                    nextDirection = Direction.UP;
-
-                    try {
-                        final Point splitPoint = beam.point.move(Direction.DOWN);
-                        final Beam newBeam = new Beam(splitPoint, grid.at(splitPoint), Direction.DOWN);
-                        newBeams.add(newBeam);
-                    } catch (final ArrayIndexOutOfBoundsException e) {
-
-                    }
-                } else {
-                    nextDirection = beam.direction;
-                }
-
-                final Point nextPoint = beam.point.move(nextDirection);
-                try {
-                    final Beam newBeam = new Beam(nextPoint, grid.at(nextPoint), nextDirection);
-                    newBeams.add(newBeam);
-                } catch (final ArrayIndexOutOfBoundsException e) {
-
-                }
-
-                doneBeams.add(beam);
+            if (maxNumberOfEnergisedPointsForDirection > maximumNumberOfEnergisedPoints) {
+                maximumNumberOfEnergisedPoints = maxNumberOfEnergisedPointsForDirection;
             }
-
-            if (beams.equals(newBeams)) {
-                break;
-            }
-
-            newBeams.removeAll(doneBeams);
-            beams.clear();
-            beams.addAll(newBeams);
         }
 
-        return energizedPoints;
+        return maximumNumberOfEnergisedPoints;
     }
 
-    /**
-     * Part 2.
-     *
-     * @param grid the input values
-     * @return the part 2 result
-     */
-    public static long part2(final Grid<Character> grid) {
-        final Set<Pair<Point, Direction>> startPointsAndDirection = new HashSet<>();
+    private static long findNumberOfEnergisedPoints(final Grid<Character> grid, final Point start, final Direction startDirection) {
+        final Collection<Point> energisedPoints = new HashSet<>();
+        final Collection<BeamStep> visitedBeamSteps = new HashSet<>();
 
-        // Not counting corners
-        for (int j = 0; j < grid.numberOfColumns(); j++) {
-            final Point startPoint = Point.of(0, j);
-            startPointsAndDirection.add(Pair.of(startPoint, Direction.DOWN));
+        Collection<BeamStep> beamStepsToCheck = new ArrayList<>();
+        beamStepsToCheck.add(new BeamStep(start, '.', startDirection));
+
+        while (!beamStepsToCheck.isEmpty()) {
+            energisedPoints.addAll(
+                beamStepsToCheck.stream().map(BeamStep::point).filter(grid::exists).collect(Collectors.toSet()));
+
+            final Collection<BeamStep> nextBeamStepsToCheck = new ArrayList<>();
+            for (final BeamStep beamStep : beamStepsToCheck) {
+                // Because we don't need to worry about how many times a Point has been visited (just that it has happened at least once), we don't
+                // need to re-visit any Points. So if we have already done a beam steps, we can skip doing it again.
+                if (visitedBeamSteps.contains(beamStep)) {
+                    continue;
+                }
+
+                // Because a beam can also split into a new beam, the following methods may update 'nextBeamStepsToCheck' as a side-effect
+                final Direction nextDirection = getDirectionForNextBeamStep(grid, beamStep, nextBeamStepsToCheck);
+                addNewBeamStepToCheck(grid, beamStep, nextDirection, nextBeamStepsToCheck);
+                visitedBeamSteps.add(beamStep);
+            }
+
+            beamStepsToCheck = nextBeamStepsToCheck;
         }
 
-        for (int j = 0; j < grid.numberOfColumns(); j++) {
-            final Point startPoint = Point.of(grid.numberOfRows() - 1, j);
-            startPointsAndDirection.add(Pair.of(startPoint, Direction.UP));
+        return energisedPoints.size();
+    }
+
+    private static Direction getDirectionForNextBeamStep(final Grid<Character> grid,
+                                                         final BeamStep beamStep,
+                                                         final Collection<? super BeamStep> nextBeamStepsToCheck) {
+        if (beamStep.value() == FORWARD_MIRROR_SYMBOL || beamStep.value() == BACKWARDS_MIRROR_SYMBOL) {
+            return rotate(beamStep, beamStep.value());
         }
 
-        for (int i = 0; i < grid.numberOfRows(); i++) {
-            final Point startPoint = Point.of(i, 0);
-            startPointsAndDirection.add(Pair.of(startPoint, Direction.RIGHT));
+        if (beamStep.value() == HORIZONTAL_MIRROR_SYMBOL && !Set.of(Direction.LEFT, Direction.RIGHT).contains(beamStep.direction())) {
+            addNewBeamStepToCheck(grid, beamStep, Direction.LEFT, nextBeamStepsToCheck);
+            return Direction.RIGHT;
         }
 
-        for (int i = 0; i < grid.numberOfRows(); i++) {
-            final Point startPoint = Point.of(i, grid.numberOfColumns() - 1);
-            startPointsAndDirection.add(Pair.of(startPoint, Direction.LEFT));
+        if (beamStep.value() == VERTICAL_MIRROR_SYMBOL && !Set.of(Direction.UP, Direction.DOWN).contains(beamStep.direction())) {
+            addNewBeamStepToCheck(grid, beamStep, Direction.DOWN, nextBeamStepsToCheck);
+            return Direction.UP;
         }
 
-        return startPointsAndDirection
-            .stream()
-            .mapToInt(pair -> findEnergizedPoints(grid, pair.first(), pair.second()).size())
-            .max()
-            .orElse(0);
+        return beamStep.direction();
+    }
+
+    private static Direction rotate(final BeamStep beamStep, final char mirrorCharacter) {
+        return switch (beamStep.direction()) {
+            case DOWN -> mirrorCharacter == FORWARD_MIRROR_SYMBOL ? Direction.LEFT : Direction.RIGHT;
+            case UP -> mirrorCharacter == FORWARD_MIRROR_SYMBOL ? Direction.RIGHT : Direction.LEFT;
+            case RIGHT -> mirrorCharacter == FORWARD_MIRROR_SYMBOL ? Direction.UP : Direction.DOWN;
+            case LEFT -> mirrorCharacter == FORWARD_MIRROR_SYMBOL ? Direction.DOWN : Direction.UP;
+            default -> throw new RuntimeException();
+        };
+    }
+
+    private static void addNewBeamStepToCheck(final Grid<Character> grid,
+                                              final BeamStep beamStep,
+                                              final Direction nextDirection,
+                                              final Collection<? super BeamStep> nextBeamStepsToCheck) {
+        final Point nextPoint = beamStep.point().move(nextDirection);
+        if (grid.exists(nextPoint)) {
+            final BeamStep newBeamStep = new BeamStep(nextPoint, grid.at(nextPoint), nextDirection);
+            nextBeamStepsToCheck.add(newBeamStep);
+        }
     }
 }
