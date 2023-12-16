@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.CharacterGrid;
+import me.zodac.advent.pojo.grid.Grid;
 import me.zodac.advent.util.CollectionUtils;
 
 /**
@@ -38,25 +38,24 @@ public final class Day11 {
     }
 
     /**
-     * Given a {@link List} of {@link String}s representing space, each {@link #GALAXY_SYMBOL} represents a galaxy. In order to account for the
+     * Given a {@link Character} {@link Grid}s representing space, each {@link #GALAXY_SYMBOL} represents a galaxy. In order to account for the
      * expansion of space-time, any row or column that does not contain a galaxy needs to be replaced with {@code expansionSize} number of empty rows
      * or columns.
      *
      * <p>
      * Once the expansion is complete, we count the distance from each galaxy to every other galaxy (in either direction, so only count the distance
-     * from galaxy A -> galaxy B once time), then sum up all these distances.
+     * from galaxy A -> galaxy B one time), then sum up all these distances.
      *
-     * @param values        the input space map
+     * @param grid          the {@link Grid} for space
      * @param expansionSize the number of additional rows/columns to add to any empty rows/columns
      * @return the total distance between all galaxies
      */
-    public static long sumOfDistancesBetweenGalaxies(final List<String> values, final int expansionSize) {
-        final CharacterGrid characterGrid = CharacterGrid.parse(values);
-        final List<Integer> emptyRows = findRowsWithoutGalaxies(characterGrid);
-        final List<Integer> emptyColumns = findColumnsWithoutGalaxies(characterGrid);
+    public static long sumOfDistancesBetweenGalaxies(final Grid<Character> grid, final int expansionSize) {
+        final List<Integer> emptyRows = findRowsWithoutGalaxies(grid);
+        final List<Integer> emptyColumns = findColumnsWithoutGalaxies(grid);
         final int actualExpansionSize = expansionSize - 1; // We are replacing rows/columns, not adding, so we don't count the existing ones
 
-        final List<Point> galaxies = findGalaxies(characterGrid, emptyColumns, emptyRows, actualExpansionSize);
+        final List<Point> galaxies = findGalaxies(grid, emptyColumns, emptyRows, actualExpansionSize);
 
         long total = 0L;
 
@@ -72,7 +71,7 @@ public final class Day11 {
         return total;
     }
 
-    private static List<Point> findGalaxies(final CharacterGrid characterGrid,
+    private static List<Point> findGalaxies(final Grid<Character> characterGrid,
                                             final Collection<Integer> emptyColumns,
                                             final Collection<Integer> emptyRows,
                                             final int expansionSize) {
@@ -105,13 +104,13 @@ public final class Day11 {
         return Point.of(rowIndex + extraRows, columnIndex + extraColumns);
     }
 
-    private static List<Integer> findColumnsWithoutGalaxies(final CharacterGrid characterGrid) {
+    private static List<Integer> findColumnsWithoutGalaxies(final Grid<Character> characterGrid) {
         return characterGrid
             .findColumnsWith(character -> character != GALAXY_SYMBOL)
             .toList();
     }
 
-    private static List<Integer> findRowsWithoutGalaxies(final CharacterGrid characterGrid) {
+    private static List<Integer> findRowsWithoutGalaxies(final Grid<Character> characterGrid) {
         return characterGrid
             .findRowsWith(character -> character != GALAXY_SYMBOL)
             .toList();

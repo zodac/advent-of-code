@@ -93,9 +93,7 @@ public final class Day16 {
                 .max()
                 .orElse(0L);
 
-            if (maxNumberOfEnergisedPointsForDirection > maximumNumberOfEnergisedPoints) {
-                maximumNumberOfEnergisedPoints = maxNumberOfEnergisedPointsForDirection;
-            }
+            maximumNumberOfEnergisedPoints = Math.max(maximumNumberOfEnergisedPoints, maxNumberOfEnergisedPointsForDirection);
         }
 
         return maximumNumberOfEnergisedPoints;
@@ -153,12 +151,13 @@ public final class Day16 {
     }
 
     private static Direction rotate(final BeamStep beamStep, final char mirrorCharacter) {
-        return switch (beamStep.direction()) {
+        final Direction direction = beamStep.direction();
+        return switch (direction) {
             case DOWN -> mirrorCharacter == FORWARD_MIRROR_SYMBOL ? Direction.LEFT : Direction.RIGHT;
             case UP -> mirrorCharacter == FORWARD_MIRROR_SYMBOL ? Direction.RIGHT : Direction.LEFT;
             case RIGHT -> mirrorCharacter == FORWARD_MIRROR_SYMBOL ? Direction.UP : Direction.DOWN;
             case LEFT -> mirrorCharacter == FORWARD_MIRROR_SYMBOL ? Direction.DOWN : Direction.UP;
-            default -> throw new RuntimeException();
+            default -> throw new IllegalArgumentException(String.format("Cannot move beam in %s: %s", Direction.class.getSimpleName(), direction));
         };
     }
 

@@ -23,7 +23,7 @@ import java.util.function.Function;
 /**
  * Class defining a {@link Grid} of {@link Character}s, where any point can have a {@link Character} value.
  */
-// TODO: Is this class really needed?
+// TODO: Is this class really needed? Convert into a GridFactory?
 public final class CharacterGrid extends Grid<Character> {
 
     private CharacterGrid(final Character[][] grid) {

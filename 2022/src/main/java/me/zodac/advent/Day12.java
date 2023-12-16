@@ -92,9 +92,10 @@ public final class Day12 {
         // Calculate BFS distance for each possible starting point, and return the smallest
         long minDistance = Long.MAX_VALUE;
         for (final Point startingPoint : startPoints) {
-            minDistance = Math.min(minDistance, BreadthFirstSearcher.findShortestDistance(startingPoint, endPoints, heightsByPoint,
+            final long shortestDistance = BreadthFirstSearcher.findShortestDistance(startingPoint, endPoints, heightsByPoint,
                 (point) -> point.getAdjacentPoints(AdjacentPointsSelector.createForUnboundedGrid(false, false))
-                    .collect(Collectors.toSet())));
+                    .collect(Collectors.toSet()));
+            minDistance = Math.min(minDistance, shortestDistance);
         }
         return minDistance;
     }

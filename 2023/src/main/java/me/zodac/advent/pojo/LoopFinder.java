@@ -38,6 +38,8 @@ import me.zodac.advent.util.CollectionUtils;
  */
 class LoopFinder {
 
+    private static final int EXPECTED_NUMBER_OF_START_POINTS = 1;
+
     private final Grid<Pipe> grid;
     private final Predicate<? super Pipe> startPointPredicate;
 
@@ -67,7 +69,7 @@ class LoopFinder {
 
     private Point findStartPoint() {
         final List<Point> startPoints = grid.findValue(startPointPredicate).toList();
-        if (startPoints.size() != 1) {
+        if (startPoints.size() != EXPECTED_NUMBER_OF_START_POINTS) {
             throw new IllegalStateException(String.format("Expected 1 point matching the start predicate, found: %d", startPoints.size()));
         }
 

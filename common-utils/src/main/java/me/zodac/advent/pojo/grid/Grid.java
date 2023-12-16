@@ -343,27 +343,21 @@ public class Grid<E> {
         final Map<Direction, Set<Point>> perimeterPointsByDirection = new EnumMap<>(Direction.class);
 
         final Set<Point> firstRow = new HashSet<>();
-        for (int j = 0; j < numberOfColumns(); j++) {
-            firstRow.add(Point.of(0, j));
-        }
-        perimeterPointsByDirection.put(Direction.UP, firstRow);
-
         final Set<Point> lastRow = new HashSet<>();
         for (int j = 0; j < numberOfColumns(); j++) {
+            firstRow.add(Point.of(0, j));
             lastRow.add(Point.of(numberOfRows() - 1, j));
         }
+        perimeterPointsByDirection.put(Direction.UP, firstRow);
         perimeterPointsByDirection.put(Direction.DOWN, lastRow);
 
         final Set<Point> firstColumn = new HashSet<>();
-        for (int i = 0; i < numberOfRows(); i++) {
-            firstColumn.add(Point.of(i, 0));
-        }
-        perimeterPointsByDirection.put(Direction.LEFT, firstColumn);
-
         final Set<Point> lastColumn = new HashSet<>();
         for (int i = 0; i < numberOfRows(); i++) {
+            firstColumn.add(Point.of(i, 0));
             lastColumn.add(Point.of(i, numberOfColumns() - 1));
         }
+        perimeterPointsByDirection.put(Direction.LEFT, firstColumn);
         perimeterPointsByDirection.put(Direction.RIGHT, lastColumn);
 
         return perimeterPointsByDirection;

@@ -22,51 +22,43 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import me.zodac.advent.input.ExampleInput;
 import me.zodac.advent.input.PuzzleInput;
-import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day11}.
+ * Tests to verify answers for {@link Day12}.
  */
-public class Day11Test {
+public class Day12Test {
 
-    private static final String INPUT_FILENAME = "day11.txt";
+    private static final String INPUT_FILENAME = "day12.txt";
 
     @Test
     void example() {
         final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> grid = Grid.parseGrid(values, character -> character);
 
-        final long sumOfDistancesPart1 = Day11.sumOfDistancesBetweenGalaxies(grid, 2);
-        assertThat(sumOfDistancesPart1)
-            .isEqualTo(374L);
+        final long possibleArrangements = Day12.countPossibleArrangements(values, 1);
+        assertThat(possibleArrangements)
+            .isEqualTo(21L);
 
-        final long sumOfDistancesPart2Result1 = Day11.sumOfDistancesBetweenGalaxies(grid, 10);
-        assertThat(sumOfDistancesPart2Result1)
-            .isEqualTo(1_030L);
-
-        final long sumOfDistancesPart2Result2 = Day11.sumOfDistancesBetweenGalaxies(grid, 100);
-        assertThat(sumOfDistancesPart2Result2)
-            .isEqualTo(8_410L);
+        final long possibleArrangementsPart2 = Day12.countPossibleArrangements(values, 5);
+        assertThat(possibleArrangementsPart2)
+            .isEqualTo(525_152L);
     }
 
     @Test
     void part1() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> grid = Grid.parseGrid(values, character -> character);
 
-        final long sumOfDistances = Day11.sumOfDistancesBetweenGalaxies(grid, 2);
-        assertThat(sumOfDistances)
-            .isEqualTo(10_289_334L);
+        final long possibleArrangements = Day12.countPossibleArrangements(values, 1);
+        assertThat(possibleArrangements)
+            .isEqualTo(6_871L);
     }
 
     @Test
     void part2() {
         final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> grid = Grid.parseGrid(values, character -> character);
 
-        final long sumOfDistances = Day11.sumOfDistancesBetweenGalaxies(grid, 1_000_000);
-        assertThat(sumOfDistances)
-            .isEqualTo(649_862_989_626L);
+        final long possibleArrangements = Day12.countPossibleArrangements(values, 5);
+        assertThat(possibleArrangements)
+            .isEqualTo(2_043_098_029_844L);
     }
 }
