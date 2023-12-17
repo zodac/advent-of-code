@@ -141,32 +141,75 @@ class FileUtilsTest {
     }
 
     @Test
-    void whenReadSingleLineOfCommaSeparatedIntegers_givenMultipleLinesOfIntegers_thenListOfListOfIntegersIsReturned() {
+    void whenReadLinesOfCommaSeparatedIntegers_givenSingleLineOfIntegers_thenListOfListOfIntegersIsReturned() {
         final Path input = get("validCsvOfIntegersSingleLine.csv");
         final List<String> lines = FileUtils.readLines(input);
 
-        final List<Integer> output = FileUtils.readSingleLineOfCommaSeparatedIntegers(lines);
+        final List<List<Integer>> output = FileUtils.readLinesOfCommaSeparatedIntegers(lines);
 
         assertThat(output)
-            .hasSameElementsAs(List.of(1, 2, 3));
+            .hasSameElementsAs(List.of(List.of(1, 2, 3)));
     }
 
     @Test
-    void whenReadSingleLineOfCommaSeparatedIntegers_givenInvalidInteger_thenExceptionIsThrown() {
+    void whenReadLinesOfCommaSeparatedIntegers_givenMultipleLinesOfIntegers_thenListOfListOfIntegersIsReturned() {
+        final Path input = get("validCsvOfIntegers.csv");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<Integer>> output = FileUtils.readLinesOfCommaSeparatedIntegers(lines);
+
+        assertThat(output)
+            .hasSameElementsAs(List.of(List.of(1, 2, 3), List.of(4, 5, 6), List.of(7, 8, 9)));
+    }
+
+    @Test
+    void whenReadLinesOfCommaSeparatedIntegers_givenEmptyFile_thenEmptyListIsReturned() {
+        final Path input = get("emptyFile.txt");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<Integer>> output = FileUtils.readLinesOfCommaSeparatedIntegers(lines);
+        assertThat(output)
+            .isEmpty();
+    }
+
+    @Test
+    void whenReadLinesOfCommaSeparatedIntegers_givenInvalidInteger_thenExceptionIsThrown() {
         final Path input = get("invalidCsvOfIntegers.csv");
         final List<String> lines = FileUtils.readLines(input);
 
-        assertThatThrownBy(() -> FileUtils.readSingleLineOfCommaSeparatedIntegers(lines))
+        assertThatThrownBy(() -> FileUtils.readLinesOfCommaSeparatedIntegers(lines))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("For input string: \"five\"");
     }
 
     @Test
-    void whenReadSingleLineOfCommaSeparatedIntegers_givenEmptyFile_thenEmptyListIsReturned() {
+    void whenReadLinesOfCommaSeparatedStrings_givenSingleLineOfStrings_thenListOfListOfStringsIsReturned() {
+        final Path input = get("validCsvOfStringsSingleLine.csv");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<String>> output = FileUtils.readLinesOfCommaSeparatedStrings(lines);
+
+        assertThat(output)
+            .hasSameElementsAs(List.of(List.of("one", "two", "three")));
+    }
+
+    @Test
+    void whenReadLinesOfCommaSeparatedStrings_givenMultipleLinesOfStrings_thenListOfListOfIntegersIsReturned() {
+        final Path input = get("validCsvOfStrings.csv");
+        final List<String> lines = FileUtils.readLines(input);
+
+        final List<List<String>> output = FileUtils.readLinesOfCommaSeparatedStrings(lines);
+
+        assertThat(output)
+            .hasSameElementsAs(List.of(List.of("one", "two", "three"), List.of("four", "five", "six"), List.of("seven", "eight", "nine")));
+    }
+
+    @Test
+    void whenReadLinesOfCommaSeparatedStrings_givenEmptyFile_thenEmptyListIsReturned() {
         final Path input = get("emptyFile.txt");
         final List<String> lines = FileUtils.readLines(input);
 
-        final List<Integer> output = FileUtils.readSingleLineOfCommaSeparatedIntegers(lines);
+        final List<List<String>> output = FileUtils.readLinesOfCommaSeparatedStrings(lines);
         assertThat(output)
             .isEmpty();
     }

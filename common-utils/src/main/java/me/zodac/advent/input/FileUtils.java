@@ -133,14 +133,12 @@ final class FileUtils {
      * @return the first line from the file as a {@link List} of {@link Integer}s
      * @throws IllegalArgumentException thrown if there is more than one line, or the line is not a valid {@link Integer} separated by commas
      */
-    // TODO: Return all lines, let the caller reduce to a single line
-    static List<Integer> readSingleLineOfCommaSeparatedIntegers(final Collection<String> lines) {
+    static List<List<Integer>> readLinesOfCommaSeparatedIntegers(final Collection<String> lines) {
         try {
             return lines
                 .stream()
                 .map(input -> Arrays.asList(input.split(",")))
                 .map(listOfStrings -> listOfStrings.stream().map(Integer::parseInt).toList())
-                .flatMap(Collection::stream)
                 .toList();
         } catch (final NumberFormatException e) {
             throw new IllegalArgumentException(e);
@@ -155,14 +153,12 @@ final class FileUtils {
      * @return the first line from the file as a {@link List} of {@link String}s
      * @throws IllegalArgumentException thrown if there is more than one line, or the line is not a valid {@link String} separated by commas
      */
-    // TODO: Return all lines, let the caller reduce to a single line
-    static List<String> readSingleLineOfCommaSeparatedStrings(final Collection<String> lines) {
+    static List<List<String>> readLinesOfCommaSeparatedStrings(final Collection<String> lines) {
         try {
             return lines
                 .stream()
                 .map(input -> Arrays.asList(input.split(",")))
                 .map(listOfStrings -> listOfStrings.stream().toList())
-                .flatMap(Collection::stream)
                 .toList();
         } catch (final NumberFormatException e) {
             throw new IllegalArgumentException(e);

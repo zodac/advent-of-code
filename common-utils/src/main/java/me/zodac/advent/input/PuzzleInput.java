@@ -136,11 +136,11 @@ public final class PuzzleInput {
      * @return a {@link List} of each line from the file as a {@link List} of {@link Integer}s, or {@link Collections#emptyList()} if an error occurs
      * @throws IllegalArgumentException thrown if any value is not a valid {@link Integer} separated by commas
      * @see #readLines(String)
-     * @see FileUtils#readSingleLineOfCommaSeparatedIntegers(Collection)
+     * @see FileUtils#readLinesOfCommaSeparatedIntegers(Collection)
      */
-    public static List<Integer> readSingleLineOfCommaSeparatedIntegers(final String inputFilePath) {
+    public static List<List<Integer>> readSingleLineOfCommaSeparatedIntegers(final String inputFilePath) {
         final List<String> lines = readLines(inputFilePath);
-        return FileUtils.readSingleLineOfCommaSeparatedIntegers(lines);
+        return FileUtils.readLinesOfCommaSeparatedIntegers(lines);
     }
 
     /**
@@ -150,10 +150,10 @@ public final class PuzzleInput {
      * @return a {@link List} of each line from the file as a {@link List} of {@link Integer}s, or {@link Collections#emptyList()} if an error occurs
      * @throws IllegalArgumentException thrown if any value is not a valid {@link Integer} separated by commas
      * @see #readLines(String)
-     * @see FileUtils#readSingleLineOfCommaSeparatedIntegers(Collection)
+     * @see FileUtils#readLinesOfCommaSeparatedIntegers(Collection)
      */
-    public static List<String> readSingleLineOfCommaSeparatedStrings(final String resourceFilePath) {
+    public static List<List<String>> readSingleLineOfCommaSeparatedStrings(final String resourceFilePath) {
         final List<String> lines = readLines(resourceFilePath);
-        return FileUtils.readSingleLineOfCommaSeparatedStrings(lines);
+        return FileUtils.readLinesOfCommaSeparatedStrings(lines);
     }
 }

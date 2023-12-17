@@ -34,7 +34,8 @@ public class Day15Test {
 
     @Test
     void example() {
-        final List<SequenceElement> values = ExampleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME)
+        final List<SequenceElement> values = ExampleInput.readLinesOfCommaSeparatedStrings(INPUT_FILENAME)
+            .getFirst()
             .stream()
             .map(SequenceElement::parse)
             .toList();
@@ -51,6 +52,7 @@ public class Day15Test {
     @Test
     void part1() {
         final List<SequenceElement> values = PuzzleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME)
+            .getFirst()
             .stream()
             .map(SequenceElement::parse)
             .toList();
@@ -63,6 +65,7 @@ public class Day15Test {
     @Test
     void part2() {
         final List<SequenceElement> values = PuzzleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME)
+            .getFirst()
             .stream()
             .map(SequenceElement::parse)
             .toList();
