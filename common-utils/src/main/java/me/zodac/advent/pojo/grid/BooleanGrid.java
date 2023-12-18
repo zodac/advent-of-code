@@ -113,17 +113,17 @@ public final class BooleanGrid extends Grid<Boolean> {
      * @see Point#getAdjacentPoints(AdjacentPointsSelector)
      */
     public BooleanGrid playGameOfLife(final boolean cornersAlwaysOn) {
-        final Boolean[][] newGrid = new Boolean[gridSize][gridSize];
+        final Boolean[][] newGrid = new Boolean[numberOfRows()][numberOfColumns()];
 
-        for (int x = 0; x < gridSize; x++) {
-            for (int y = 0; y < gridSize; y++) {
-                if (cornersAlwaysOn && isCorner(x, y)) {
-                    newGrid[x][y] = true;
+        for (int row = 0; row < numberOfRows(); row++) {
+            for (int column = 0; column < numberOfColumns(); column++) {
+                if (cornersAlwaysOn && isCorner(row, column)) {
+                    newGrid[row][column] = true;
                     continue;
                 }
 
-                final Point currentPoint = Point.of(x, y);
-                final boolean isSet = internalGrid[x][y];
+                final Point currentPoint = Point.of(row, column);
+                final boolean isSet = at(currentPoint);
 
                 final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, gridSize);
                 final int valueOfSetNeighbours = currentPoint.getAdjacentPoints(adjacentPointsSelector)
@@ -131,9 +131,9 @@ public final class BooleanGrid extends Grid<Boolean> {
                     .sum();
 
                 if (isSet) {
-                    newGrid[x][y] = valueOfSetNeighbours == 2 || valueOfSetNeighbours == 3;
+                    newGrid[row][column] = valueOfSetNeighbours == 2 || valueOfSetNeighbours == 3;
                 } else {
-                    newGrid[x][y] = valueOfSetNeighbours == 3;
+                    newGrid[row][column] = valueOfSetNeighbours == 3;
                 }
             }
         }

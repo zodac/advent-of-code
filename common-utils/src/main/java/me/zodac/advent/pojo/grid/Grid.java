@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,16 @@ public class Grid<E> {
     protected final E[][] internalGrid;
 
     /**
+     * Default constructor.
+     *
+     * @param internalGrid the actual {@link Grid} represented as a 2D array.
+     */
+    public Grid(final E[][] internalGrid) {
+        gridSize = internalGrid.length;
+        this.internalGrid = ArrayUtils.deepCopy(internalGrid);
+    }
+
+    /**
      * Constructor that creates the internal {@code grid} and initialises the data.
      *
      * @param gridSize     the size of the {@link Grid}.
@@ -66,16 +77,6 @@ public class Grid<E> {
                 this.internalGrid[row][column] = initialValue;
             }
         }
-    }
-
-    /**
-     * Default constructor.
-     *
-     * @param internalGrid the actual {@link Grid} represented as a 2D array.
-     */
-    public Grid(final E[][] internalGrid) {
-        gridSize = internalGrid.length;
-        this.internalGrid = internalGrid.clone();
     }
 
     /**
@@ -108,8 +109,8 @@ public class Grid<E> {
     public long sumValues(final Function<? super E, Integer> evaluator) {
         int count = 0;
 
-        for (int row = 0; row < gridSize; row++) {
-            for (int column = 0; column < gridSize; column++) {
+        for (int row = 0; row < numberOfRows(); row++) {
+            for (int column = 0; column < numberOfColumns(); column++) {
                 final E value = at(row, column);
                 count += evaluator.apply(value);
             }
@@ -195,8 +196,9 @@ public class Grid<E> {
             throw new IllegalArgumentException(String.format("x1, y1 must be at least 0, found: (%s, %s)", x1, y1));
         }
 
-        if (x2 > gridSize || y2 > gridSize) {
-            throw new IllegalArgumentException(String.format("x2, y2 must be at less than %s, found: (%s, %s)", gridSize, x2, y2));
+        if (x2 > numberOfRows() || y2 > numberOfColumns()) {
+            throw new IllegalArgumentException(String.format("x2, y2 must be at less than (%s, %s), found: (%s, %s)", numberOfRows(),
+                numberOfColumns(), x2, y2));
         }
 
         for (int x = x1; x <= x2; x++) {
@@ -284,6 +286,22 @@ public class Grid<E> {
      */
     public int numberOfColumns() {
         return internalGrid[0].length;
+    }
+
+    /**
+     * Returns the {@link Grid} as a {@link Map} of each value, keyed by its {@link Point}.
+     *
+     * @return the {@link Grid} as a {@link Map}
+     */
+    public Map<Point, E> asMap() {
+        final Map<Point, E> valuesByPoint = new HashMap<>();
+        for (int rowIndex = 0; rowIndex < numberOfRows(); rowIndex++) {
+            for (int columnIndex = 0; columnIndex < numberOfColumns(); columnIndex++) {
+                final Point p = Point.of(rowIndex, columnIndex);
+                valuesByPoint.put(p, at(p));
+            }
+        }
+        return valuesByPoint;
     }
 
     /**

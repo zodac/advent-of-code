@@ -71,8 +71,8 @@ public record JsonList(List<JsonElement> elements) implements JsonElement {
             return 0;
         }
 
-        if (o instanceof JsonInteger) {
-            final JsonList wrappedAsList = create(o);
+        if (o instanceof final JsonInteger jsonInteger) {
+            final JsonList wrappedAsList = create(jsonInteger);
             return compareTo(wrappedAsList);
         }
 

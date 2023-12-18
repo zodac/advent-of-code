@@ -91,6 +91,31 @@ public record Point(int x, int y) {
     }
 
     /**
+     * Determines the {@link Direction} needed to travel from the current {@link Point} to the {@code otherPoint}. This is only possible if the
+     * {@code otherPoint} is exactly <b>1</b> space away in a given {@link Direction}.
+     *
+     * @param otherPoint the other {@link Point}
+     * @return the {@link Direction} to the other {@link Point}
+     * @throws IllegalArgumentException thrown if the {@link Direction} can't be determined
+     */
+    public Direction directionTo(final Point otherPoint) {
+        final int deltaX = x - otherPoint.x;
+        final int deltaY = y - otherPoint.y;
+
+        if (deltaX == 0 && deltaY == 1) {
+            return Direction.RIGHT;
+        } else if (deltaX == 0 && deltaY == -1) {
+            return Direction.LEFT;
+        } else if (deltaX == 1 && deltaY == 0) {
+            return Direction.DOWN;
+        } else if (deltaX == -1 && deltaY == 0) {
+            return Direction.UP;
+        }
+
+        throw new IllegalArgumentException(String.format("Unable to determine distance with (deltaX, deltaY): (%d, %d)", deltaX, deltaY));
+    }
+
+    /**
      * Calculates the Manhatten distance between this {@link Point} and another. The Manhatten distance can be considered as how many spaces up/down
      * and left/right between the {@link Point}s
      *
