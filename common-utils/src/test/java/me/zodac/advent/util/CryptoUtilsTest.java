@@ -33,19 +33,18 @@ class CryptoUtilsTest {
     @Test
     void testHashAsHexString() throws NoSuchAlgorithmException {
         final String input = "abcdef609043";
-        final String output = CryptoUtils.hashAsHexString(input, HashingAlgorithm.MD5);
+        final char[] output = CryptoUtils.hexadecimalHash(input, "MD5");
         assertThat(output)
-            .isEqualTo("000001DBBFA3A5C83A2D506429C7B00E");
+            .isEqualTo("000001DBBFA3A5C83A2D506429C7B00E".toCharArray());
     }
 
     @ParameterizedTest
     @CsvSource(delimiter = '|', value = {
         "''|Input must have at least one non-whitespace character, found: ''",      // Empty
         "' '|Input must have at least one non-whitespace character, found: ' '",    // Blank
-        "|Input must have at least one non-whitespace character, found: 'null'",    // Null
     })
     void testHashAsHexString_givenInvalidValues(final String input, final String errorMessage) {
-        assertThatThrownBy(() -> CryptoUtils.hashAsHexString(input, HashingAlgorithm.MD5))
+        assertThatThrownBy(() -> CryptoUtils.hexadecimalHash(input, "MD5"))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(errorMessage);
     }

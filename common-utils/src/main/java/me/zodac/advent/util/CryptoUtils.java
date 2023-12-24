@@ -17,6 +17,8 @@
 
 package me.zodac.advent.util;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -24,7 +26,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public final class CryptoUtils {
 
-    private static final char[] HEX_KEYS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    private static final char[] HEXADECIMAL_VALUES = "0123456789ABCDEF".toCharArray();
     private static final int BIT_MASK_FORWARD = 0xF0;
     private static final int BIT_MASK_REVERSE = 0x0F;
 
@@ -33,31 +35,33 @@ public final class CryptoUtils {
     }
 
     /**
-     * Hashes the input {@link String} using the specified {@link HashingAlgorithm}, as a hexadecimal {@link String}.
+     * Hashes the input {@link String} using the specified {@link MessageDigest} hashing algorithm, in hexadecimal.
      *
      * @param input            the {@link String} to be hashed
-     * @param hashingAlgorithm the {@link HashingAlgorithm} to be used to hash the input
-     * @return the hashed {@link String} as a hexadecimal {@link String}, with all values in uppercase
-     * @throws IllegalArgumentException thrown if the input is {@code null} or {@link String#isBlank()}
-     * @throws NoSuchAlgorithmException thrown if the {@link HashingAlgorithm} is not found
+     * @param hashingAlgorithm the {@link MessageDigest} hashing algorithm to be used to hash the input
+     * @return the hashed {@link String}, in hexadecimal, as a {@code char[]}
+     * @throws IllegalArgumentException thrown if the input is {@link String#isBlank()}
+     * @throws NoSuchAlgorithmException thrown if the {@link MessageDigest} hashing algorithm is not found
      */
-    public static String hashAsHexString(final String input, final HashingAlgorithm hashingAlgorithm) throws NoSuchAlgorithmException {
-        if (input == null || input.isBlank()) {
+    public static char[] hexadecimalHash(final String input, final String hashingAlgorithm) throws NoSuchAlgorithmException {
+        if (input.isBlank()) {
             throw new IllegalArgumentException(String.format("Input must have at least one non-whitespace character, found: '%s'", input));
         }
 
-        final byte[] hash = hashingAlgorithm.hash(input);
-        return asHexString(hash);
+        final MessageDigest digest = MessageDigest.getInstance(hashingAlgorithm);
+        digest.update(input.getBytes(StandardCharsets.UTF_8));
+        final byte[] hash = digest.digest();
+        return toHex(hash);
     }
 
-    private static String asHexString(final byte[] input) {
+    private static char[] toHex(final byte[] input) {
         // Using code from: https://stackoverflow.com/a/32976536/2000246
         final char[] result = new char[(input.length << 1)];
         for (int i = 0; i < input.length; ++i) {
             final byte b = input[i];
-            result[2 * i] = HEX_KEYS[(b & BIT_MASK_FORWARD) >>> 4];
-            result[2 * i + 1] = HEX_KEYS[b & BIT_MASK_REVERSE];
+            result[2 * i] = HEXADECIMAL_VALUES[(b & BIT_MASK_FORWARD) >>> 4];
+            result[2 * i + 1] = HEXADECIMAL_VALUES[b & BIT_MASK_REVERSE];
         }
-        return new String(result);
+        return result;
     }
 }
