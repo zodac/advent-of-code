@@ -24,7 +24,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public final class CryptoUtils {
 
-    private static final String HEXES_KEY = "0123456789ABCDEF";
+    private static final char[] HEX_KEYS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     private static final int BIT_MASK_FORWARD = 0xF0;
     private static final int BIT_MASK_REVERSE = 0x0F;
 
@@ -37,7 +37,7 @@ public final class CryptoUtils {
      *
      * @param input            the {@link String} to be hashed
      * @param hashingAlgorithm the {@link HashingAlgorithm} to be used to hash the input
-     * @return the hashed {@link String} as a hexadecimal {@link String}
+     * @return the hashed {@link String} as a hexadecimal {@link String}, with all values in uppercase
      * @throws IllegalArgumentException thrown if the input is {@code null} or {@link String#isBlank()}
      * @throws NoSuchAlgorithmException thrown if the {@link HashingAlgorithm} is not found
      */
@@ -51,12 +51,13 @@ public final class CryptoUtils {
     }
 
     private static String asHexString(final byte[] input) {
-        // Taken from: https://stackoverflow.com/a/9655224/2000246
-        final StringBuilder hex = new StringBuilder();
-        for (final byte b : input) {
-            hex.append(HEXES_KEY.charAt((b & BIT_MASK_FORWARD) >> 4))
-                .append(HEXES_KEY.charAt((b & BIT_MASK_REVERSE)));
+        // Using code from: https://stackoverflow.com/a/32976536/2000246
+        final char[] result = new char[(input.length << 1)];
+        for (int i = 0; i < input.length; ++i) {
+            final byte b = input[i];
+            result[2 * i] = HEX_KEYS[(b & BIT_MASK_FORWARD) >>> 4];
+            result[2 * i + 1] = HEX_KEYS[b & BIT_MASK_REVERSE];
         }
-        return hex.toString();
+        return new String(result);
     }
 }
