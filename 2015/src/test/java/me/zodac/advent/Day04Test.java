@@ -20,6 +20,8 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.security.NoSuchAlgorithmException;
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -27,30 +29,32 @@ import org.junit.jupiter.api.Test;
  */
 class Day04Test {
 
-    private static final String EXAMPLE_INPUT = "abcdef";
-    private static final String PUZZLE_INPUT = "yzbqklnj";
+    private static final String INPUT_FILENAME = "day04.txt";
 
     @Test
     void example() throws NoSuchAlgorithmException {
-        final long index1 = Day04.iterateHashesToFindPrefix(EXAMPLE_INPUT, "00000");
-        assertThat(index1)
+        final String value = ExampleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final long indexPart1 = Day04.indexOfHashWithPrefix(value, "00000");
+        assertThat(indexPart1)
             .isEqualTo(609_043L);
 
-        final long index2 = Day04.iterateHashesToFindPrefix(EXAMPLE_INPUT, "000000");
-        assertThat(index2)
+        final long indexPart2 = Day04.indexOfHashWithPrefix(value, "000000");
+        assertThat(indexPart2)
             .isEqualTo(6_742_839L);
     }
 
     @Test
     void part1() throws NoSuchAlgorithmException {
-        final long index = Day04.iterateHashesToFindPrefix(PUZZLE_INPUT, "00000");
+        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final long index = Day04.indexOfHashWithPrefix(value, "00000");
         assertThat(index)
             .isEqualTo(282_749L);
     }
 
     @Test
     void part2() throws NoSuchAlgorithmException {
-        final long index = Day04.iterateHashesToFindPrefix(PUZZLE_INPUT, "000000");
+        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final long index = Day04.indexOfHashWithPrefix(value, "000000");
         assertThat(index)
             .isEqualTo(9_962_624L);
     }

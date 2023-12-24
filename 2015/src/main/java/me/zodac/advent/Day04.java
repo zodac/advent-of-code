@@ -17,9 +17,9 @@
 
 package me.zodac.advent;
 
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import me.zodac.advent.util.CryptoUtils;
-import me.zodac.advent.util.HashingAlgorithm;
 
 /**
  * Solution for 2015, Day 4.
@@ -33,8 +33,8 @@ public final class Day04 {
     }
 
     /**
-     * Generates an {@link HashingAlgorithm#MD5} hash of the concatenation of the provided {@code secretKey} and an {@link Integer} counter.
-     * This hash is then checked to see if it starts with the provided {@code prefixToFind}.
+     * Generates an MD5 hash of the concatenation of the provided {@code secretKey} and an {@link Integer} counter. This hash is then checked to see
+     * if it starts with the provided {@code prefixToFind}.
      *
      * <p>
      * The counter is incremented until either the wanted prefix is found, or {@link Integer#MAX_VALUE}.
@@ -43,19 +43,27 @@ public final class Day04 {
      * @param prefixToFind the wanted prefix to the hash output
      * @return the number of attempts needed to find the wanted prefix
      * @throws IllegalArgumentException if the {@code prefixToFind} is not found
-     * @throws NoSuchAlgorithmException thrown if the {@link HashingAlgorithm#MD5} algorithm is not found
+     * @throws NoSuchAlgorithmException thrown if the {@link MessageDigest} hashing algorithm is not found
      */
-    public static long iterateHashesToFindPrefix(final String secretKey, final String prefixToFind) throws NoSuchAlgorithmException {
+    public static long indexOfHashWithPrefix(final String secretKey, final String prefixToFind) throws NoSuchAlgorithmException {
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
             final String stringToHash = secretKey + i;
-            final String hexidecimalHash = CryptoUtils.hashAsHexString(stringToHash, HashingAlgorithm.MD5);
+            final char[] hash = CryptoUtils.hexadecimalHash(stringToHash, "MD5");
 
-            if (hexidecimalHash.startsWith(prefixToFind)) {
+            if (doesArrayStartWith(hash, prefixToFind.toCharArray())) {
                 return i;
             }
         }
 
-        throw new IllegalArgumentException(String.format("No valid %s hash found for '%s' starting with prefix '%s' after %s iterations",
-            HashingAlgorithm.MD5, secretKey, prefixToFind, Integer.MAX_VALUE));
+        throw new IllegalArgumentException(String.format("No valid MD5 hash found for '%s' starting with prefix '%s'", secretKey, prefixToFind));
+    }
+
+    private static boolean doesArrayStartWith(final char[] array, final char[] prefix) {
+        for (int j = 0; j < prefix.length; j++) {
+            if (prefix[j] != array[j]) {
+                return false;
+            }
+        }
+        return true;
     }
 }
