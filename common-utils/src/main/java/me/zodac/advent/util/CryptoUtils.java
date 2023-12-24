@@ -57,7 +57,7 @@ public final class CryptoUtils {
     private static char[] toHex(final byte[] input) {
         // Using code from: https://stackoverflow.com/a/32976536/2000246
         final char[] result = new char[(input.length << 1)];
-        for (int i = 0; i < input.length; ++i) {
+        for (int i = 0; i < input.length; i++) {
             final byte b = input[i];
             result[2 * i] = HEXADECIMAL_VALUES[(b & BIT_MASK_FORWARD) >>> 4];
             result[2 * i + 1] = HEXADECIMAL_VALUES[b & BIT_MASK_REVERSE];
