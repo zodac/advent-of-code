@@ -9,6 +9,7 @@
 YEAR_REGEX='^20(1[5-9]|2[0-3])$'
 DAY_REGEX='^(0?[1-9]|1[0-9]|2[0-5])$'
 TYPE_REGEX='^(basic|char_grid|int_grid)$'
+USER_AGENT_VALUE="https://github.com/zodac/advent-of-code by zodac"
 
 function main() {
   year=""
@@ -87,7 +88,7 @@ function main() {
     _warning "\t\t- No cookie set for AOC, cannot create actual input file"
   else
     output=$(curl \
-            --user-agent "https://github.com/zodac/advent-of-code by zodac" \
+            --user-agent "${USER_AGENT_VALUE}" \
             --silent --header "Cookie: session=${AOC_COOKIE}" \
             --write-out "\n%{http_code}" \
             "https://adventofcode.com/${year}/day/${day}/input")
@@ -148,22 +149,22 @@ function main() {
 
   # Title
   _info "\t- Retrieving title"
-  title_output=$(curl \
-                --user-agent "https://github.com/zodac/advent-of-code by zodac" \
-                --silent \
-                --write-out "\n%{http_code}" \
-                "https://adventofcode.com/${year}/day/${day}")
-
-  title_http_status_code=$(echo "${title_output}" | tail -1)
-  if [[ ${title_http_status_code} != "200" ]]; then
-    _error "\t\t- Invalid response code for title ${title_http_status_code}"
-    exit 1;
-  fi
-
-  title=$(echo "${title_output}" | head -n -1 | grep '<h2>' | awk '{split($0,a,"<h2>")} END{print a[2]}' | awk '{split($0,a,"</h2>")} END{print a[1]}' | cut -d ':' -f2 | cut -d '-' -f1 | awk '{$1=$1;print}')
-  if grep -q "${title}" "./${year}/src/main/java/me/zodac/advent/Day${day_long}.java"; then
+  if ! grep -q "%TITLE%" "./${year}/src/main/java/me/zodac/advent/Day${day_long}.java"; then
     _warning "\t\t- Title already exists in file, skipping"
   else
+    title_output=$(curl \
+                    --user-agent "${USER_AGENT_VALUE}" \
+                    --silent \
+                    --write-out "\n%{http_code}" \
+                    "https://adventofcode.com/${year}/day/${day}")
+
+    title_http_status_code=$(echo "${title_output}" | tail -1)
+    if [[ ${title_http_status_code} != "200" ]]; then
+      _error "\t\t- Invalid response code for title ${title_http_status_code}"
+      exit 1;
+    fi
+
+    title=$(echo "${title_output}" | head -n -1 | grep '<h2>' | awk '{split($0,a,"<h2>")} END{print a[2]}' | awk '{split($0,a,"</h2>")} END{print a[1]}' | cut -d ':' -f2 | cut -d '-' -f1 | awk '{$1=$1;print}')
     sed -i -e "s|%TITLE%|${title}|g" "./${year}/src/main/java/me/zodac/advent/Day${day_long}.java"
   fi
 
