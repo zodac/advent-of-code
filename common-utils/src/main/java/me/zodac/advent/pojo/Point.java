@@ -92,7 +92,7 @@ public record Point(int x, int y) {
 
     /**
      * Determines the {@link Direction} needed to travel from the current {@link Point} to the {@code otherPoint}. This is only possible if the
-     * {@code otherPoint} is exactly <b>1</b> space away in a given {@link Direction}.
+     * {@code otherPoint} only has a difference in the x or y co-ordinate, not both.
      *
      * @param otherPoint the other {@link Point}
      * @return the {@link Direction} to the other {@link Point}
@@ -102,17 +102,18 @@ public record Point(int x, int y) {
         final int deltaX = x - otherPoint.x;
         final int deltaY = y - otherPoint.y;
 
-        if (deltaX == 0 && deltaY == 1) {
+        if (deltaX == 0 && deltaY > 0) {
             return Direction.RIGHT;
-        } else if (deltaX == 0 && deltaY == -1) {
+        } else if (deltaX == 0 && deltaY < 0) {
             return Direction.LEFT;
-        } else if (deltaX == 1 && deltaY == 0) {
+        } else if (deltaX > 0 && deltaY == 0) {
             return Direction.DOWN;
-        } else if (deltaX == -1 && deltaY == 0) {
+        } else if (deltaX < 0 && deltaY == 0) {
             return Direction.UP;
         }
 
-        throw new IllegalArgumentException(String.format("Unable to determine distance with (deltaX, deltaY): (%d, %d)", deltaX, deltaY));
+        throw new IllegalArgumentException(
+            String.format("Unable to determine %s between %s and %s", Direction.class.getSimpleName(), this, otherPoint));
     }
 
     /**
@@ -134,11 +135,22 @@ public record Point(int x, int y) {
      * @return the moved {@link Point}
      */
     public Point move(final Direction direction) {
+        return move(direction, DEFAULT_MOVE_DISTANCE);
+    }
+
+    /**
+     * Returns a new {@link Point} which has moved the current {@link Point} {@code distance} spaces in the {@link Direction} specified.
+     *
+     * @param direction the {@link Direction} to move
+     * @param distance  the number of spaces to move
+     * @return the moved {@link Point}
+     */
+    public Point move(final Direction direction, final int distance) {
         return switch (direction) {
-            case DOWN -> moveDown();
-            case LEFT -> moveLeft();
-            case RIGHT -> moveRight();
-            case UP -> moveUp();
+            case DOWN -> move(distance, 0);
+            case LEFT -> move(0, -distance);
+            case RIGHT -> move(0, distance);
+            case UP -> move(-distance, 0);
             case INVALID -> throw new IllegalStateException(String.format("Cannot move for direction: %s", direction));
         };
     }

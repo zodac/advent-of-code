@@ -67,6 +67,7 @@ function main() {
   fi
 
   if [[ ${day} -lt 10 ]]; then
+    # Add leading 0 to be used in files, but keep option without a leading 0 for HTTP requests
     day_long="0${day: -1}"
     day="${day: -1}"
   else
