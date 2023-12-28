@@ -48,7 +48,7 @@ final class FileUtils {
         try {
             return Files.readAllLines(filePath);
         } catch (final IOException e) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException(String.format("Unable to read input file '%s'", filePath), e);
         }
     }
 

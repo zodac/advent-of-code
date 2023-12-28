@@ -65,6 +65,19 @@ public enum Direction {
     }
 
     /**
+     * Retrieve a {@link Direction} based on the input {@code char} referring to a possible value of the {@link Direction}. The search is
+     * case-insensitive.
+     *
+     * @param input the {@link Direction} as a {@code char}
+     * @return the matching {@link Direction}
+     * @throws IllegalArgumentException thrown if the input {@link String} is not a valid value for any {@link Direction}
+     * @see #get(String)
+     */
+    public static Direction get(final char input) {
+        return get(String.valueOf(input));
+    }
+
+    /**
      * Retrieve a {@link Direction} based on the input {@link String} referring to a possible value of the {@link Direction}. The search is
      * case-insensitive.
      *

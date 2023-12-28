@@ -522,6 +522,23 @@ class StringUtilsTest {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("provideForToCharacterList")
+    void testToCharacterList(final String input, final List<Character> expected) {
+        final List<Character> output = StringUtils.toCharacterList(input);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForToCharacterList() {
+        return Stream.of(
+            Arguments.of("abc", List.of('a', 'b', 'c')),                     // Input has no whitespace
+            Arguments.of("abc def", List.of('a', 'b', 'c', ' ', 'd', 'e', 'f')),    // Input has single whitespace
+            Arguments.of("", List.of()),                                            // Empty
+            Arguments.of(" ", List.of(' '))                                     // Blank
+        );
+    }
+
     @Test
     void testMethodsAgainstBigNaughtListOfStrings() {
         for (final String naughtyString : getBigNaughtyListOfStrings()) {

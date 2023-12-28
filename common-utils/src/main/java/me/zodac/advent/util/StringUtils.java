@@ -524,4 +524,17 @@ public final class StringUtils {
     public static String[] splitOnWhitespace(final String input) {
         return WHITESPACE_PATTERN.split(input.trim());
     }
+
+    /**
+     * Converts the given {@link CharSequence} into a {@link List} of {@link Character}s.
+     *
+     * @param input the {@link CharSequence} to convert
+     * @return the {@link List} of {@link Character}s
+     */
+    public static List<Character> toCharacterList(final CharSequence input) {
+        return input
+            .chars()
+            .mapToObj(e -> (char) e)
+            .toList();
+    }
 }

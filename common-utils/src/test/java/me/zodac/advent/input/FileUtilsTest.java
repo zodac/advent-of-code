@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -50,6 +51,14 @@ class FileUtilsTest {
             Arguments.of("validFileOfStrings.txt", List.of("line1", "line2", "line3")),
             Arguments.of("emptyFile.txt", List.of())
         );
+    }
+
+    @Test
+    void testReadLines_givenNonExistingFile() {
+        final Path input = get("nonExistingFile.txt");
+        assertThatThrownBy(() -> FileUtils.readLines(input))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Unable to read input file 'nonExistingFile_nonExistingFile.txt'");
     }
 
     @ParameterizedTest
@@ -216,7 +225,8 @@ class FileUtilsTest {
 
     private static Path get(final String fileName) {
         try {
-            return Paths.get(ClassLoader.getSystemResource(fileName).toURI());
+            final URL url = ClassLoader.getSystemResource(fileName);
+            return url == null ? Paths.get("nonExistingFile_" + fileName) : Paths.get(url.toURI());
         } catch (final URISyntaxException e) {
             throw new AssertionError(e);
         }
