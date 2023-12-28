@@ -19,6 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -26,27 +28,31 @@ import org.junit.jupiter.api.Test;
  */
 class Day11Test {
 
-    private static final String EXAMPLE_INPUT = "abcdefgh";
-    private static final String PUZZLE_INPUT_PART_1 = "hxbxwxba";
-    private static final String PUZZLE_INPUT_PART_2 = "hxbxxyzz";
+    private static final String INPUT_FILENAME = "day11.txt";
 
     @Test
     void example() {
-        final String newPassword = Day11.findNextValidPassword(EXAMPLE_INPUT);
+        final String value = ExampleInput.readSingleLine(INPUT_FILENAME);
+
+        final String newPassword = Day11.findNextValidPassword(value);
         assertThat(newPassword)
             .isEqualTo("abcdffaa");
     }
 
     @Test
     void part1() {
-        final String newPassword = Day11.findNextValidPassword(PUZZLE_INPUT_PART_1);
+        final String value = PuzzleInput.readSingleLine(INPUT_FILENAME);
+
+        final String newPassword = Day11.findNextValidPassword(value);
         assertThat(newPassword)
             .isEqualTo("hxbxxyzz");
     }
 
     @Test
     void part2() {
-        final String newPassword = Day11.findNextValidPassword(PUZZLE_INPUT_PART_2);
+        final String value = "hxbxxyzz"; // Reusing the answer from part 1 rather than doing it twice
+
+        final String newPassword = Day11.findNextValidPassword(value);
         assertThat(newPassword)
             .isEqualTo("hxcaabcc");
     }

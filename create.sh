@@ -88,10 +88,11 @@ function main() {
   elif [[ -z "${AOC_COOKIE}" ]]; then
     _warning "\t\t- No cookie set for AOC, cannot create actual input file"
   else
+    # Do not include '\n' when writing out the HTTP code since it will already be on its own line, and would add an extra line for actual inputs
     output=$(curl \
             --user-agent "${USER_AGENT_VALUE}" \
             --silent --header "Cookie: session=${AOC_COOKIE}" \
-            --write-out "\n%{http_code}" \
+            --write-out "%{http_code}" \
             "https://adventofcode.com/${year}/day/${day}/input")
 
     http_status_code=$(echo "${output}" | tail -1)
@@ -153,6 +154,7 @@ function main() {
   if ! grep -q "%TITLE%" "./${year}/src/main/java/me/zodac/advent/Day${day_long}.java"; then
     _warning "\t\t- Title already exists in file, skipping"
   else
+    # Include '\n' when writing out the HTTP code since it will not be on its own line otherwise
     title_output=$(curl \
                     --user-agent "${USER_AGENT_VALUE}" \
                     --silent \

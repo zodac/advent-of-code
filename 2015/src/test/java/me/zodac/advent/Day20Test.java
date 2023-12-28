@@ -19,6 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -26,26 +28,31 @@ import org.junit.jupiter.api.Test;
  */
 class Day20Test {
 
-    private static final int EXAMPLE_INPUT = 70;
-    private static final int PUZZLE_INPUT = 36_000_000;
+    private static final String INPUT_FILENAME = "day20.txt";
 
     @Test
     void example() {
-        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(EXAMPLE_INPUT, 10);
+        final int value = Integer.parseInt(ExampleInput.readSingleLine(INPUT_FILENAME));
+
+        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(value, 10);
         assertThat(firstVisitedHouseWithExpectedNumberOfGifts)
             .isEqualTo(6L);
     }
 
     @Test
     void part1() {
-        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(PUZZLE_INPUT, 10);
+        final int value = Integer.parseInt(PuzzleInput.readSingleLine(INPUT_FILENAME));
+
+        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(value, 10);
         assertThat(firstVisitedHouseWithExpectedNumberOfGifts)
             .isEqualTo(831_600L);
     }
 
     @Test
     void part2() {
-        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(PUZZLE_INPUT, 11, 50);
+        final int value = Integer.parseInt(PuzzleInput.readSingleLine(INPUT_FILENAME));
+
+        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(value, 11, 50);
         assertThat(firstVisitedHouseWithExpectedNumberOfGifts)
             .isEqualTo(884_520L);
     }

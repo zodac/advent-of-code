@@ -19,6 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import me.zodac.advent.input.ExampleInput;
+import me.zodac.advent.input.PuzzleInput;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -26,26 +28,31 @@ import org.junit.jupiter.api.Test;
  */
 class Day10Test {
 
-    private static final String EXAMPLE_INPUT = "1";
-    private static final String PUZZLE_INPUT = "1113222113";
+    private static final String INPUT_FILENAME = "day10.txt";
 
     @Test
     void example() {
-        final long length = Day10.performLookAndSaySequenceAndReturnLength(EXAMPLE_INPUT, 5);
+        final String value = ExampleInput.readSingleLine(INPUT_FILENAME);
+
+        final long length = Day10.performLookAndSaySequenceAndReturnLength(value, 5);
         assertThat(length)
             .isEqualTo(6L);
     }
 
     @Test
     void part1() {
-        final long length = Day10.performLookAndSaySequenceAndReturnLength(PUZZLE_INPUT, 40);
+        final String value = PuzzleInput.readSingleLine(INPUT_FILENAME);
+
+        final long length = Day10.performLookAndSaySequenceAndReturnLength(value, 40);
         assertThat(length)
             .isEqualTo(252_594L);
     }
 
     @Test
     void part2() {
-        final long length = Day10.performLookAndSaySequenceAndReturnLength(PUZZLE_INPUT, 50);
+        final String value = PuzzleInput.readSingleLine(INPUT_FILENAME);
+
+        final long length = Day10.performLookAndSaySequenceAndReturnLength(value, 50);
         assertThat(length)
             .isEqualTo(3_579_328L);
     }
