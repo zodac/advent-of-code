@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
 import org.junit.jupiter.api.Test;
@@ -35,10 +34,10 @@ class Day05Test {
 
     @Test
     void example() {
-        final List<Line> coordinateLines = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Day05Test::convertToLine)
-            .toList();
+        final List<Line> coordinateLines = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Day05Test::convertToLine)
+            .readAllLines();
 
         final int numberOfOverlaps1 = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
         assertThat(numberOfOverlaps1)
@@ -51,10 +50,10 @@ class Day05Test {
 
     @Test
     void part1() {
-        final List<Line> coordinateLines = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Day05Test::convertToLine)
-            .toList();
+        final List<Line> coordinateLines = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Day05Test::convertToLine)
+            .readAllLines();
 
         final int numberOfOverlaps = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
         assertThat(numberOfOverlaps)
@@ -63,10 +62,10 @@ class Day05Test {
 
     @Test
     void part2() {
-        final List<Line> coordinateLines = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Day05Test::convertToLine)
-            .toList();
+        final List<Line> coordinateLines = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Day05Test::convertToLine)
+            .readAllLines();
 
         final int numberOfOverlaps = Day05.addAllLinesAndReturnOverlap(coordinateLines);
         assertThat(numberOfOverlaps)

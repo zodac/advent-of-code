@@ -21,8 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Point;
 import org.junit.jupiter.api.Test;
 
@@ -36,8 +35,10 @@ class Day25Test {
 
     @Test
     void example() {
-        final String value = ExampleInput.readLinesAsSingleString(INPUT_FILENAME);
-        final Point point = getPoint(value);
+        final Point point = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Day25Test::getPoint)
+            .readFirstLine();
 
         final long instructionManualCode = Day25.calculateInstructionManualCode(point.x(), point.y());
         assertThat(instructionManualCode)
@@ -46,8 +47,10 @@ class Day25Test {
 
     @Test
     void part1() {
-        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
-        final Point point = getPoint(value);
+        final Point point = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Day25Test::getPoint)
+            .readFirstLine();
 
         final long instructionManualCode = Day25.calculateInstructionManualCode(point.x(), point.y());
         assertThat(instructionManualCode)

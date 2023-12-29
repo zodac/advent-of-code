@@ -19,9 +19,7 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
@@ -35,8 +33,10 @@ public class Day14Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> characterGrid = Grid.parseGrid(values, character -> character);
+        final Grid<Character> characterGrid = InputReader
+            .forExample(INPUT_FILENAME)
+            .asGrid()
+            .ofCharacters();
 
         final long loadAfterSingleNorthTurn = Day14.countLoadAfterSingleNorthTurn(characterGrid);
         assertThat(loadAfterSingleNorthTurn)
@@ -49,8 +49,10 @@ public class Day14Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> characterGrid = Grid.parseGrid(values, character -> character);
+        final Grid<Character> characterGrid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofCharacters();
 
         final long loadAfterSingleNorthTurn = Day14.countLoadAfterSingleNorthTurn(characterGrid);
         assertThat(loadAfterSingleNorthTurn)
@@ -59,8 +61,10 @@ public class Day14Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> characterGrid = Grid.parseGrid(values, character -> character);
+        final Grid<Character> characterGrid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofCharacters();
 
         final long loadAfterFullCycleOfTurns = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
         assertThat(loadAfterFullCycleOfTurns)

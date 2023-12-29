@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.SequenceElement;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +33,10 @@ public class Day15Test {
 
     @Test
     void example() {
-        final List<SequenceElement> values = ExampleInput.readLinesOfCommaSeparatedStrings(INPUT_FILENAME)
-            .getFirst()
+        final List<SequenceElement> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asLinesOfCommaSeparatedStrings()
+            .readFirstLine()
             .stream()
             .map(SequenceElement::parse)
             .toList();
@@ -51,8 +52,10 @@ public class Day15Test {
 
     @Test
     void part1() {
-        final List<SequenceElement> values = PuzzleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME)
-            .getFirst()
+        final List<SequenceElement> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asLinesOfCommaSeparatedStrings()
+            .readFirstLine()
             .stream()
             .map(SequenceElement::parse)
             .toList();
@@ -64,8 +67,10 @@ public class Day15Test {
 
     @Test
     void part2() {
-        final List<SequenceElement> values = PuzzleInput.readSingleLineOfCommaSeparatedStrings(INPUT_FILENAME)
-            .getFirst()
+        final List<SequenceElement> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asLinesOfCommaSeparatedStrings()
+            .readFirstLine()
             .stream()
             .map(SequenceElement::parse)
             .toList();

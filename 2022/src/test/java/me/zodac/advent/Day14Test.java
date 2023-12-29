@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Point;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ class Day14Test {
 
     @Test
     void example() {
-        final List<List<Point>> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Point::ofMany)
-            .toList();
+        final List<List<Point>> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Point::ofMany)
+            .readAllLines();
 
         final long grainsOfSand1 = Day14.countGrainsOfSandBeforeFallingPastTheFloor(values);
         assertThat(grainsOfSand1)
@@ -50,10 +49,10 @@ class Day14Test {
 
     @Test
     void part1() {
-        final List<List<Point>> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Point::ofMany)
-            .toList();
+        final List<List<Point>> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Point::ofMany)
+            .readAllLines();
 
         final long grainsOfSand = Day14.countGrainsOfSandBeforeFallingPastTheFloor(values);
         assertThat(grainsOfSand)
@@ -62,10 +61,10 @@ class Day14Test {
 
     @Test
     void part2() {
-        final List<List<Point>> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Point::ofMany)
-            .toList();
+        final List<List<Point>> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Point::ofMany)
+            .readAllLines();
 
         final long grainsOfSand = Day14.countGrainsOfSandBeforeReachingSandSpawnPoint(values);
         assertThat(grainsOfSand)

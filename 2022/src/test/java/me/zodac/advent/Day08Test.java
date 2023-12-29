@@ -19,9 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
+import me.zodac.advent.pojo.grid.IntegerGrid;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,31 +32,40 @@ class Day08Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final IntegerGrid integerGrid = InputReader
+            .forExample(INPUT_FILENAME)
+            .asGrid()
+            .ofIntegers();
 
-        final long result1 = Day08.countTreesVisibleFromOutsideForest(values);
+        final long result1 = Day08.countTreesVisibleFromOutsideForest(integerGrid);
         assertThat(result1)
             .isEqualTo(21L);
 
-        final long result2 = Day08.findHighestScenicScore(values);
+        final long result2 = Day08.findHighestScenicScore(integerGrid);
         assertThat(result2)
             .isEqualTo(8L);
     }
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final IntegerGrid integerGrid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofIntegers();
 
-        final long result = Day08.countTreesVisibleFromOutsideForest(values);
+        final long result = Day08.countTreesVisibleFromOutsideForest(integerGrid);
         assertThat(result)
             .isEqualTo(1_679L);
     }
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final IntegerGrid integerGrid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofIntegers();
 
-        final long result = Day08.findHighestScenicScore(values);
+        final long result = Day08.findHighestScenicScore(integerGrid);
         assertThat(result)
             .isEqualTo(536_625L);
     }

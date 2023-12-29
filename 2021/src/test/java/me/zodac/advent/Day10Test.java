@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.SyntaxLine;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ class Day10Test {
 
     @Test
     void example() {
-        final List<SyntaxLine> syntaxLines = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(SyntaxLine::create)
-            .toList();
+        final List<SyntaxLine> syntaxLines = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(SyntaxLine::create)
+            .readAllLines();
 
         final long syntaxErrorScore = Day10.calculateSyntaxErrorScoreForLines(syntaxLines);
         assertThat(syntaxErrorScore)
@@ -50,10 +49,10 @@ class Day10Test {
 
     @Test
     void part1() {
-        final List<SyntaxLine> syntaxLines = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(SyntaxLine::create)
-            .toList();
+        final List<SyntaxLine> syntaxLines = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(SyntaxLine::create)
+            .readAllLines();
 
         final long syntaxErrorScore = Day10.calculateSyntaxErrorScoreForLines(syntaxLines);
         assertThat(syntaxErrorScore)
@@ -62,10 +61,10 @@ class Day10Test {
 
     @Test
     void part2() {
-        final List<SyntaxLine> syntaxLines = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(SyntaxLine::create)
-            .toList();
+        final List<SyntaxLine> syntaxLines = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(SyntaxLine::create)
+            .readAllLines();
 
         final long middleIncompleteLineScore = Day10.calculateMiddleScoreForIncompleteLines(syntaxLines);
         assertThat(middleIncompleteLineScore)

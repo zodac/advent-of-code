@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.rpg.warrior.Armour;
 import me.zodac.advent.pojo.rpg.warrior.Equipment;
 import me.zodac.advent.pojo.rpg.warrior.Ring;
@@ -43,7 +43,10 @@ class Day21Test {
 
     @Test
     void part1() {
-        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final String value = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllAsSingleString();
         final Warrior boss = Warrior.parse(value);
 
         final long cheapestEquimentCost = Day21.costOfCheapestEquipmentThatDefeatsBoss(EQUIPMENT_COMBINATIONS, boss);
@@ -53,7 +56,10 @@ class Day21Test {
 
     @Test
     void part2() {
-        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final String value = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllAsSingleString();
         final Warrior boss = Warrior.parse(value);
 
         final long cheapestEquimentCost = Day21.costOfPriciestArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);

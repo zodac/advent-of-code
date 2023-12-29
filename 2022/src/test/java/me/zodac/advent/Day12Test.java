@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,7 +32,10 @@ class Day12Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long distanceOfShortestPath1 = Day12.findShortestPathFromPossibleStartsToEnd(values, 'S');
         assertThat(distanceOfShortestPath1)
@@ -46,7 +48,10 @@ class Day12Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long distanceOfShortestPath = Day12.findShortestPathFromPossibleStartsToEnd(values, 'S');
         assertThat(distanceOfShortestPath)
@@ -55,7 +60,10 @@ class Day12Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long distanceOfShortestPath = Day12.findShortestPathFromPossibleStartsToEnd(values, 'a');
         assertThat(distanceOfShortestPath)

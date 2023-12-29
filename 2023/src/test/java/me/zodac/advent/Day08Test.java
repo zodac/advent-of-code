@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -34,21 +33,30 @@ public class Day08Test {
 
     @Test
     void example() {
-        final List<String> valuesPart1 = ExampleInput.readLines(INPUT_FILENAME);
+        final List<String> valuesPart1 = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long stepsToEndNode = Day08.countStepsToReachEndNode(valuesPart1);
         assertThat(stepsToEndNode)
             .isEqualTo(6L);
 
-        final List<String> stepsToAllEndNodes = ExampleInput.readLines(INPUT_FILENAME_PART_2);
-        final long part2Result = Day08.countStepsToReachAllEndNodesAtSameTime(stepsToAllEndNodes);
+        final List<String> valuesPart2 = InputReader
+            .forExample(INPUT_FILENAME_PART_2)
+            .asStrings()
+            .readAllLines();
+        final long part2Result = Day08.countStepsToReachAllEndNodesAtSameTime(valuesPart2);
         assertThat(part2Result)
             .isEqualTo(6L);
     }
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long stepsToEndNode = Day08.countStepsToReachEndNode(values);
         assertThat(stepsToEndNode)
@@ -57,7 +65,10 @@ public class Day08Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long stepsToAllEndNodes = Day08.countStepsToReachAllEndNodesAtSameTime(values);
         assertThat(stepsToAllEndNodes)

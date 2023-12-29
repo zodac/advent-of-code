@@ -19,10 +19,9 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
+import me.zodac.advent.util.StringUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -34,14 +33,16 @@ class Day04Test {
 
     @Test
     void example() {
-        final List<String> bingoInput = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .filter(input -> !input.isBlank())
-            .toList();
+        // TODO: Input could probably be modelled better? Group then convert?
+        final List<String> bingoInput = InputReader
+            .forExample(INPUT_FILENAME)
+            .excludeBlankLines()
+            .asStrings()
+            .readAllLines();
 
-        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.getFirst().split(","))
-            .mapToInt(Integer::parseInt)
-            .boxed()
+        final List<Integer> bingoNumbers = StringUtils.collectNumbersInOrder(bingoInput.getFirst())
+            .stream()
+            .map(Long::intValue)
             .toList();
 
         // Remove the first entry
@@ -58,14 +59,15 @@ class Day04Test {
 
     @Test
     void part1() {
-        final List<String> bingoInput = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .filter(input -> !input.isBlank())
-            .toList();
+        final List<String> bingoInput = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .excludeBlankLines()
+            .asStrings()
+            .readAllLines();
 
-        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.getFirst().split(","))
-            .mapToInt(Integer::parseInt)
-            .boxed()
+        final List<Integer> bingoNumbers = StringUtils.collectNumbersInOrder(bingoInput.getFirst())
+            .stream()
+            .map(Long::intValue)
             .toList();
 
         // Remove the first entry
@@ -78,14 +80,15 @@ class Day04Test {
 
     @Test
     void part2() {
-        final List<String> bingoInput = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .filter(input -> !input.isBlank())
-            .toList();
+        final List<String> bingoInput = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .excludeBlankLines()
+            .asStrings()
+            .readAllLines();
 
-        final List<Integer> bingoNumbers = Arrays.stream(bingoInput.getFirst().split(","))
-            .mapToInt(Integer::parseInt)
-            .boxed()
+        final List<Integer> bingoNumbers = StringUtils.collectNumbersInOrder(bingoInput.getFirst())
+            .stream()
+            .map(Long::intValue)
             .toList();
 
         // Remove the first entry

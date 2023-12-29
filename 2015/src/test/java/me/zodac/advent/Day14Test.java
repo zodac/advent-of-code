@@ -21,8 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Duration;
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Reindeer;
 import org.junit.jupiter.api.Test;
 
@@ -37,10 +36,10 @@ class Day14Test {
 
     @Test
     void example() {
-        final List<Reindeer> values = ExampleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Reindeer::parse)
-                .toList();
+        final List<Reindeer> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Reindeer::parse)
+            .readAllLines();
 
         final long furthestDistance = Day14.distanceOfFurthestTravelledReindeer(values, EXAMPLE_TRAVEL_TIME);
         assertThat(furthestDistance)
@@ -53,10 +52,10 @@ class Day14Test {
 
     @Test
     void part1() {
-        final List<Reindeer> values = PuzzleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Reindeer::parse)
-                .toList();
+        final List<Reindeer> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Reindeer::parse)
+            .readAllLines();
 
         final long furthestDistance = Day14.distanceOfFurthestTravelledReindeer(values, PUZZLE_TRAVEL_TIME);
         assertThat(furthestDistance)
@@ -65,10 +64,10 @@ class Day14Test {
 
     @Test
     void part2() {
-        final List<Reindeer> values = PuzzleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Reindeer::parse)
-                .toList();
+        final List<Reindeer> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Reindeer::parse)
+            .readAllLines();
 
         final long highestScore = Day14.calculateTheHighestScore(values, PUZZLE_TRAVEL_TIME);
         assertThat(highestScore)

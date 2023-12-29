@@ -46,13 +46,13 @@ public final class Day06 {
      * @throws IllegalStateException possible to cause a long overflow if the number of {@code lanternfish} or {@code numberOfDays} is too high
      *                               (exponential growth, don't you know?)
      */
-    public static BigDecimal countLanternFishAfterDays(final Collection<Integer> lanternFish, final int numberOfDays) {
+    public static BigDecimal countLanternFishAfterDays(final Collection<Long> lanternFish, final int numberOfDays) {
         // Rather than storing the lanternfish themselves (which explodes in size), we group the fish by their timers and simply increment/decrement
         final BigDecimal[] lanternFishByTimer = new BigDecimal[NUMBER_OF_TIMERS_FOR_LANTERNFISH];
         Arrays.fill(lanternFishByTimer, BigDecimal.ZERO);
 
-        for (final int singleLanternFish : lanternFish) {
-            lanternFishByTimer[singleLanternFish] = lanternFishByTimer[singleLanternFish].add(BigDecimal.ONE);
+        for (final Long singleLanternFish : lanternFish) {
+            lanternFishByTimer[singleLanternFish.intValue()] = lanternFishByTimer[singleLanternFish.intValue()].add(BigDecimal.ONE);
         }
 
         for (int day = 0; day < numberOfDays; day++) {

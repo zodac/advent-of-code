@@ -20,7 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Ingredient;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -40,10 +40,10 @@ class Day15Test {
 
     @Test
     void part1() {
-        final List<Ingredient> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Ingredient::parse)
-            .toList();
+        final List<Ingredient> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Ingredient::parse)
+            .readAllLines();
 
         final long score = Day15.scoreOfBestIngredients(values);
         assertThat(score)
@@ -52,10 +52,10 @@ class Day15Test {
 
     @Test
     void part2() {
-        final List<Ingredient> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Ingredient::parse)
-            .toList();
+        final List<Ingredient> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Ingredient::parse)
+            .readAllLines();
 
         final long score = Day15.scoreOfBestIngredients(values, PART_2_WANTED_CALORIE_COUNT);
         assertThat(score)

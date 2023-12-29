@@ -297,8 +297,8 @@ public class Grid<E> {
         final Map<Point, E> valuesByPoint = new HashMap<>();
         for (int rowIndex = 0; rowIndex < numberOfRows(); rowIndex++) {
             for (int columnIndex = 0; columnIndex < numberOfColumns(); columnIndex++) {
-                final Point p = Point.of(rowIndex, columnIndex);
-                valuesByPoint.put(p, at(p));
+                final Point point = Point.of(rowIndex, columnIndex);
+                valuesByPoint.put(point, at(point));
             }
         }
         return valuesByPoint;

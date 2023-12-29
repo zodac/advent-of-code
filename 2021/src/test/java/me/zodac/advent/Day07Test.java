@@ -22,8 +22,7 @@ import static me.zodac.advent.pojo.MoveCostType.VARIABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -35,8 +34,10 @@ class Day07Test {
 
     @Test
     void example() {
-        final List<Integer> verticalLocations = ExampleInput.readLinesOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .getFirst();
+        final List<Long> verticalLocations = InputReader
+            .forExample(INPUT_FILENAME)
+            .asLinesOfCommaSeparatedNumbers()
+            .readFirstLine();
 
         final long minimumMoves1 = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
         assertThat(minimumMoves1)
@@ -49,8 +50,10 @@ class Day07Test {
 
     @Test
     void part1() {
-        final List<Integer> verticalLocations = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .getFirst();
+        final List<Long> verticalLocations = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asLinesOfCommaSeparatedNumbers()
+            .readFirstLine();
 
         final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
         assertThat(minimumMoves)
@@ -59,8 +62,10 @@ class Day07Test {
 
     @Test
     void part2() {
-        final List<Integer> verticalLocations = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .getFirst();
+        final List<Long> verticalLocations = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asLinesOfCommaSeparatedNumbers()
+            .readFirstLine();
 
         final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);
         assertThat(minimumMoves)

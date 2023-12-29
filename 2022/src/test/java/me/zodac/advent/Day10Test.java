@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.AssemblyInstruction;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ class Day10Test {
 
     @Test
     void example() {
-        final List<AssemblyInstruction> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(AssemblyInstruction::parse)
-            .toList();
+        final List<AssemblyInstruction> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(AssemblyInstruction::parse)
+            .readAllLines();
 
         final long sumOfSignalValues = Day10.sumOfSignalValues(values);
         assertThat(sumOfSignalValues)
@@ -46,10 +45,10 @@ class Day10Test {
 
     @Test
     void part1() {
-        final List<AssemblyInstruction> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(AssemblyInstruction::parse)
-            .toList();
+        final List<AssemblyInstruction> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(AssemblyInstruction::parse)
+            .readAllLines();
 
         final long sumOfSignalValues = Day10.sumOfSignalValues(values);
         assertThat(sumOfSignalValues)
@@ -58,10 +57,10 @@ class Day10Test {
 
     @Test
     void part2() {
-        final List<AssemblyInstruction> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(AssemblyInstruction::parse)
-            .toList();
+        final List<AssemblyInstruction> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(AssemblyInstruction::parse)
+            .readAllLines();
 
         final String charactersOnSegmentedDisplay = Day10.charactersOnSegmentedDisplay(values);
         assertThat(charactersOnSegmentedDisplay)

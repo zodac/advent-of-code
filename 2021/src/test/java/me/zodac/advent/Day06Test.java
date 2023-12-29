@@ -21,8 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -34,8 +33,10 @@ class Day06Test {
 
     @Test
     void example() {
-        final List<Integer> lanternValues = ExampleInput.readLinesOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .getFirst();
+        final List<Long> lanternValues = InputReader
+            .forExample(INPUT_FILENAME)
+            .asLinesOfCommaSeparatedNumbers()
+            .readFirstLine();
 
         final BigDecimal finalNumberOfLanterns1 = Day06.countLanternFishAfterDays(lanternValues, 80);
         assertThat(finalNumberOfLanterns1)
@@ -48,8 +49,10 @@ class Day06Test {
 
     @Test
     void part1() {
-        final List<Integer> lanternValues = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .getFirst();
+        final List<Long> lanternValues = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asLinesOfCommaSeparatedNumbers()
+            .readFirstLine();
 
         final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 80);
         assertThat(finalNumberOfLanterns)
@@ -58,8 +61,10 @@ class Day06Test {
 
     @Test
     void part2() {
-        final List<Integer> lanternValues = PuzzleInput.readSingleLineOfCommaSeparatedIntegers(INPUT_FILENAME)
-            .getFirst();
+        final List<Long> lanternValues = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asLinesOfCommaSeparatedNumbers()
+            .readFirstLine();
 
         final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 256);
         assertThat(finalNumberOfLanterns)

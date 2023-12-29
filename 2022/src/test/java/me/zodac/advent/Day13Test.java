@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.json.JsonElement;
 import me.zodac.advent.json.JsonParser;
 import org.junit.jupiter.api.Test;
@@ -35,11 +34,11 @@ class Day13Test {
 
     @Test
     void example() {
-        final List<JsonElement> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .filter(s -> !s.isBlank())
-            .map(JsonParser::parse)
-            .toList();
+        final List<JsonElement> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .excludeBlankLines()
+            .as(JsonParser::parse)
+            .readAllLines();
 
         final long sumOfValidIndices = Day13.calculateSumOfValidIndices(values);
         assertThat(sumOfValidIndices)
@@ -52,11 +51,11 @@ class Day13Test {
 
     @Test
     void part1() {
-        final List<JsonElement> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .filter(s -> !s.isBlank())
-            .map(JsonParser::parse)
-            .toList();
+        final List<JsonElement> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .excludeBlankLines()
+            .as(JsonParser::parse)
+            .readAllLines();
 
         final long sumOfValidIndices = Day13.calculateSumOfValidIndices(values);
         assertThat(sumOfValidIndices)
@@ -65,11 +64,11 @@ class Day13Test {
 
     @Test
     void part2() {
-        final List<JsonElement> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .filter(s -> !s.isBlank())
-            .map(JsonParser::parse)
-            .toList();
+        final List<JsonElement> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .excludeBlankLines()
+            .as(JsonParser::parse)
+            .readAllLines();
 
         final long productOfDistressSignalIndices = Day13.calculateProductOfDistressSignalIndices(values);
         assertThat(productOfDistressSignalIndices)

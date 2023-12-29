@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,7 +32,10 @@ class Day01Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long count1 = Day01.valueOfLargestGroupOfCalories(values);
         assertThat(count1)
@@ -46,7 +48,10 @@ class Day01Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long count = Day01.valueOfLargestGroupOfCalories(values);
         assertThat(count)
@@ -55,7 +60,10 @@ class Day01Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long count = Day01.valueOfLargestGroupsOfCalories(values, 3);
         assertThat(count)

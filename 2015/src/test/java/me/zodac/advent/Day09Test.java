@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Route;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ class Day09Test {
 
     @Test
     void example() {
-        final List<Route> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Route::parseSourceDestination)
-            .toList();
+        final List<Route> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Route::parseSourceDestination)
+            .readAllLines();
 
         final long shortestPath = Day09.distanceOfShortestPath(values);
         assertThat(shortestPath)
@@ -50,10 +49,10 @@ class Day09Test {
 
     @Test
     void part1() {
-        final List<Route> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Route::parseSourceDestination)
-            .toList();
+        final List<Route> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Route::parseSourceDestination)
+            .readAllLines();
 
         final long shortestPath = Day09.distanceOfShortestPath(values);
         assertThat(shortestPath)
@@ -62,10 +61,10 @@ class Day09Test {
 
     @Test
     void part2() {
-        final List<Route> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Route::parseSourceDestination)
-            .toList();
+        final List<Route> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Route::parseSourceDestination)
+            .readAllLines();
 
         final long longestPath = Day09.distanceOfLongestPath(values);
         assertThat(longestPath)

@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,7 +32,10 @@ class Day07Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final Day07 day07 = Day07.create(values);
         final long valueOfLabel = day07.evaulate("i");
@@ -43,7 +45,10 @@ class Day07Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final Day07 day07 = Day07.create(values);
         final long valueOfLabel = day07.evaulate("a");
@@ -53,7 +58,10 @@ class Day07Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final Day07 day07 = Day07.create(values);
         final long valueOfLabel = day07.evaulateWithOverride("a", "b", "16076");

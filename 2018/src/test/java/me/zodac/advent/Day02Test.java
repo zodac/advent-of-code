@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -34,13 +33,19 @@ public class Day02Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final List<String> valuesPart1 = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
-        final long checksumOfBoxIds = Day02.checksumOfBoxIds(values);
+        final long checksumOfBoxIds = Day02.checksumOfBoxIds(valuesPart1);
         assertThat(checksumOfBoxIds)
             .isEqualTo(12L);
 
-        final List<String> valuesPart2 = ExampleInput.readLines(INPUT_FILENAME_PART_2);
+        final List<String> valuesPart2 = InputReader
+            .forExample(INPUT_FILENAME_PART_2)
+            .asStrings()
+            .readAllLines();
 
         final String commonLetters = Day02.findCommonCharactersForValidBoxIds(valuesPart2);
         assertThat(commonLetters)
@@ -49,7 +54,10 @@ public class Day02Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long checksumOfBoxIds = Day02.checksumOfBoxIds(values);
         assertThat(checksumOfBoxIds)
@@ -58,7 +66,10 @@ public class Day02Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final String commonLetters = Day02.findCommonCharactersForValidBoxIds(values);
         assertThat(commonLetters)

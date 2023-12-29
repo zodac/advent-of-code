@@ -22,8 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.grid.GridInstruction;
 import me.zodac.advent.pojo.tuple.Triple;
@@ -39,10 +38,10 @@ class Day06Test {
 
     @Test
     void example() {
-        final List<Triple<GridInstruction, Point, Point>> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Day06Test::convertToInstructionAndPoints)
-            .toList();
+        final List<Triple<GridInstruction, Point, Point>> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Day06Test::convertToInstructionAndPoints)
+            .readAllLines();
 
         final long numberOfLitLights = Day06.countSwitchedOnLights(values);
         assertThat(numberOfLitLights)
@@ -55,10 +54,10 @@ class Day06Test {
 
     @Test
     void part1() {
-        final List<Triple<GridInstruction, Point, Point>> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Day06Test::convertToInstructionAndPoints)
-            .toList();
+        final List<Triple<GridInstruction, Point, Point>> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Day06Test::convertToInstructionAndPoints)
+            .readAllLines();
 
         final long numberOfLitLights = Day06.countSwitchedOnLights(values);
         assertThat(numberOfLitLights)
@@ -67,10 +66,10 @@ class Day06Test {
 
     @Test
     void part2() {
-        final List<Triple<GridInstruction, Point, Point>> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Day06Test::convertToInstructionAndPoints)
-            .toList();
+        final List<Triple<GridInstruction, Point, Point>> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Day06Test::convertToInstructionAndPoints)
+            .readAllLines();
 
         final long brightnessOfLights = Day06.calculateBrightness(values);
         assertThat(brightnessOfLights)

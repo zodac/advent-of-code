@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.BallGame;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ public class Day02Test {
 
     @Test
     void example() {
-        final List<BallGame> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(BallGame::parse)
-            .toList();
+        final List<BallGame> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(BallGame::parse)
+            .readAllLines();
 
         final long sumOfIds = Day02.sumOfIdsOfPossibleGames(values);
         assertThat(sumOfIds)
@@ -50,10 +49,10 @@ public class Day02Test {
 
     @Test
     void part1() {
-        final List<BallGame> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(BallGame::parse)
-            .toList();
+        final List<BallGame> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(BallGame::parse)
+            .readAllLines();
 
         final long sumOfFrequencies = Day02.sumOfIdsOfPossibleGames(values);
         assertThat(sumOfFrequencies)
@@ -62,10 +61,10 @@ public class Day02Test {
 
     @Test
     void part2() {
-        final List<BallGame> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(BallGame::parse)
-            .toList();
+        final List<BallGame> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(BallGame::parse)
+            .readAllLines();
 
         final long sumOfPowers = Day02.sumOfPowersOfGames(values);
         assertThat(sumOfPowers)

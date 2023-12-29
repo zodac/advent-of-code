@@ -19,8 +19,7 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.rpg.mage.MageBoss;
 import me.zodac.advent.pojo.rpg.mage.MagePlayer;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,10 @@ class Day22Test {
 
     @Test
     void example() {
-        final String value = ExampleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final String value = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readAllAsSingleString();
         final MageBoss boss = MageBoss.parse(value);
 
         final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(EXAMPLE_STARTING_PLAYER, boss, 0);
@@ -46,7 +48,10 @@ class Day22Test {
 
     @Test
     void part1() {
-        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final String value = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllAsSingleString();
         final MageBoss boss = MageBoss.parse(value);
 
         final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(PUZZLE_STARTING_PLAYER, boss, 0);
@@ -56,7 +61,10 @@ class Day22Test {
 
     @Test
     void part2() {
-        final String value = PuzzleInput.readLinesAsSingleString(INPUT_FILENAME);
+        final String value = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllAsSingleString();
         final MageBoss boss = MageBoss.parse(value);
 
         final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(PUZZLE_STARTING_PLAYER, boss, 1);

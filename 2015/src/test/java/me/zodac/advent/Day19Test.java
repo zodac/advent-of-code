@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Replacement;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +33,10 @@ class Day19Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         // Ignore 2 last lines with molecule and blank line
         final List<Replacement<String>> replacements = values.subList(0, values.size() - 2)
@@ -51,7 +53,10 @@ class Day19Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         // Ignore 2 last lines with molecule and blank line
         final List<Replacement<String>> replacements = values.subList(0, values.size() - 2)
@@ -68,7 +73,10 @@ class Day19Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         // Ignore 2 last lines with molecule and blank line
         final List<Replacement<String>> replacements = values.subList(0, values.size() - 2)

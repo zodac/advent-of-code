@@ -43,7 +43,7 @@ public final class JsonParser {
      * @throws UnsupportedOperationException thrown if the input is not a valid {@link JsonInteger} or {@link JsonList}
      */
     public static JsonElement parse(final String input) {
-        if (input == null || input.isBlank()) {
+        if (input.isBlank()) {
             throw new IllegalArgumentException("Input cannot be null or blank");
         }
 

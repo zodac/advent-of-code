@@ -19,10 +19,7 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
-import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Pipe;
 import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
@@ -32,20 +29,24 @@ import org.junit.jupiter.api.Test;
  */
 public class Day10Test {
 
-    private static final String INPUT_FILENAME_PART_1 = "day10.txt";
+    private static final String INPUT_FILENAME = "day10.txt";
     private static final String INPUT_FILENAME_PART_2 = "day10_2.txt";
 
     @Test
     void example() {
-        final List<String> valuesPart1 = ExampleInput.readLines(INPUT_FILENAME_PART_1);
-        final Grid<Pipe> pipeGridPart1 = Grid.parseGrid(valuesPart1, Pipe::get);
+        final Grid<Pipe> pipeGridPart1 = InputReader
+            .forExample(INPUT_FILENAME)
+            .asGrid()
+            .of(Pipe::get);
 
         final long numberOfSteps = Day10.numberOfStepsToFurthestPartOfLoop(pipeGridPart1);
         assertThat(numberOfSteps)
             .isEqualTo(8L);
 
-        final List<String> valuesPart2 = new ArrayList<>(ExampleInput.readLines(INPUT_FILENAME_PART_2));
-        final Grid<Pipe> pipeGridPart2 = Grid.parseGrid(valuesPart2, Pipe::get);
+        final Grid<Pipe> pipeGridPart2 = InputReader
+            .forExample(INPUT_FILENAME_PART_2)
+            .asGrid()
+            .of(Pipe::get);
 
         final long numberOfPointsInsidePipeLoop = Day10.numberOfPointsInsidePipeLoop(pipeGridPart2);
         assertThat(numberOfPointsInsidePipeLoop)
@@ -54,8 +55,10 @@ public class Day10Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME_PART_1);
-        final Grid<Pipe> pipeGrid = Grid.parseGrid(values, Pipe::get);
+        final Grid<Pipe> pipeGrid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .of(Pipe::get);
 
         final long numberOfSteps = Day10.numberOfStepsToFurthestPartOfLoop(pipeGrid);
         assertThat(numberOfSteps)
@@ -64,8 +67,10 @@ public class Day10Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME_PART_1);
-        final Grid<Pipe> pipeGrid = Grid.parseGrid(values, Pipe::get);
+        final Grid<Pipe> pipeGrid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .of(Pipe::get);
 
         final long numberOfPointsInsidePipeLoop = Day10.numberOfPointsInsidePipeLoop(pipeGrid);
         assertThat(numberOfPointsInsidePipeLoop)

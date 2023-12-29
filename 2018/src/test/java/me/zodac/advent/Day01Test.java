@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,7 +32,10 @@ public class Day01Test {
 
     @Test
     void example() {
-        final List<Integer> values = ExampleInput.readLinesAsIntegers(INPUT_FILENAME);
+        final List<Integer> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asIntegers()
+            .readAllLines();
 
         final long sumOfFrequencies = Day01.sumOfFrequencies(values);
         assertThat(sumOfFrequencies)
@@ -46,7 +48,10 @@ public class Day01Test {
 
     @Test
     void part1() {
-        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
+        final List<Integer> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asIntegers()
+            .readAllLines();
 
         final long sumOfFrequencies = Day01.sumOfFrequencies(values);
         assertThat(sumOfFrequencies)
@@ -55,7 +60,10 @@ public class Day01Test {
 
     @Test
     void part2() {
-        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
+        final List<Integer> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asIntegers()
+            .readAllLines();
 
         final long result = Day01.findFirstFrequencyReachedTwice(values);
         assertThat(result)

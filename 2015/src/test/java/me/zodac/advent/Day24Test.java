@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,7 +32,10 @@ class Day24Test {
 
     @Test
     void example() {
-        final List<Integer> values = ExampleInput.readLinesAsIntegers(INPUT_FILENAME);
+        final List<Integer> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asIntegers()
+            .readAllLines();
 
         final long smallestQuantumEntanglement1 = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 3);
         assertThat(smallestQuantumEntanglement1)
@@ -46,7 +48,10 @@ class Day24Test {
 
     @Test
     void part1() {
-        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
+        final List<Integer> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asIntegers()
+            .readAllLines();
 
         final long smallestQuantumEntanglement = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 3);
         assertThat(smallestQuantumEntanglement)
@@ -55,7 +60,10 @@ class Day24Test {
 
     @Test
     void part2() {
-        final List<Integer> values = PuzzleInput.readLinesAsIntegers(INPUT_FILENAME);
+        final List<Integer> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asIntegers()
+            .readAllLines();
 
         final long smallestQuantumEntanglement = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 4);
         assertThat(smallestQuantumEntanglement)

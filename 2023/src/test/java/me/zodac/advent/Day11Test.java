@@ -19,9 +19,7 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +32,10 @@ public class Day11Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> grid = Grid.parseGrid(values, character -> character);
+        final Grid<Character> grid = InputReader
+            .forExample(INPUT_FILENAME)
+            .asGrid()
+            .ofCharacters();
 
         final long sumOfDistancesPart1 = Day11.sumOfDistancesBetweenGalaxies(grid, 2);
         assertThat(sumOfDistancesPart1)
@@ -52,8 +52,10 @@ public class Day11Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> grid = Grid.parseGrid(values, character -> character);
+        final Grid<Character> grid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofCharacters();
 
         final long sumOfDistances = Day11.sumOfDistancesBetweenGalaxies(grid, 2);
         assertThat(sumOfDistances)
@@ -62,8 +64,10 @@ public class Day11Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> grid = Grid.parseGrid(values, character -> character);
+        final Grid<Character> grid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofCharacters();
 
         final long sumOfDistances = Day11.sumOfDistancesBetweenGalaxies(grid, 1_000_000);
         assertThat(sumOfDistances)

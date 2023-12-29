@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -34,12 +33,20 @@ public class Day01Test {
 
     @Test
     void example() {
-        final List<String> valuesPart1 = ExampleInput.readLines(INPUT_FILENAME);
+        final List<String> valuesPart1 = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
+
         final long sumOfFrequencies = Day01.sumAllCalibrationValues(valuesPart1, false);
         assertThat(sumOfFrequencies)
             .isEqualTo(142L);
 
-        final List<String> valuesPart2 = ExampleInput.readLines(INPUT_FILENAME_PART_2);
+        final List<String> valuesPart2 = InputReader
+            .forExample(INPUT_FILENAME_PART_2)
+            .asStrings()
+            .readAllLines();
+
         final long sumOfCalibrationValues = Day01.sumAllCalibrationValues(valuesPart2, true);
         assertThat(sumOfCalibrationValues)
             .isEqualTo(281L);
@@ -47,7 +54,10 @@ public class Day01Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long sumOfFrequencies = Day01.sumAllCalibrationValues(values, false);
         assertThat(sumOfFrequencies)
@@ -56,7 +66,10 @@ public class Day01Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
         final long sumOfCalibrationValues = Day01.sumAllCalibrationValues(values, true);
         assertThat(sumOfCalibrationValues)

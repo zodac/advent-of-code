@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Movement;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ class Day09Test {
 
     @Test
     void example() {
-        final List<Movement> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Movement::parse)
-            .toList();
+        final List<Movement> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Movement::parse)
+            .readAllLines();
 
         final long uniquePointsVisited1 = Day09.uniquePointsVisitedByTail(values, 1);
         assertThat(uniquePointsVisited1)
@@ -50,10 +49,10 @@ class Day09Test {
 
     @Test
     void part1() {
-        final List<Movement> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Movement::parse)
-            .toList();
+        final List<Movement> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Movement::parse)
+            .readAllLines();
 
         final long uniquePointsVisited = Day09.uniquePointsVisitedByTail(values, 1);
         assertThat(uniquePointsVisited)
@@ -62,10 +61,10 @@ class Day09Test {
 
     @Test
     void part2() {
-        final List<Movement> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Movement::parse)
-            .toList();
+        final List<Movement> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Movement::parse)
+            .readAllLines();
 
         final long uniquePointsVisited = Day09.uniquePointsVisitedByTail(values, 9);
         assertThat(uniquePointsVisited)

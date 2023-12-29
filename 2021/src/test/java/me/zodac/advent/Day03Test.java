@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,31 +32,40 @@ class Day03Test {
 
     @Test
     void example() {
-        final List<String> binaryValues = ExampleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
-        final long powerConsumption = Day03.calculatePowerConsumption(binaryValues);
+        final long powerConsumption = Day03.calculatePowerConsumption(values);
         assertThat(powerConsumption)
             .isEqualTo(198L);
 
-        final long lifeSupportRating = Day03.calculateLifeSupportRating(binaryValues);
+        final long lifeSupportRating = Day03.calculateLifeSupportRating(values);
         assertThat(lifeSupportRating)
             .isEqualTo(230L);
     }
 
     @Test
     void part1() {
-        final List<String> binaryValues = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
-        final long powerConsumption = Day03.calculatePowerConsumption(binaryValues);
+        final long powerConsumption = Day03.calculatePowerConsumption(values);
         assertThat(powerConsumption)
             .isEqualTo(3_374_136L);
     }
 
     @Test
     void part2() {
-        final List<String> binaryValues = PuzzleInput.readLines(INPUT_FILENAME);
+        final List<String> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readAllLines();
 
-        final long lifeSupportRating = Day03.calculateLifeSupportRating(binaryValues);
+        final long lifeSupportRating = Day03.calculateLifeSupportRating(values);
         assertThat(lifeSupportRating)
             .isEqualTo(4_432_698L);
     }

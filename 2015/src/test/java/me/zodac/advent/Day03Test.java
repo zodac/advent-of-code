@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Direction;
 import org.junit.jupiter.api.Test;
 
@@ -34,11 +33,12 @@ class Day03Test {
 
     @Test
     void example() {
-        final List<Direction> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
+        final List<Direction> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .readStream()
             .flatMapToInt(String::chars)
-            .mapToObj(i -> String.valueOf((char) i))
-            .map(Direction::get)
+            .mapToObj(i -> Direction.get((char) i))
             .toList();
 
         final int uniqueHouses1 = Day03.countUniqueHouses(values);
@@ -52,11 +52,12 @@ class Day03Test {
 
     @Test
     void part1() {
-        final List<Direction> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
+        final List<Direction> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readStream()
             .flatMapToInt(String::chars)
-            .mapToObj(i -> String.valueOf((char) i))
-            .map(Direction::get)
+            .mapToObj(i -> Direction.get((char) i))
             .toList();
 
         final int uniqueHouses = Day03.countUniqueHouses(values);
@@ -66,11 +67,12 @@ class Day03Test {
 
     @Test
     void part2() {
-        final List<Direction> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
+        final List<Direction> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .readStream()
             .flatMapToInt(String::chars)
-            .mapToObj(i -> String.valueOf((char) i))
-            .map(Direction::get)
+            .mapToObj(i -> Direction.get((char) i))
             .toList();
 
         final int uniqueHouses = Day03.countUniqueHousesTwoUsers(values);

@@ -19,8 +19,7 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,7 +31,10 @@ class Day20Test {
 
     @Test
     void example() {
-        final int value = Integer.parseInt(ExampleInput.readSingleLine(INPUT_FILENAME));
+        final int value = InputReader
+            .forExample(INPUT_FILENAME)
+            .asIntegers()
+            .readFirstLine();
 
         final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(value, 10);
         assertThat(firstVisitedHouseWithExpectedNumberOfGifts)
@@ -41,7 +43,10 @@ class Day20Test {
 
     @Test
     void part1() {
-        final int value = Integer.parseInt(PuzzleInput.readSingleLine(INPUT_FILENAME));
+        final int value = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asIntegers()
+            .readFirstLine();
 
         final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(value, 10);
         assertThat(firstVisitedHouseWithExpectedNumberOfGifts)
@@ -50,7 +55,10 @@ class Day20Test {
 
     @Test
     void part2() {
-        final int value = Integer.parseInt(PuzzleInput.readSingleLine(INPUT_FILENAME));
+        final int value = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asIntegers()
+            .readFirstLine();
 
         final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(value, 11, 50);
         assertThat(firstVisitedHouseWithExpectedNumberOfGifts)

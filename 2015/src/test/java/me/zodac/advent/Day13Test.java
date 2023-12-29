@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Route;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ class Day13Test {
 
     @Test
     void example() {
-        final List<Route> values = ExampleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Route::parseSittingNextTo)
-                .toList();
+        final List<Route> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Route::parseSittingNextTo)
+            .readAllLines();
 
         final long changeInHappiness1 = Day13.greatestChangeInHappiness(values);
         assertThat(changeInHappiness1)
@@ -46,10 +45,10 @@ class Day13Test {
 
     @Test
     void part1() {
-        final List<Route> values = PuzzleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Route::parseSittingNextTo)
-                .toList();
+        final List<Route> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Route::parseSittingNextTo)
+            .readAllLines();
 
         final long changeInHappiness = Day13.greatestChangeInHappiness(values);
         assertThat(changeInHappiness)
@@ -58,10 +57,10 @@ class Day13Test {
 
     @Test
     void part2() {
-        final List<Route> values = PuzzleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Route::parseSittingNextTo)
-                .toList();
+        final List<Route> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Route::parseSittingNextTo)
+            .readAllLines();
 
         final long changeInHappiness = Day13.greatestChangeInHappinessIncludingSelf(values);
         assertThat(changeInHappiness)

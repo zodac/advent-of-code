@@ -20,7 +20,7 @@ package me.zodac.advent;
 import java.util.List;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
-import me.zodac.advent.pojo.grid.CharacterGrid;
+import me.zodac.advent.pojo.grid.Grid;
 
 /**
  * Solution for 2023, Day 3.
@@ -38,15 +38,15 @@ public final class Day03 {
     }
 
     /**
-     * Given a {@link CharacterGrid}, any non-digit {@link Character} that is not {@link #DEFAULT_SYMBOL} is considered an engine part. If an engine
-     * part is touching a number (meaning any of the 8 adjacent points overlaps any digit), then that number is considered an engine part number. This
-     * method retrieves all those part numbers, then sums their values.
+     * Given a {@link Grid} of {@link Character}s, any non-digit {@link Character} that is not {@link #DEFAULT_SYMBOL} is considered an engine part.
+     * If an engine part is touching a number (meaning any of the 8 adjacent points overlaps any digit), then that number is considered an engine part
+     * number. This method retrieves all those part numbers, then sums their values.
      *
-     * @param characterGrid the {@link CharacterGrid}
+     * @param characterGrid the {@link Grid}
      * @return the sum of all engine part numbers
      * @see Point#getAdjacentPoints(AdjacentPointsSelector)
      */
-    public static long sumOfAllPartNumbers(final CharacterGrid characterGrid) {
+    public static long sumOfAllPartNumbers(final Grid<Character> characterGrid) {
         long total = 0L;
 
         for (int row = 0; row < characterGrid.numberOfRows(); row++) {
@@ -69,7 +69,7 @@ public final class Day03 {
         return character == DEFAULT_SYMBOL || Character.isDigit(character);
     }
 
-    private static long findSumOfNumbersForPart(final CharacterGrid characterGrid, final Point partPoint) {
+    private static long findSumOfNumbersForPart(final Grid<Character> characterGrid, final Point partPoint) {
         final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, characterGrid.numberOfRows());
 
         return partPoint
@@ -80,7 +80,7 @@ public final class Day03 {
             .sum();
     }
 
-    private static int findNumberInRow(final CharacterGrid characterGrid, final Point pointOfKnownDigit) {
+    private static int findNumberInRow(final Grid<Character> characterGrid, final Point pointOfKnownDigit) {
         int startColumn;
         int endColumn;
 
@@ -105,15 +105,15 @@ public final class Day03 {
     }
 
     /**
-     * Given a {@link CharacterGrid}, any {@link #GEAR_SYMBOL} is considered an engine gear. If that gear has exactly 2 touching numbers (meaning 2 of
-     * the 8 adjacent points overlaps any digit), then we can calculate a gear ratio for that gear by calculating the product of the 2 numbers
-     * touching the gear. These gear ratios are then summed and returned.
+     * Given a {@link Grid} of {@link Character}s, any {@link #GEAR_SYMBOL} is considered an engine gear. If that gear has exactly 2 touching numbers
+     * (meaning 2 of the 8 adjacent points overlaps any digit), then we can calculate a gear ratio for that gear by calculating the product of the 2
+     * numbers touching the gear. These gear ratios are then summed and returned.
      *
-     * @param characterGrid the {@link CharacterGrid}
+     * @param characterGrid the {@link Grid}
      * @return the sum of all gear ratios
      * @see Point#getAdjacentPoints(AdjacentPointsSelector)
      */
-    public static long sumOfAllGearRatios(final CharacterGrid characterGrid) {
+    public static long sumOfAllGearRatios(final Grid<Character> characterGrid) {
         long total = 0L;
 
         for (int row = 0; row < characterGrid.numberOfRows(); row++) {
@@ -135,7 +135,7 @@ public final class Day03 {
         return character != GEAR_SYMBOL;
     }
 
-    private static long findSumOfGearRatios(final CharacterGrid characterGrid, final Point gearPoint) {
+    private static long findSumOfGearRatios(final Grid<Character> characterGrid, final Point gearPoint) {
         final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, characterGrid.numberOfRows());
 
         final List<Integer> gearRatioValues = gearPoint

@@ -19,9 +19,7 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +32,10 @@ public class Day16Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> grid = Grid.parseGrid(values, character -> character);
+        final Grid<Character> grid = InputReader
+            .forExample(INPUT_FILENAME)
+            .asGrid()
+            .ofCharacters();
 
         final long numberOfPointsEnergisedByBeam = Day16.countNumberOfPointsEnergisedByBeam(grid);
         assertThat(numberOfPointsEnergisedByBeam)
@@ -48,8 +48,10 @@ public class Day16Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> grid = Grid.parseGrid(values, character -> character);
+        final Grid<Character> grid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofCharacters();
 
         final long numberOfPointsEnergisedByBeam = Day16.countNumberOfPointsEnergisedByBeam(grid);
         assertThat(numberOfPointsEnergisedByBeam)
@@ -58,8 +60,10 @@ public class Day16Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final Grid<Character> grid = Grid.parseGrid(values, character -> character);
+        final Grid<Character> grid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofCharacters();
 
         final long maxumberOfPointsEnergisedBySingleBeam = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
         assertThat(maxumberOfPointsEnergisedBySingleBeam)

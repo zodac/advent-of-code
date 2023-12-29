@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.ScratchCard;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ public class Day04Test {
 
     @Test
     void example() {
-        final List<ScratchCard> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(ScratchCard::parse)
-            .toList();
+        final List<ScratchCard> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(ScratchCard::parse)
+            .readAllLines();
 
         final long totalPoints = Day04.totalPointsForScratchCards(values);
         assertThat(totalPoints)
@@ -50,10 +49,10 @@ public class Day04Test {
 
     @Test
     void part1() {
-        final List<ScratchCard> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(ScratchCard::parse)
-            .toList();
+        final List<ScratchCard> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(ScratchCard::parse)
+            .readAllLines();
 
         final long totalPoints = Day04.totalPointsForScratchCards(values);
         assertThat(totalPoints)
@@ -62,10 +61,10 @@ public class Day04Test {
 
     @Test
     void part2() {
-        final List<ScratchCard> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(ScratchCard::parse)
-            .toList();
+        final List<ScratchCard> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(ScratchCard::parse)
+            .readAllLines();
 
         final long numberOfScratchCards = Day04.countTotalNumberOfScratchCards(values);
         assertThat(numberOfScratchCards)

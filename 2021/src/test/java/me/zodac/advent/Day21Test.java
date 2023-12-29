@@ -19,8 +19,7 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,9 +31,10 @@ class Day21Test {
 
     @Test
     void example() {
-        final int[] startPositions = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(input -> input.split(":", 2)[1].trim())
+        final int[] startPositions = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(input -> input.split(":", 2)[1].trim())
+            .readStream()
             .mapToInt(Integer::parseInt)
             .toArray();
 
@@ -45,9 +45,10 @@ class Day21Test {
 
     @Test
     void part1() {
-        final int[] startPositions = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(input -> input.split(":", 2)[1].trim())
+        final int[] startPositions = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(input -> input.split(":", 2)[1].trim())
+            .readStream()
             .mapToInt(Integer::parseInt)
             .toArray();
 

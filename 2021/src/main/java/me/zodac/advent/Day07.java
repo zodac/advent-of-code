@@ -44,15 +44,15 @@ public final class Day07 {
      * @param moveCostType the {@link MoveCostType} per move
      * @return the minimum moves required to align to the ideal vertical location
      */
-    public static long minimumMovesNeededToAlignVertically(final Collection<Integer> locations, final MoveCostType moveCostType) {
-        final int minValue = Collections.min(locations);
-        final int maxValue = Collections.max(locations);
+    public static long minimumMovesNeededToAlignVertically(final Collection<Long> locations, final MoveCostType moveCostType) {
+        final long minValue = Collections.min(locations);
+        final long maxValue = Collections.max(locations);
         long minimumNumberOfMoves = Long.MAX_VALUE;
 
-        for (int possibleAlignmentLocation = minValue; possibleAlignmentLocation < maxValue; possibleAlignmentLocation++) {
+        for (long possibleAlignmentLocation = minValue; possibleAlignmentLocation < maxValue; possibleAlignmentLocation++) {
             long movedNeeded = 0L;
 
-            for (final int location : locations) {
+            for (final long location : locations) {
                 movedNeeded += moveCostType.costForMove(location, possibleAlignmentLocation);
             }
 

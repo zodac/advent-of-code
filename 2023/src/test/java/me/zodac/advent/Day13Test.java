@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,7 +32,11 @@ public class Day13Test {
 
     @Test
     void example() {
-        final List<List<String>> values = ExampleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final List<List<String>> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .grouped()
+            .byDelimiter(String::isBlank);
 
         final long sumOfReflectionValues = Day13.calculateSumOfReflectionValues(values);
         assertThat(sumOfReflectionValues)
@@ -46,7 +49,11 @@ public class Day13Test {
 
     @Test
     void part1() {
-        final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final List<List<String>> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .grouped()
+            .byDelimiter(String::isBlank);
 
         final long sumOfReflectionValues = Day13.calculateSumOfReflectionValues(values);
         assertThat(sumOfReflectionValues)
@@ -55,7 +62,11 @@ public class Day13Test {
 
     @Test
     void part2() {
-        final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final List<List<String>> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .grouped()
+            .byDelimiter(String::isBlank);
 
         final long sumOfSecondReflectionValues = Day13.calculateSumOfSecondReflectionValues(values);
         assertThat(sumOfSecondReflectionValues)

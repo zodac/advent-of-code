@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Signal;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ class Day08Test {
 
     @Test
     void example() {
-        final List<Signal> signals = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Signal::create)
-            .toList();
+        final List<Signal> signals = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Signal::create)
+            .readAllLines();
 
         final long numberOfUniqueOutputSignals = Day08.identifyUniqueOutputValues(signals);
         assertThat(numberOfUniqueOutputSignals)
@@ -50,10 +49,10 @@ class Day08Test {
 
     @Test
     void part1() {
-        final List<Signal> signals = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Signal::create)
-            .toList();
+        final List<Signal> signals = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Signal::create)
+            .readAllLines();
 
         final long numberOfUniqueOutputSignals = Day08.identifyUniqueOutputValues(signals);
         assertThat(numberOfUniqueOutputSignals)
@@ -62,10 +61,10 @@ class Day08Test {
 
     @Test
     void part2() {
-        final List<Signal> signals = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Signal::create)
-            .toList();
+        final List<Signal> signals = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Signal::create)
+            .readAllLines();
 
         final long sumOfDecodedOutputs = Day08.sumOfDecodedOutputs(signals);
         assertThat(sumOfDecodedOutputs)

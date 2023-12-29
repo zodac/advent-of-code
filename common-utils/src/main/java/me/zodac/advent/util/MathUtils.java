@@ -49,7 +49,7 @@ public final class MathUtils {
      * @return the triangular number for the input
      * @see <a href="https://en.wikipedia.org/wiki/Triangular_number">Triangular Number</a>
      */
-    public static long calculateTriangularNumberValue(final int value) {
+    public static long calculateTriangularNumberValue(final long value) {
         return Math.round(value * (value + 1) / TRIANGULAR_NUMBER_DENOMINATOR);
     }
 

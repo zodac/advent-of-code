@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Movement;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +33,10 @@ class Day02Test {
 
     @Test
     void example() {
-        final List<Movement> movements = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Movement::parse)
-            .toList();
+        final List<Movement> movements = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Movement::parse)
+            .readAllLines();
 
         final long magnitude1 = Day02.magnitudeOfAllMovements(movements);
         assertThat(magnitude1)
@@ -50,10 +49,10 @@ class Day02Test {
 
     @Test
     void part1() {
-        final List<Movement> movements = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Movement::parse)
-            .toList();
+        final List<Movement> movements = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Movement::parse)
+            .readAllLines();
 
         final long magnitude = Day02.magnitudeOfAllMovements(movements);
         assertThat(magnitude)
@@ -62,10 +61,10 @@ class Day02Test {
 
     @Test
     void part2() {
-        final List<Movement> movements = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .map(Movement::parse)
-            .toList();
+        final List<Movement> movements = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Movement::parse)
+            .readAllLines();
 
         final long magnitude = Day02.magnitudeOfAllMovementsWithAim(movements);
         assertThat(magnitude)

@@ -29,7 +29,7 @@ public enum MoveCostType {
      */
     CONSTANT {
         @Override
-        public long costForMove(final int startPosition, final int endPosition) {
+        public long costForMove(final long startPosition, final long endPosition) {
             // We just get the distance from the current location to the possible location
             return Math.abs(startPosition - endPosition);
         }
@@ -40,9 +40,9 @@ public enum MoveCostType {
      */
     VARIABLE {
         @Override
-        public long costForMove(final int startPosition, final int endPosition) {
+        public long costForMove(final long startPosition, final long endPosition) {
             // This is 1 + 2 + 3 ... + n, described as n*(n+1)/2
-            final int diff = Math.abs(startPosition - endPosition);
+            final long diff = Math.abs(startPosition - endPosition);
             return MathUtils.calculateTriangularNumberValue(diff);
         }
     };
@@ -54,5 +54,5 @@ public enum MoveCostType {
      * @param endPosition   the end position
      * @return the cost for the move
      */
-    public abstract long costForMove(int startPosition, int endPosition);
+    public abstract long costForMove(long startPosition, long endPosition);
 }

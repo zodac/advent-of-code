@@ -20,7 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Sue;
 import org.junit.jupiter.api.Test;
 
@@ -33,10 +33,10 @@ class Day16Test {
 
     @Test
     void part1() {
-        final List<Sue> values = PuzzleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Sue::parseThreeAttributes)
-                .toList();
+        final List<Sue> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Sue::parseThreeAttributes)
+            .readAllLines();
 
         final int matchingId = Day16.findIdOfMatchingSue(values);
         assertThat(matchingId)
@@ -45,10 +45,10 @@ class Day16Test {
 
     @Test
     void part2() {
-        final List<Sue> values = PuzzleInput.readLines(INPUT_FILENAME)
-                .stream()
-                .map(Sue::parseThreeAttributes)
-                .toList();
+        final List<Sue> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .as(Sue::parseThreeAttributes)
+            .readAllLines();
 
         final int matchingId = Day16.findIdOfMatchingSueWithRanges(values);
         assertThat(matchingId)

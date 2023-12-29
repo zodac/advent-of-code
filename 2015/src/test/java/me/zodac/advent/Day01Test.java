@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,11 +32,10 @@ class Day01Test {
 
     @Test
     void example() {
-        final List<Character> values = ExampleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .flatMapToInt(String::chars)
-            .mapToObj(i -> (char) i)
-            .toList();
+        final List<Character> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asLinesOfCharacters()
+            .readFirstLine();
 
         final int floor1 = Day01.findResultFloor(values);
         assertThat(floor1)
@@ -50,11 +48,10 @@ class Day01Test {
 
     @Test
     void part1() {
-        final List<Character> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .flatMapToInt(String::chars)
-            .mapToObj(i -> (char) i)
-            .toList();
+        final List<Character> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asLinesOfCharacters()
+            .readFirstLine();
 
         final int floor = Day01.findResultFloor(values);
         assertThat(floor)
@@ -63,11 +60,10 @@ class Day01Test {
 
     @Test
     void part2() {
-        final List<Character> values = PuzzleInput.readLines(INPUT_FILENAME)
-            .stream()
-            .flatMapToInt(String::chars)
-            .mapToObj(i -> (char) i)
-            .toList();
+        final List<Character> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asLinesOfCharacters()
+            .readFirstLine();
 
         final int floor = Day01.findIndexOfSpecificFloor(values, -1);
         assertThat(floor)

@@ -20,8 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.grid.IntegerGrid;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +33,10 @@ public class Day%DAY_LONG%Test {
 
     @Test
     void example() {
-        final List<String> values = ExampleInput.readLines(INPUT_FILENAME);
-        final IntegerGrid integerGrid = IntegerGrid.parse(values);
+        final IntegerGrid integerGrid = InputReader
+            .forExample(INPUT_FILENAME)
+            .asGrid()
+            .ofIntegers();
 
         final long part1Result = Day17.part1(integerGrid);
         assertThat(part1Result)
@@ -48,8 +49,10 @@ public class Day%DAY_LONG%Test {
 
     @Test
     void part1() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final IntegerGrid integerGrid = IntegerGrid.parse(values);
+        final IntegerGrid integerGrid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofIntegers();
 
         final long part1Result = Day17.part1(integerGrid);
         assertThat(part1Result)
@@ -58,8 +61,10 @@ public class Day%DAY_LONG%Test {
 
     @Test
     void part2() {
-        final List<String> values = PuzzleInput.readLines(INPUT_FILENAME);
-        final IntegerGrid integerGrid = IntegerGrid.parse(values);
+        final IntegerGrid integerGrid = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asGrid()
+            .ofIntegers();
 
         final long part2Result = Day17.part2(integerGrid);
         assertThat(part2Result)

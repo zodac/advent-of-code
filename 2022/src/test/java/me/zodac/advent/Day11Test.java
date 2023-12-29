@@ -22,8 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import me.zodac.advent.input.ExampleInput;
-import me.zodac.advent.input.PuzzleInput;
+import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Monkey;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +35,11 @@ class Day11Test {
 
     @Test
     void example() {
-        final List<List<String>> values = ExampleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final List<List<String>> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .asStrings()
+            .grouped()
+            .byDelimiter(String::isBlank);
         final Map<Integer, Monkey> monkeysById1 = parseMonkeys(values, true);
 
         final long productOfActiveMonkeys1 = Day11.productOfActiveMonkeys(monkeysById1, 20);
@@ -51,7 +54,11 @@ class Day11Test {
 
     @Test
     void part1() {
-        final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final List<List<String>> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .grouped()
+            .byDelimiter(String::isBlank);
         final Map<Integer, Monkey> monkeysById = parseMonkeys(values, true);
 
         final long productOfActiveMonkeys = Day11.productOfActiveMonkeys(monkeysById, 20);
@@ -61,7 +68,11 @@ class Day11Test {
 
     @Test
     void part2() {
-        final List<List<String>> values = PuzzleInput.readLinesAsGroups(INPUT_FILENAME, String::isBlank);
+        final List<List<String>> values = InputReader
+            .forPuzzle(INPUT_FILENAME)
+            .asStrings()
+            .grouped()
+            .byDelimiter(String::isBlank);
         final Map<Integer, Monkey> monkeysById = parseMonkeys(values, false);
 
         final long productOfActiveMonkeys = Day11.productOfActiveMonkeys(monkeysById, 10_000);
