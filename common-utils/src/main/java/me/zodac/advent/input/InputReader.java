@@ -1,7 +1,7 @@
 /*
  * BSD Zero Clause License
  *
- * Copyright (c) 2021-2023 zodac.me
+ * Copyright (c) 2021-2024 zodac.me
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted.
@@ -55,7 +55,7 @@ import me.zodac.advent.util.StringUtils;
  *         .forExample(inputFilePath)
  *         .asGrid()
  *         .ofCharacters();
- *}
+ * }
  *
  * <p>
  * - To read a puzzle input where each line is an {@link Integer}, excluding lines where the value is <b>9</b>:
@@ -67,7 +67,7 @@ import me.zodac.advent.util.StringUtils;
  *         .asIntegers()
  *         .filter(i -> i != 9)
  *         .readAllLines();
- *}
+ * }
  *
  * <p>
  * - To read a puzzle input of {@link String}s, grouped by lines that are delimited by empty lines:
@@ -79,7 +79,7 @@ import me.zodac.advent.util.StringUtils;
  *         .asStrings()
  *         .grouped()
  *         .byDelimiter(String::isEmpty);
- *}
+ * }
  */
 public final class InputReader {
 
