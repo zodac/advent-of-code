@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import me.zodac.advent.pojo.grid.BooleanGrid;
@@ -55,7 +56,7 @@ import me.zodac.advent.util.StringUtils;
  *         .forExample(inputFilePath)
  *         .asGrid()
  *         .ofCharacters();
- * }
+ *}
  *
  * <p>
  * - To read a puzzle input where each line is an {@link Integer}, excluding lines where the value is <b>9</b>:
@@ -67,7 +68,7 @@ import me.zodac.advent.util.StringUtils;
  *         .asIntegers()
  *         .filter(i -> i != 9)
  *         .readAllLines();
- * }
+ *}
  *
  * <p>
  * - To read a puzzle input of {@link String}s, grouped by lines that are delimited by empty lines:
@@ -79,7 +80,7 @@ import me.zodac.advent.util.StringUtils;
  *         .asStrings()
  *         .grouped()
  *         .byDelimiter(String::isEmpty);
- * }
+ *}
  */
 public final class InputReader {
 
@@ -285,6 +286,18 @@ public final class InputReader {
         }
 
         /**
+         * Reads all lines in the {@link Stream}, and collect based on the input {@link Collector}.
+         *
+         * @param collector the {@link Collector} describing the reduction
+         * @param <A>       the mutable accumulation type of the reduction operation
+         * @param <R>       the result type of the reduction operation
+         * @return the output of type {@code R}
+         */
+        public <A, R> R readAllLines(final Collector<? super T, A, R> collector) {
+            return stream.collect(collector);
+        }
+
+        /**
          * Reads only the first line in the {@link Stream}.
          *
          * @return the output element
@@ -311,6 +324,17 @@ public final class InputReader {
          */
         public Reader<T> filter(final Predicate<? super T> predicate) {
             return new Reader<>(stream.filter(predicate));
+        }
+
+        /**
+         * Creates a new instance of {@link Reader} where the current {@link Stream} is mapped based on a {@link Function} to convert elements.
+         *
+         * @param converter the {@link Function} that will convert a {@link String} from the input into the return type
+         * @param <N>       the new return type
+         * @return a {@link Reader} for the return type
+         */
+        public <N> Reader<N> as(final Function<? super T, ? extends N> converter) {
+            return new Reader<>(stream.map(converter));
         }
 
         /**

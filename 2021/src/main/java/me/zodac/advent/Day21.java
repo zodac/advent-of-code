@@ -17,7 +17,9 @@
 
 package me.zodac.advent;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import me.zodac.advent.pojo.CircularBoard;
 import me.zodac.advent.pojo.DeterministicDie;
 
@@ -46,16 +48,16 @@ public final class Day21 {
      * @param winningScoreThreshold the winning score for any player to reach
      * @return the lowest player's score times the total number of dice rolls
      */
-    public static long getLosingScoreTimesNumberOfRolls(final int[] startPositions,
+    public static long getLosingScoreTimesNumberOfRolls(final List<Integer> startPositions,
                                                         final int numberOfDiceRolls,
                                                         final int maxDieValue,
                                                         final int boardSize,
                                                         final long winningScoreThreshold) {
         final DeterministicDie deterministicDie = DeterministicDie.createWithMaxValue(maxDieValue);
         final CircularBoard circularBoard = CircularBoard.createWithMaxValue(boardSize);
-        final int numberOfPlayers = startPositions.length;
+        final int numberOfPlayers = startPositions.size();
 
-        final int[] boardPositions = Arrays.copyOf(startPositions, numberOfPlayers);
+        final List<Integer> boardPositions = new ArrayList<>(startPositions);
         final long[] scores = new long[numberOfPlayers];
 
         long numberOfTimesRolled = 0;
@@ -63,7 +65,7 @@ public final class Day21 {
 
         while (searchingForWinner) {
             for (int playerNumber = 0; playerNumber < numberOfPlayers; playerNumber++) {
-                final int currentPosition = boardPositions[playerNumber];
+                final int currentPosition = boardPositions.get(playerNumber);
                 final long currentScore = scores[playerNumber];
 
                 final long spacesToMove = deterministicDie.rollDieMultipleTimes(numberOfDiceRolls);
@@ -77,7 +79,7 @@ public final class Day21 {
                     break; // Break so we don't roll for another player
                 }
 
-                boardPositions[playerNumber] = newPosition;
+                boardPositions.set(playerNumber, newPosition);
                 scores[playerNumber] = newScore;
             }
         }

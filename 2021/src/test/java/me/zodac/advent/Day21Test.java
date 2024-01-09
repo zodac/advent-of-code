@@ -19,6 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+import java.util.regex.Pattern;
 import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
@@ -28,15 +30,15 @@ import org.junit.jupiter.api.Test;
 class Day21Test {
 
     private static final String INPUT_FILENAME = "day21.txt";
+    private static final Pattern COLON_PATTERN = Pattern.compile(":");
 
     @Test
     void example() {
-        final int[] startPositions = InputReader
+        final List<Integer> startPositions = InputReader
             .forExample(INPUT_FILENAME)
-            .as(input -> input.split(":", 2)[1].trim())
-            .readStream()
-            .mapToInt(Integer::parseInt)
-            .toArray();
+            .as(input -> COLON_PATTERN.split(input, 2)[1].trim())
+            .as(Integer::parseInt)
+            .readAllLines();
 
         final long result = Day21.getLosingScoreTimesNumberOfRolls(startPositions, 3, 100, 10, 1_000L);
         assertThat(result)
@@ -45,12 +47,11 @@ class Day21Test {
 
     @Test
     void part1() {
-        final int[] startPositions = InputReader
+        final List<Integer> startPositions = InputReader
             .forPuzzle(INPUT_FILENAME)
-            .as(input -> input.split(":", 2)[1].trim())
-            .readStream()
-            .mapToInt(Integer::parseInt)
-            .toArray();
+            .as(input -> COLON_PATTERN.split(input, 2)[1].trim())
+            .as(Integer::parseInt)
+            .readAllLines();
 
         final long result = Day21.getLosingScoreTimesNumberOfRolls(startPositions, 3, 100, 10, 1_000L);
         assertThat(result)
