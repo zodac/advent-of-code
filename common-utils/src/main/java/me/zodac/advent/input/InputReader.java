@@ -71,7 +71,7 @@ import me.zodac.advent.util.StringUtils;
  *}
  *
  * <p>
- * - To read a puzzle input of {@link String}s, grouped by lines that are delimited by empty lines:
+ * - To read a puzzle input of {@link String}s, with each 3 lines grouped together:
  *
  * <p>
  * {@snippet :
@@ -79,7 +79,7 @@ import me.zodac.advent.util.StringUtils;
  *         .forPuzzle(INPUT_FILENAME)
  *         .asStrings()
  *         .grouped()
- *         .byDelimiter(String::isEmpty);
+ *         .bySize(3);
  *}
  */
 public final class InputReader {
@@ -380,7 +380,40 @@ public final class InputReader {
         }
 
         /**
-         * Groups the {@code stream} of lines groups the lines into {@link List}s, where each group is a split which is delimited when the provided
+         * Groups the {@code stream} of lines into {@link List}s, where each group has a size of {@code sizeOfGroup}.
+         *
+         * @param sizeOfGroup the size of the groups
+         * @return the group of {@link List}s of lines of the output type
+         */
+        public List<List<T>> bySize(final int sizeOfGroup) {
+            final List<? extends T> list = stream.toList();
+            final List<List<T>> groups = new ArrayList<>();
+            List<T> currentGroup = new ArrayList<>();
+            currentGroup.add(list.getFirst());
+
+            for (int i = 1; i < list.size(); i++) {
+                final T line = list.get(i);
+
+                if (i % sizeOfGroup == 0) {
+                    if (!currentGroup.isEmpty()) {
+                        groups.add(currentGroup);
+                    }
+                    currentGroup = new ArrayList<>();
+                    currentGroup.add(line);
+                } else {
+                    currentGroup.add(line);
+                }
+            }
+
+            // Add last group if not empty
+            if (!currentGroup.isEmpty()) {
+                groups.add(currentGroup);
+            }
+            return groups;
+        }
+
+        /**
+         * Groups the {@code stream} of lines into {@link List}s, where each group is a split which is delimited when the provided
          * {@link Predicate} is met.
          *
          * <ul>
