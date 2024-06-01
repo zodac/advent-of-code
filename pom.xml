@@ -212,6 +212,9 @@
                     <artifactId>versions-maven-plugin</artifactId>
                     <version>${versions-maven-plugin.version}</version>
                     <configuration>
+                        <!-- List of dependencies to not be updated, due to incompatible versions -->
+                        <!-- If a valid update becomes available, it can be updated and removed from below -->
+                        <excludes/>
                         <generateBackupPoms>false</generateBackupPoms>
                         <ruleSet>
                             <ignoreVersions>
