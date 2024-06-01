@@ -37,7 +37,7 @@
 
         <!-- Test 3PP Versions -->
         <assertj-core.version>3.26.0</assertj-core.version>
-        <junit-bom.version>5.11.0-M2</junit-bom.version>
+        <junit-bom.version>5.10.2</junit-bom.version>
 
         <!-- Plugin Versions -->
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
@@ -213,6 +213,15 @@
                     <version>${versions-maven-plugin.version}</version>
                     <configuration>
                         <generateBackupPoms>false</generateBackupPoms>
+                        <ruleSet>
+                            <ignoreVersions>
+                                <!-- Exclude SNAPSHOT and M (milestone) releases -->
+                                <ignoreVersion>
+                                    <type>regex</type>
+                                    <version>(.+-SNAPSHOT|.+-M\d)</version>
+                                </ignoreVersion>
+                            </ignoreVersions>
+                        </ruleSet>
                     </configuration>
                 </plugin>
 
