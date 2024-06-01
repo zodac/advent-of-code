@@ -218,10 +218,10 @@
                         <generateBackupPoms>false</generateBackupPoms>
                         <ruleSet>
                             <ignoreVersions>
-                                <!-- Exclude SNAPSHOT and M (milestone) releases -->
+                                <!-- Exclude alpha, beta, milestone and SNAPSHOT releases -->
                                 <ignoreVersion>
                                     <type>regex</type>
-                                    <version>(.+-SNAPSHOT|.+-M\d)</version>
+                                    <version>.*(-alpha|-beta|-M\d|-SNAPSHOT).*</version>
                                 </ignoreVersion>
                             </ignoreVersions>
                         </ruleSet>
