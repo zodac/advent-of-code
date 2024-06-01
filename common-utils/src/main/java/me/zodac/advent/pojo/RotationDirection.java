@@ -30,5 +30,10 @@ public enum RotationDirection {
     /**
      * Rotating 90° to the right.
      */
-    CLOCKWISE
+    CLOCKWISE,
+
+    /**
+     * An invalid rotation.
+     */
+    INVALID
 }

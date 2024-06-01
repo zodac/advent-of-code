@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import me.zodac.advent.pojo.Route;
-import me.zodac.advent.util.DistanceCalculator;
+import me.zodac.advent.search.DistanceCalculator;
 
 /**
  * Solution for 2015, Day 13.

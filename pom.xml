@@ -22,8 +22,8 @@
     <properties>
         <!-- Project Properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java-release>21</java-release>
-        <maven-release>3.9.6</maven-release>
+        <java-release>22</java-release>
+        <maven-release>3.9.7</maven-release>
 
         <!-- Test Properties -->
         <!-- All disabled by default, activated through profiles -->
@@ -36,35 +36,35 @@
         <skip-linters>true</skip-linters>
 
         <!-- Test 3PP Versions -->
-        <assertj-core.version>3.25.3</assertj-core.version>
-        <junit-bom.version>5.10.2</junit-bom.version>
+        <assertj-core.version>3.26.0</assertj-core.version>
+        <junit-bom.version>5.11.0-M2</junit-bom.version>
 
         <!-- Plugin Versions -->
-        <build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
+        <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
         <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-        <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
-        <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
-        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
+        <maven-install-plugin.version>3.1.2</maven-install-plugin.version>
+        <maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
         <versions-maven-plugin.version>2.16.2</versions-maven-plugin.version>
 
         <!-- Linter 3PP Versions -->
-        <checkstyle.version>10.14.2</checkstyle.version>
-        <error_prone_core.version>2.26.1</error_prone_core.version>
+        <checkstyle.version>10.17.0</checkstyle.version>
+        <error_prone_core.version>2.27.1</error_prone_core.version>
         <licenses.version>1</licenses.version>
-        <nullaway.version>0.10.24</nullaway.version>
+        <nullaway.version>0.11.0</nullaway.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
-        <pmd.version>7.0.0</pmd.version>
-        <spotbugs.version>4.8.3</spotbugs.version>
+        <pmd.version>7.2.0</pmd.version>
+        <spotbugs.version>4.8.5</spotbugs.version>
 
         <!-- Linter Plugin Versions -->
-        <license-maven-plugin.version>4.3</license-maven-plugin.version>
+        <license-maven-plugin.version>4.5</license-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
-        <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
-        <maven-pmd-plugin.version>3.21.2</maven-pmd-plugin.version>
-        <pitest-maven.version>1.15.8</pitest-maven.version>
-        <spotbugs-maven-plugin.version>4.8.3.1</spotbugs-maven-plugin.version>
+        <maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
+        <maven-pmd-plugin.version>3.22.0</maven-pmd-plugin.version>
+        <pitest-maven.version>1.16.1</pitest-maven.version>
+        <spotbugs-maven-plugin.version>4.8.5.0</spotbugs-maven-plugin.version>
 
         <!-- Linter Properties -->
         <!--suppress UnresolvedMavenProperty, files are only used in child modules -->
@@ -490,21 +490,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <!-- TODO: Only added to download SNAPSHOT version of PMD plugin, remove when PMD7 is supported on main branch -->
-    <pluginRepositories>
-        <pluginRepository>
-            <id>apache.snapshots</id>
-            <name>Apache Snapshot Repository</name>
-            <url>https://repository.apache.org/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 
     <profiles>
         <!-- Profile to run both tests and lints -->

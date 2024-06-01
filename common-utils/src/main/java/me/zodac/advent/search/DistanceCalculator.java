@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.util;
+package me.zodac.advent.search;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import me.zodac.advent.pojo.Route;
+import me.zodac.advent.util.CollectionUtils;
 
 /**
  * Calculator that can calculate the shortest or longest path across a {@link List} of {@link Route}s, while visiting all locations once.

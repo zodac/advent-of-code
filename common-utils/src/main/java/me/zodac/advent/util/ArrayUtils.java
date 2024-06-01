@@ -66,11 +66,14 @@ public final class ArrayUtils {
      * @param <E>   the type of the 2D array
      * @return the copied 2D array
      */
-    @SuppressWarnings("Convert2MethodRef") // Suppressed as method reference causes an IntelliJ error
     public static <E> E[][] deepCopy(final E[][] input) {
-        return Arrays.stream(input)
-            .map(array -> array.clone())
-            .toArray(array -> input.clone());
+        final E[][] outerCopy = Arrays.copyOf(input, input.length);
+
+        for (int i = 0; i < input.length; i++) {
+            outerCopy[i] = Arrays.copyOf(input[i], input[i].length);
+        }
+
+        return outerCopy;
     }
 
     /**

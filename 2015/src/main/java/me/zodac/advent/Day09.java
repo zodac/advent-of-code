@@ -19,7 +19,7 @@ package me.zodac.advent;
 
 import java.util.Collection;
 import me.zodac.advent.pojo.Route;
-import me.zodac.advent.util.DistanceCalculator;
+import me.zodac.advent.search.DistanceCalculator;
 
 /**
  * Solution for 2015, Day 9.

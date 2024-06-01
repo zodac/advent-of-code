@@ -195,6 +195,7 @@ class StringUtilsTest {
             Arguments.of("1 -23 456", List.of(1L, -23L, 456L)),                                         // Negative number
             Arguments.of("1 and 23 and 456", List.of(1L, 23L, 456L)),                                   // Numbers and words
             Arguments.of("1 23 456 9999999999999999", List.of(1L, 23L, 456L, 9_999_999_999_999_999L)),  // Multiple integers and long
+            Arguments.of("99999999999999999999999999999", List.of()),                           // Number too large for long
             Arguments.of("No numbers here", List.of()),                                                 // No numbers
             Arguments.of("", List.of()),                                                                // Empty
             Arguments.of(" ", List.of())                                                                // Blank

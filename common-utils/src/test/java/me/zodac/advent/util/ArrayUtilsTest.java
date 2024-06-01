@@ -71,6 +71,44 @@ class ArrayUtilsTest {
     }
 
     @Test
+    void whenDeepCopy_givenValidInput_thenNewFilledArrayIsReturned_andOriginalArrayIsUnchanged() {
+        final Integer[][] input = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        final Integer[][] output = ArrayUtils.deepCopy(input);
+        assertThat(output)
+            .contains(new Integer[] {1, 2, 3}, atIndex(0))
+            .contains(new Integer[] {4, 5, 6}, atIndex(1))
+            .contains(new Integer[] {7, 8, 9}, atIndex(2));
+
+        // Confirm original array is not modified if copy is modified
+        output[1][1] = 100;
+        assertThat(output)
+            .contains(new Integer[] {1, 2, 3}, atIndex(0))
+            .contains(new Integer[] {4, 100, 6}, atIndex(1))
+            .contains(new Integer[] {7, 8, 9}, atIndex(2));
+        assertThat(input)
+            .contains(new Integer[] {1, 2, 3}, atIndex(0))
+            .contains(new Integer[] {4, 5, 6}, atIndex(1))
+            .contains(new Integer[] {7, 8, 9}, atIndex(2));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForDeepCopy")
+    <E> void testForDeepCopy(final E[][] input, final E[][] expected) {
+        final E[][] output = ArrayUtils.deepCopy(input);
+        assertThat(output)
+            .isDeepEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForDeepCopy() {
+        return Stream.of(
+            // Column and row are same lengths
+            Arguments.of(new Boolean[][] {{false, false}, {false, false}}, new Boolean[][] {{false, false}, {false, false}}),
+            // Column and row are different lengths
+            Arguments.of(new Boolean[][] {{true, true}, {true, true}, {true, true}}, new Boolean[][] {{true, true}, {true, true}, {true, true}})
+        );
+    }
+
+    @Test
     void whenDeepFill_givenValidInput_thenNewFilledArrayIsReturned_andOriginalArrayIsUnchanged() {
         final Boolean[][] input = new Boolean[3][3];
         final Boolean[][] output = ArrayUtils.deepFill(input, true);
@@ -103,8 +141,10 @@ class ArrayUtilsTest {
 
     private static Stream<Arguments> provideForDeepFill() {
         return Stream.of(
-            Arguments.of(new Boolean[2][2], false, new Boolean[][] {{false, false}, {false, false}}),           // Same column lengths
-            Arguments.of(new Boolean[3][2], true, new Boolean[][] {{true, true}, {true, true}, {true, true}})   // Different column lengths
+            // Column and row are same lengths
+            Arguments.of(new Boolean[2][2], false, new Boolean[][] {{false, false}, {false, false}}),
+            // Column and row are different lengths
+            Arguments.of(new Boolean[3][2], true, new Boolean[][] {{true, true}, {true, true}, {true, true}})
         );
     }
 
@@ -295,6 +335,13 @@ class ArrayUtilsTest {
                     {'d', 'e'},
                     {'f', 'g', 'h', 'i'}
                 }, RotationDirection.CLOCKWISE, "Expected outer and inner lengths to be equal, found: 3 and 4"
+            ),
+            // Invalid rotation direction
+            Arguments.of(new Character[][] {
+                    {'a', 'b', 'c'},
+                    {'d', 'e', 'f'},
+                    {'g', 'h', 'i'}
+                }, RotationDirection.INVALID, "Unable to handle rotation in direction: INVALID"
             ),
             Arguments.of(new Character[][] {}, RotationDirection.CLOCKWISE, "Input cannot be empty"),       // Empty 1D array
             Arguments.of(new Character[][] {{}, {}}, RotationDirection.CLOCKWISE, "Input cannot be empty")  // Empty 2D array
