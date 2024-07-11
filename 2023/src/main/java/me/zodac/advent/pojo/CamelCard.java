@@ -53,7 +53,6 @@ public record CamelCard(CamelCardType camelCardType, String hand, long wager, bo
     public static CamelCard parse(final String input, final boolean withJokers) {
         final String[] inputTokens = StringUtils.splitOnWhitespace(input);
         final String hand = inputTokens[0].trim();
-        final char mostOccurringCard = StringUtils.mostOccurringCharacter(hand);
         final long wager = Long.parseLong(inputTokens[1]);
 
         if (!withJokers || !JOKER_MATCHER.matcher(hand).find()) {
@@ -64,6 +63,7 @@ public record CamelCard(CamelCardType camelCardType, String hand, long wager, bo
             return new CamelCard(CamelCardType.FIVE_OF_A_KIND, hand, wager, true);
         }
 
+        final char mostOccurringCard = StringUtils.mostOccurringCharacter(hand);
         if (mostOccurringCard == JOKER_SYMBOL) {
             final char secondMostOccurringCard = StringUtils.mostOccurringCharacter(JOKER_MATCHER.matcher(hand).replaceAll(""));
             final String handWithoutJokers = JOKER_MATCHER.matcher(hand).replaceAll(String.valueOf(secondMostOccurringCard));
