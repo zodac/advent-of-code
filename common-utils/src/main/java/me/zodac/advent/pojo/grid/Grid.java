@@ -290,22 +290,6 @@ public class Grid<E> {
     }
 
     /**
-     * Returns the {@link Grid} as a {@link Map} of each value, keyed by its {@link Point}.
-     *
-     * @return the {@link Grid} as a {@link Map}
-     */
-    public Map<Point, E> asMap() {
-        final Map<Point, E> valuesByPoint = new HashMap<>();
-        for (int rowIndex = 0; rowIndex < numberOfRows(); rowIndex++) {
-            for (int columnIndex = 0; columnIndex < numberOfColumns(); columnIndex++) {
-                final Point point = Point.of(rowIndex, columnIndex);
-                valuesByPoint.put(point, at(point));
-            }
-        }
-        return valuesByPoint;
-    }
-
-    /**
      * Returns the value at the given ({@code row}, {@code column}).
      *
      * @param row    the row
