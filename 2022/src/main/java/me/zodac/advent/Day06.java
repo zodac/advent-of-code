@@ -45,13 +45,14 @@ public final class Day06 {
      * @throws IllegalArgumentException if {@code numberOfUniqueCharactersNeeded} unique characters cannot be found in sequence
      */
     public static long findSequenceOfUniqueCharactersAndReturnLastIndex(final String input, final int numberOfUniqueCharactersNeeded) {
-        for (int i = 0; i < input.length() - numberOfUniqueCharactersNeeded; i++) {
+        final int range = input.length() - numberOfUniqueCharactersNeeded;
+        for (int i = 0; i < range; i++) {
 
             // 'Window' the string from index to the wanted number of unique characters, then check for duplicates
             final String subStringToCheck = input.substring(i, i + numberOfUniqueCharactersNeeded);
 
             if (!StringUtils.containsDuplicates(subStringToCheck)) {
-                return i + numberOfUniqueCharactersNeeded;
+                return (long) i + numberOfUniqueCharactersNeeded;
             }
         }
 

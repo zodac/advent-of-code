@@ -59,7 +59,7 @@ public final class Day08 {
     public static long countTreesVisibleFromOutsideForest(final IntegerGrid integerGrid) {
         final Integer[][] trees = integerGrid.getInternalGrid();
 
-        int innerCount = 0;
+        long innerCount = 0L;
         for (int i = 1; i < trees.length - 1; i++) {
             for (int j = 1; j < trees[0].length - 1; j++) {
                 if (isTreeVisibleFromOutside(trees, i, j)) {

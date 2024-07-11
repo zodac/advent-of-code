@@ -78,7 +78,7 @@ public final class Day14 {
             currentSandGrain = dropSandPoint(filledPoints, currentSandGrain);
         }
 
-        return filledPoints.size() - initialNumberOfFilledPoints;
+        return (long) filledPoints.size() - initialNumberOfFilledPoints;
     }
 
     /**
@@ -128,7 +128,7 @@ public final class Day14 {
             currentSandPoint = dropSandPoint(filledPoints, currentSandPoint);
         }
 
-        return filledPoints.size() - initialNumberOfFilledPoints;
+        return (long) filledPoints.size() - initialNumberOfFilledPoints;
     }
 
     private static Collection<Point> fillInputPoints(final Collection<? extends List<Point>> values) {

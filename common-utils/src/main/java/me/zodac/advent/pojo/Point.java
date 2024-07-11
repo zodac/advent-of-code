@@ -125,7 +125,7 @@ public record Point(int x, int y) {
      * @see <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Manhatten Distance</a>
      */
     public long distanceTo(final Point other) {
-        return Math.abs(x - other.x) + Math.abs(y - other.y);
+        return (long) Math.abs(x - other.x) + Math.abs(y - other.y);
     }
 
     /**

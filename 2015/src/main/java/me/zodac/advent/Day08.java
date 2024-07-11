@@ -49,8 +49,8 @@ public final class Day08 {
      * @return the difference between the length of the literal and in-memory {@link String}s
      */
     public static long calculateDiffOfLiteralAndInMemoryLength(final Collection<? extends CharSequence> values) {
-        int totalLiteralLength = 0;
-        int totalInMemoryLength = 0;
+        long totalLiteralLength = 0L;
+        long totalInMemoryLength = 0L;
 
         for (final CharSequence value : values) {
             totalLiteralLength += value.length();
@@ -87,8 +87,8 @@ public final class Day08 {
      * @return the difference between the length of the escaped and literal {@link String}s
      */
     public static long calculateDiffOfEscapedAndLiteralLength(final Collection<String> values) {
-        int totalEscapedLength = 0;
-        int totalLiteralLength = 0;
+        long totalEscapedLength = 0L;
+        long totalLiteralLength = 0L;
 
         for (final String value : values) {
             totalEscapedLength += calculateEscapedLength(value);
