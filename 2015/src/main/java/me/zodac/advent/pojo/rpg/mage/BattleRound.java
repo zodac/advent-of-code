@@ -50,6 +50,17 @@ public final class BattleRound implements SearchNode {
     private MagePlayer player;
     private long distance = Long.MAX_VALUE;
 
+    private BattleRound(final MagePlayer player, final MageBoss boss, final List<ActiveSpell> activeSpells,
+                        final List<Spell> castSpells,
+                        final boolean isPlayerRound, final int heathLossEachPlayerRound) {
+        this.player = player;
+        this.boss = boss;
+        this.activeSpells = activeSpells;
+        this.castSpells = castSpells;
+        this.isPlayerRound = isPlayerRound;
+        this.heathLossEachPlayerRound = heathLossEachPlayerRound;
+    }
+
     /**
      * Creates the first {@link BattleRound} for the battle.
      *
@@ -90,17 +101,6 @@ public final class BattleRound implements SearchNode {
     public static BattleRound createBossRound(final MagePlayer player, final MageBoss boss, final List<ActiveSpell> activeSpells,
                                               final List<Spell> castSpells, final int heathLossEachPlayerRound) {
         return new BattleRound(player, boss, activeSpells, castSpells, false, heathLossEachPlayerRound);
-    }
-
-    private BattleRound(final MagePlayer player, final MageBoss boss, final List<ActiveSpell> activeSpells,
-                        final List<Spell> castSpells,
-                        final boolean isPlayerRound, final int heathLossEachPlayerRound) {
-        this.player = player;
-        this.boss = boss;
-        this.activeSpells = activeSpells;
-        this.castSpells = castSpells;
-        this.isPlayerRound = isPlayerRound;
-        this.heathLossEachPlayerRound = heathLossEachPlayerRound;
     }
 
     @Override
