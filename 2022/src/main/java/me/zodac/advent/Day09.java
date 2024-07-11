@@ -55,7 +55,7 @@ public final class Day09 {
      * <p>
      * The input {@link Movement}s define the route the head {@link Point} should follow.
      *
-     * @param movements the {@link Movement}s for the head to follow
+     * @param movements     the {@link Movement}s for the head to follow
      * @param numberOfTails the number of tails following the head
      * @return the number of unique {@link Point}s visited by the last tail
      */
@@ -103,9 +103,8 @@ public final class Day09 {
         // Since the leader only moves one space at a time and cannot move diagonally,
         // only one of the X or Y coordinate will be multiple spaces away.
         // The follower should only move 1 space, so we use Integer#signum(int).
-        if (Math.abs(deltaX) == DISTANCE_FOR_FOLLOWER_TO_MOVE_TOWARDS_LEADER) {
-            return follower.move(Integer.signum(deltaX), Integer.signum(deltaY));
-        } else if (Math.abs(deltaY) == DISTANCE_FOR_FOLLOWER_TO_MOVE_TOWARDS_LEADER) {
+        if (Math.abs(deltaX) == DISTANCE_FOR_FOLLOWER_TO_MOVE_TOWARDS_LEADER ||
+            Math.abs(deltaY) == DISTANCE_FOR_FOLLOWER_TO_MOVE_TOWARDS_LEADER) {
             return follower.move(Integer.signum(deltaX), Integer.signum(deltaY));
         }
 
