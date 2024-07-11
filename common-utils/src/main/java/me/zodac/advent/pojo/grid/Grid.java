@@ -461,34 +461,37 @@ public class Grid<E> {
     @SuppressWarnings("unused") // Only used for debugging
     public void print(final boolean withHeaders) {
         if (withHeaders) {
-            //noinspection ALL: Printing to stdout for debugging
-            System.out.print(" | "); // NOPMD: SystemPrintln - Printing to stdout for debugging
+            log(" | ");
             for (int i = 0; i < internalGrid[0].length; i++) {
-                //noinspection ALL
-                System.out.print((i + 1) % 10); // NOPMD
+                log((i + 1) % 10);
             }
 
-            //noinspection ALL: Printing to stdout for debugging
-            System.out.println("\n" + "-".repeat(internalGrid[0].length) + "---"); // NOPMD
+            logLine("\n" + "-".repeat(internalGrid[0].length) + "---");
         }
 
         for (int i = 0; i < internalGrid.length; i++) {
             final E[] row = internalGrid[i];
 
             if (withHeaders) {
-                //noinspection ALL
-                System.out.print((i + 1) % 10 + "| "); // NOPMD
+                log((i + 1) % 10 + "| ");
             }
 
             for (final E val : row) {
-                //noinspection ALL
-                System.out.print(val); // NOPMD
+                logLine(val);
             }
-            //noinspection ALL
-            System.out.println(); // NOPMD
+            logLine("");
         }
+        logLine("");
+    }
+
+    private static void logLine(final Object input) {
+        log(String.valueOf(input) + '\n');
+    }
+
+    // Creating function to keep all suppressions in one place
+    private static void log(final Object input) {
         //noinspection ALL
-        System.out.println(); // NOPMD
+        System.out.print(input); // NOPMD: System.out.print() - Printing to stdout for debugging
     }
 
     @Override
