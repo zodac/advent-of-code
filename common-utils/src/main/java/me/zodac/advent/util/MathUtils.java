@@ -23,8 +23,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
+import java.util.function.ObjLongConsumer;
+import java.util.function.ToLongFunction;
 import me.zodac.advent.pojo.MathOperation;
 
 /**
@@ -306,8 +306,8 @@ public final class MathUtils {
         final List<List<Long>> allDiffs = new LinkedList<>();
         // Variable to differentiate between going backwards or forwards for the sequence
         final MathOperation operation = getNextValue ? MathOperation.PLUS : MathOperation.MINUS;
-        final Function<List<Long>, Long> retrievalFunction = getNextValue ? List::getLast : List::getFirst;
-        final BiConsumer<List<Long>, Long> additionConsumer = getNextValue ? List::addLast : List::addFirst;
+        final ToLongFunction<List<Long>> retrievalFunction = getNextValue ? List::getLast : List::getFirst;
+        final ObjLongConsumer<List<Long>> additionConsumer = getNextValue ? List::addLast : List::addFirst;
 
         List<Long> previousList = existingSequence;
 
@@ -328,16 +328,16 @@ public final class MathUtils {
             final List<Long> lastRemainingDiffs = allDiffs.get(i);
             final List<Long> secondLastRemainingDiffs = allDiffs.get(i - 1);
 
-            final long currentLastRemainingDiff = retrievalFunction.apply(lastRemainingDiffs);
-            final long currentSecondLastRemainingDiff = retrievalFunction.apply(secondLastRemainingDiffs);
+            final long currentLastRemainingDiff = retrievalFunction.applyAsLong(lastRemainingDiffs);
+            final long currentSecondLastRemainingDiff = retrievalFunction.applyAsLong(secondLastRemainingDiffs);
 
             final long newDiff = operation.apply(currentSecondLastRemainingDiff, currentLastRemainingDiff);
             additionConsumer.accept(secondLastRemainingDiffs, newDiff);
         }
 
         final List<Long> lastRemainingDiffs = allDiffs.getFirst();
-        final long currentLastRemainingDiff = retrievalFunction.apply(lastRemainingDiffs);
-        final long currentLastValue = retrievalFunction.apply(existingSequence);
+        final long currentLastRemainingDiff = retrievalFunction.applyAsLong(lastRemainingDiffs);
+        final long currentLastValue = retrievalFunction.applyAsLong(existingSequence);
 
         return operation.apply(currentLastValue, currentLastRemainingDiff);
     }

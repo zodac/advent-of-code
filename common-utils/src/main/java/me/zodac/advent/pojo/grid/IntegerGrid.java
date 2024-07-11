@@ -20,6 +20,7 @@ package me.zodac.advent.pojo.grid;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.ToIntFunction;
 import me.zodac.advent.pojo.Line;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.NumberUtils;
@@ -30,9 +31,9 @@ import me.zodac.advent.util.NumberUtils;
 public final class IntegerGrid extends Grid<Integer> {
 
     /**
-     * {@link Function} that is used to convert a specific point on the {@link IntegerGrid} to an {@link Integer} value.
+     * {@link ToIntFunction} that is used to convert a specific point on the {@link IntegerGrid} to an {@link Integer} value.
      */
-    public static final Function<Integer, Integer> EVALUATOR = integerValue -> integerValue;
+    public static final ToIntFunction<Integer> EVALUATOR = integerValue -> integerValue;
 
     private static final int NUMBER_SIGNIFYING_OVERLAP = 2;
 
@@ -88,7 +89,7 @@ public final class IntegerGrid extends Grid<Integer> {
 
         for (int row = 0; row < gridSize; row++) {
             for (int column = 0; column < gridSize; column++) {
-                final int currentPointValue = EVALUATOR.apply(at(row, column));
+                final int currentPointValue = EVALUATOR.applyAsInt(at(row, column));
                 if (currentPointValue >= NUMBER_SIGNIFYING_OVERLAP) {
                     count++;
                 }

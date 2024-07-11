@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
@@ -103,16 +104,16 @@ public class Grid<E> {
     /**
      * Count the value of all {@link Point}s in the {@link Grid}. The actual value of each {@link Point} is defined by the input {@code evaluator}.
      *
-     * @param evaluator {@link Function} used to convert the value of type {@code E} into an {@link Integer}
+     * @param evaluator {@link ToIntFunction} used to convert the value of type {@code E} into an {@link Integer}
      * @return the sum of all {@link Point}s in the {@link Grid}
      */
-    public long sumValues(final Function<? super E, Integer> evaluator) {
+    public long sumValues(final ToIntFunction<? super E> evaluator) {
         int count = 0;
 
         for (int row = 0; row < numberOfRows(); row++) {
             for (int column = 0; column < numberOfColumns(); column++) {
                 final E value = at(row, column);
-                count += evaluator.apply(value);
+                count += evaluator.applyAsInt(value);
             }
         }
 
