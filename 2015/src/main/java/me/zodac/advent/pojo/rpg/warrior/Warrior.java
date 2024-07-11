@@ -48,7 +48,7 @@ public record Warrior(long hitPoints, int equipmentCost, int attack, int defence
      */
     public boolean canWinFightAgainst(final Warrior other) {
         final double turnsToKillOther = Math.ceil(other.hitPoints / (double) (attack - other.defence));
-        return hitPoints - (long) (other.attack - defence) * (turnsToKillOther - MINIMUM_DAMAGE_PER_ROUND) >= 0;
+        return hitPoints - (other.attack - defence) * (turnsToKillOther - MINIMUM_DAMAGE_PER_ROUND) >= 0;
     }
 
     /**
