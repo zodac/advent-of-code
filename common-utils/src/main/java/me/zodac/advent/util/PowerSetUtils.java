@@ -246,7 +246,7 @@ public final class PowerSetUtils {
     public static <T> Set<Set<T>> getPowerSet(final Set<? extends T> input) {
         final Set<Set<T>> powerSet = new HashSet<>();
         if (input.isEmpty()) {
-            powerSet.add(new HashSet<>(0));
+            powerSet.add(HashSet.newHashSet(0));
             return powerSet;
         }
 
