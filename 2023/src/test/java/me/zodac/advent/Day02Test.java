@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests to verify answers for {@link Day02}.
  */
-public class Day02Test {
+class Day02Test {
 
     private static final String INPUT_FILENAME = "day02.txt";
 
