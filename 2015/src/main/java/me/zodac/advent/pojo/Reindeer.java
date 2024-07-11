@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * @param flyingDuration the {@link Duration} that the {@link Reindeer} can fly before resting
  * @param restDuration   the {@link Duration} that the {@link Reindeer} must rest before flying again
  */
-public record Reindeer(int flyingVelocity, Duration flyingDuration, Duration restDuration) {
+public record Reindeer(int flyingVelocity, Duration flyingDuration, Duration restDuration) implements Comparable<Reindeer> {
 
     // Regex pattern with named capture group
     private static final Pattern REINDEER_PATTERN = Pattern.compile(
@@ -78,5 +78,20 @@ public record Reindeer(int flyingVelocity, Duration flyingDuration, Duration res
         final long distanceOfLastCycle = flyingVelocity * remainingFlyingTime;
 
         return totalDistanceOfFullCycles + distanceOfLastCycle;
+    }
+
+    @Override
+    public int compareTo(final Reindeer other) {
+        final int compareFlyingVelocity = Integer.compare(flyingVelocity, other.flyingVelocity);
+        if (compareFlyingVelocity != 0) {
+            return compareFlyingVelocity;
+        }
+
+        final int compareFlyingDuration = flyingDuration.compareTo(other.flyingDuration);
+        if (compareFlyingDuration != 0) {
+            return compareFlyingDuration;
+        }
+
+        return restDuration.compareTo(other.restDuration);
     }
 }

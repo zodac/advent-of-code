@@ -32,7 +32,7 @@ import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
  * @param x the X coordinate, or row
  * @param y the Y coordinate, or column
  */
-public record Point(int x, int y) {
+public record Point(int x, int y) implements Comparable<Point> {
 
     private static final Pattern POINT_DELIMITER_PATTERN = Pattern.compile(" -> ");
     private static final int DEFAULT_MOVE_DISTANCE = 1;
@@ -289,5 +289,14 @@ public record Point(int x, int y) {
         }
 
         return adjacentPoints;
+    }
+
+    @Override
+    public int compareTo(final Point other) {
+        final int compareX = Integer.compare(x, other.x);
+        if (compareX != 0) {
+            return compareX;
+        }
+        return Integer.compare(y, other.y);
     }
 }
