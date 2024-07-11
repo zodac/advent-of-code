@@ -79,8 +79,8 @@ public final class Day03 {
         // Input should have 12 digits, but no harm being a bit flexible
         final int lengthOfBinaryValue = binaryValues.getFirst().length();
 
-        final StringBuilder gammaRate = new StringBuilder();
-        final StringBuilder epsilonRate = new StringBuilder();
+        final StringBuilder gammaRate = new StringBuilder(lengthOfBinaryValue);
+        final StringBuilder epsilonRate = new StringBuilder(lengthOfBinaryValue);
 
         for (int i = 0; i < lengthOfBinaryValue; i++) {
             final BitParityCount bitParityCount = BitParityCount.createForIndexOfBinaryValues(binaryValues, i);

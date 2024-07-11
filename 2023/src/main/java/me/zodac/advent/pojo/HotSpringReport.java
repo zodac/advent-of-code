@@ -55,8 +55,9 @@ public record HotSpringReport(String condition, List<Long> frequency) {
             throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
 
-        final StringBuilder first = new StringBuilder();
-        final StringBuilder second = new StringBuilder();
+        final int initialSize = withRepeats << 1; // 2 characters per withRepeats iteration
+        final StringBuilder first = new StringBuilder(initialSize);
+        final StringBuilder second = new StringBuilder(initialSize);
 
         for (int i = 0; i < withRepeats; i++) {
             first.append(matcher.group(1)).append(CONDITION_RECORD_REPEAT_DELIMITER);
