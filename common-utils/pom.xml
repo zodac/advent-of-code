@@ -13,6 +13,12 @@
     <artifactId>common-utils</artifactId>
     <name>[${project.parent.artifactId}] Common Utilities</name>
 
+    <properties>
+        <!-- JaCoCo Configuration -->
+        <line-coverage>0.35</line-coverage>
+        <branch-coverage>0.35</branch-coverage>
+    </properties>
+
     <dependencies>
         <!-- 3PP Dependencies -->
         <dependency>
@@ -41,6 +47,16 @@
 
     <build>
         <plugins>
+            <!-- Execute tests -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
             <!-- Execute linters -->
             <plugin>
                 <groupId>com.mycila</groupId>

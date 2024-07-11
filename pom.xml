@@ -25,16 +25,19 @@
         <java-release>22</java-release>
         <maven-release>3.9.8</maven-release>
 
+        <!-- Lint Properties -->
+        <!-- All disabled by default, activated through profiles -->
+        <skip-linters>true</skip-linters>
+        <skip-sonarqube>true</skip-sonarqube>
+
         <!-- Test Properties -->
         <!-- All disabled by default, activated through profiles -->
         <skip-tests>true</skip-tests>
         <!-- Adding so Maven plugins will not copy/compile test resources -->
         <maven.test.skip>${skip-tests}</maven.test.skip>
-
-        <!-- Lint Properties -->
-        <!-- All disabled by default, activated through profiles -->
-        <skip-linters>true</skip-linters>
-        <skip-sonarqube>true</skip-sonarqube>
+        <!-- JaCoCo Configuration (overridden in each child module) -->
+        <line-coverage>0.0</line-coverage>
+        <branch-coverage>0.0</branch-coverage>
 
         <!-- Test 3PP Versions -->
         <assertj-core.version>3.26.3</assertj-core.version>
@@ -42,6 +45,7 @@
 
         <!-- Plugin Versions -->
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
@@ -206,6 +210,54 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven-jar-plugin.version}</version>
+                </plugin>
+
+                <!-- Test Execution -->
+                <!-- Must be run with tests, cannot be run alone -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                    <configuration>
+                        <rules>
+                            <rule>
+                                <element>BUNDLE</element>
+                                <limits>
+                                    <limit>
+                                        <counter>LINE</counter>
+                                        <value>COVEREDRATIO</value>
+                                        <minimum>${line-coverage}</minimum>
+                                    </limit>
+                                    <limit>
+                                        <counter>BRANCH</counter>
+                                        <value>COVEREDRATIO</value>
+                                        <minimum>${branch-coverage}</minimum>
+                                    </limit>
+                                </limits>
+                            </rule>
+                        </rules>
+                        <skip>${skip-tests}</skip>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>default-prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-report</id>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-check</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
