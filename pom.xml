@@ -23,7 +23,7 @@
         <!-- Project Properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-release>22</java-release>
-        <maven-release>3.9.7</maven-release>
+        <maven-release>3.9.8</maven-release>
 
         <!-- Test Properties -->
         <!-- All disabled by default, activated through profiles -->
@@ -34,6 +34,7 @@
         <!-- Lint Properties -->
         <!-- All disabled by default, activated through profiles -->
         <skip-linters>true</skip-linters>
+        <skip-sonarqube>true</skip-sonarqube>
 
         <!-- Test 3PP Versions -->
         <assertj-core.version>3.26.0</assertj-core.version>
@@ -64,6 +65,7 @@
         <maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
         <maven-pmd-plugin.version>3.22.0</maven-pmd-plugin.version>
         <pitest-maven.version>1.16.1</pitest-maven.version>
+        <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
         <spotbugs-maven-plugin.version>4.8.5.0</spotbugs-maven-plugin.version>
 
         <!-- Linter Properties -->
@@ -72,8 +74,18 @@
         <checkstyle-file>${ci-config-directory}/checkstyle.xml</checkstyle-file>
         <license-file>${ci-config-directory}/license-template.txt</license-file>
         <license-header-definition-file>${ci-config-directory}/license-header-definition.txt</license-header-definition-file>
-        <pmd-ruleset>${ci-config-directory}/pmd-ruleset.xml</pmd-ruleset>
         <pitest-test-strength-threshold>100</pitest-test-strength-threshold>
+        <pmd-ruleset>${ci-config-directory}/pmd-ruleset.xml</pmd-ruleset>
+        <sonar.exclusions>src/test/**/*</sonar.exclusions>
+        <sonar.host.url>https://sonarqube.zodac.me</sonar.host.url>
+        <sonar.java.checkstyle.reportPaths>${project.build.directory}/checkstyle-result.xml</sonar.java.checkstyle.reportPaths>
+        <sonar.java.pmd.reportPaths>${project.build.directory}/pmd.xml</sonar.java.pmd.reportPaths>
+        <sonar.java.spotbugs.reportPaths>${project.build.directory}/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
+        <sonar.language>java</sonar.language>
+        <sonar.projectKey>${project.artifactId}</sonar.projectKey>
+        <sonar.projectName>${project.artifactId}</sonar.projectName>
+        <!--suppress UnresolvedMavenProperty, injected by environment variable -->
+        <sonar.token>${env.SONARQUBE_PAT}</sonar.token>
         <spotbugs-include-file>${ci-config-directory}/spotbugs-include-filter-file.xml</spotbugs-include-file>
         <spotbugs-exclude-file>${ci-config-directory}/spotbugs-exclude-filter-file.xml</spotbugs-exclude-file>
     </properties>
@@ -463,6 +475,25 @@
                 </plugin>
 
                 <!-- Manual execution: -->
+                <!-- mvn sonar:sonar -Dsonarqube -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
+                    <configuration>
+                        <sonar.skip>${skip-sonarqube}</sonar.skip>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>sonar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Manual execution: -->
                 <!-- mvn spotbugs:spotbugs -Dlint -->
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
@@ -500,6 +531,10 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 
@@ -528,6 +563,20 @@
             </activation>
             <properties>
                 <skip-linters>false</skip-linters>
+            </properties>
+        </profile>
+
+        <!-- Profile used to execute SonarQube analysis on the project -->
+        <!-- Using a separate profile to linters since we only want GitHub to execute this analysis on push -->
+        <profile>
+            <id>activate_sonarqube</id>
+            <activation>
+                <property>
+                    <name>sonarqube</name>
+                </property>
+            </activation>
+            <properties>
+                <skip-sonarqube>false</skip-sonarqube>
             </properties>
         </profile>
 
