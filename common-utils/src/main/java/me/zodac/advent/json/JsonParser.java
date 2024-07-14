@@ -57,36 +57,42 @@ public final class JsonParser {
         }
 
         // Assuming JsonList
+        if (input.length() < MINIMUM_LENGTH_TO_PARSE_AS_LIST) {
+            return JsonList.create(new ArrayList<>());
+
+        }
+
+        return JsonList.create(parseListElements(input));
+    }
+
+    private static List<JsonElement> parseListElements(final String input) {
         final List<JsonElement> jsonElements = new ArrayList<>();
+        final int inputLength = input.length();
+        int elementDepth = 0;
+        int stringIndex = 1;
 
-        if (input.length() > MINIMUM_LENGTH_TO_PARSE_AS_LIST) {
-            final int inputLength = input.length();
-            int elementDepth = 0;
-            int stringIndex = 1;
-
-            for (int subStringIndex = stringIndex; subStringIndex < inputLength; subStringIndex++) {
-                final char currentChar = input.charAt(subStringIndex);
-                switch (currentChar) {
-                    case JSON_LIST_START -> elementDepth++;
-                    case JSON_LIST_END -> elementDepth--;
-                    case JSON_DELIMITER -> {
-                        if (elementDepth == 0) {
-                            final String nextElement = input.substring(stringIndex, subStringIndex);
-                            jsonElements.add(parse(nextElement));
-                            stringIndex = subStringIndex + 1;
-                        }
-                    }
-                    default -> {
+        for (int subStringIndex = stringIndex; subStringIndex < inputLength; subStringIndex++) {
+            final char currentChar = input.charAt(subStringIndex);
+            switch (currentChar) {
+                case JSON_LIST_START -> elementDepth++;
+                case JSON_LIST_END -> elementDepth--;
+                case JSON_DELIMITER -> {
+                    if (elementDepth == 0) {
+                        final String nextElement = input.substring(stringIndex, subStringIndex);
+                        jsonElements.add(parse(nextElement));
+                        stringIndex = subStringIndex + 1;
                     }
                 }
-            }
-
-            if (stringIndex < input.length() - 1) {
-                final String nextElement = input.substring(stringIndex, input.length() - 1);
-                jsonElements.add(parse(nextElement));
+                default -> {
+                }
             }
         }
 
-        return JsonList.create(jsonElements);
+        if (stringIndex < input.length() - 1) {
+            final String nextElement = input.substring(stringIndex, input.length() - 1);
+            jsonElements.add(parse(nextElement));
+        }
+
+        return jsonElements;
     }
 }
