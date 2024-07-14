@@ -168,8 +168,9 @@ public final class DistanceCalculator {
     }
 
     private int calculateDistance(final List<String> permutation) {
+        final int permutationLengthExceptLast = permutation.size() - 1;
         int totalDistance = 0;
-        for (int i = 0; i < permutation.size() - 1; i++) {
+        for (int i = 0; i < permutationLengthExceptLast; i++) {
             final String from = permutation.get(i);
             final String to = permutation.get(i + 1);
             totalDistance += getValue(from, to);

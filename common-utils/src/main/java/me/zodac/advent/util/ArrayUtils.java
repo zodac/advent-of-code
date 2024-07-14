@@ -284,8 +284,9 @@ public final class ArrayUtils {
         // Retrieve the first converted character, so we can create the array with the correct type
         final Class<?> firstThing = converter.apply(input.getFirst().charAt(0)).getClass();
         final E[][] arrayOfCharacterArrays = create2DimensionalArray(firstThing, outerLength, innerLength);
+        final int inputLength = input.size();
 
-        for (int i = 0; i < input.size(); i++) {
+        for (int i = 0; i < inputLength; i++) {
             final String line = input.get(i);
             arrayOfCharacterArrays[i] = toArray(line, converter, firstThing);
         }
@@ -294,8 +295,10 @@ public final class ArrayUtils {
     }
 
     private static <E> E[] toArray(final String input, final Function<? super Character, ? extends E> converter, final Class<?> convertedClass) {
-        final E[] array = createArray(convertedClass, input.length());
-        for (int i = 0; i < input.length(); i++) {
+        final int inputLength = input.length();
+        final E[] array = createArray(convertedClass, inputLength);
+
+        for (int i = 0; i < inputLength; i++) {
             array[i] = converter.apply(input.charAt(i));
         }
         return array;

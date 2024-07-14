@@ -50,7 +50,8 @@ public final class Day10 {
 
         final StringBuilder output = new StringBuilder();
 
-        for (int i = 0; i < input.length(); i++) {
+        final int inputLength = input.length();
+        for (int i = 0; i < inputLength; i++) {
             final char currentChar = input.charAt(i);
 
             if (!Character.isDigit(currentChar)) {

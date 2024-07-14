@@ -56,16 +56,17 @@ public final class Day06 {
         final List<Long> times = StringUtils.collectNumbersInOrder(values.getFirst());
         final List<Long> distances = StringUtils.collectNumbersInOrder(values.getLast());
         final Collection<Race> races = new ArrayList<>();
+        final int numberOfTimes = times.size();
 
         if (isMultipleRaces) {
-            for (int i = 0; i < times.size(); i++) {
+            for (int i = 0; i < numberOfTimes; i++) {
                 races.add(new Race(times.get(i), distances.get(i)));
             }
         } else {
             // Concatenate all time values and distance values to make one large race definition
             final StringBuilder timeBuilder = new StringBuilder();
             final StringBuilder distanceBuilder = new StringBuilder();
-            for (int i = 0; i < times.size(); i++) {
+            for (int i = 0; i < numberOfTimes; i++) {
                 timeBuilder.append(times.get(i));
                 distanceBuilder.append(distances.get(i));
             }

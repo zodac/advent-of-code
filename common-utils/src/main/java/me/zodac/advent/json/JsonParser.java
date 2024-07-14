@@ -60,10 +60,11 @@ public final class JsonParser {
         final List<JsonElement> jsonElements = new ArrayList<>();
 
         if (input.length() > MINIMUM_LENGTH_TO_PARSE_AS_LIST) {
+            final int inputLength = input.length();
             int elementDepth = 0;
             int stringIndex = 1;
 
-            for (int subStringIndex = stringIndex; subStringIndex < input.length(); subStringIndex++) {
+            for (int subStringIndex = stringIndex; subStringIndex < inputLength; subStringIndex++) {
                 final char currentChar = input.charAt(subStringIndex);
                 switch (currentChar) {
                     case JSON_LIST_START -> elementDepth++;

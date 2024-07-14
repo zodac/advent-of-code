@@ -135,7 +135,9 @@ public final class Day14 {
         final Collection<Point> filledPoints = new HashSet<>();
 
         for (final List<Point> pointsForLine : values) {
-            for (int i = 1; i < pointsForLine.size(); i++) {
+            final int numberOfPointsForLine = pointsForLine.size();
+
+            for (int i = 1; i < numberOfPointsForLine; i++) {
                 final Point firstCoordinate = pointsForLine.get(i - 1);
                 final Point secondCoordinate = pointsForLine.get(i);
                 final Line line = Line.of(firstCoordinate, secondCoordinate);
@@ -151,7 +153,8 @@ public final class Day14 {
         final Collection<Point> floorPoints = new HashSet<>();
 
         // Extend the floor out left and right from the start point
-        for (int x = 0; x < SAND_SPAWN_POINT.x() + SAND_SPAWN_POINT.x(); x++) {
+        final int expandedSize = SAND_SPAWN_POINT.x() << 1;
+        for (int x = 0; x < expandedSize; x++) {
             floorPoints.add(Point.of(x, floorY));
         }
 

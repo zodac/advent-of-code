@@ -145,8 +145,9 @@ public final class Day05 {
 
     private static String buildStringFromFirstElements(final Map<Integer, Deque<String>> stacksById) {
         final StringBuilder stringBuilder = new StringBuilder();
+        final int numberOfStacks = stacksById.size();
 
-        for (int i = 1; i <= stacksById.size(); i++) {
+        for (int i = 1; i <= numberOfStacks; i++) {
             final Deque<String> stack = stacksById.getOrDefault(i, NEW_STACK_SUPPLIER.get());
             stringBuilder.append(stack.pop());
         }

@@ -226,8 +226,10 @@ public final class MathUtils {
             throw new IllegalArgumentException(String.format("Inputs must be of same length, found: %s and %s", first.size(), second.size()));
         }
 
+        final int sizeOfFirst = first.size();
         long total = 0L;
-        for (int i = 0; i < first.size(); i++) {
+
+        for (int i = 0; i < sizeOfFirst; i++) {
             total += ((long) first.get(i) * second.get(i));
         }
 
@@ -313,7 +315,9 @@ public final class MathUtils {
 
         do {
             final List<Long> newDiffs = new ArrayList<>();
-            for (int i = 0; i < previousList.size() - 1; i++) {
+            final int sizeOfPreviousListExceptLast = previousList.size() - 1;
+
+            for (int i = 0; i < sizeOfPreviousListExceptLast; i++) {
                 newDiffs.add(previousList.get(i + 1) - previousList.get(i));
             }
 
@@ -323,8 +327,9 @@ public final class MathUtils {
 
         final List<Long> lastDiffs = allDiffs.getLast();
         additionConsumer.accept(lastDiffs, 0L);
+        final int allDiffsSizeExceptLast = allDiffs.size() - 1;
 
-        for (int i = allDiffs.size() - 1; i > 0; i--) {
+        for (int i = allDiffsSizeExceptLast; i > 0; i--) {
             final List<Long> lastRemainingDiffs = allDiffs.get(i);
             final List<Long> secondLastRemainingDiffs = allDiffs.get(i - 1);
 

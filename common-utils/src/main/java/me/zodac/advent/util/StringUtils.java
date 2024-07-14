@@ -147,8 +147,9 @@ public final class StringUtils {
      */
     public static Set<Integer> characterIndexes(final CharSequence input, final char wantedCharacter) {
         final Set<Integer> index = new HashSet<>();
+        final int inputLength = input.length();
 
-        for (int i = 0; i < input.length(); i++) {
+        for (int i = 0; i < inputLength; i++) {
             final char characterInInput = input.charAt(i);
             if (characterInInput == wantedCharacter) {
                 index.add(i);

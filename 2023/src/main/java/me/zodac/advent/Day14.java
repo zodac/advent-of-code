@@ -97,8 +97,9 @@ public final class Day14 {
     private static long calculateLoad(final Grid<Character> grid) {
         int multiplier = 1;
 
+        final int numberOfRowsExceptLast = grid.numberOfRows() - 1;
         long total = 0;
-        for (int i = grid.numberOfRows() - 1; i >= 0; i--) {
+        for (int i = numberOfRowsExceptLast; i >= 0; i--) {
             final Character[] row = grid.rowAt(i);
             int rocks = 0;
 

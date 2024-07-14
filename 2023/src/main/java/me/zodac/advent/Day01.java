@@ -61,8 +61,9 @@ public final class Day01 {
 
     private static List<Integer> collectIntegersInOrder(final String input, final Pattern pattern) {
         final List<Integer> result = new ArrayList<>();
+        final int length = input.length();
 
-        for (int i = 0; i < input.length(); i++) {
+        for (int i = 0; i < length; i++) {
             final Matcher matcher = pattern.matcher(input.substring(i));
 
             if (matcher.find()) {

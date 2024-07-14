@@ -64,11 +64,13 @@ public final class Day12 {
 
         final Collection<Point> startPoints = new HashSet<>();
         final Collection<Point> endPoints = new HashSet<>();
+        final int numberOfValues = values.size();
 
-        for (int i = 0; i < values.size(); i++) {
+        for (int i = 0; i < numberOfValues; i++) {
             final String value = values.get(i);
+            final int length = value.length();
 
-            for (int j = 0; j < value.length(); j++) {
+            for (int j = 0; j < length; j++) {
                 final char currentChar = value.charAt(j);
                 final Point currentPoint = Point.of(i, j);
 

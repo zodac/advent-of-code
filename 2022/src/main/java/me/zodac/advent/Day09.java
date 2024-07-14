@@ -67,7 +67,8 @@ public final class Day09 {
         visitedByTail.add(tails[tails.length - 1]);
 
         for (final Movement movement : movements) {
-            for (int i = 0; i < movement.spaces(); i++) {
+            final int numberOfSpaces = movement.spaces();
+            for (int i = 0; i < numberOfSpaces; i++) {
                 // Move the head
                 head = head.move(movement.direction());
 

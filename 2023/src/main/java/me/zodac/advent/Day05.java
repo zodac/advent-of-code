@@ -89,7 +89,8 @@ public final class Day05 {
         final List<Long> seedDefinitions = StringUtils.collectNumbersInOrder(values.getFirst());
         final Collection<Interval> seedIntervals = new ArrayList<>();
 
-        for (int i = 0; i <= seedDefinitions.size() / 2; i += 2) {
+        final int numberOfSeedDefinitionsWhenIteratingByTwo = seedDefinitions.size() / 2;
+        for (int i = 0; i <= numberOfSeedDefinitionsWhenIteratingByTwo; i += 2) {
             seedIntervals.add(Interval.openInterval(seedDefinitions.get(i), seedDefinitions.get(i) + seedDefinitions.get(i + 1)));
         }
 

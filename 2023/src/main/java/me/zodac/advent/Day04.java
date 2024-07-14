@@ -70,7 +70,8 @@ public final class Day04 {
                 continue;
             }
 
-            for (int i = 1; i <= scratchCard.winners().size(); i++) {
+            final int numberOfWinners = scratchCard.winners().size();
+            for (int i = 1; i <= numberOfWinners; i++) {
                 numberOfCopies += numberOfTimesToExecute;
                 final int currentCopiesForNextId = copiesById.getOrDefault(id + i, DEFAULT_NUMBER_OF_COPIES);
                 copiesById.put(id + i, currentCopiesForNextId + numberOfTimesToExecute);

@@ -81,8 +81,9 @@ public class Loop {
      * @return the number of {@link Point}s inside the {@link Loop}
      */
     public int countPointsInsideLoop() {
+        final int numberOfRows = grid.numberOfRows();
         int numberOfPointsInsidePipeLoop = 0;
-        for (int rowIndex = 0; rowIndex < grid.numberOfRows(); rowIndex++) {
+        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
             final Pipe[] row = grid.rowAt(rowIndex);
             numberOfPointsInsidePipeLoop += countPointsInsidePipeLoopForRow(row, rowIndex);
         }

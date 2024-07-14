@@ -63,8 +63,9 @@ public final class Day13 {
     public static long calculateSumOfValidIndices(final Collection<? extends JsonElement> values) {
         final List<List<JsonElement>> jsonElementGroups = CollectionUtils.groupBySize(values, 2);
 
+        final int numberOfElementGroups = jsonElementGroups.size();
         int total = 0;
-        for (int i = 0; i < jsonElementGroups.size(); i++) {
+        for (int i = 0; i < numberOfElementGroups; i++) {
             final List<JsonElement> jsonElementGroup = jsonElementGroups.get(i);
             final JsonElement left = jsonElementGroup.get(0);
             final JsonElement right = jsonElementGroup.get(1);

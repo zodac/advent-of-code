@@ -120,7 +120,9 @@ public final class CollectionUtils {
         final List<List<E>> permutations = generatePermutations(modifiableInput);
 
         for (final List<E> smallerPermutation : permutations) {
-            for (int index = 0; index <= smallerPermutation.size(); index++) {
+            final int sizeOfSmallerPermutation = smallerPermutation.size();
+
+            for (int index = 0; index <= sizeOfSmallerPermutation; index++) {
                 final List<E> temp = new ArrayList<>(smallerPermutation);
                 temp.add(index, firstElement);
                 returnValue.add(temp);

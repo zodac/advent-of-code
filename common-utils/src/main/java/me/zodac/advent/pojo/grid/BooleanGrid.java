@@ -114,10 +114,12 @@ public final class BooleanGrid extends Grid<Boolean> {
      * @see Point#getAdjacentPoints(AdjacentPointsSelector)
      */
     public BooleanGrid playGameOfLife(final boolean cornersAlwaysOn) {
-        final Boolean[][] newGrid = new Boolean[numberOfRows()][numberOfColumns()];
+        final int numberOfRows = numberOfRows();
+        final int numberOfColumns = numberOfColumns();
+        final Boolean[][] newGrid = new Boolean[numberOfRows][numberOfColumns];
 
-        for (int row = 0; row < numberOfRows(); row++) {
-            for (int column = 0; column < numberOfColumns(); column++) {
+        for (int row = 0; row < numberOfRows; row++) {
+            for (int column = 0; column < numberOfColumns; column++) {
                 if (cornersAlwaysOn && isCorner(row, column)) {
                     newGrid[row][column] = true;
                     continue;

@@ -47,10 +47,12 @@ public final class Day03 {
      * @see Point#getAdjacentPoints(AdjacentPointsSelector)
      */
     public static long sumOfAllPartNumbers(final Grid<Character> characterGrid) {
+        final int numberOfRows = characterGrid.numberOfRows();
+        final int numberOfColumns = characterGrid.numberOfColumns();
         long total = 0L;
 
-        for (int row = 0; row < characterGrid.numberOfRows(); row++) {
-            for (int column = 0; column < characterGrid.numberOfColumns(); column++) {
+        for (int row = 0; row < numberOfRows; row++) {
+            for (int column = 0; column < numberOfColumns; column++) {
                 final Point partPoint = Point.of(row, column);
                 final char character = characterGrid.at(partPoint);
 
@@ -81,16 +83,18 @@ public final class Day03 {
     }
 
     private static int findNumberInRow(final Grid<Character> characterGrid, final Point pointOfKnownDigit) {
+        final int yCoordinate = pointOfKnownDigit.y();
         int startColumn;
         int endColumn;
 
-        for (startColumn = pointOfKnownDigit.y(); startColumn > 0; startColumn--) {
+        for (startColumn = yCoordinate; startColumn > 0; startColumn--) {
             if (!Character.isDigit(characterGrid.at(pointOfKnownDigit.x(), startColumn - 1))) {
                 break;
             }
         }
 
-        for (endColumn = pointOfKnownDigit.y(); endColumn < characterGrid.numberOfColumns() - 1; endColumn++) {
+        final int numberOfColumnsExceptLast = characterGrid.numberOfColumns() - 1;
+        for (endColumn = yCoordinate; endColumn < numberOfColumnsExceptLast; endColumn++) {
             if (!Character.isDigit(characterGrid.rowAt(pointOfKnownDigit.x())[endColumn + 1])) {
                 break;
             }
@@ -114,10 +118,12 @@ public final class Day03 {
      * @see Point#getAdjacentPoints(AdjacentPointsSelector)
      */
     public static long sumOfAllGearRatios(final Grid<Character> characterGrid) {
+        final int numberOfRows = characterGrid.numberOfRows();
+        final int numberOfColumns = characterGrid.numberOfColumns();
         long total = 0L;
 
-        for (int row = 0; row < characterGrid.numberOfRows(); row++) {
-            for (int column = 0; column < characterGrid.numberOfColumns(); column++) {
+        for (int row = 0; row < numberOfRows; row++) {
+            for (int column = 0; column < numberOfColumns; column++) {
                 final Point gearPoint = Point.of(row, column);
                 final char character = characterGrid.at(gearPoint);
 

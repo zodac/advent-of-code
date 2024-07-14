@@ -46,8 +46,9 @@ public final class Day07 {
             .sorted()
             .toList();
 
+        final int numberOfSortedCards = sortedCards.size();
         long totalWinnings = 0L;
-        for (int rank = 1; rank <= sortedCards.size(); rank++) {
+        for (int rank = 1; rank <= numberOfSortedCards; rank++) {
             final CamelCard camelCard = sortedCards.get(rank - 1);
             totalWinnings += camelCard.wager() * rank;
         }

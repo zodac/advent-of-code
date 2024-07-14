@@ -388,10 +388,11 @@ public final class InputReader {
         public List<List<T>> bySize(final int sizeOfGroup) {
             final List<? extends T> list = stream.toList();
             final List<List<T>> groups = new ArrayList<>();
+            final int sizeOfList = list.size();
             List<T> currentGroup = new ArrayList<>();
             currentGroup.add(list.getFirst());
 
-            for (int i = 1; i < list.size(); i++) {
+            for (int i = 1; i < sizeOfList; i++) {
                 final T line = list.get(i);
 
                 if (i % sizeOfGroup == 0) {

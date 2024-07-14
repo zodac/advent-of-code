@@ -109,8 +109,8 @@ public class Grid<E> {
     public long sumValues(final ToIntFunction<? super E> evaluator) {
         int count = 0;
 
-        for (int row = 0; row < numberOfRows(); row++) {
-            for (int column = 0; column < numberOfColumns(); column++) {
+        for (int row = 0; row < internalGrid.length; row++) {
+            for (int column = 0; column < internalGrid[0].length; column++) {
                 final E value = at(row, column);
                 count += evaluator.applyAsInt(value);
             }
@@ -346,7 +346,7 @@ public class Grid<E> {
 
         final Set<Point> firstRow = new HashSet<>();
         final Set<Point> lastRow = new HashSet<>();
-        for (int j = 0; j < numberOfColumns(); j++) {
+        for (int j = 0; j < internalGrid[0].length; j++) {
             firstRow.add(Point.of(0, j));
             lastRow.add(Point.of(numberOfRows() - 1, j));
         }
@@ -355,7 +355,7 @@ public class Grid<E> {
 
         final Set<Point> firstColumn = new HashSet<>();
         final Set<Point> lastColumn = new HashSet<>();
-        for (int i = 0; i < numberOfRows(); i++) {
+        for (int i = 0; i < internalGrid.length; i++) {
             firstColumn.add(Point.of(i, 0));
             lastColumn.add(Point.of(i, numberOfColumns() - 1));
         }

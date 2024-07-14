@@ -56,13 +56,13 @@ public final class Day11 {
         final int actualExpansionSize = expansionSize - 1; // We are replacing rows/columns, not adding, so we don't count the existing ones
 
         final List<Point> galaxies = findGalaxies(grid, emptyColumns, emptyRows, actualExpansionSize);
-
+        final int numberOfGalaxies = galaxies.size();
         long total = 0L;
 
-        for (int i = 0; i < galaxies.size(); i++) {
+        for (int i = 0; i < numberOfGalaxies; i++) {
             final Point currentGalaxy = galaxies.get(i);
 
-            total += galaxies.subList(i, galaxies.size())
+            total += galaxies.subList(i, numberOfGalaxies)
                 .stream()
                 .mapToLong(currentGalaxy::distanceTo)
                 .sum();
@@ -76,8 +76,9 @@ public final class Day11 {
                                             final Collection<Integer> emptyRows,
                                             final int expansionSize) {
         final List<Point> galaxies = new ArrayList<>();
+        final int numberOfRows = characterGrid.numberOfRows();
 
-        for (int rowIndex = 0; rowIndex < characterGrid.numberOfRows(); rowIndex++) {
+        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
             final Character[] row = characterGrid.rowAt(rowIndex);
 
             for (int columnIndex = 0; columnIndex < row.length; columnIndex++) {

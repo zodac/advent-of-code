@@ -78,22 +78,9 @@ public final class Day13 {
         return Pair.of(pattern, getNewReflectionResult(pattern, ReflectionResult.none()));
     }
 
-    private static ReflectionResult countRowsAboveReflection(final List<String> pattern, final ReflectionResult previous) {
-        for (int i = 0; i < pattern.size() - 1; i++) {
-            if (matchesPreviousResult(previous, i, ReflectionResultType.ROW)) {
-                continue;
-            }
-
-            if (isRowReflectedAroundIndex(pattern, i)) {
-                return ReflectionResult.horizontal(i);
-            }
-        }
-
-        return ReflectionResult.none();
-    }
-
     private static ReflectionResult countColumnsLeftOfReflection(final SequencedCollection<String> pattern, final ReflectionResult previous) {
-        for (int i = 0; i < pattern.getFirst().length() - 1; i++) {
+        final int firstPatternLength = pattern.getFirst().length();
+        for (int i = 0; i < firstPatternLength - 1; i++) {
             if (matchesPreviousResult(previous, i, ReflectionResultType.COLUMN)) {
                 continue;
             }
@@ -110,30 +97,12 @@ public final class Day13 {
         return previous.hasReflection() && previous.reflectionResultType() == currentType && previous.index() == index;
     }
 
-    private static boolean isRowReflectedAroundIndex(final List<String> pattern, final int startRowIndex) {
-        int previousRowIndex = startRowIndex;
-        int nextRowIndex = startRowIndex + 1;
-
-        while (previousRowIndex >= 0 && nextRowIndex < pattern.size()) {
-            final String currentRow = pattern.get(previousRowIndex);
-            final String nextRow = pattern.get(nextRowIndex);
-
-            if (!currentRow.equals(nextRow)) {
-                return false;
-            }
-            previousRowIndex--;
-            nextRowIndex++;
-        }
-
-        return true;
-    }
-
     private static boolean isColumnReflectedAroundIndex(final SequencedCollection<String> pattern, final int startColumnIndex) {
-        final int stringLength = pattern.getFirst().length();
+        final int firstPatternLength = pattern.getFirst().length();
         int previousColumnIndex = startColumnIndex;
         int nextColumnIndex = startColumnIndex + 1;
 
-        while (previousColumnIndex >= 0 && nextColumnIndex < stringLength) {
+        while (previousColumnIndex >= 0 && nextColumnIndex < firstPatternLength) {
             final String currentColumn = StringUtils.buildColumn(pattern, previousColumnIndex);
             final String nextColumn = StringUtils.buildColumn(pattern, nextColumnIndex);
 
@@ -159,6 +128,39 @@ public final class Day13 {
         }
 
         return ReflectionResult.none();
+    }
+
+    private static ReflectionResult countRowsAboveReflection(final List<String> pattern, final ReflectionResult previous) {
+        final int patternLength = pattern.size();
+        for (int i = 0; i < patternLength - 1; i++) {
+            if (matchesPreviousResult(previous, i, ReflectionResultType.ROW)) {
+                continue;
+            }
+
+            if (isRowReflectedAroundIndex(pattern, i)) {
+                return ReflectionResult.horizontal(i);
+            }
+        }
+
+        return ReflectionResult.none();
+    }
+
+    private static boolean isRowReflectedAroundIndex(final List<String> pattern, final int startRowIndex) {
+        int previousRowIndex = startRowIndex;
+        int nextRowIndex = startRowIndex + 1;
+
+        while (previousRowIndex >= 0 && nextRowIndex < pattern.size()) {
+            final String currentRow = pattern.get(previousRowIndex);
+            final String nextRow = pattern.get(nextRowIndex);
+
+            if (!currentRow.equals(nextRow)) {
+                return false;
+            }
+            previousRowIndex--;
+            nextRowIndex++;
+        }
+
+        return true;
     }
 
     private static ReflectionResult getUpdatedReflectionResult(final Pair<? extends List<String>, ReflectionResult> previous) {

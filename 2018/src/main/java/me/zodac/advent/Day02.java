@@ -73,11 +73,12 @@ public final class Day02 {
      */
     public static String findCommonCharactersForValidBoxIds(final List<String> boxIds) {
         final int expectedLengthAfterDifferencesRemoved = boxIds.getFirst().length() - 1;
+        final int numberOfBoxIds = boxIds.size();
 
-        for (int i = 0; i < boxIds.size(); i++) {
+        for (int i = 0; i < numberOfBoxIds; i++) {
             final String currentBoxId = boxIds.get(i);
 
-            for (int j = i + 1; j < boxIds.size(); j++) {
+            for (int j = i + 1; j < numberOfBoxIds; j++) {
                 final String nextBoxId = boxIds.get(j);
 
                 final String differentCharactersRemoved = StringUtils.removeDifferentCharacters(currentBoxId, nextBoxId);

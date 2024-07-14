@@ -94,7 +94,8 @@ public final class Day11 {
 
     private static boolean containsTwoDifferentPairs(final CharSequence inputPassword) {
         final Collection<Character> pairs = new HashSet<>();
-        for (int i = 0; i < inputPassword.length() - 1; i++) {
+        final int inputPasswordLengthExceptLast = inputPassword.length() - 1;
+        for (int i = 0; i < inputPasswordLengthExceptLast; i++) {
             final char currentChar = inputPassword.charAt(i);
             final char nextChar = inputPassword.charAt(i + 1);
 
@@ -108,7 +109,8 @@ public final class Day11 {
     }
 
     private static boolean containsThreeCharactersInAscendingOrder(final CharSequence inputPassword) {
-        for (int i = 0; i < inputPassword.length() - 2; i++) {
+        final int inputPasswordLengthExceptLastTwo = inputPassword.length() - 2;
+        for (int i = 0; i < inputPasswordLengthExceptLastTwo; i++) {
             final char currentChar = inputPassword.charAt(i);
             final char nextChar = inputPassword.charAt(i + 1);
             final char nextNextChar = inputPassword.charAt(i + 2);
