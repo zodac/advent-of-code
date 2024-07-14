@@ -141,7 +141,7 @@ public final class Monkey {
             final long newItemValue = calculateNewItemValue(lowestCommonMultiple, currentItemValue);
 
             final int targetMonkeyId = determineTargetMonkeyIdForNewItem(newItemValue);
-            valsByTarget.computeIfAbsent(targetMonkeyId, k -> new ArrayList<>()).add(newItemValue);
+            valsByTarget.computeIfAbsent(targetMonkeyId, _ -> new ArrayList<>()).add(newItemValue);
         }
 
         numberOfInspections += currentItems.size();
