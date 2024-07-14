@@ -189,7 +189,7 @@ public final class ArrayUtils {
                 String.format("Expected outer and inner lengths to be equal, found: %d and %d", outerLength, innerLength));
         }
 
-        final E[][] output = create2DimensionalArray(input[0][0].getClass(), innerLength, outerLength);
+        final E[][] output = create2DimensionalArray(input[0][0].getClass(), outerLength, innerLength);
 
         for (int row = 0; row < outerLength; row++) {
             for (int column = 0; column < innerLength; column++) {
