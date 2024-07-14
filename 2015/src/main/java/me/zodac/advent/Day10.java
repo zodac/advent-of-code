@@ -59,7 +59,7 @@ public final class Day10 {
             }
 
             int count = 1;
-            while (i + 1 < input.length() && input.charAt(i + 1) == currentChar) {
+            while (i + 1 < inputLength && input.charAt(i + 1) == currentChar) {
                 i++; // If next char is same as current, move the pointer to the next char
                 count++;
             }

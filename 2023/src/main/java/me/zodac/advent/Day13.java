@@ -146,10 +146,11 @@ public final class Day13 {
     }
 
     private static boolean isRowReflectedAroundIndex(final List<String> pattern, final int startRowIndex) {
+        final int patternSize = pattern.size();
         int previousRowIndex = startRowIndex;
         int nextRowIndex = startRowIndex + 1;
 
-        while (previousRowIndex >= 0 && nextRowIndex < pattern.size()) {
+        while (previousRowIndex >= 0 && nextRowIndex < patternSize) {
             final String currentRow = pattern.get(previousRowIndex);
             final String nextRow = pattern.get(nextRowIndex);
 

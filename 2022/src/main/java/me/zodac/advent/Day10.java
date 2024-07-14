@@ -68,9 +68,10 @@ public final class Day10 {
         int instructionIndex = 0;
         int cycle = 1;
 
+        final int numberOfAssemblyInstructions = assemblyInstructions.size();
         final Map<Integer, Integer> offsetByTargetCycle = new HashMap<>();
 
-        while (instructionIndex < assemblyInstructions.size()) {
+        while (instructionIndex < numberOfAssemblyInstructions) {
             if (isCycleToConsiderSignal(cycle)) {
                 final long signalValue = ((long) valueOfRegisterX * cycle);
                 sumOfSignalValuesAtImportantCycles += signalValue;
@@ -127,10 +128,11 @@ public final class Day10 {
         int instructionIndex = 0;
         int cycle = 1;
 
+        final int numberOfAssemblyInstructions = assemblyInstructions.size();
         final Map<Integer, Integer> offsetByTargetCycle = new HashMap<>();
         final SegmentedDisplay segmentedDisplay = SegmentedDisplay.create(NUMBER_OF_CHARACTERS_IN_SEGMENTED_DISPLAY);
 
-        while (instructionIndex < assemblyInstructions.size()) {
+        while (instructionIndex < numberOfAssemblyInstructions) {
             updateSegmentedDisplay(valueOfRegisterX, cycle, segmentedDisplay);
 
             // If we have any delayed 'addx' commands to execute this cycle, execute them

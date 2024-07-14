@@ -54,8 +54,9 @@ public final class Day23 {
     private static Map<Character, Long> populateRegisterValues(final List<String> commands, final Map<Character, Long> initialValues) {
         final Map<Character, Long> registerValues = new HashMap<>(initialValues);
 
+        final int numberOfCommands = commands.size();
         int index = 0;
-        while (index < commands.size()) {
+        while (index < numberOfCommands) {
             final String value = commands.get(index);
             final String[] tokens = StringUtils.splitOnWhitespace(value);
 
