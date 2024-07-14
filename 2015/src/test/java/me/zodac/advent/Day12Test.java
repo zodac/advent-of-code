@@ -42,7 +42,7 @@ class Day12Test {
 
         final long sum2 = Day12.sumOfAllNumbersWithNoInvalidLabel(value, "red");
         assertThat(sum2)
-            .isEqualTo(0L);
+            .isZero();
     }
 
     @Test
