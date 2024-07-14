@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 public record Ingredient(String name, int capacity, int durability, int flavour, int texture, int calories) {
 
     private static final Pattern INGREDIENT_PATTERN = Pattern.compile(
-        "([a-zA-z]+): capacity (-?\\d+), durability (-?\\d+), flavor (-?\\d+), texture (-?\\d+), calories (-?\\d+)");
+        "([a-zA-Z]+): capacity (-?\\d+), durability (-?\\d+), flavor (-?\\d+), texture (-?\\d+), calories (-?\\d+)");
 
     /**
      * Creates a {@link Ingredient} from a {@link CharSequence} in the format:
