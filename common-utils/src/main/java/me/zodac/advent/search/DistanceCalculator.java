@@ -20,6 +20,7 @@ package me.zodac.advent.search;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,8 +42,8 @@ public final class DistanceCalculator {
     private DistanceCalculator(final Map<String, Integer> distancesBySourceAndDestination,
                                final List<? extends List<String>> permutations,
                                final Option... options) {
-        this.distancesBySourceAndDestination = distancesBySourceAndDestination;
-        this.permutations = permutations;
+        this.distancesBySourceAndDestination = Collections.unmodifiableMap(distancesBySourceAndDestination);
+        this.permutations = Collections.unmodifiableList(permutations);
         this.options = options.length > 0 ? EnumSet.copyOf(Arrays.asList(options)) : EnumSet.noneOf(Option.class);
     }
 

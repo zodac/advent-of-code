@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -457,7 +458,7 @@ public final class InputReader {
         private final List<String> strings;
 
         private GridReader(final List<String> strings) {
-            this.strings = strings;
+            this.strings = Collections.unmodifiableList(strings);
         }
 
         /**

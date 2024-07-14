@@ -44,7 +44,7 @@ public final class Day07 {
 
     private Day07(final Map<? super String, Pair<BitwiseOperator, String>> commandByLabel) {
         calculatedValuesByLabel = new HashMap<>();
-        this.commandByLabel = commandByLabel;
+        this.commandByLabel = new HashMap<>(commandByLabel);
     }
 
     /**

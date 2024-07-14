@@ -19,6 +19,7 @@ package me.zodac.advent.pojo.rpg.mage;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,8 @@ public final class BattleRound implements SearchNode {
                         final boolean isPlayerRound, final int heathLossEachPlayerRound) {
         this.player = player;
         this.boss = boss;
-        this.activeSpells = activeSpells;
-        this.castSpells = castSpells;
+        this.activeSpells = new ArrayList<>(activeSpells);
+        this.castSpells = Collections.unmodifiableList(castSpells);
         this.isPlayerRound = isPlayerRound;
         this.heathLossEachPlayerRound = heathLossEachPlayerRound;
     }
