@@ -39,7 +39,7 @@ public final class Monkey {
 
     private static final Pattern MONKEY_PATTERN = Pattern.compile("""
             Monkey (\\d+):
-            \\s+Starting items: (\\d+(,\\s?\\d+)*)
+            \\s+Starting items: (\\d+(,\\s?\\d+)*+)
             \\s+Operation: new = old ([+*]) (\\w+)
             \\s+Test: divisible by (\\d+)
             \\s+If true: throw to monkey (\\d+)

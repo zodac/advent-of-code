@@ -33,7 +33,7 @@ import me.zodac.advent.util.StringUtils;
  */
 public record ScratchCard(int id, Set<Long> winners) {
 
-    private static final Pattern VALID_SCRATCHCARD = Pattern.compile("Card\\s+(?<id>\\d+):\\s+(?<winners>(?:\\d+\\s*)*)\\|(?<drawn>(?:\\s*\\d+)*)");
+    private static final Pattern VALID_SCRATCHCARD = Pattern.compile("Card\\s+(?<id>\\d+):\\s+(?<winners>(?:\\d+\\s*)*+)\\|(?<drawn>(?:\\s*\\d+)*+)");
 
     /**
      * Creates a {@link ScratchCard} from a {@link CharSequence} in the format:
