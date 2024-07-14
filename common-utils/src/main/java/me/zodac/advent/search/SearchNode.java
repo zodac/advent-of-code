@@ -53,7 +53,7 @@ public interface SearchNode extends Comparable<SearchNode> {
     boolean isAtEndState();
 
     @Override
-    default int compareTo(final SearchNode o) {
-        return Long.compare(getDistance(), o.getDistance());
+    default int compareTo(final SearchNode other) {
+        return Long.compare(getDistance(), other.getDistance());
     }
 }

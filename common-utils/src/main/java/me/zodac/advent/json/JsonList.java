@@ -47,10 +47,10 @@ public record JsonList(List<JsonElement> elements) implements JsonElement {
     }
 
     @Override
-    public int compareTo(final JsonElement o) {
-        if (o instanceof final JsonList other) {
+    public int compareTo(final JsonElement other) {
+        if (other instanceof JsonList(final List<JsonElement> otherJsonListElements)) {
             final int thisSize = elements.size();
-            final int otherSize = other.elements.size();
+            final int otherSize = otherJsonListElements.size();
             final int maxSize = Math.max(thisSize, otherSize);
 
             for (int i = 0; i < maxSize; ++i) {
@@ -62,7 +62,7 @@ public record JsonList(List<JsonElement> elements) implements JsonElement {
                     return 1;
                 }
 
-                final int comparison = elements.get(i).compareTo(other.elements.get(i));
+                final int comparison = elements.get(i).compareTo(otherJsonListElements.get(i));
                 if (comparison != 0) {
                     return comparison;
                 }
@@ -71,11 +71,12 @@ public record JsonList(List<JsonElement> elements) implements JsonElement {
             return 0;
         }
 
-        if (o instanceof final JsonInteger jsonInteger) {
+        if (other instanceof final JsonInteger jsonInteger) {
             final JsonList wrappedAsList = create(jsonInteger);
             return compareTo(wrappedAsList);
         }
 
-        throw new IllegalArgumentException(String.format("Cannot compare %s to %s", JsonList.class.getSimpleName(), o.getClass().getSimpleName()));
+        throw new IllegalArgumentException(
+            String.format("Cannot compare %s to %s", JsonList.class.getSimpleName(), other.getClass().getSimpleName()));
     }
 }

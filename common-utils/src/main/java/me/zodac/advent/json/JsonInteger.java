@@ -42,16 +42,17 @@ public record JsonInteger(int value) implements JsonElement {
     }
 
     @Override
-    public int compareTo(final JsonElement o) {
-        if (o instanceof final JsonInteger jsonInteger) {
-            return Integer.compare(value, jsonInteger.value);
+    public int compareTo(final JsonElement other) {
+        if (other instanceof JsonInteger(final int otherJsonIntegerValue)) {
+            return Integer.compare(value, otherJsonIntegerValue);
         }
 
-        if (o instanceof final JsonList jsonList) {
+        if (other instanceof final JsonList jsonList) {
             final JsonList wrappedAsList = JsonList.create(this);
             return wrappedAsList.compareTo(jsonList);
         }
 
-        throw new IllegalArgumentException(String.format("Cannot compare %s to %s", JsonInteger.class.getSimpleName(), o.getClass().getSimpleName()));
+        throw new IllegalArgumentException(
+            String.format("Cannot compare %s to %s", JsonInteger.class.getSimpleName(), other.getClass().getSimpleName()));
     }
 }
