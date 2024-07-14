@@ -37,6 +37,14 @@ public final class Monkey {
     private static final int DIVISOR_WHEN_WORRIED = 3;
     private static final int NUMBER_OF_STRINGS_FOR_MONKEY_INPUT = 6;
 
+    private static final Pattern MONKEY_PATTERN = Pattern.compile("""
+            Monkey (\\d+):
+            \\s+Starting items: ((\\d+,?\\s?)*)
+            \\s+Operation: new = old ([+*]) (\\w+)
+            \\s+Test: divisible by (\\d+)
+            \\s+If true: throw to monkey (\\d+)
+            \\s+If false: throw to monkey (\\d+)""");
+
     private final int id;
     private final Collection<Long> currentItems;
     private final MathOperation mathOperation;
@@ -88,16 +96,8 @@ public final class Monkey {
             throw new IllegalArgumentException(String.format("Expected %s values, found: %s", NUMBER_OF_STRINGS_FOR_MONKEY_INPUT, input.size()));
         }
 
-        final Pattern pattern = Pattern.compile("""
-            Monkey (\\d+):
-            \\s+Starting items: ((\\d+,?\\s?)*)
-            \\s+Operation: new = old ([+*]) (\\w+)
-            \\s+Test: divisible by (\\d+)
-            \\s+If true: throw to monkey (\\d+)
-            \\s+If false: throw to monkey (\\d+)""");
-
         final String inputAsSingleString = String.join("\n", input);
-        final Matcher matcher = pattern.matcher(inputAsSingleString);
+        final Matcher matcher = MONKEY_PATTERN.matcher(inputAsSingleString);
         if (!matcher.find()) {
             throw new IllegalArgumentException("Unable to find match in input: " + inputAsSingleString);
         }
