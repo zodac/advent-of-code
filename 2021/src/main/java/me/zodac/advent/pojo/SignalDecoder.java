@@ -162,19 +162,17 @@ public final class SignalDecoder {
     // All other inputs are ordered by the size of the String
     private static List<String> sortInputsForDecoding(final Collection<String> inputs) {
         final List<String> orderedInputs = new ArrayList<>(inputs.size());
+        final Collection<String> inputsThatMustBeDecodedLast = new ArrayList<>();
 
         for (final String input : inputs) {
-            if (input.length() != INPUT_SIZE_THAT_MUST_BE_DECODED_LAST) {
+            if (input.length() == INPUT_SIZE_THAT_MUST_BE_DECODED_LAST) {
+                inputsThatMustBeDecodedLast.add(input);
+            } else {
                 orderedInputs.add(input);
             }
         }
         orderedInputs.sort(Comparator.comparingInt(String::length));
-
-        for (final String input : inputs) {
-            if (input.length() == INPUT_SIZE_THAT_MUST_BE_DECODED_LAST) {
-                orderedInputs.add(input);
-            }
-        }
+        orderedInputs.addAll(inputsThatMustBeDecodedLast);
 
         return orderedInputs;
     }

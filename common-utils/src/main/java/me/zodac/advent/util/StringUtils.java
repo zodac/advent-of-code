@@ -209,24 +209,22 @@ public final class StringUtils {
             throw new IllegalArgumentException("Input cannot be blank");
         }
 
+        final Collection<Set<Character>> allOtherChars = new HashSet<>();
         for (final String other : others) {
             if (other.isBlank()) {
                 throw new IllegalArgumentException("Input cannot be blank");
             }
-        }
 
-        final Set<Character> firstChars = new HashSet<>();
-        for (final char firstChar : first.toCharArray()) {
-            firstChars.add(firstChar);
-        }
-
-        final Collection<Set<Character>> allOtherChars = new HashSet<>();
-        for (final String other : others) {
             final Set<Character> otherChars = new HashSet<>();
             for (final char otherChar : other.toCharArray()) {
                 otherChars.add(otherChar);
             }
             allOtherChars.add(otherChars);
+        }
+
+        final Set<Character> firstChars = new HashSet<>();
+        for (final char firstChar : first.toCharArray()) {
+            firstChars.add(firstChar);
         }
 
         for (final Set<Character> otherChars : allOtherChars) {
