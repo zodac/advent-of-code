@@ -18,6 +18,7 @@
 package me.zodac.advent.pojo.grid;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import me.zodac.advent.pojo.Point;
@@ -31,6 +32,9 @@ public final class BooleanGrid extends Grid<Boolean> {
      * {@link ToIntFunction} that is used to convert a specific point on the {@link BooleanGrid} to an {@link Integer} value.
      */
     public static final ToIntFunction<Boolean> EVALUATOR = booleanValue -> booleanValue ? 1 : 0;
+
+    private static final Set<Integer> NEIGHBOUR_VALUES_FOR_OFF_POINT = Set.of(3);
+    private static final Set<Integer> NEIGHBOUR_VALUES_FOR_ON_POINT = Set.of(2, 3);
 
     private BooleanGrid(final int gridSize) {
         super(gridSize, new Boolean[gridSize][gridSize], false);
@@ -134,9 +138,9 @@ public final class BooleanGrid extends Grid<Boolean> {
                     .sum();
 
                 if (isSet) {
-                    newGrid[row][column] = valueOfSetNeighbours == 2 || valueOfSetNeighbours == 3;
+                    newGrid[row][column] = NEIGHBOUR_VALUES_FOR_ON_POINT.contains(valueOfSetNeighbours);
                 } else {
-                    newGrid[row][column] = valueOfSetNeighbours == 3;
+                    newGrid[row][column] = NEIGHBOUR_VALUES_FOR_OFF_POINT.contains(valueOfSetNeighbours);
                 }
             }
         }

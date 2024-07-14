@@ -33,7 +33,19 @@ import me.zodac.advent.util.StringUtils;
  */
 public final class SignalDecoder {
 
-    private static final Set<Integer> UNIQUE_OUTPUT_VALUES = Set.of(2, 3, 4, 7);
+    // Decoded values (only using these to avoid duplication or confusion with actual math operations)
+    private static final int DECODED_ZERO = 0;
+    private static final int DECODED_ONE = 1;
+    private static final int DECODED_TWO = 2;
+    private static final int DECODED_THREE = 3;
+    private static final int DECODED_FOUR = 4;
+    private static final int DECODED_FIVE = 5;
+    private static final int DECODED_SIX = 6;
+    private static final int DECODED_SEVEN = 7;
+    private static final int DECODED_EIGHT = 8;
+    private static final int DECODED_NINE = 9;
+
+    private static final Set<Integer> UNIQUE_OUTPUT_VALUES = Set.of(DECODED_TWO, DECODED_THREE, DECODED_FOUR, DECODED_SEVEN);
     private static final int INPUT_SIZE_THAT_MUST_BE_DECODED_LAST = 5;
 
     private SignalDecoder() {
@@ -106,12 +118,12 @@ public final class SignalDecoder {
             final int inputLength = input.length();
 
             switch (inputLength) {
-                case 2 -> decoder.put(input, 1);
-                case 3 -> decoder.put(input, 7);
-                case 4 -> decoder.put(input, 4);
+                case 2 -> decoder.put(input, DECODED_ONE);
+                case 3 -> decoder.put(input, DECODED_SEVEN);
+                case 4 -> decoder.put(input, DECODED_FOUR);
                 case 5 -> decoder.put(input, lengthFive(input, decoder));
                 case 6 -> decoder.put(input, lengthSix(input, decoder));
-                case 7 -> decoder.put(input, 8);
+                case 7 -> decoder.put(input, DECODED_EIGHT);
                 default -> throw new IllegalStateException("Cannot decode input with length: " + inputLength);
             }
         }
@@ -125,18 +137,18 @@ public final class SignalDecoder {
 
         // If the input is a superset containing '1' and '7', value is '3'
         if (StringUtils.containsAllCharacters(input, valueForOne, valueForSeven)) {
-            return 3;
+            return DECODED_THREE;
         }
 
         final String valueForSix = CollectionUtils.getKeyByValue(decoder, 6).orElseThrow();
 
         // If the input is a subset of the value for '6', value is '5'
         if (StringUtils.containsAllCharacters(valueForSix, input)) {
-            return 5;
+            return DECODED_FIVE;
         }
 
         // If the other values did not match, we can assume the value is '2'
-        return 2;
+        return DECODED_TWO;
     }
 
     private static int lengthSix(final String input, final Map<String, ? super Integer> decoder) {
@@ -146,16 +158,16 @@ public final class SignalDecoder {
 
         // If the input is a superset containing '1', '7' and '4', value is '9'
         if (StringUtils.containsAllCharacters(input, valueForOne, valueForFour, valueForSeven)) {
-            return 9;
+            return DECODED_NINE;
         }
 
         // If the input is a superset containing '1', and '7', value is '0'
         if (StringUtils.containsAllCharacters(input, valueForOne, valueForSeven)) {
-            return 0;
+            return DECODED_ZERO;
         }
 
         // If the other values did not match, we can assume the value is '6'
-        return 6;
+        return DECODED_SIX;
     }
 
     // For the decoding, inputs of size 5 must be determined last, as the only way to differentiate a 2 and a 5 is comparing to 6

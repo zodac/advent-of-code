@@ -68,7 +68,7 @@ public final class DeterministicDie {
      * @return the roll value
      */
     public long rollDie() {
-        counter = ((counter + 1) % 100);
+        counter = ((counter + 1) % maxValue);
         return counter;
     }
 }
