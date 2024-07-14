@@ -128,11 +128,7 @@ public final class BattleRound implements SearchNode {
 
             // Create a new possible round for each available Spell
             for (final Spell spell : AVAILABLE_SPELLS) {
-                if (spell.cost() > player.mana() + totalManaIncrease) {
-                    continue;
-                }
-
-                if (activeSpells.stream().anyMatch(activeSpell -> spell.equals(activeSpell.spell()))) {
+                if (isSpellTooExpensive(spell.cost(), player.mana() + totalManaIncrease) || isSpellAlreadyActive(activeSpells, spell)) {
                     continue;
                 }
 
@@ -146,6 +142,16 @@ public final class BattleRound implements SearchNode {
         }
 
         return neighbourNodes;
+    }
+
+    private static boolean isSpellTooExpensive(final int spellCost, final int availableMana) {
+        return spellCost > availableMana;
+    }
+
+    private static boolean isSpellAlreadyActive(final Collection<ActiveSpell> activeSpells, final Spell spell) {
+        return activeSpells
+            .stream()
+            .anyMatch(activeSpell -> spell.equals(activeSpell.spell()));
     }
 
     private BattleRound generateRoundForSpell(final int totalDamage, final int totalHealing, final int totalManaIncrease, final Spell spell) {
