@@ -79,14 +79,16 @@ public final class Day12 {
                     startPoints.add(currentPoint);
                 }
 
-                if (currentChar == START_CHARACTER) {
-                    startPoints.add(currentPoint);
-                    heightsByPoint.put(currentPoint, DEFAULT_HEIGHT);
-                } else if (currentChar == END_CHARACTER) {
-                    endPoints.add(currentPoint);
-                    heightsByPoint.put(currentPoint, VALUES.length());
-                } else {
-                    heightsByPoint.put(currentPoint, VALUES.indexOf(currentChar));
+                switch (currentChar) {
+                    case START_CHARACTER -> {
+                        startPoints.add(currentPoint);
+                        heightsByPoint.put(currentPoint, DEFAULT_HEIGHT);
+                    }
+                    case END_CHARACTER -> {
+                        endPoints.add(currentPoint);
+                        heightsByPoint.put(currentPoint, VALUES.length());
+                    }
+                    default -> heightsByPoint.put(currentPoint, VALUES.indexOf(currentChar));
                 }
             }
         }

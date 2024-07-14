@@ -121,13 +121,11 @@ public final class Day08 {
             final char currentInstruction = instructions.charAt(instructionIndex);
             count++;
 
-            if (currentInstruction == LEFT_INSTRUCTION) {
-                current = getNode(nodesByName, current.left);
-            } else if (currentInstruction == RIGHT_INSTRUCTION) {
-                current = getNode(nodesByName, current.right);
-            } else {
-                throw new IllegalStateException(String.format("Unable to parse instruction: '%s'", currentInstruction));
-            }
+            current = switch (currentInstruction) {
+                case LEFT_INSTRUCTION -> getNode(nodesByName, current.left);
+                case RIGHT_INSTRUCTION -> getNode(nodesByName, current.right);
+                default -> throw new IllegalStateException(String.format("Unable to parse instruction: '%s'", currentInstruction));
+            };
         }
         return count;
     }

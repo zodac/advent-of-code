@@ -58,12 +58,10 @@ public record BitParityCount(int zeros, int ones) {
         for (final String value : binaryValues) {
             final char charAtIndex = value.charAt(index);
 
-            if (charAtIndex == ZERO_BIT) {
-                zeros++;
-            } else if (charAtIndex == ONE_BIT) {
-                ones++;
-            } else {
-                throw new IllegalStateException(String.format("Cannot handle 'binary' input of: '%s'", charAtIndex));
+            switch (charAtIndex) {
+                case ZERO_BIT -> zeros++;
+                case ONE_BIT -> ones++;
+                default -> throw new IllegalStateException(String.format("Cannot handle 'binary' input of: '%s'", charAtIndex));
             }
         }
 
