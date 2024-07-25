@@ -1,14 +1,14 @@
 # Advent Of Code: Java Edition
 
-![](https://img.shields.io/badge/2023%20⭐-32-yellow)
-![](https://img.shields.io/badge/2022%20⭐-28-yellow)
-![](https://img.shields.io/badge/2021%20⭐-19-orange)
-![](https://img.shields.io/badge/2020%20⭐-0-red)
-![](https://img.shields.io/badge/2019%20⭐-0-red)
-![](https://img.shields.io/badge/2018%20⭐-4-orange)
-![](https://img.shields.io/badge/2017%20⭐-0-red)
-![](https://img.shields.io/badge/2016%20⭐-0-red)
-![](https://img.shields.io/badge/2015%20⭐-50-green)
+![2023](https://img.shields.io/badge/2023%20⭐-32-yellow)
+![2022](https://img.shields.io/badge/2022%20⭐-28-yellow)
+![2021](https://img.shields.io/badge/2021%20⭐-19-orange)
+![2020](https://img.shields.io/badge/2020%20⭐-0-red)
+![2019](https://img.shields.io/badge/2019%20⭐-0-red)
+![2018](https://img.shields.io/badge/2018%20⭐-4-orange)
+![2017](https://img.shields.io/badge/2017%20⭐-0-red)
+![2016](https://img.shields.io/badge/2016%20⭐-0-red)
+![2015](https://img.shields.io/badge/2015%20⭐-50-green)
 
 ## Overview
 
@@ -97,7 +97,6 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 14](https://adventofcode.com/2022/day/14) |  30,919 ⭐ |  30,485 ⭐ |
 
 </details>
-
 
 <details>
     <summary>2021 Results</summary>
