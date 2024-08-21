@@ -45,28 +45,12 @@ jobs:
           java-version: '22'
           maven-version: '3.9.8'
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3.2.0
-        with:
-          username: ${{ vars.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Deploy docker containers
-        id: docker_deploy
-        run: docker compose --file docker-compose-dev.yml up --build --detach
-
       - name: Update Maven project versions
         run: mvn versions:update-properties
 
-      - name: Run tests and build
-        run: mvn clean install -Dall
-
       - name: Run linters and unit/integration tests
         id: application_tests
-        env:
-          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: mvn clean install -Dall
-        continue-on-error: true
 
       - name: Commit and push changes
         if: steps.application_tests.outcome == 'success'
@@ -76,7 +60,3 @@ jobs:
           git add .
           git commit -m 'Updating versions'
           git push
-
-      - name: Shut down docker containers
-        run: docker compose --file docker-compose-dev.yml down
-        if: steps.docker_deploy.outcome == 'success'
