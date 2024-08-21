@@ -61,6 +61,7 @@ jobs:
         run: mvn clean install -Dall
 
       - name: Commit changes
+        id: change_commit
         if: steps.application_tests.outcome == 'success'
         run: |
           git config user.name github-actions
@@ -70,6 +71,7 @@ jobs:
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.8.0
+        if: steps.change_commit.outcome == 'success'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
