@@ -14,8 +14,8 @@ jobs:
     name: Versions Update
     runs-on: ubuntu-latest
     permissions:
-      actions: read
-      contents: read
+      actions: write
+      contents: write
       security-events: write
 
     steps:
@@ -52,11 +52,16 @@ jobs:
         id: application_tests
         run: mvn clean install -Dall
 
-      - name: Commit and push changes
+      - name: Commit changes
         if: steps.application_tests.outcome == 'success'
         run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
+          git config user.name github-actions
+          git config user.email "actions@github.com"
           git add .
           git commit -m 'Updating versions'
-          git push
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
