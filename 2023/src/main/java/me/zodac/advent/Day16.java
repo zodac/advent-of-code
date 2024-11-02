@@ -118,7 +118,7 @@ public final class Day16 {
                     continue;
                 }
 
-                // Because a beam can also split into a new beam, the following methods may update 'nextBeamStepsToCheck' as a side-effect
+                // Because a beam can also split into a new beam, the following methods may update 'nextBeamStepsToCheck' as a side effect
                 final Direction nextDirection = getDirectionForNextBeamStep(grid, beamStep, nextBeamStepsToCheck);
                 addNewBeamStepToCheck(grid, beamStep, nextDirection, nextBeamStepsToCheck);
                 visitedBeamSteps.add(beamStep);
