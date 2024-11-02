@@ -19,7 +19,7 @@ package me.zodac.advent.filesystem;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.checkerframework.nullaway.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Simple class defining a {@link Directory} on a filesystem.

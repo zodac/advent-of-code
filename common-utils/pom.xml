@@ -22,6 +22,11 @@
     <dependencies>
         <!-- 3PP Dependencies -->
         <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.uber.nullaway</groupId>
             <artifactId>nullaway</artifactId>
             <scope>provided</scope>
