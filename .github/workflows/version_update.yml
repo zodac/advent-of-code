@@ -51,7 +51,7 @@ jobs:
         with:
           java-distribution: 'temurin'
           java-version: '22'
-          maven-version: '3.9.8'
+          maven-version: '3.9.9'
 
       - name: Update Maven project versions
         run: mvn versions:update-properties

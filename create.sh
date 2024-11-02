@@ -6,7 +6,7 @@
 # files from templates.
 ####################################
 
-YEAR_REGEX='^20(1[5-9]|2[0-3])$'
+YEAR_REGEX='^20(1[5-9]|2[0-4])$'
 DAY_REGEX='^(0?[1-9]|1[0-9]|2[0-5])$'
 TYPE_REGEX='^(basic|char_grid|int_grid)$'
 USER_AGENT_VALUE="https://github.com/zodac/advent-of-code by zodac"

@@ -16,6 +16,7 @@
         <module>2021</module>
         <module>2022</module>
         <module>2023</module>
+        <module>2024</module>
         <module>common-utils</module>
     </modules>
 
@@ -23,7 +24,7 @@
         <!-- Project Properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-release>22</java-release>
-        <maven-release>3.9.8</maven-release>
+        <maven-release>3.9.9</maven-release>
 
         <!-- Lint Properties -->
         <!-- All disabled by default, activated through profiles -->
