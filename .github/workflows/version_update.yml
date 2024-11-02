@@ -32,7 +32,7 @@ jobs:
           repository: zodac/advent-of-code-inputs
           token: ${{ secrets.SUBMODULE_ACCESS }}
 
-      - name: Set up JDK 22
+      - name: Set up JDK
         uses: actions/setup-java@v4.2.1
         with:
           distribution: 'temurin'
