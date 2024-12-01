@@ -200,7 +200,7 @@ function _error() {
 }
 
 function print_usage() {
-  _warning "Usage:\n\t-y: Year (2015-2023)\n\t-d: Day (1-25)\n\t-t: Type (Optional: 'basic', 'char_grid', 'int_grid')"
+  _warning "Usage:\n\t-y: Year (2015-2024)\n\t-d: Day (1-25)\n\t-t: Type (Optional: 'basic', 'char_grid', 'int_grid')"
 }
 
 # Start script execution

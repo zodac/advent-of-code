@@ -60,6 +60,26 @@ class CollectionUtilsTest {
     }
 
     @ParameterizedTest
+    @MethodSource("provideForCountMatches")
+    <E> void testCountMatches(final List<E> input, final E wantedValue, final long expectedCount) {
+        final long output = CollectionUtils.countMatches(input, wantedValue);
+        assertThat(output)
+            .isEqualTo(expectedCount);
+    }
+
+    private static Stream<Arguments> provideForCountMatches() {
+        return Stream.of(
+            Arguments.of(List.of(1, 2, 2), 1, 1L),                      // Integer input with single match
+            Arguments.of(List.of(1, 1, 2, 2, 2), 2, 3L),                // Integer input with three matches
+            Arguments.of(List.of(1, 2, 3), 4, 0L),                      // Integer input with no matches
+            Arguments.of(List.of("a", "b", "c"), "a", 1L),              // String input with single match
+            Arguments.of(List.of("a", "b", "b"), "b", 2L),              // String input with two matches
+            Arguments.of(List.of(true, true, false, true), true, 3L),   // Boolean input with three matches
+            Arguments.of(List.of(), 1, 0)                               // Empty
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("provideForExtractValuesAsList")
     <I, O> void testExtractValuesAsList(final List<I> input, final Function<? super I, O> extractionFunction, final List<? extends O> expected) {
         final List<O> output = CollectionUtils.extractValuesAsList(input, extractionFunction);

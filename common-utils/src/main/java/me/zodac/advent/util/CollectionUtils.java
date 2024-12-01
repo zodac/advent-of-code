@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
- * Utility functions for {@link java.util.Collection}s.
+ * Utility functions for {@link Collection}s.
  */
 public final class CollectionUtils {
 
@@ -47,6 +47,21 @@ public final class CollectionUtils {
      */
     public static <T> boolean containsDuplicates(final Collection<T> input) {
         return !input.isEmpty() && input.stream().distinct().count() != input.size();
+    }
+
+    /**
+     * Counts the number of times the {@code wantedValue} is found in the input {@link Collection}.
+     *
+     * @param input       the {@link Collection} to check
+     * @param wantedValue the wanted value to find in the {@link Collection}
+     * @param <T>         the type of the {@link Collection}
+     * @return the number of occurances of the {@code wantedValue} in the input {@link Collection}
+     */
+    public static <T> long countMatches(final Collection<T> input, final T wantedValue) {
+        return input
+            .stream()
+            .filter(wantedValue::equals)
+            .count();
     }
 
     /**
@@ -220,9 +235,9 @@ public final class CollectionUtils {
      * Function that returns the index of a value within the provided {@link Collection}. To be used for implementations of {@link Collection} that do
      * not have their own {@code #indexOf()} function, like {@link Set}.
      *
-     * @param collection the {@link Collection} to check
-     * @param wantedValue      the value to look for
-     * @param <E>        the type of the {@link Collection}
+     * @param collection  the {@link Collection} to check
+     * @param wantedValue the value to look for
+     * @param <E>         the type of the {@link Collection}
      * @return the index of the {@code value}, or <b>-1</b>
      * @see List#indexOf(Object)
      */
