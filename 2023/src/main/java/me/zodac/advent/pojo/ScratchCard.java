@@ -45,7 +45,7 @@ public record ScratchCard(int id, Set<Long> winners) {
      * @return the {@link ScratchCard}
      * @throws IllegalArgumentException thrown if the input does not match the expected format
      */
-    public static ScratchCard parse(final CharSequence input) {
+    public static ScratchCard parse(final CharSequence input) { // TODO: Stop at String, not CharSequence
         final Matcher matcher = VALID_SCRATCHCARD.matcher(input);
         if (!matcher.matches()) {
             throw new IllegalArgumentException(String.format("Invalid input: '%s'", input));

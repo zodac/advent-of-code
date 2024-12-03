@@ -105,7 +105,7 @@ function main() {
     cd ./advent-of-code-inputs || exit 1
     git add "${year}/day${day_long}.txt"
     git commit --quiet -m "Adding input for ${year}, Day ${day_long}"
-    git push --quiet
+    git push origin HEAD:main --quiet
     cd .. || exit 1
   fi
 

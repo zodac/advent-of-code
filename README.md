@@ -60,6 +60,7 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 |:---------------------------------------------|---------:|---------:|
 | [Day 1](https://adventofcode.com/2024/day/1) |  2,369 ⭐ |  2,112 ⭐ |
 | [Day 2](https://adventofcode.com/2024/day/2) | 19,045 ⭐ | 16,440 ⭐ |
+| [Day 3](https://adventofcode.com/2024/day/3) |  6,666 ⭐ |  4,855 ⭐ |
 
 </details>
 
