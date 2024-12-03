@@ -19,55 +19,58 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
 import java.util.List;
 import me.zodac.advent.input.InputReader;
+import me.zodac.advent.pojo.Report;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day06}.
+ * Tests to verify answers for {@link Day02}.
  */
-class Day06Test {
+class Day02Test {
 
-    private static final String INPUT_FILENAME = "day06.txt";
+    private static final String INPUT_FILENAME = "day02.txt";
 
     @Test
     void example() {
-        final List<Long> lanternValues = InputReader
+        final List<Report> values = InputReader
             .forExample(INPUT_FILENAME)
             .asLinesOfSeparatedNumbers()
-            .readFirstLine();
+            .as(Report::create)
+            .readAllLines();
 
-        final BigDecimal finalNumberOfLanterns1 = Day06.countLanternFishAfterDays(lanternValues, 80);
-        assertThat(finalNumberOfLanterns1)
-            .isEqualTo(BigDecimal.valueOf(5_934L));
+        final long part1Result = Day02.countSafeReports(values, false);
+        assertThat(part1Result)
+            .isEqualTo(2L);
 
-        final BigDecimal finalNumberOfLanterns2 = Day06.countLanternFishAfterDays(lanternValues, 256);
-        assertThat(finalNumberOfLanterns2)
-            .isEqualTo(BigDecimal.valueOf(26_984_457_539L));
+        final long part2Result = Day02.countSafeReports(values, true);
+        assertThat(part2Result)
+            .isEqualTo(4L);
     }
 
     @Test
     void part1() {
-        final List<Long> lanternValues = InputReader
+        final List<Report> values = InputReader
             .forPuzzle(INPUT_FILENAME)
             .asLinesOfSeparatedNumbers()
-            .readFirstLine();
+            .as(Report::create)
+            .readAllLines();
 
-        final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 80);
-        assertThat(finalNumberOfLanterns)
-            .isEqualTo(BigDecimal.valueOf(362_346L));
+        final long part1Result = Day02.countSafeReports(values, false);
+        assertThat(part1Result)
+            .isEqualTo(526L);
     }
 
     @Test
     void part2() {
-        final List<Long> lanternValues = InputReader
+        final List<Report> values = InputReader
             .forPuzzle(INPUT_FILENAME)
             .asLinesOfSeparatedNumbers()
-            .readFirstLine();
+            .as(Report::create)
+            .readAllLines();
 
-        final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 256);
-        assertThat(finalNumberOfLanterns)
-            .isEqualTo(BigDecimal.valueOf(1_639_643_057_051L));
+        final long part2Result = Day02.countSafeReports(values, true);
+        assertThat(part2Result)
+            .isEqualTo(566L);
     }
 }

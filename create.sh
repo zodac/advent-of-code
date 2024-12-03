@@ -167,7 +167,7 @@ function main() {
       exit 1;
     fi
 
-    title=$(echo "${title_output}" | head -n -1 | grep '<h2>' | awk '{split($0,a,"<h2>")} END{print a[2]}' | awk '{split($0,a,"</h2>")} END{print a[1]}' | cut -d ':' -f2 | cut -d '-' -f1 | awk '{$1=$1;print}')
+    title=$(echo "${title_output}" | head -n -1 | grep '<h2>' | awk '{split($0, a, "<h2>")} END {print a[2]}' | awk '{split($0, a, "</h2>")} END {print a[1]}' | cut -d ':' -f2 | awk '{split($0, a, "---")} END {print a[1]}' | awk '{$1=$1;print}')
     sed -i -e "s|%TITLE%|${title}|g" "./${year}/src/main/java/me/zodac/advent/Day${day_long}.java"
   fi
 

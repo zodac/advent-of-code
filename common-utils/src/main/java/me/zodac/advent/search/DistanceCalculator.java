@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import me.zodac.advent.pojo.Route;
-import me.zodac.advent.util.CollectionUtils;
+import me.zodac.advent.util.PermutationUtils;
 
 /**
  * Calculator that can calculate the shortest or longest path across a {@link List} of {@link Route}s, while visiting all locations once.
@@ -77,7 +77,7 @@ public final class DistanceCalculator {
      *
      * @param routes the {@link Route}s
      * @return the created {@link DistanceCalculator}
-     * @see CollectionUtils#generatePermutations(List)
+     * @see PermutationUtils#generateAll(List)
      * @see #createWithOptions(Collection, Option...)
      */
     public static DistanceCalculator createWithAllOptions(final Collection<Route> routes) {
@@ -93,7 +93,7 @@ public final class DistanceCalculator {
      *
      * @param routes the {@link Route}s
      * @return the created {@link DistanceCalculator}
-     * @see CollectionUtils#generatePermutations(List)
+     * @see PermutationUtils#generateAll(List)
      * @see #createWithOptions(Collection, Option...)
      */
     public static DistanceCalculator create(final Collection<Route> routes) {
@@ -107,7 +107,7 @@ public final class DistanceCalculator {
      * @param routes  the {@link Route}s
      * @param options the {@link DistanceCalculator.Option}s to be enabled
      * @return the created {@link DistanceCalculator}
-     * @see CollectionUtils#generatePermutations(List)
+     * @see PermutationUtils#generateAll(List)
      */
     public static DistanceCalculator createWithOptions(final Collection<Route> routes, final Option... options) {
         final Map<String, Integer> distancesBySourceAndDestination = HashMap.newHashMap(routes.size());
@@ -121,7 +121,7 @@ public final class DistanceCalculator {
             distancesBySourceAndDestination.put(key, route.value());
         }
 
-        final List<List<String>> permutations = CollectionUtils.generatePermutations(new ArrayList<>(sources))
+        final List<List<String>> permutations = PermutationUtils.generateAll(new ArrayList<>(sources))
             .stream()
             .toList();
 

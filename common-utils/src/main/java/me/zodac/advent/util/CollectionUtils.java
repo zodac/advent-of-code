@@ -28,6 +28,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 /**
  * Utility functions for {@link Collection}s.
@@ -96,55 +97,6 @@ public final class CollectionUtils {
             .stream()
             .filter(v -> Objects.compare(value, v, comparator) == 1)
             .toList();
-    }
-
-    /**
-     * Generates permutations based on the input {@link List}.
-     *
-     * <p>
-     * Given an input {@link List} of {@link String}s:
-     * <pre>
-     *      England
-     *      Ireland
-     *      Sweden
-     * </pre>
-     *
-     * <p>
-     * We would have 6 permutations (3!):
-     * <pre>
-     *     England, Ireland,  Sweden
-     *     England,  Sweden, Ireland
-     *     Ireland, England,  Sweden
-     *     Ireland,  Sweden, England
-     *      Sweden, England, Ireland
-     *      Sweden, Ireland, England
-     * </pre>
-     *
-     * @param input the {@link List} from which permutations should be generated
-     * @param <E>   the type of the input {@link List}
-     * @return the {@link List} of permutations
-     */
-    public static <E> List<List<E>> generatePermutations(final List<? extends E> input) {
-        if (input.isEmpty()) {
-            return List.of(List.of());
-        }
-
-        final List<? extends E> modifiableInput = new ArrayList<>(input);
-        final E firstElement = modifiableInput.removeFirst();
-        final List<List<E>> returnValue = new ArrayList<>();
-        final List<List<E>> permutations = generatePermutations(modifiableInput);
-
-        for (final List<E> smallerPermutation : permutations) {
-            final int sizeOfSmallerPermutation = smallerPermutation.size();
-
-            for (int index = 0; index <= sizeOfSmallerPermutation; index++) {
-                final List<E> temp = new ArrayList<>(smallerPermutation);
-                temp.add(index, firstElement);
-                returnValue.add(temp);
-            }
-        }
-
-        return returnValue;
     }
 
     /**
@@ -257,5 +209,29 @@ public final class CollectionUtils {
         final Set<E> intersection = new HashSet<>(first);
         intersection.retainAll(second);
         return intersection;
+    }
+
+    /**
+     * Checks if the elements in the input {@link List} are in decreasing order only. Note that an equal value is <b>not</b> considered decreasing.
+     *
+     * @param input the {@link List} to check
+     * @param <E>   the type of the {@link List}
+     * @return {@code true} if all elements are in strict decreasing order
+     */
+    public static <E extends Comparable<E>> boolean isStrictlyDecreasing(final List<E> input) {
+        return IntStream.range(0, input.size() - 1)
+            .allMatch(i -> input.get(i).compareTo(input.get(i + 1)) >= 1);
+    }
+
+    /**
+     * Checks if the elements in the input {@link List} are in increasing order only. Note that an equal value is <b>not</b> considered increasing.
+     *
+     * @param input the {@link List} to check
+     * @param <E>   the type of the {@link List}
+     * @return {@code true} if all elements are in strict increasing order
+     */
+    public static <E extends Comparable<E>> boolean isStrictlyIncreasing(final List<E> input) {
+        return IntStream.range(0, input.size() - 1)
+            .allMatch(i -> input.get(i).compareTo(input.get(i + 1)) <= -1);
     }
 }

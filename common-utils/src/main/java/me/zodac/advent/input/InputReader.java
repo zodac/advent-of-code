@@ -53,8 +53,7 @@ import me.zodac.advent.util.StringUtils;
  *
  * <p>
  * {@snippet :
- *     final Grid<Character> grid = InputReader
- *         .forExample(inputFilePath)
+ *     final Grid<Character> grid = forExample(inputFilePath)
  *         .asGrid()
  *         .ofCharacters();
  *}
@@ -64,23 +63,10 @@ import me.zodac.advent.util.StringUtils;
  *
  * <p>
  * {@snippet :
- *     final Grid<Character> grid = InputReader
- *         .forPuzzle(inputFilePath)
+ *     final Grid<Character> grid = forPuzzle(inputFilePath)
  *         .asIntegers()
  *         .filter(i -> i != 9)
  *         .readAllLines();
- *}
- *
- * <p>
- * - To read a puzzle input of {@link String}s, with each 3 lines grouped together:
- *
- * <p>
- * {@snippet :
- *     final List<List<String>> values = InputReader
- *         .forPuzzle(INPUT_FILENAME)
- *         .asStrings()
- *         .grouped()
- *         .bySize(3);
  *}
  */
 public final class InputReader {
@@ -220,11 +206,11 @@ public final class InputReader {
 
         /**
          * Used to convert each line in the input file into a {@link List} of {@link Long} numbers, usually used when each line is a series of
-         * comma-separated numbers.
+         * separated numbers (any delimiter).
          *
          * @return a {@link Reader} for a {@link List} of {@link Long}s
          */
-        public Reader<List<Long>> asLinesOfCommaSeparatedNumbers() {
+        public Reader<List<Long>> asLinesOfSeparatedNumbers() {
             return as(StringUtils::collectNumbersInOrder);
         }
 

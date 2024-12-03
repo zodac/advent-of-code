@@ -36,7 +36,7 @@ class Day07Test {
     void example() {
         final List<Long> verticalLocations = InputReader
             .forExample(INPUT_FILENAME)
-            .asLinesOfCommaSeparatedNumbers()
+            .asLinesOfSeparatedNumbers()
             .readFirstLine();
 
         final long minimumMoves1 = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
@@ -52,7 +52,7 @@ class Day07Test {
     void part1() {
         final List<Long> verticalLocations = InputReader
             .forPuzzle(INPUT_FILENAME)
-            .asLinesOfCommaSeparatedNumbers()
+            .asLinesOfSeparatedNumbers()
             .readFirstLine();
 
         final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
@@ -64,7 +64,7 @@ class Day07Test {
     void part2() {
         final List<Long> verticalLocations = InputReader
             .forPuzzle(INPUT_FILENAME)
-            .asLinesOfCommaSeparatedNumbers()
+            .asLinesOfSeparatedNumbers()
             .readFirstLine();
 
         final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);

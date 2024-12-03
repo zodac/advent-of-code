@@ -114,44 +114,6 @@ class CollectionUtilsTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideForGeneratePermutations")
-    <E> void testGeneratePermutations(final List<? extends E> input, final List<? extends List<E>> expected) {
-        final List<List<E>> output = CollectionUtils.generatePermutations(input);
-        assertThat(output)
-            .hasSameElementsAs(expected);
-    }
-
-    private static Stream<Arguments> provideForGeneratePermutations() {
-        return Stream.of(
-            Arguments.of(List.of("a"), List.of(List.of("a"))),  // Single String entry
-            Arguments.of(List.of(1), List.of(List.of(1))),      // Single Integer entry
-            Arguments.of(List.of(), List.of(List.of())),               // Empty
-            // Multiple String entries
-            Arguments.of(List.of("a", "b", "c"),
-                List.of(
-                    List.of("a", "b", "c"),
-                    List.of("a", "c", "b"),
-                    List.of("b", "a", "c"),
-                    List.of("b", "c", "a"),
-                    List.of("c", "a", "b"),
-                    List.of("c", "b", "a")
-                )
-            ),
-            // Multiple Integer entries
-            Arguments.of(List.of(1, 2, 3),
-                List.of(
-                    List.of(1, 2, 3),
-                    List.of(1, 3, 2),
-                    List.of(2, 1, 3),
-                    List.of(2, 3, 1),
-                    List.of(3, 1, 2),
-                    List.of(3, 2, 1)
-                )
-            )
-        );
-    }
-
-    @ParameterizedTest
     @MethodSource("provideForGetKeyByValue")
     <K, V> void testGetKeyByValue(final Map<K, ? super V> input, final V value, final Optional<V> expected) {
         final Optional<K> output = CollectionUtils.getKeyByValue(input, value);
@@ -281,6 +243,58 @@ class CollectionUtilsTest {
             Arguments.of(Set.of(1, 2, 3), Set.of(1, 2, 3, 4, 5, 6), Set.of(1, 2, 3)),   // Multiple matches
             Arguments.of(Set.of(1, 2, 3), Set.of(1, 2), Set.of(1, 2)),                  // Second is a subset of first
             Arguments.of(Set.of(1, 2, 3), Set.of(4, 5, 6), Set.of())                    // No match
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForIsStrictDecreasing")
+    <E extends Comparable<E>> void testIsStrictlyDecreasing(final List<E> input, final boolean expected) {
+        final boolean output = CollectionUtils.isStrictlyDecreasing(input);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForIsStrictDecreasing() {
+        return Stream.of(
+            Arguments.of(List.of(3, 2, 1), true),           // Descending integers
+            Arguments.of(List.of(3), true),             // Single integer
+            Arguments.of(List.of(3, 1, 0, -1), true),       // Descending negative integers
+            Arguments.of(List.of(3, 1, 2), false),          // Not consistently descending integers
+            Arguments.of(List.of(1, 2, 3), false),          // Increasing integers
+            Arguments.of(List.of(3, 3, 2), false),          // Equal integers
+            Arguments.of(List.of("c", "b", "a"), true),     // Descending strings
+            Arguments.of(List.of("c"), true),           // Single string
+            Arguments.of(List.of("c", "a", "0", ""), true), // Descending non-numeric strings
+            Arguments.of(List.of("c", "a", "b"), false),    // Not consistently descending strings
+            Arguments.of(List.of("a", "b", "c"), false),    // Increasing strings
+            Arguments.of(List.of("c", "c", "b"), false),    // Equal strings
+            Arguments.of(List.of(), true)                   // Empty
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForIsStrictIncreasing")
+    <E extends Comparable<E>> void testIsStrictlyIncreasing(final List<E> input, final boolean expected) {
+        final boolean output = CollectionUtils.isStrictlyIncreasing(input);
+        assertThat(output)
+            .isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideForIsStrictIncreasing() {
+        return Stream.of(
+            Arguments.of(List.of(1, 2, 3), true),           // Increasing integers
+            Arguments.of(List.of(3), true),             // Single integer
+            Arguments.of(List.of(-3, -1, 0, 1), true),      // Increasing negative integers
+            Arguments.of(List.of(3, 1, 2), false),          // Not consistently descending integers
+            Arguments.of(List.of(3, 2, 1), false),          // Descending integers
+            Arguments.of(List.of(3, 3, 2), false),          // Equal integers
+            Arguments.of(List.of("a", "b", "c"), true),     // Increasing strings
+            Arguments.of(List.of("c"), true),           // Single string
+            Arguments.of(List.of("", "0", "a", "b"), true), // Increasing non-numeric strings
+            Arguments.of(List.of("c", "a", "b"), false),    // Not consistently descending strings
+            Arguments.of(List.of("c", "b", "a"), false),    // Descending strings
+            Arguments.of(List.of("c", "c", "b"), false),    // Equal strings
+            Arguments.of(List.of(), true)                   // Empty
         );
     }
 }
