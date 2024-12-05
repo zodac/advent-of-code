@@ -18,8 +18,11 @@
 package me.zodac.advent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.grid.AdjacentDirection;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
@@ -32,115 +35,112 @@ import me.zodac.advent.pojo.grid.Grid;
  */
 public final class Day04 {
 
+    private static final char FIRST_LETTER_OF_XMAS = 'X';
+    private static final String XMAS_SEARCH_WORD = "XMAS";
+
+    private static final char CENTRE_OF_X_MAS = 'A';
+    // Possible combinations of 'MAS' in an 'X' formation with natural ordering of Points
+    private static final Set<String> POSSIBLE_X_MAS_WORDS = Set.of("SSMM", "MMSS", "MSMS", "SMSM");
+
     private Day04() {
 
     }
 
     /**
-     * Part 1.
+     * Given a {@link Grid} of {@link Character}s, find all occurrances of the {@link Character}s: 'X', 'M', 'A', 'S', in any order. The letters can
+     * overlap and be used for multiple matches. For example, the {@link Grid} below as <b>2</b> occurances:
+     *
+     * <pre>
+     *     - X - X -
+     *     - - M M -
+     *     - - - A -
+     *     - - - S S
+     * </pre>
      *
      * @param characterGrid the input {@link Character} {@link Grid}
-     * @return the part 1 result
+     * @return the number of "XMAS" matches in the {@link Grid}
      */
     public static long countOccurancesOfXmas(final Grid<Character> characterGrid) {
-        final List<Point> starts = new ArrayList<>();
+        final Collection<Point> starts = new ArrayList<>();
         final Character[][] grid = characterGrid.getInternalGrid();
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                final Point firstPoint = Point.of(i, j);
-                final char firstValue = characterGrid.at(firstPoint);
+                final Point point = Point.of(i, j);
+                final char value = characterGrid.at(point);
 
-                if (firstValue != 'X') {
+                if (value != FIRST_LETTER_OF_XMAS) {
                     continue;
                 }
 
-                final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, grid.length);
-                final List<Point> secondPoints = firstPoint.getAdjacentPoints(adjacentPointsSelector).toList();
-
-                for (final Point secondPoint : secondPoints) {
-                    try {
-                        final char secondValue = characterGrid.at(secondPoint);
-
-                        if (secondValue == 'M') {
-                            int xDiff = secondPoint.x() - firstPoint.x();
-                            int yDiff = secondPoint.y() - firstPoint.y();
-
-                            final Point thirdPoint = Point.of(secondPoint.x() + xDiff, secondPoint.y() + yDiff);
-                            final char thirdValue = characterGrid.at(thirdPoint);
-
-                            if (thirdValue == 'A') {
-                                final Point fourthPoint = Point.of(thirdPoint.x() + xDiff, thirdPoint.y() + yDiff);
-
-                                final char fourthValue = characterGrid.at(fourthPoint);
-
-                                if (fourthValue == 'S') {
-                                    starts.add(firstPoint);
-                                }
-                            }
-                        }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        continue;
+                // Find the next 3 points in each direction, and check if the values add to 'XMAS'
+                for (final Direction direction : Direction.ALL_VALUES) {
+                    if (isValidStartOfXmas(point, direction, characterGrid)) {
+                        starts.add(point);
                     }
                 }
-
             }
         }
 
         return starts.size();
     }
 
+    private static boolean isValidStartOfXmas(final Point point, final Direction direction, final Grid<Character> characterGrid) {
+        final List<Point> pointsInLine = point.findPointsInLine(direction, 3); // Find "-MAS"
+        final String result = pointsInLine
+            .stream()
+            .filter(characterGrid::exists)
+            .map(characterGrid::at)
+            .map(String::valueOf)
+            .collect(Collectors.joining());
+
+        return XMAS_SEARCH_WORD.equals(result);
+    }
+
     /**
-     * Part 2.
+     * Given a {@link Grid} of {@link Character}s, find all occurrances of the {@link Character} 'A' which has 'M' and 'S' in a line along both
+     * diagonal, in any order. The letters can overlap and be used for multiple matches. For example, the {@link Grid} below as <b>2</b> occurances:
+     *
+     * <pre>
+     *     M - S - M
+     *     - A - A -
+     *     M - S - M
+     * </pre>
      *
      * @param characterGrid the input {@link Character} {@link Grid}
-     * @return the part 2 result
+     * @return the number of "MAS" matches in X-formation in the {@link Grid}
      */
     public static long countOccurancesOfMasAsX(final Grid<Character> characterGrid) {
-        final List<Point> starts = new ArrayList<>();
+        final Collection<Point> starts = new ArrayList<>();
         final Character[][] grid = characterGrid.getInternalGrid();
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                final Point firstPoint = Point.of(i, j);
-                final char firstValue = characterGrid.at(firstPoint);
+                final Point point = Point.of(i, j);
+                final char value = characterGrid.at(point);
 
-                if (firstValue != 'A') {
+                if (value != CENTRE_OF_X_MAS) {
                     continue;
                 }
 
-                final Point upLeft = firstPoint.moveUpLeft();
-                final Point downLeft = firstPoint.moveDownLeft();
-                final Point upRight = firstPoint.moveUpRight();
-                final Point downRight = firstPoint.moveDownRight();
-
-                try {
-                    final char upLeftVal = characterGrid.at(upLeft);
-                    final char downLeftVal = characterGrid.at(downLeft);
-                    final char upRightVal = characterGrid.at(upRight);
-                    final char downRightVal = characterGrid.at(downRight);
-
-                    final String combination = "" + upLeftVal + downRightVal + upRightVal + downLeftVal;
-
-                    final Set<String> possibleCombinations = Set.of("SMSM", "MSMS", "MSSM", "SMMS");
-                    if (possibleCombinations.contains(combination)) {
-                        starts.add(firstPoint);
-                    }
-
-
-//                    if ((upLeftVal == 'S' && downRightVal == 'M' && upRightVal == 'S' && downLeftVal == 'M')
-//                        || (upLeftVal == 'M' && downRightVal == 'S' && upRightVal == 'M' && downLeftVal == 'S')
-//                        || (upLeftVal == 'M' && downRightVal == 'S' && upRightVal == 'S' && downLeftVal == 'M')
-//                        || (upLeftVal == 'S' && downRightVal == 'M' && upRightVal == 'M' && downLeftVal == 'S')) {
-//                        starts.add(firstPoint);
-//                    }
-
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    continue;
+                if (isValidCenterOfXmas(point, characterGrid)) {
+                    starts.add(point);
                 }
             }
         }
 
         return starts.size();
+    }
+
+    private static boolean isValidCenterOfXmas(final Point point, final Grid<Character> characterGrid) {
+        final String combination = point
+            .getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.DIAGONAL_ONLY, characterGrid.numberOfRows()))
+            .filter(characterGrid::exists)
+            .sorted() // Must sort so the Points are in a consistent order so we can compare to the expected Strings
+            .map(characterGrid::at)
+            .map(String::valueOf)
+            .collect(Collectors.joining());
+
+        return POSSIBLE_X_MAS_WORDS.contains(combination);
     }
 }
