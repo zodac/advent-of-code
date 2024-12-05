@@ -17,19 +17,12 @@
 
 package me.zodac.advent;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import me.zodac.advent.pojo.tuple.Pair;
-import me.zodac.advent.pojo.tuple.Triple;
-import me.zodac.advent.util.CollectionUtils;
 import me.zodac.advent.util.StringUtils;
 
 /**
@@ -39,198 +32,104 @@ import me.zodac.advent.util.StringUtils;
  */
 public final class Day05 {
 
-    private static final Pattern PATTERN = Pattern.compile("|");
-
     private Day05() {
 
     }
 
     /**
-     * Part 1.
+     * We are given a set of page rules in the format:
+     * <pre>
+     *     firstNumber|secondNumber
+     * </pre>
      *
-     * @return the part 1 result
+     * <p>
+     * And a set of page numbers in the format:
+     * <pre>
+     *     firstNumber,secondNumber,thirdNumber
+     * </pre>
+     *
+     * <p>
+     * Based on this, we must determine which of the {@code inputPageNumbers} are <b>valid</b>. For the valid ones, find the middle value and sum
+     * these values.
+     *
+     * @param pageRules        the rules determining the orders the pages must be in
+     * @param inputPageNumbers the page numbers to be checked
+     * @return the sum of all middle values of valid {@code inputPageNumbers}
      */
-    public static long sumMiddleValuesOfSortedPageNumbers(final List<String> inputRules, final List<String> page) {
-        final List<Pair<String, String>> rules = inputRules.stream().map(s -> {
-            final String[] tokens = PATTERN.split(s, 2);
-            return Pair.of(tokens[0], tokens[1]);
-        }).toList();
+    public static long sumMiddleValuesOfSortedPageNumbers(final Collection<String> pageRules, final Collection<String> inputPageNumbers) {
+        final Map<Long, Set<Long>> beforeRulesByPageNumber = parseBeforeRules(pageRules);
 
-        final Map<Long, Set<Long>> beforeMap = new HashMap<>();
-        final Map<Long, Set<Long>> afterMap = new HashMap<>();
-
-        final Set<List<Long>> validUpdates = new HashSet<>();
-
-
-        for (final String rule : inputRules) {
-            final List<Long> numbers = StringUtils.collectNumbersInOrder(rule);
-            final long first = numbers.getFirst();
-            final long second = numbers.getLast();
-
-            final Set<Long> firstAfter = afterMap.getOrDefault(first, new HashSet<>());
-            final Set<Long> secondBefore = beforeMap.getOrDefault(second, new HashSet<>());
-
-            firstAfter.add(second);
-            secondBefore.add(first);
-
-            afterMap.put(first, firstAfter);
-            beforeMap.put(second, secondBefore);
-        }
-
-        final List<List<Long>> pages = page.stream().map(StringUtils::collectNumbersInOrder).toList();
-        for (final List<Long> pageData : pages) {
-            // 75, 47, 61, 53, 29
-            boolean valid = true;
-            for (int i = 0; i < pageData.size(); i++) {
-
-                final long curr = pageData.get(i);
-                final Set<Long> currBefore = beforeMap.getOrDefault(curr, new HashSet<>());
-                final Set<Long> currAfter = afterMap.getOrDefault(curr, new HashSet<>());
-
-
-//                System.out.println("Checking " + curr);
-                if (i != 0) {
-                    final List<Long> before = pageData.subList(0, i);
-//                    System.out.println("Bfore: " + before);
-
-                    for (final long befores : before) {
-                        for (final long afters : currAfter) {
-                            if (befores == afters) {
-                                valid = false;
-                            }
-                        }
-                    }
-                }
-
-
-                if (i != pageData.size() - 1) {
-                    final List<Long> after = pageData.subList(i + 1, pageData.size());
-//                    System.out.println("After: " + after);
-
-                    for (final long afters : after) {
-                        for (final long befores : currBefore) {
-                            if (befores == afters) {
-                                valid = false;
-                            }
-                        }
-                    }
-                }
-
-
-            }
-            if (valid) {
-                validUpdates.add(pageData);
-            }
-//
-//            System.out.println();
-        }
-
-
-        long total = 0L;
-
-        for (final List<Long> valid : validUpdates) {
-            final int middleIndex = valid.size() / 2;
-            total += valid.get(middleIndex);
-        }
-
-        return total;
+        return inputPageNumbers
+            .stream()
+            .map(StringUtils::collectNumbersInOrder)
+            .filter(pageNumber -> isSorted(pageNumber, beforeRulesByPageNumber))
+            .mapToLong(Day05::getMiddleValue)
+            .sum();
     }
 
     /**
-     * Part 2.
+     * We are given a set of page rules in the format:
+     * <pre>
+     *     firstNumber|secondNumber
+     * </pre>
      *
-     * @return the part 2 result
+     * <p>
+     * And a set of page numbers in the format:
+     * <pre>
+     *     firstNumber,secondNumber,thirdNumber
+     * </pre>
+     *
+     * <p>
+     * Based on this, we must determine which of the {@code inputPageNumbers} are <b>invalid</b>. For the invalid ones, sort them so they are valid,
+     * then find the middle value and sum these values.
+     *
+     * @param pageRules        the rules determining the orders the pages must be in
+     * @param inputPageNumbers the page numbers to be checked
+     * @return the sum of all middle values of re-sorted {@code inputPageNumbers}
      */
-    public static long sumMiddleValuesOfReSortedPageNumbers(final List<String> inputRules, final List<String> page) {
-        final List<Pair<String, String>> rules = inputRules.stream().map(s -> {
-            final String[] tokens = PATTERN.split(s, 2);
-            return Pair.of(tokens[0], tokens[1]);
-        }).toList();
+    public static long sumMiddleValuesOfReSortedPageNumbers(final Collection<String> pageRules, final Collection<String> inputPageNumbers) {
+        final Map<Long, Set<Long>> beforeRulesByPageNumber = parseBeforeRules(pageRules);
 
-        final Map<Long, Set<Long>> beforeMap = new HashMap<>();
-        final Map<Long, Set<Long>> afterMap = new HashMap<>();
+        return inputPageNumbers
+            .stream()
+            .map(StringUtils::collectNumbersInOrder)
+            .filter(pageNumber -> !isSorted(pageNumber, beforeRulesByPageNumber))
+            .map(unsortedPageNumbers -> sort(unsortedPageNumbers, beforeRulesByPageNumber))
+            .mapToLong(Day05::getMiddleValue)
+            .sum();
+    }
 
-        final Set<List<Long>> inValidUpdates = new HashSet<>();
-
-
-        for (final String rule : inputRules) {
-            final List<Long> numbers = StringUtils.collectNumbersInOrder(rule);
+    private static Map<Long, Set<Long>> parseBeforeRules(final Collection<String> pageRules) {
+        final Map<Long, Set<Long>> beforeRules = new HashMap<>();
+        for (final String pageRule : pageRules) {
+            final List<Long> numbers = StringUtils.collectNumbersInOrder(pageRule);
             final long first = numbers.getFirst();
             final long second = numbers.getLast();
 
-            final Set<Long> firstAfter = afterMap.getOrDefault(first, new HashSet<>());
-            final Set<Long> secondBefore = beforeMap.getOrDefault(second, new HashSet<>());
-
-            firstAfter.add(second);
+            final Set<Long> secondBefore = beforeRules.getOrDefault(second, new HashSet<>());
             secondBefore.add(first);
-
-            afterMap.put(first, firstAfter);
-            beforeMap.put(second, secondBefore);
+            beforeRules.put(second, secondBefore);
         }
-
-        final List<List<Long>> pages = page.stream().map(StringUtils::collectNumbersInOrder).toList();
-        for (final List<Long> pageData : pages) {
-            // 75, 47, 61, 53, 29
-            boolean valid = true;
-            for (int i = 0; i < pageData.size(); i++) {
-
-                final long curr = pageData.get(i);
-                final Set<Long> currBefore = beforeMap.getOrDefault(curr, new HashSet<>());
-                final Set<Long> currAfter = afterMap.getOrDefault(curr, new HashSet<>());
-
-
-//                System.out.println("Checking " + curr);
-                if (i != 0) {
-                    final List<Long> before = pageData.subList(0, i);
-//                    System.out.println("Bfore: " + before);
-
-                    for (final long befores : before) {
-                        for (final long afters : currAfter) {
-                            if (befores == afters) {
-                                valid = false;
-                            }
-                        }
-                    }
-                }
-
-
-                if (i != pageData.size() - 1) {
-                    final List<Long> after = pageData.subList(i + 1, pageData.size());
-//                    System.out.println("After: " + after);
-
-                    for (final long afters : after) {
-                        for (final long befores : currBefore) {
-                            if (befores == afters) {
-                                valid = false;
-                            }
-                        }
-                    }
-                }
-
-
-            }
-            if (!valid) {
-                inValidUpdates.add(pageData);
-            }
-        }
-
-        final Set<List<Long>> validUpdates = new HashSet<>();
-
-
-        for (final List<Long> invalid : inValidUpdates) {
-            validUpdates.add(invalid.stream().sorted(
-                (o1, o2) -> beforeMap.getOrDefault(o1, new HashSet<>()).contains(o2) ? 1 : -1
-            ).toList());
-        }
-
-        long total = 0L;
-        for (final List<Long> valid : validUpdates) {
-            final int middleIndex = valid.size() / 2;
-            total += valid.get(middleIndex);
-        }
-
-        return total;
+        return beforeRules;
     }
 
+    // No need for us to check the values, just sort the numbers based on the page rules, then compare to the input
+    private static boolean isSorted(final Collection<Long> pageNumbers, final Map<Long, Set<Long>> beforeRulesByPageNumber) {
+        final List<Long> sortedPageNumbers = sort(pageNumbers, beforeRulesByPageNumber);
+        return pageNumbers.equals(sortedPageNumbers);
+    }
 
+    private static long getMiddleValue(final List<Long> pageNumbers) {
+        final int middleIndex = pageNumbers.size() / 2;
+        return pageNumbers.get(middleIndex);
+    }
+
+    // We can sort the set of page numbers based on only the before rules.
+    // We iterate through the values and apply the rules, applying either a before/after binary decision (we can assume there are no equal values)
+    private static List<Long> sort(final Collection<Long> pageNumbers, final Map<Long, Set<Long>> beforeRulesByPageNumber) {
+        return pageNumbers
+            .stream()
+            .sorted((first, second) -> beforeRulesByPageNumber.getOrDefault(first, new HashSet<>()).contains(second) ? 1 : -1)
+            .toList();
+    }
 }
