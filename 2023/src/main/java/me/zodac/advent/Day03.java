@@ -19,6 +19,7 @@ package me.zodac.advent;
 
 import java.util.List;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.pojo.grid.AdjacentDirection;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 import me.zodac.advent.pojo.grid.Grid;
 
@@ -72,7 +73,8 @@ public final class Day03 {
     }
 
     private static long findSumOfNumbersForPart(final Grid<Character> characterGrid, final Point partPoint) {
-        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, characterGrid.numberOfRows());
+        final AdjacentPointsSelector adjacentPointsSelector =
+            AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, characterGrid.numberOfRows());
 
         return partPoint
             .getAdjacentPoints(adjacentPointsSelector)
@@ -142,7 +144,8 @@ public final class Day03 {
     }
 
     private static long findSumOfGearRatios(final Grid<Character> characterGrid, final Point gearPoint) {
-        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, characterGrid.numberOfRows());
+        final int size = characterGrid.numberOfRows();
+        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, size);
 
         final List<Integer> gearRatioValues = gearPoint
             .getAdjacentPoints(adjacentPointsSelector)

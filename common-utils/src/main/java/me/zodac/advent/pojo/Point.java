@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+import me.zodac.advent.pojo.grid.AdjacentDirection;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 
 /**
@@ -226,16 +227,16 @@ public record Point(int x, int y) implements Comparable<Point> {
         final Collection<Point> adjacentPoints = new HashSet<>();
 
         // Current point
-        if (adjacentPointsSelector.includeSelf()) {
+        if (adjacentPointsSelector.withSelf()) {
             adjacentPoints.add(this);
         }
 
-        // 'Directly' adjacent points (left, right, up, down)
-        final Set<Point> directAdjacentPoints = getDirectAdjacentPoints(adjacentPointsSelector);
-        adjacentPoints.addAll(directAdjacentPoints);
+        if (AdjacentDirection.isCardinal(adjacentPointsSelector.adjacentDirection())) {
+            final Set<Point> directAdjacentPoints = getDirectAdjacentPoints(adjacentPointsSelector);
+            adjacentPoints.addAll(directAdjacentPoints);
+        }
 
-        // Diagonally adjacent points
-        if (adjacentPointsSelector.includeDiagonals()) {
+        if (AdjacentDirection.isDiagonal(adjacentPointsSelector.adjacentDirection())) {
             final Set<Point> diagonalAdjacentPoints = getDiagonalAdjacentPoints(adjacentPointsSelector);
             adjacentPoints.addAll(diagonalAdjacentPoints);
         }

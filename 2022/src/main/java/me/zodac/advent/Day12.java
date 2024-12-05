@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.pojo.grid.AdjacentDirection;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 import me.zodac.advent.search.BreadthFirstSearcher;
 
@@ -97,7 +98,7 @@ public final class Day12 {
         long minDistance = Long.MAX_VALUE;
         for (final Point startingPoint : startPoints) {
             final long shortestDistance = BreadthFirstSearcher.findShortestDistance(startingPoint, endPoints, heightsByPoint,
-                point -> point.getAdjacentPoints(AdjacentPointsSelector.createForUnboundedGrid(false, false))
+                point -> point.getAdjacentPoints(AdjacentPointsSelector.unbounded(false, AdjacentDirection.CARDINAL_ONLY))
                     .collect(Collectors.toSet()));
             minDistance = Math.min(minDistance, shortestDistance);
         }

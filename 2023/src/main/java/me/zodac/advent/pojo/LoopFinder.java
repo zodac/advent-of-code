@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import me.zodac.advent.pojo.grid.AdjacentDirection;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 import me.zodac.advent.pojo.grid.Grid;
 import me.zodac.advent.pojo.tuple.Pair;
@@ -123,7 +124,8 @@ class LoopFinder {
     private Pipe findConnectionForPoint(final Point point,
                                         final Collection<Point> pointsInLoop,
                                         final BiFunction<? super Pipe, ? super Pipe, Pipe> connectionFunction) {
-        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, false, grid.numberOfRows());
+        final int size = grid.numberOfRows();
+        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.CARDINAL_ONLY, size);
         final Set<Point> adjacentPoints = point.getAdjacentPoints(adjacentPointsSelector).collect(Collectors.toSet());
         // Order is important, as we want to go from top-left to bottom-right
         final List<Point> pipeConnections = new ArrayList<>(CollectionUtils.intersection(adjacentPoints, pointsInLoop));

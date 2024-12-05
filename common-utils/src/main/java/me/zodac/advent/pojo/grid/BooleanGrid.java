@@ -132,7 +132,7 @@ public final class BooleanGrid extends Grid<Boolean> {
                 final Point currentPoint = Point.of(row, column);
                 final boolean isSet = at(currentPoint);
 
-                final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.createForBoundedGrid(false, true, gridSize);
+                final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, gridSize);
                 final int valueOfSetNeighbours = currentPoint.getAdjacentPoints(adjacentPointsSelector)
                     .mapToInt(point -> EVALUATOR.applyAsInt(at(point)))
                     .sum();

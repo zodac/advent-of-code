@@ -22,12 +22,12 @@ import me.zodac.advent.pojo.Point;
 /**
  * Record class defining the possible options when selection adjacent {@link Point}s.
  *
- * @param includeSelf      whether to include the current {@link Point}
- * @param includeDiagonals whether to include the diagonal {@link Point}s to the current {@link Point}
- * @param allowOutOfBounds whether to include the adjacent {@link Point}s even if they go out of bounds
- * @param gridSize         the limits of the 2D grid for the {@link Point}s, if {@code #allowOutOfBounds} is {@code false}
+ * @param withSelf          whether to include the current {@link Point}
+ * @param adjacentDirection the {@link AdjacentDirection} in which to search for adjacent {@link Point}s
+ * @param allowOutOfBounds  whether to include the adjacent {@link Point}s even if they go out of bounds
+ * @param gridSize          the limits of the 2D grid for the {@link Point}s, if {@code #allowOutOfBounds} is {@code false}
  */
-public record AdjacentPointsSelector(boolean includeSelf, boolean includeDiagonals, boolean allowOutOfBounds, int gridSize) {
+public record AdjacentPointsSelector(boolean withSelf, AdjacentDirection adjacentDirection, boolean allowOutOfBounds, int gridSize) {
 
     private static final int DEFAULT_GRID_SIZE = 0;
 
@@ -35,24 +35,24 @@ public record AdjacentPointsSelector(boolean includeSelf, boolean includeDiagona
      * Creates an {@link AdjacentPointsSelector} for a 2D grid which is unbounded (meaning all adjacent {@link Point}s should be returned, even if
      * they would be out of bounds).
      *
-     * @param includeSelf      whether to include the current {@link Point}
-     * @param includeDiagonals whether to include the diagonal {@link Point}s to the current {@link Point}
+     * @param withSelf          whether to include the current {@link Point}
+     * @param adjacentDirection the {@link AdjacentDirection} in which to search for adjacent {@link Point}s
      * @return the {@link AdjacentPointsSelector}
      */
-    public static AdjacentPointsSelector createForUnboundedGrid(final boolean includeSelf, final boolean includeDiagonals) {
-        return new AdjacentPointsSelector(includeSelf, includeDiagonals, true, DEFAULT_GRID_SIZE);
+    public static AdjacentPointsSelector unbounded(final boolean withSelf, final AdjacentDirection adjacentDirection) {
+        return new AdjacentPointsSelector(withSelf, adjacentDirection, true, DEFAULT_GRID_SIZE);
     }
 
     /**
      * Creates an {@link AdjacentPointsSelector} for a 2D grid which is bounded (meaning any adjacent {@link Point}s that would be out of bounds
      * should be excluded).
      *
-     * @param includeSelf      whether to include the current {@link Point}
-     * @param includeDiagonals whether to include the diagonal {@link Point}s to the current {@link Point}
-     * @param gridSize         the limits of the 2D grid for the {@link Point}s
+     * @param withSelf          whether to include the current {@link Point}
+     * @param adjacentDirection the {@link AdjacentDirection} in which to search for adjacent {@link Point}s
+     * @param gridSize          the limits of the 2D grid for the {@link Point}s
      * @return the {@link AdjacentPointsSelector}
      */
-    public static AdjacentPointsSelector createForBoundedGrid(final boolean includeSelf, final boolean includeDiagonals, final int gridSize) {
-        return new AdjacentPointsSelector(includeSelf, includeDiagonals, false, gridSize);
+    public static AdjacentPointsSelector bounded(final boolean withSelf, final AdjacentDirection adjacentDirection, final int gridSize) {
+        return new AdjacentPointsSelector(withSelf, adjacentDirection, false, gridSize);
     }
 }
