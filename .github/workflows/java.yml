@@ -53,5 +53,6 @@ jobs:
 
       - name: Run lints and test with Maven (including SonarQube)
         env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONARQUBE_PAT: ${{ secrets.SONARQUBE_PAT }}
         run: mvn clean install -Dall -Dsonarqube
