@@ -173,6 +173,7 @@ class LoopFinder {
             case DOWN -> Set.of(Pipe.VERTICAL, Pipe.BOTTOM_RIGHT_CORNER, Pipe.BOTTOM_LEFT_CORNER, Pipe.START).contains(pipe);
             case LEFT -> Set.of(Pipe.HORIZONTAL, Pipe.TOP_LEFT_CORNER, Pipe.BOTTOM_LEFT_CORNER, Pipe.START).contains(pipe);
             case RIGHT -> Set.of(Pipe.HORIZONTAL, Pipe.TOP_RIGHT_CORNER, Pipe.BOTTOM_RIGHT_CORNER, Pipe.START).contains(pipe);
+            case DOWN_LEFT, DOWN_RIGHT, UP_LEFT, UP_RIGHT -> false; // No diagonal movements allowed
             case INVALID -> throw new IllegalStateException("Cannot look for a connection from: " + direction);
         };
     }

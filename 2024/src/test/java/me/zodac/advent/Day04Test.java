@@ -20,58 +20,53 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import me.zodac.advent.input.InputReader;
+import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day03}.
+ * Tests to verify answers for {@link Day04}.
  */
-class Day03Test {
+class Day04Test {
 
-    private static final String INPUT_FILENAME = "day03.txt";
-    private static final String INPUT_FILENAME_PART_2 = "day03_2.txt";
+    private static final String INPUT_FILENAME = "day04.txt";
 
     @Test
     void example() {
-        final String value1 = InputReader
+        final Grid<Character> characterGrid = InputReader
             .forExample(INPUT_FILENAME)
-            .asStrings()
-            .readAllAsSingleString();
+            .asGrid()
+            .ofCharacters();
 
-        final long part1Result = Day03.sumOfMultipliedOperations(value1);
+        final long part1Result = Day04.countOccurancesOfXmas(characterGrid);
         assertThat(part1Result)
-            .isEqualTo(161L);
+            .isEqualTo(18L);
 
-        final String value2 = InputReader
-            .forExample(INPUT_FILENAME_PART_2)
-            .asStrings()
-            .readAllAsSingleString();
-
-        final long part2Result = Day03.sumOfValidMultipliedOperations(value2);
+        final long part2Result = Day04.countOccurancesOfMasAsX(characterGrid);
         assertThat(part2Result)
-            .isEqualTo(48L);
+            .isEqualTo(9L);
     }
 
     @Test
     void part1() {
-        final String value = InputReader
+        final Grid<Character> characterGrid = InputReader
             .forPuzzle(INPUT_FILENAME)
-            .asStrings()
-            .readAllAsSingleString();
+            .asGrid()
+            .ofCharacters();
 
-        final long part1Result = Day03.sumOfMultipliedOperations(value);
+        final long part1Result = Day04.countOccurancesOfXmas(characterGrid);
         assertThat(part1Result)
-            .isEqualTo(159_833_790L);
+            .isEqualTo(2_591L);
     }
 
     @Test
     void part2() {
-        final String value = InputReader
+        final Grid<Character> characterGrid = InputReader
             .forPuzzle(INPUT_FILENAME)
-            .asStrings()
-            .readAllAsSingleString();
+            .asGrid()
+            .ofCharacters();
 
-        final long part2Result = Day03.sumOfValidMultipliedOperations(value);
+        final long part2Result = Day04.countOccurancesOfMasAsX(characterGrid);
         assertThat(part2Result)
-            .isEqualTo(89_349_241L);
+            .isEqualTo(1880L);
     }
 }

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.SequencedCollection;
 import me.zodac.advent.pojo.ReflectionResult;
 import me.zodac.advent.pojo.ReflectionResultType;
-import me.zodac.advent.pojo.grid.CharacterGrid;
+import me.zodac.advent.pojo.grid.GridFactory;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.ArrayUtils;
 import me.zodac.advent.util.StringUtils;
@@ -165,7 +165,7 @@ public final class Day13 {
     }
 
     private static ReflectionResult getUpdatedReflectionResult(final Pair<? extends List<String>, ReflectionResult> previous) {
-        final Character[][] grid = CharacterGrid.parse(previous.first()).getInternalGrid();
+        final Character[][] grid = GridFactory.ofCharacters(previous.first()).getInternalGrid();
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {

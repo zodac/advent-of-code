@@ -134,7 +134,7 @@ class CollectionUtilsTest {
     @ParameterizedTest
     @MethodSource("provideForMiddleValue")
     <E extends Comparable<E>> void testMiddleValue(final List<E> input, final E expected) {
-        final E output = CollectionUtils.getMiddleValue(input);
+        final E output = CollectionUtils.getMiddleSortedValue(input);
         assertThat(output)
             .isEqualTo(expected);
     }
@@ -153,7 +153,7 @@ class CollectionUtilsTest {
     @ParameterizedTest
     @MethodSource("provideForMiddleValue_invalid")
     <E extends Comparable<E>> void testMiddleValue_givenInvalidInputs(final List<E> input, final String errorMessage) {
-        assertThatThrownBy(() -> CollectionUtils.getMiddleValue(input))
+        assertThatThrownBy(() -> CollectionUtils.getMiddleSortedValue(input))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(errorMessage);
     }

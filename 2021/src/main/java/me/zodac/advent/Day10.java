@@ -92,7 +92,7 @@ public final class Day10 {
      * @param syntaxLines the {@link SyntaxLine}s whose middle completion score is to be found
      * @return the value of the middle index for the completion scores for the valid {@link SyntaxLine}s
      * @see SyntaxLine#evaluateSyntaxErrorScoreForLine()
-     * @see CollectionUtils#getMiddleValue(List)
+     * @see CollectionUtils#getMiddleSortedValue(List)
      */
     public static long calculateMiddleScoreForIncompleteLines(final Collection<SyntaxLine> syntaxLines) {
         final List<Deque<Character>> openSymbolsForIncompleteLines = syntaxLines
@@ -114,7 +114,7 @@ public final class Day10 {
             scores.add(score);
         }
 
-        return CollectionUtils.getMiddleValue(scores);
+        return CollectionUtils.getMiddleSortedValue(scores);
     }
 
     private static long calculateNewCompletionScore(final long currentScore, final char closeSymbol) {

@@ -104,6 +104,28 @@ public record Point(int x, int y) implements Comparable<Point> {
     }
 
     /**
+     * Finds all {@link Point}s in a line from the current {@link Point} in the given {@link Direction} for {@code numberOfAdditionalPoints}
+     * additional {@link Point}s. Note that the current {@link Point} is included in the returned {@link List}.
+     *
+     * @param direction                the {@link Direction} in which to find {@link Point}s
+     * @param numberOfAdditionalPoints the length of the line to form
+     * @return the {@link Point}s in the defined line
+     */
+    public List<Point> findPointsInLine(final Direction direction, final int numberOfAdditionalPoints) {
+        final List<Point> output = new ArrayList<>();
+        output.add(this);
+
+        Point currentPoint = this;
+        for (int i = 1; i <= numberOfAdditionalPoints; i++) {
+            final Point nextPoint = currentPoint.move(direction);
+            output.add(nextPoint);
+            currentPoint = nextPoint;
+        }
+
+        return output;
+    }
+
+    /**
      * Returns a new {@link Point} which has moved the current {@link Point} {@value DEFAULT_MOVE_DISTANCE} spaces in the {@link Direction} specified.
      *
      * @param direction the {@link Direction} to move
@@ -123,9 +145,13 @@ public record Point(int x, int y) implements Comparable<Point> {
     public Point move(final Direction direction, final int distance) {
         return switch (direction) {
             case DOWN -> move(distance, 0);
+            case DOWN_LEFT -> move(distance, -distance);
+            case DOWN_RIGHT -> move(distance, distance);
             case LEFT -> move(0, -distance);
             case RIGHT -> move(0, distance);
             case UP -> move(-distance, 0);
+            case UP_LEFT -> move(-distance, -distance);
+            case UP_RIGHT -> move(-distance, distance);
             case INVALID -> throw new IllegalStateException(String.format("Cannot move for direction: %s", direction));
         };
     }

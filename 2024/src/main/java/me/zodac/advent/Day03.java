@@ -45,13 +45,8 @@ public final class Day03 {
      * @param value the input {@link String} containing the {@link MultiplicationOperation}s
      * @return the sum of all multipled {@link MultiplicationOperation}s
      */
-    public static long part1(final CharSequence value) {
-        final Matcher matcher = MULTIPLICATION_PATTERN.matcher(value);
-
-        final Collection<MultiplicationOperation> multiplicationOperations = new ArrayList<>();
-        while (matcher.find()) {
-            multiplicationOperations.add(MultiplicationOperation.parse(matcher.group()));
-        }
+    public static long sumOfMultipliedOperations(final CharSequence value) {
+        final Collection<MultiplicationOperation> multiplicationOperations = getMultiplicationOperations(value);
 
         return multiplicationOperations
             .stream()
@@ -67,13 +62,8 @@ public final class Day03 {
      * @param value the input {@link String} containing the {@link MultiplicationOperation}s
      * @return the sum of all valid multipled {@link MultiplicationOperation}s
      */
-    public static long part2(final String value) {
-        final Matcher matcher = MULTIPLICATION_PATTERN.matcher(value);
-
-        final Collection<MultiplicationOperation> multiplicationOperations = new ArrayList<>();
-        while (matcher.find()) {
-            multiplicationOperations.add(MultiplicationOperation.parse(matcher.group()));
-        }
+    public static long sumOfValidMultipliedOperations(final String value) {
+        final Collection<MultiplicationOperation> multiplicationOperations = getMultiplicationOperations(value);
 
         long total = 0L;
         boolean isOperationActive = true;
@@ -102,5 +92,15 @@ public final class Day03 {
         }
 
         return total;
+    }
+
+    private static Collection<MultiplicationOperation> getMultiplicationOperations(final CharSequence value) {
+        final Matcher matcher = MULTIPLICATION_PATTERN.matcher(value);
+
+        final Collection<MultiplicationOperation> multiplicationOperations = new ArrayList<>();
+        while (matcher.find()) {
+            multiplicationOperations.add(MultiplicationOperation.parse(matcher.group()));
+        }
+        return multiplicationOperations;
     }
 }

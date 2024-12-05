@@ -127,7 +127,7 @@ public final class CollectionUtils {
      * @return the value at the middle of the sorted {@link List}
      * @throws IllegalArgumentException thrown if the {@link List} has an even size
      */
-    public static <E extends Comparable<E>> E getMiddleValue(final List<E> list) {
+    public static <E extends Comparable<E>> E getMiddleSortedValue(final List<E> list) {
         final int listSize = list.size();
         if (list.isEmpty() || MathUtils.isEven(listSize)) {
             throw new IllegalArgumentException("Expected list with positive odd size, found size: " + listSize);

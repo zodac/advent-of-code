@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import me.zodac.advent.pojo.grid.BooleanGrid;
 import me.zodac.advent.pojo.grid.Grid;
+import me.zodac.advent.pojo.grid.GridFactory;
 import me.zodac.advent.pojo.grid.IntegerGrid;
 import me.zodac.advent.util.StringUtils;
 
@@ -448,31 +449,34 @@ public final class InputReader {
         }
 
         /**
+         * Converts the {@link List} of {@link String}s to a {@link BooleanGrid}.
+         *
+         * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
+         * @return the {@link BooleanGrid}
+         * @see GridFactory#ofBooleans(List, char)
+         */
+        public BooleanGrid ofBooleans(final char symbolSignifyingTrue) {
+            return GridFactory.ofBooleans(strings, symbolSignifyingTrue);
+        }
+
+        /**
          * Converts the {@link List} of {@link String}s to a {@link Grid} of {@link Character}s.
          *
          * @return the {@link Grid} of {@link Character}s
+         * @see GridFactory#ofCharacters(List)
          */
         public Grid<Character> ofCharacters() {
-            return Grid.parseGrid(strings, character -> character);
+            return GridFactory.ofCharacters(strings);
         }
 
         /**
          * Converts the {@link List} of {@link String}s to a {@link IntegerGrid}.
          *
          * @return the {@link IntegerGrid}
+         * @see GridFactory#ofIntegers(List)
          */
         public IntegerGrid ofIntegers() {
-            return IntegerGrid.parse(strings);
-        }
-
-        /**
-         * Converts the {@link List} of {@link String}s to a {@link BooleanGrid}.
-         *
-         * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
-         * @return the {@link BooleanGrid}
-         */
-        public BooleanGrid ofBooleans(final char symbolSignifyingTrue) {
-            return BooleanGrid.parse(strings, symbolSignifyingTrue);
+            return GridFactory.ofIntegers(strings);
         }
 
         /**

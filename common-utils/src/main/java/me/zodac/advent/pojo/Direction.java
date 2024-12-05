@@ -34,6 +34,16 @@ public enum Direction {
     DOWN("V", "D", "DOWN"),
 
     /**
+     * A negative vertical movement and negative horizontal movement.
+     */
+    DOWN_LEFT,
+
+    /**
+     * A negative vertical movement and positive horizontal movement.
+     */
+    DOWN_RIGHT,
+
+    /**
      * A negative horizontal movement.
      */
     LEFT("<", "L", "LEFT", "BACKWARDS"),
@@ -49,11 +59,24 @@ public enum Direction {
     UP("^", "U", "UP"),
 
     /**
+     * A positive vertical and negative horizontal movement.
+     */
+    UP_LEFT,
+
+    /**
+     * A positive vertical and positive horizontal movement.
+     */
+    UP_RIGHT,
+
+    /**
      * An invalid {@link Direction}.
      */
     INVALID;
 
-    private static final Collection<Direction> ALL_VALUES = Stream.of(values())
+    /**
+     * All {@link Direction} values, except {@link Direction#INVALID}.
+     */
+    public static final Collection<Direction> ALL_VALUES = Stream.of(values())
         .filter(value -> value != INVALID)
         .toList();
 
@@ -101,9 +124,13 @@ public enum Direction {
     public Direction getOpposite() {
         return switch (this) {
             case DOWN -> UP;
+            case DOWN_LEFT -> UP_RIGHT;
+            case DOWN_RIGHT -> UP_LEFT;
             case LEFT -> RIGHT;
             case RIGHT -> LEFT;
             case UP -> DOWN;
+            case UP_LEFT -> DOWN_RIGHT;
+            case UP_RIGHT -> DOWN_LEFT;
             case INVALID -> INVALID;
         };
     }
