@@ -19,7 +19,6 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
@@ -38,11 +37,11 @@ class Day%DAY_LONG%Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day17.part1(characterGrid);
+        final long part1Result = Day%DAY_LONG%.part1(characterGrid);
         assertThat(part1Result)
             .isEqualTo(0L);
 
-        final long part2Result = Day17.part2(characterGrid);
+        final long part2Result = Day%DAY_LONG%.part2(characterGrid);
         assertThat(part2Result)
             .isEqualTo(0L);
     }
@@ -54,7 +53,7 @@ class Day%DAY_LONG%Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day17.part1(characterGrid);
+        final long part1Result = Day%DAY_LONG%.part1(characterGrid);
         assertThat(part1Result)
             .isEqualTo(0L);
     }
@@ -66,7 +65,7 @@ class Day%DAY_LONG%Test {
             .asGrid()
             .ofCharacters();
 
-        final long part2Result = Day17.part2(characterGrid);
+        final long part2Result = Day%DAY_LONG%.part2(characterGrid);
         assertThat(part2Result)
             .isEqualTo(0L);
     }

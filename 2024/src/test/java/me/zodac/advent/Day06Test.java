@@ -20,53 +20,53 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import me.zodac.advent.input.InputReader;
-import me.zodac.advent.pojo.grid.IntegerGrid;
+import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day%DAY_LONG%}.
+ * Tests to verify answers for {@link Day06}.
  */
-class Day%DAY_LONG%Test {
+class Day06Test {
 
-    private static final String INPUT_FILENAME = "day%DAY_LONG%.txt";
+    private static final String INPUT_FILENAME = "day06.txt";
 
     @Test
     void example() {
-        final IntegerGrid integerGrid = InputReader
+        final Grid<Character> characterGrid = InputReader
             .forExample(INPUT_FILENAME)
             .asGrid()
-            .ofIntegers();
+            .ofCharacters();
 
-        final long part1Result = Day%DAY_LONG%.part1(integerGrid);
+        final long part1Result = Day06.part1(characterGrid);
         assertThat(part1Result)
-            .isEqualTo(0L);
+            .isEqualTo(41L);
 
-        final long part2Result = Day%DAY_LONG%.part2(integerGrid);
+        final long part2Result = Day06.part2(characterGrid);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(6L);
     }
 
     @Test
     void part1() {
-        final IntegerGrid integerGrid = InputReader
+        final Grid<Character> characterGrid = InputReader
             .forPuzzle(INPUT_FILENAME)
             .asGrid()
-            .ofIntegers();
+            .ofCharacters();
 
-        final long part1Result = Day%DAY_LONG%.part1(integerGrid);
+        final long part1Result = Day06.part1(characterGrid);
         assertThat(part1Result)
-            .isEqualTo(0L);
+            .isEqualTo(5_030L);
     }
 
     @Test
     void part2() {
-        final IntegerGrid integerGrid = InputReader
+        final Grid<Character> characterGrid = InputReader
             .forPuzzle(INPUT_FILENAME)
             .asGrid()
-            .ofIntegers();
+            .ofCharacters();
 
-        final long part2Result = Day%DAY_LONG%.part2(integerGrid);
+        final long part2Result = Day06.part2(characterGrid);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(1_928L);
     }
 }
