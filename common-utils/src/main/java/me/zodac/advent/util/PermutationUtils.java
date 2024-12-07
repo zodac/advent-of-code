@@ -115,4 +115,37 @@ public final class PermutationUtils {
 
         return combinations;
     }
+
+    // TODO: Horrible naming all round, fix this.
+    public static List<List<String>> generateCombinations(List<String> numbers, final String[] operations) {
+        List<List<String>> result = new ArrayList<>();
+        if (numbers == null || numbers.isEmpty()) {
+            return result;
+        }
+        // Start recursive generation
+        generate(numbers, 0, new ArrayList<>(), result, operations);
+        return result;
+    }
+
+    private static void generate(List<String> numbers, int index, List<String> current, List<List<String>> result, final String[] operations) {
+        // Base case: when index reaches the last number
+        if (index == numbers.size() - 1) {
+            current.add(numbers.get(index));
+            result.add(new ArrayList<>(current));
+            current.remove(current.size() - 1); // Backtrack
+            return;
+        }
+
+        // Add current number
+        current.add(numbers.get(index));
+
+        // Recursively add combinations with operators
+        for (String operator : operations) {
+            current.add(operator); // Add operator
+            generate(numbers, index + 1, current, result, operations); // Move to the next number
+            current.remove(current.size() - 1); // Remove operator (backtrack)
+        }
+
+        current.remove(current.size() - 1); // Remove number (backtrack)
+    }
 }
