@@ -28,57 +28,57 @@ import me.zodac.advent.pojo.grid.Grid;
  * <p>
  * Currently only supports {@link Pipe}, but hopefully this can be made generic eventually.
  */
-public class Loop {
+public class PipeLoop {
 
     private final Grid<Pipe> grid;
     private final Set<Point> pointsInLoop;
     private boolean isInsideLoop;
 
     /**
-     * Package-private constructor, only called from {@link LoopFinder}.
+     * Package-private constructor, only called from {@link PipeLoopFinder}.
      *
      * @param grid         the {@link Grid}
-     * @param pointsInLoop the known {@link Point}s in the {@link Loop}
+     * @param pointsInLoop the known {@link Point}s in the {@link PipeLoop}
      */
-    Loop(final Grid<Pipe> grid, final Set<Point> pointsInLoop) {
+    PipeLoop(final Grid<Pipe> grid, final Set<Point> pointsInLoop) {
         this.grid = grid;
         this.pointsInLoop = new LinkedHashSet<>(pointsInLoop);
         isInsideLoop = false;
     }
 
     /**
-     * Creates the {@link Loop} for a looping of points within a {@link Grid}. Using the provided {@link Predicate}, the start {@link Point} of the
-     * loop is determined, and the {@link LoopFinder} works to find a looping of {@link Point}s back to the start {@link Point}.
+     * Creates the {@link PipeLoop} for a looping of points within a {@link Grid}. Using the provided {@link Predicate}, the start {@link Point} of the
+     * loop is determined, and the {@link PipeLoopFinder} works to find a looping of {@link Point}s back to the start {@link Point}.
      *
-     * @param grid                the {@link Grid} of elements which contains the {@link Loop}
+     * @param grid                the {@link Grid} of elements which contains the {@link PipeLoop}
      * @param startPointPredicate the {@link Predicate} defining how to find the start {@link Point}
-     * @return the {@link Loop}
-     * @throws IllegalArgumentException if no valid {@link Loop} is found for the provided {@link Grid}
-     * @see LoopFinder#findLoop()
+     * @return the {@link PipeLoop}
+     * @throws IllegalArgumentException if no valid {@link PipeLoop} is found for the provided {@link Grid}
+     * @see PipeLoopFinder#findLoop()
      */
-    public static Loop create(final Grid<Pipe> grid, final Predicate<? super Pipe> startPointPredicate) {
+    public static PipeLoop create(final Grid<Pipe> grid, final Predicate<? super Pipe> startPointPredicate) {
         try {
-            final LoopFinder loopFinder = new LoopFinder(grid, startPointPredicate);
-            return loopFinder.findLoop();
+            final PipeLoopFinder pipeLoopFinder = new PipeLoopFinder(grid, startPointPredicate);
+            return pipeLoopFinder.findLoop();
         } catch (final IllegalStateException e) {
             throw new IllegalArgumentException(String.format("Unable to find any loop in provided %s", Grid.class.getSimpleName()), e);
         }
     }
 
     /**
-     * The number of elements in the {@link Loop}.
+     * The number of elements in the {@link PipeLoop}.
      *
-     * @return the size of the {@link Loop}
+     * @return the size of the {@link PipeLoop}
      */
     public int size() {
         return pointsInLoop.size();
     }
 
     /**
-     * Counts the number of {@link Point}s 'trapped' inside the {@link Loop}. This does not include any of the {@link Point}s on the {@link Loop}
-     * itself, but any {@link Point}s that are surrounded entirely by {@link Loop} {@link Point}s.
+     * Counts the number of {@link Point}s 'trapped' inside the {@link PipeLoop}. This does not include any of the {@link Point}s on the {@link PipeLoop}
+     * itself, but any {@link Point}s that are surrounded entirely by {@link PipeLoop} {@link Point}s.
      *
-     * @return the number of {@link Point}s inside the {@link Loop}
+     * @return the number of {@link Point}s inside the {@link PipeLoop}
      */
     public int countPointsInsideLoop() {
         final int numberOfRows = grid.numberOfRows();

@@ -19,6 +19,9 @@ package me.zodac.advent.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import me.zodac.advent.pojo.MathOperation;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Utility class for permutations of {@link java.util.Collection}s.
@@ -117,7 +120,7 @@ public final class PermutationUtils {
     }
 
     // TODO: Horrible naming all round, fix this.
-    public static List<List<String>> generateCombinations(List<String> numbers, final String[] operations) {
+    public static List<List<String>> generateCombinations(List<String> numbers, final Set<MathOperation> operations) {
         List<List<String>> result = new ArrayList<>();
         if (numbers == null || numbers.isEmpty()) {
             return result;
@@ -127,7 +130,7 @@ public final class PermutationUtils {
         return result;
     }
 
-    private static void generate(List<String> numbers, int index, List<String> current, List<List<String>> result, final String[] operations) {
+    private static void generate(List<String> numbers, int index, List<String> current, List<List<String>> result, final Set<MathOperation> operations) {
         // Base case: when index reaches the last number
         if (index == numbers.size() - 1) {
             current.add(numbers.get(index));
@@ -140,12 +143,82 @@ public final class PermutationUtils {
         current.add(numbers.get(index));
 
         // Recursively add combinations with operators
-        for (String operator : operations) {
-            current.add(operator); // Add operator
+        for (final MathOperation operator : operations) {
+            current.add(operator.symbol()); // Add operator
             generate(numbers, index + 1, current, result, operations); // Move to the next number
             current.remove(current.size() - 1); // Remove operator (backtrack)
         }
 
         current.remove(current.size() - 1); // Remove number (backtrack)
     }
+
+//    public static List<List<String>> generateCombinations(List<String> numbers, Set<String> operators) {
+//        List<List<String>> result = new ArrayList<>();
+//        if (numbers == null || numbers.isEmpty() || operators == null || operators.isEmpty()) {
+//            return result;
+//        }
+//
+//        List<String> operatorList = new ArrayList<>(operators); // Convert Set to List for faster access
+//        int operatorCount = operatorList.size();
+//        int numberCount = numbers.size();
+//        int totalCombinations = (int) Math.pow(operatorCount, numberCount - 1);
+//
+//        for (int i = 0; i < totalCombinations; i++) {
+//            List<String> combination = new ArrayList<>(2 * numberCount - 1); // Preallocate size
+//            combination.add(numbers.get(0)); // Add the first number
+//
+//            int tempIndex = i;
+//            for (int j = 1; j < numberCount; j++) {
+//                // Determine operator based on current combination index
+//                combination.add(operatorList.get(tempIndex % operatorCount));
+//                tempIndex /= operatorCount;
+//
+//                // Add the next number
+//                combination.add(numbers.get(j));
+//            }
+//
+//            result.add(combination);
+//        }
+//
+//        return result;
+//    }
+//    public static List<List<String>> generateCombinations(List<String> numbers, Set<String> operators) {
+//        List<List<String>> result = new ArrayList<>();
+//        if (numbers == null || numbers.isEmpty() || operators == null || operators.isEmpty()) {
+//            return result;
+//        }
+//
+//        int n = numbers.size();
+//        int combinations = (int) Math.pow(operators.size(), n - 1); // Total combinations of operators
+//
+//        for (int i = 0; i < combinations; i++) {
+//            List<String> combination = new ArrayList<>();
+//            combination.add(numbers.get(0)); // Always start with the first number
+//
+//            int operatorIndex = i;
+//            for (int j = 1; j < n; j++) {
+//                // Pick the operator corresponding to the current combination
+//                combination.add(getOperatorByIndex(operators, operatorIndex % operators.size()));
+//                operatorIndex /= operators.size();
+//
+//                // Add the next number
+//                combination.add(numbers.get(j));
+//            }
+//
+//            result.add(combination);
+//        }
+//
+//        return result;
+//    }
+//
+//    private static @Nullable String getOperatorByIndex(Set<String> operators, int index) {
+//        int currentIndex = 0;
+//        for (String operator : operators) {
+//            if (currentIndex == index) {
+//                return operator;
+//            }
+//            currentIndex++;
+//        }
+//        return null; // Should not happen if index is valid
+//    }
 }

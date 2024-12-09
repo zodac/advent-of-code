@@ -35,9 +35,9 @@ import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.CollectionUtils;
 
 /**
- * Utility class used to create a {@link Loop}.
+ * Utility class used to create a {@link PipeLoop}.
  */
-class LoopFinder {
+class PipeLoopFinder {
 
     private static final int EXPECTED_NUMBER_OF_START_POINTS = 1;
 
@@ -45,27 +45,27 @@ class LoopFinder {
     private final Predicate<? super Pipe> startPointPredicate;
 
     /**
-     * Package-private constructor, only to be called by {@link Loop}.
+     * Package-private constructor, only to be called by {@link PipeLoop}.
      *
      * @param grid                the {@link Grid}
      * @param startPointPredicate the {@link Predicate} defining how to find the start {@link Point}
      */
-    LoopFinder(final Grid<Pipe> grid, final Predicate<? super Pipe> startPointPredicate) {
+    PipeLoopFinder(final Grid<Pipe> grid, final Predicate<? super Pipe> startPointPredicate) {
         this.grid = grid;
         this.startPointPredicate = startPointPredicate;
     }
 
     /**
-     * Searches through the {@link Grid} after finding the start {@link Point}, then returns the {@link Loop}.
+     * Searches through the {@link Grid} after finding the start {@link Point}, then returns the {@link PipeLoop}.
      *
-     * @return the found {@link Loop}
-     * @throws IllegalStateException thrown if no {@link Loop} can be found
+     * @return the found {@link PipeLoop}
+     * @throws IllegalStateException thrown if no {@link PipeLoop} can be found
      */
-    Loop findLoop() {
+    PipeLoop findLoop() {
         final Point startPoint = findStartPoint();
         final Set<Point> pointsInLoop = findLoopPointsFromStartPoint(startPoint);
         final Grid<Pipe> updatedGrid = replaceStartValue(pointsInLoop, startPoint);
-        return new Loop(updatedGrid, pointsInLoop);
+        return new PipeLoop(updatedGrid, pointsInLoop);
     }
 
     private Point findStartPoint() {
@@ -82,6 +82,7 @@ class LoopFinder {
         return grid.updateAt(startPoint, replacementForStartSymbol);
     }
 
+    // TODO: Can this be modified
     private Set<Point> findLoopPointsFromStartPoint(final Point startPoint) {
         Pair<Point, Point> currentAndPreviousPoint = Pair.of(startPoint, startPoint);
         final Set<Point> pointsInLoop = new LinkedHashSet<>();
@@ -98,10 +99,11 @@ class LoopFinder {
     }
 
     private Map<Direction, Pair<Point, Pipe>> populateNextPoints(final Pair<Point, Point> currentAndPreviousPoint) {
-        final Point upPoint = currentAndPreviousPoint.first().moveUp();
-        final Point downPoint = currentAndPreviousPoint.first().moveDown();
-        final Point leftPoint = currentAndPreviousPoint.first().moveLeft();
-        final Point rightPoint = currentAndPreviousPoint.first().moveRight();
+        final Point currentPoint = currentAndPreviousPoint.first();
+        final Point upPoint = currentPoint.moveUp();
+        final Point downPoint = currentPoint.moveDown();
+        final Point leftPoint = currentPoint.moveLeft();
+        final Point rightPoint = currentPoint.moveRight();
         final Pipe up = findValue(grid, upPoint);
         final Pipe down = findValue(grid, downPoint);
         final Pipe left = findValue(grid, leftPoint);

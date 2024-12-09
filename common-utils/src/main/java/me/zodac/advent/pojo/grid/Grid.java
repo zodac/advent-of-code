@@ -51,6 +51,8 @@ public class Grid<E> {
      */
     protected final E[][] internalGrid;
 
+    private final int elementsInGrid;
+
     /**
      * Default constructor.
      *
@@ -59,6 +61,7 @@ public class Grid<E> {
     public Grid(final E[][] internalGrid) {
         gridSize = internalGrid.length;
         this.internalGrid = ArrayUtils.deepCopy(internalGrid);
+        elementsInGrid = gridSize * gridSize;
     }
 
     /**
@@ -71,6 +74,7 @@ public class Grid<E> {
     public Grid(final int gridSize, final E[][] internalGrid, final E initialValue) {
         this.gridSize = gridSize;
         this.internalGrid = internalGrid.clone();
+        elementsInGrid = gridSize * gridSize;
 
         for (int row = 0; row < gridSize; row++) {
             for (int column = 0; column < gridSize; column++) {
@@ -97,7 +101,7 @@ public class Grid<E> {
         }
 
         final E[][] internalArray = ArrayUtils.toArrayOfArrays(gridValues, converter);
-        return new Grid<>(internalArray);
+        return new Grid<>(internalArray); // TODO: Any scenario where grid is not a square? Enforce if not, document otherwise
     }
 
     /**
@@ -286,6 +290,15 @@ public class Grid<E> {
      */
     public int numberOfColumns() {
         return internalGrid[0].length;
+    }
+
+    /**
+     * Returns the total number of elements in the {@link Grid}.
+     *
+     * @return the number of elements
+     */
+    public int elementsInGrid() {
+        return elementsInGrid;
     }
 
     /**

@@ -27,12 +27,20 @@ import java.util.stream.Stream;
 public enum MathOperation {
 
     /**
+     * A concatenation operation:
+     * <pre>
+     *     "a" + "b"
+     * </pre>
+     */
+    CONCATENATE("||", (first, second) -> Long.parseLong("" + first + second)),
+
+    /**
      * A division operation:
      * <pre>
      *     a / b
      * </pre>
      */
-    DIVIDE('/', (first, second) -> first / second),
+    DIVIDE("/", (first, second) -> first / second),
 
     /**
      * A subtraction operation:
@@ -40,7 +48,7 @@ public enum MathOperation {
      *     a - b
      * </pre>
      */
-    MINUS('-', (first, second) -> first - second),
+    MINUS("-", (first, second) -> first - second),
 
     /**
      * A multiplication operation:
@@ -48,7 +56,7 @@ public enum MathOperation {
      *     a * b
      * </pre>
      */
-    MULTIPLY('*', (first, second) -> first * second),
+    MULTIPLY("*", (first, second) -> first * second),
 
     /**
      * An addition operation:
@@ -56,7 +64,7 @@ public enum MathOperation {
      *     a + b
      * </pre>
      */
-    PLUS('+', Long::sum),
+    PLUS("+", Long::sum),
 
     /**
      * A power operation:
@@ -64,7 +72,7 @@ public enum MathOperation {
      *     a^b
      * </pre>
      */
-    POWER('^', (first, second) -> Math.round(StrictMath.pow(first, second))),
+    POWER("^", (first, second) -> Math.round(StrictMath.pow(first, second))),
 
     /**
      * A remainder operation:
@@ -72,15 +80,21 @@ public enum MathOperation {
      *     a % b
      * </pre>
      */
-    REMAINDER('%', (first, second) -> first % second);
+    REMAINDER("%", (first, second) -> first % second),
+
+    /**
+     * An invalid operation.
+     */
+    INVALID("", (first, _) -> first);
 
     private static final Collection<MathOperation> ALL_VALUES = Stream.of(values())
+        .filter(mathOperation -> mathOperation != INVALID)
         .toList();
 
-    private final char symbol;
+    private final String symbol;
     private final BiFunction<? super Long, ? super Long, Long> function;
 
-    MathOperation(final char symbol, final BiFunction<? super Long, ? super Long, Long> function) {
+    MathOperation(final String symbol, final BiFunction<? super Long, ? super Long, Long> function) {
         this.symbol = symbol;
         this.function = function;
     }
@@ -97,17 +111,26 @@ public enum MathOperation {
     }
 
     /**
-     * Retrieve a {@link MathOperation} based on the input {@code char}.
+     * Retrieve a {@link MathOperation} based on the input.
      *
-     * @param input the {@link MathOperation} as a {@code char}
+     * @param input the potential {@link MathOperation}
      * @return the matching {@link MathOperation}
      * @throws IllegalArgumentException thrown if the input {@code char} is not a valid value for any {@link MathOperation}
      */
-    public static MathOperation get(final char input) {
+    public static MathOperation get(final Object input) {
         return ALL_VALUES
             .stream()
-            .filter(direction -> direction.symbol == input)
+            .filter(direction -> direction.symbol.equals(String.valueOf(input)))
             .findAny()
             .orElseThrow(() -> new IllegalArgumentException(String.format("Invalid %s: '%s'", MathOperation.class.getSimpleName(), input)));
+    }
+
+    /**
+     * The symbol of the {@link MathOperation}.
+     *
+     * @return the symbol
+     */
+    public String symbol() {
+        return symbol;
     }
 }

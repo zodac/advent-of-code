@@ -134,4 +134,23 @@ public enum Direction {
             case INVALID -> INVALID;
         };
     }
+
+    /**
+     * Rotates the current {@link Direction} 90° to the right.
+     *
+     * @return the rotated {@link Direction}
+     */
+    public Direction rotateRight() {
+        return switch (this) {
+            case DOWN -> LEFT;
+            case DOWN_LEFT -> UP_LEFT;
+            case DOWN_RIGHT -> DOWN_LEFT;
+            case LEFT -> UP;
+            case RIGHT -> DOWN;
+            case UP -> RIGHT;
+            case UP_LEFT -> UP_RIGHT;
+            case UP_RIGHT -> DOWN_RIGHT;
+            case INVALID -> INVALID;
+        };
+    }
 }

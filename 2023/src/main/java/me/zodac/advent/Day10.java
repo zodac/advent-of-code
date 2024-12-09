@@ -17,7 +17,7 @@
 
 package me.zodac.advent;
 
-import me.zodac.advent.pojo.Loop;
+import me.zodac.advent.pojo.PipeLoop;
 import me.zodac.advent.pojo.Pipe;
 import me.zodac.advent.pojo.grid.Grid;
 
@@ -33,28 +33,28 @@ public final class Day10 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Pipe}s, we need to find the {@link Loop} that exists. From that, we find the number of steps to the furthest
-     * part of the {@link Loop}. This can be calculated as {@code numberOfElementsInLoop} / {@code 2}.
+     * Given a {@link Grid} of {@link Pipe}s, we need to find the {@link PipeLoop} that exists. From that, we find the number of steps to the furthest
+     * part of the {@link PipeLoop}. This can be calculated as {@code numberOfElementsInLoop} / {@code 2}.
      *
      * @param pipeGrid the {@link Grid} of {@link Pipe}s
-     * @return the number of steps to the furthest {@link Pipe} of the {@link Loop}
-     * @see Loop#size()
+     * @return the number of steps to the furthest {@link Pipe} of the {@link PipeLoop}
+     * @see PipeLoop#size()
      */
     public static long numberOfStepsToFurthestPartOfLoop(final Grid<Pipe> pipeGrid) {
-        final Loop loop = Loop.create(pipeGrid, pipe -> pipe == Pipe.START);
-        return loop.size() / 2;
+        final PipeLoop pipeLoop = PipeLoop.create(pipeGrid, pipe -> pipe == Pipe.START);
+        return pipeLoop.size() / 2;
     }
 
     /**
-     * Given a {@link Grid} of {@link Pipe}s, we need to find the {@link Loop} that exists. Once it has been found, we need to count the number of
+     * Given a {@link Grid} of {@link Pipe}s, we need to find the {@link PipeLoop} that exists. Once it has been found, we need to count the number of
      * {@link Pipe} elements within the loop.
      *
      * @param pipeGrid the {@link Grid} of {@link Pipe}s
-     * @return the number of steps to the furthest {@link Pipe} of the {@link Loop}
-     * @see Loop#countPointsInsideLoop()
+     * @return the number of steps to the furthest {@link Pipe} of the {@link PipeLoop}
+     * @see PipeLoop#countPointsInsideLoop()
      */
     public static long numberOfPointsInsidePipeLoop(final Grid<Pipe> pipeGrid) {
-        final Loop loop = Loop.create(pipeGrid, pipe -> pipe == Pipe.START);
-        return loop.countPointsInsideLoop();
+        final PipeLoop pipeLoop = PipeLoop.create(pipeGrid, pipe -> pipe == Pipe.START);
+        return pipeLoop.countPointsInsideLoop();
     }
 }

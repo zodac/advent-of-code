@@ -19,10 +19,11 @@ package me.zodac.advent;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.grid.Grid;
-import me.zodac.advent.pojo.tuple.Pair;
+import me.zodac.advent.search.LoopFinder;
 
 /**
  * Solution for 2024, Day 6.
@@ -31,116 +32,127 @@ import me.zodac.advent.pojo.tuple.Pair;
  */
 public final class Day06 {
 
+    private static final int EXPECTED_NUMBER_OF_START_POINTS = 1;
+    private static final char OBSTACLE_SYMBOL = '#';
+    private static final char START_SYMBOL = '^';
+    private static final Direction START_DIRECTION = Direction.UP;
+
     private Day06() {
 
     }
 
     /**
-     * Part 1.
+     * Given a {@link Grid} of {@link Character}s, find the start {@link Point} denoted by {@value START_SYMBOL}, then traverse the path. The rules
+     * for traversal are:
+     * <ol>
+     *     <li>Start moving {@link Direction#UP}, one space at a time</li>
+     *     <li>If the next cell is a {@value #OBSTACLE_SYMBOL}, change the {@link Direction} to the right by 90°</li>
+     *     <li>Keep traversing the {@link Grid} until you leave the {@link Grid}</li>
+     * </ol>
+     *
+     * <p>
+     * Once complete, return the number of {@link Point}s on the {@link Grid} that were visited.
      *
      * @param characterGrid the input {@link Character} {@link Grid}
-     * @return the part 1 result
+     * @return the number of visited {@link Point}
      */
-    public static long part1(final Grid<Character> characterGrid) {
-        final Point startPoint = characterGrid.findValue(c -> c == '^').toList().getFirst();
-        final Collection<Point> pointsInPath = new HashSet<>();
-
-        Point currentPoint = startPoint;
-        Direction currentDirection = Direction.UP;
-
-        do {
-            pointsInPath.add(currentPoint);
-            final Point nextPoint = currentPoint.move(currentDirection);
-
-            if (!characterGrid.exists(nextPoint)) {
-                break;
-            }
-
-            if (characterGrid.at(nextPoint) == '#') {
-                currentDirection = rotate(currentDirection);
-            }
-
-            currentPoint = currentPoint.move(currentDirection);
-        } while (true);
-
+    public static long countTraversedPoints(final Grid<Character> characterGrid) {
+        final Point startPoint = findStartPoint(characterGrid);
+        final Collection<Point> pointsInPath = traverseGridAndReturnVisitedPoints(characterGrid, startPoint);
         return pointsInPath.size();
     }
 
-    private static Direction rotate(final Direction direction) {
-        return switch (direction) {
-            case DOWN -> Direction.LEFT;
-            case DOWN_LEFT, DOWN_RIGHT, UP_LEFT, UP_RIGHT, INVALID -> throw new RuntimeException();
-            case LEFT -> Direction.UP;
-            case RIGHT -> Direction.DOWN;
-            case UP -> Direction.RIGHT;
-        };
-    }
-
     /**
-     * Part 2.
+     * Given a {@link Grid} of {@link Character}s, find the start {@link Point} denoted by {@value START_SYMBOL}, then traverse the path. The rules
+     * for traversal are:
+     * <ol>
+     *     <li>Start moving {@link Direction#UP}, one space at a time</li>
+     *     <li>If the next cell is a {@value #OBSTACLE_SYMBOL}, change the {@link Direction} to the right by 90°</li>
+     *     <li>Keep traversing the {@link Grid} until you leave the {@link Grid}</li>
+     * </ol>
+     *
+     * <p>
+     * Once the initial path is known, add a single {@value #OBSTACLE_SYMBOL} to the {@link Grid}, such that the traversal results in an infinite
+     * loop. Repeat for all possible positions that result in an infinite loop, only changing the {@link Grid} by a single {@link Point}.
      *
      * @param characterGrid the input {@link Character} {@link Grid}
-     * @return the part 2 result
+     * @return the number of possible infinite loops
      */
-    public static long part2(final Grid<Character> characterGrid) {
-        final Point startPoint = characterGrid.findValue(c -> c == '^').toList().getFirst();
-        final Collection<Point> pointsInPath = new HashSet<>();
+    public static long countPossibleLoops(final Grid<Character> characterGrid) {
+        final Point startPoint = findStartPoint(characterGrid);
+        final Collection<Point> pointsInPath = traverseGridAndReturnVisitedPoints(characterGrid, startPoint);
+        pointsInPath.remove(startPoint); // Remove startPoint since we cannot place an obstacle there
 
+        // TODO: If the point is in a line with an existing updated point, no need to check it again; determine this and remove those points
+
+        // For each point in the original path, add an obstacle and see if that forms a loop when traversing
+        return pointsInPath
+            .parallelStream() // No state between iterations, fine to execute in parallel
+            .map(point -> characterGrid.updateAt(point, OBSTACLE_SYMBOL))
+            .filter(updatedGrid -> hasLoop(updatedGrid, startPoint))
+            .count();
+    }
+
+    private static Collection<Point> traverseGridAndReturnVisitedPoints(final Grid<Character> characterGrid, final Point startPoint) {
+        final Collection<Point> visitedPoints = new HashSet<>();
         Point currentPoint = startPoint;
-        Direction currentDirection = Direction.UP;
+        Direction currentDirection = START_DIRECTION;
 
         do {
-            pointsInPath.add(currentPoint);
+            visitedPoints.add(currentPoint);
             final Point nextPoint = currentPoint.move(currentDirection);
 
             if (!characterGrid.exists(nextPoint)) {
                 break;
             }
 
-            if (characterGrid.at(nextPoint) == '#') {
-                currentDirection = rotate(currentDirection);
-            }
-
+            currentDirection = rotateAroundObstacles(characterGrid, currentPoint, currentDirection);
             currentPoint = currentPoint.move(currentDirection);
         } while (characterGrid.exists(currentPoint));
-        pointsInPath.remove(startPoint);
-
-        long count = 0L;
-        for (final Point point : pointsInPath) {
-            final Grid<Character> updatedGrid = characterGrid.updateAt(point, '#');
-            if (hasLoop(updatedGrid, startPoint)) {
-                count++;
-            }
-        }
-
-        return count;
+        return visitedPoints;
     }
 
     private static boolean hasLoop(final Grid<Character> grid, final Point startPoint) {
-        Point currentPoint = startPoint;
-        Direction currentDirection = Direction.UP;
-        final Collection<Pair<Point, Direction>> visitedPoints = new HashSet<>();
+        return LoopFinder.doesLoopExist(grid, startPoint, START_DIRECTION,
+            (characterGrid, point, direction) -> {
+                final Point nextPoint = point.move(direction);
+                Direction nextDirection = direction;
 
-        do {
-            if (!visitedPoints.add(Pair.of(currentPoint, currentDirection))) {
-                return true;
-            }
-
-            final Point nextPoint = currentPoint.move(currentDirection);
-            if (!grid.exists(nextPoint)) {
-                return false;
-            }
-
-            if (grid.at(nextPoint) == '#') {
-                currentDirection = rotate(currentDirection);
-
-                final Point nextPoint2 = currentPoint.move(currentDirection);
-                if (grid.at(nextPoint2) == '#') {
-                    currentDirection = rotate(currentDirection);
+                if (!characterGrid.exists(nextPoint)) {
+                    return Direction.INVALID;
                 }
-            }
 
-            currentPoint = currentPoint.move(currentDirection);
-        } while (true);
+                nextDirection = rotateAroundObstacles(characterGrid, point, nextDirection);
+
+                return nextDirection;
+            },
+            (_, point, direction) -> point.move(direction)
+        );
+    }
+
+    private static Direction rotateAroundObstacles(final Grid<Character> characterGrid, final Point initialPoint, final Direction initialDirection) {
+        Point nextPoint = initialPoint.move(initialDirection);
+        Direction nextDirection = initialDirection;
+
+        while (characterGrid.at(nextPoint) == OBSTACLE_SYMBOL) {
+            nextDirection = nextDirection.rotateRight();
+            nextPoint = initialPoint.move(nextDirection);
+
+            if (nextDirection == initialDirection) {
+                // Should not ever occur with our inputs, but handle case to avoid infinite loop
+                return Direction.INVALID;
+            }
+        }
+        return nextDirection;
+    }
+
+    private static Point findStartPoint(final Grid<Character> characterGrid) {
+        // We *could* assume one, and only one, start point will always exist and skip this check, but keeping for completeness
+        final List<Point> startPoints = characterGrid.findValue(c -> c == START_SYMBOL).toList();
+        if (startPoints.size() != EXPECTED_NUMBER_OF_START_POINTS) {
+            throw new IllegalStateException(String.format("Expected 1 point matching the start predicate, found: %d", startPoints.size()));
+        }
+
+        return startPoints.getFirst();
     }
 }
