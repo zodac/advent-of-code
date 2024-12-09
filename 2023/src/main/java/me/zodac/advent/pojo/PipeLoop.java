@@ -47,8 +47,8 @@ public class PipeLoop {
     }
 
     /**
-     * Creates the {@link PipeLoop} for a looping of points within a {@link Grid}. Using the provided {@link Predicate}, the start {@link Point} of the
-     * loop is determined, and the {@link PipeLoopFinder} works to find a looping of {@link Point}s back to the start {@link Point}.
+     * Creates the {@link PipeLoop} for a looping of points within a {@link Grid}. Using the provided {@link Predicate}, the start {@link Point} of
+     * the loop is determined, and the {@link PipeLoopFinder} works to find a looping of {@link Point}s back to the start {@link Point}.
      *
      * @param grid                the {@link Grid} of elements which contains the {@link PipeLoop}
      * @param startPointPredicate the {@link Predicate} defining how to find the start {@link Point}
@@ -75,8 +75,8 @@ public class PipeLoop {
     }
 
     /**
-     * Counts the number of {@link Point}s 'trapped' inside the {@link PipeLoop}. This does not include any of the {@link Point}s on the {@link PipeLoop}
-     * itself, but any {@link Point}s that are surrounded entirely by {@link PipeLoop} {@link Point}s.
+     * Counts the number of {@link Point}s 'trapped' inside the {@link PipeLoop}. This does not include any of the {@link Point}s on the
+     * {@link PipeLoop} itself, but any {@link Point}s that are surrounded entirely by {@link PipeLoop} {@link Point}s.
      *
      * @return the number of {@link Point}s inside the {@link PipeLoop}
      */
