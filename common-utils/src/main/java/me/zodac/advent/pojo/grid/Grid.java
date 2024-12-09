@@ -39,6 +39,7 @@ import me.zodac.advent.util.ArrayUtils;
  *
  * @param <E> the type of the {@link Point}s on the {@link Grid}
  */
+// TODO: Lots of 'x/y', 'i/j', 'row/column'; be more consistent
 public class Grid<E> {
 
     /**
@@ -124,8 +125,8 @@ public class Grid<E> {
     }
 
     /**
-     * Draws a box on the {@link Grid}, where each {@link Point} is updated based according to the
-     * {@link GridInstruction}. All values inside the box are also updated.
+     * Draws a box on the {@link Grid}, where each {@link Point} is updated based according to the update
+     * {@link Function}. All values inside the box are also updated.
      *
      * <p>
      * For example, starting with a 10x10 grid where the values are {@link Integer}s:
@@ -143,8 +144,13 @@ public class Grid<E> {
      * </pre>
      *
      * <p>
-     * Given the {@link Point}s (0, 0) and (2, 4) with the instruction {@link GridInstruction#ON}, the updated
-     * {@link IntegerGrid} would be:
+     * Given the {@link Point}s (0, 0) and (2, 4) with the following update function:
+     * {@snippet :
+     *  final Function<Integer, Integer> updateFunction = (integer) -> integer + 1;
+     *}
+     *
+     * <p>
+     * In this case, each value in the box will be incremented by one, giving an updated {@link IntegerGrid} like:
      * <pre>
      *     1 1 1 1 1 0 0 0 0 0
      *     1 1 1 1 1 0 0 0 0 0
@@ -159,7 +165,13 @@ public class Grid<E> {
      * </pre>
      *
      * <p>
-     * Following up with {@link Point}s (0, 1) and (0, 9) with the instruction {@link GridInstruction#TOGGLE} would give us:
+     * Following up with {@link Point}s (0, 1) and (0, 9) with the next update {@link Function}:
+     * {@snippet :
+     *  final Function<Integer, Integer> updateFunction = (integer) -> integer + 2;
+     *}
+     *
+     * <p>
+     * This would give an output of:
      * <pre>
      *     1 3 3 3 3 2 2 2 2 2
      *     1 1 1 1 1 0 0 0 0 0
@@ -174,7 +186,13 @@ public class Grid<E> {
      * </pre>
      *
      * <p>
-     * And finally with {@link Point}s (0, 2) and (3, 3) with the instruction {@link GridInstruction#OFF} we would get:
+     * And finally with {@link Point}s (0, 2) and (3, 3) with the last update {@link Function}:
+     * {@snippet :
+     *       final Function<Integer, Integer> updateFunction = (integer) -> integer - 1;
+     *}
+     *
+     * <p>
+     * This results in a final {@link IntegerGrid} of:
      * <pre>
      *     1 3 2 2 3 2 2 2 2 2
      *     1 1 0 0 1 0 0 0 0 0
@@ -188,14 +206,13 @@ public class Grid<E> {
      *     0 0 0 0 0 0 0 0 0 0
      * </pre>
      *
-     * @param x1              the first x coordinate
-     * @param y1              the first y coordinate
-     * @param x2              the second x coordinate
-     * @param y2              the second y coordinate
-     * @param gridInstruction the {@link GridInstruction}
-     * @see #updateGrid(GridInstruction, int, int)
+     * @param x1             the first x coordinate
+     * @param y1             the first y coordinate
+     * @param x2             the second x coordinate
+     * @param y2             the second y coordinate
+     * @param updateFunction the {@link Function} to update the internal {@link Grid} value based on the current value
      */
-    public void drawBox(final int x1, final int y1, final int x2, final int y2, final GridInstruction gridInstruction) {
+    public void drawBox(final int x1, final int y1, final int x2, final int y2, final Function<E, E> updateFunction) {
         if (x1 < 0 || y1 < 0) {
             throw new IllegalArgumentException(String.format("x1, y1 must be at least 0, found: (%s, %s)", x1, y1));
         }
@@ -207,20 +224,9 @@ public class Grid<E> {
 
         for (int x = x1; x <= x2; x++) {
             for (int y = y1; y <= y2; y++) {
-                updateGrid(gridInstruction, x, y);
+                internalGrid[x][y] = updateFunction.apply(internalGrid[x][y]);
             }
         }
-    }
-
-    /**
-     * Updates the {@link Grid} at the provided {@link Point}.
-     *
-     * @param gridInstruction the {@link GridInstruction}
-     * @param row             the x coordinate
-     * @param column          the y coordinate
-     */
-    protected void updateGrid(final GridInstruction gridInstruction, final int row, final int column) {
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -243,6 +249,7 @@ public class Grid<E> {
      * @return the updated {@code grid}
      */
     protected E[][] updateCornersToValue(final E newValue) {
+        // TODO: If you're setting new values for the grid, what's the point of returning a clone?!
         internalGrid[0][0] = newValue;
         internalGrid[0][gridSize - 1] = newValue;
         internalGrid[gridSize - 1][0] = newValue;
@@ -335,7 +342,7 @@ public class Grid<E> {
     /**
      * Checks if the given {@link Point} exists in the bounds of the {@link Grid}.
      *
-     * @param point the {@link Point} to chec
+     * @param point the {@link Point} to check
      * @return {@code true} if the {@link Point} is valid for this {@link Grid}
      */
     // TODO: Update all boundary checks to use this instead? Less efficient, but simpler

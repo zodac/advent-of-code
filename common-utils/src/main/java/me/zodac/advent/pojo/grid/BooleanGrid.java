@@ -36,27 +36,8 @@ public final class BooleanGrid extends Grid<Boolean> {
     private static final Set<Integer> NEIGHBOUR_VALUES_FOR_OFF_POINT = Set.of(3);
     private static final Set<Integer> NEIGHBOUR_VALUES_FOR_ON_POINT = Set.of(2, 3);
 
-    private BooleanGrid(final int gridSize) {
-        super(gridSize, new Boolean[gridSize][gridSize], false);
-    }
-
     private BooleanGrid(final Boolean[][] grid) {
         super(grid);
-    }
-
-    /**
-     * Creates a {@link BooleanGrid} with the dimensions {@code gridSize}x{@code gridSize}.
-     *
-     * @param gridSize the length and width of the {@link BooleanGrid}
-     * @return the created {@link BooleanGrid}
-     * @throws IllegalArgumentException thrown if input size is less than 0
-     */
-    public static BooleanGrid ofSize(final int gridSize) {
-        if (gridSize <= 0) {
-            throw new IllegalArgumentException("Size must be positive integer, found: " + gridSize);
-        }
-
-        return new BooleanGrid(gridSize);
     }
 
     /**
@@ -156,26 +137,5 @@ public final class BooleanGrid extends Grid<Boolean> {
      */
     public BooleanGrid updateCorners(final Boolean newValue) {
         return new BooleanGrid(updateCornersToValue(newValue));
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * <pre>
-     * | {@link GridInstruction}        | Action                  |
-     * |------------------------|-------------------------|
-     * | {@link GridInstruction#ON}     | Set the point to <b>true</b>   |
-     * | {@link GridInstruction#OFF}    | Set the point to <b>false</b>  |
-     * | {@link GridInstruction#TOGGLE} | Flip the boolean value  |
-     * </pre>
-     */
-    @Override
-    protected void updateGrid(final GridInstruction gridInstruction, final int row, final int column) {
-        switch (gridInstruction) {
-            case ON -> internalGrid[row][column] = true;
-            case OFF -> internalGrid[row][column] = false;
-            case TOGGLE -> internalGrid[row][column] = !internalGrid[row][column];
-            default -> throw new IllegalStateException("Cannot draw a box with instruction: " + gridInstruction);
-        }
     }
 }

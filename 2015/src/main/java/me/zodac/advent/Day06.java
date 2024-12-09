@@ -19,9 +19,9 @@ package me.zodac.advent;
 
 import java.util.Collection;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.BooleanGrid;
+import me.zodac.advent.pojo.grid.Grid;
+import me.zodac.advent.pojo.grid.GridFactory;
 import me.zodac.advent.pojo.grid.GridInstruction;
-import me.zodac.advent.pojo.grid.IntegerGrid;
 import me.zodac.advent.pojo.tuple.Triple;
 
 /**
@@ -38,40 +38,62 @@ public final class Day06 {
     }
 
     /**
-     * Creates a {@link BooleanGrid} and sets {@link Point} based on the input {@link GridInstruction}.
+     * Creates a {@link Boolean} {@link Grid} and sets {@link Point} based on the input {@link GridInstruction}.
      *
-     * @param instructionsAndPoints the {@link Point}s defining a box on the {@link BooleanGrid}, with the {@link GridInstruction}
-     * @return the number of {@link BooleanGrid} {@link Point}s that have been turned on
+     * @param instructionsAndPoints the {@link Point}s defining a box on the {@link Boolean} {@link Grid}, with the {@link GridInstruction}
+     * @return the number of {@link Boolean} {@link Grid} {@link Point}s that have been turned on
      */
     public static long countSwitchedOnLights(final Collection<Triple<GridInstruction, Point, Point>> instructionsAndPoints) {
-        final BooleanGrid booleanGrid = BooleanGrid.ofSize(GRID_SIZE);
+        final Grid<Boolean> booleanGrid = GridFactory.ofBooleansWithSize(GRID_SIZE);
 
         for (final Triple<GridInstruction, Point, Point> instructionAndPoints : instructionsAndPoints) {
+            final GridInstruction gridInstruction = instructionAndPoints.first();
             final Point first = instructionAndPoints.second();
             final Point second = instructionAndPoints.third();
 
-            booleanGrid.drawBox(first.x(), first.y(), second.x(), second.y(), instructionAndPoints.first());
+            booleanGrid.drawBox(first.x(), first.y(), second.x(), second.y(),
+                currentValue -> updateBooleanGrid(gridInstruction, currentValue));
         }
 
-        return booleanGrid.sumValues(BooleanGrid.EVALUATOR);
+        return booleanGrid.sumValues(booleanValue -> booleanValue ? 1 : 0);
+    }
+
+    private static boolean updateBooleanGrid(final GridInstruction gridInstruction, final boolean currentValue) {
+        return switch (gridInstruction) {
+            case ON -> true;
+            case OFF -> false;
+            case TOGGLE -> !currentValue;
+            default -> throw new IllegalStateException("Cannot update with instruction: " + gridInstruction);
+        };
     }
 
     /**
-     * Creates an {@link IntegerGrid} and sets {@link Point} based on the input {@link GridInstruction}.
+     * Creates an {@link Integer} {@link Grid} and sets {@link Point} based on the input {@link GridInstruction}.
      *
-     * @param instructionsAndPoints the {@link Point}s defining a box on the {@link IntegerGrid}, with the {@link GridInstruction}
-     * @return the total value of all {@link IntegerGrid} {@link Point}s
+     * @param instructionsAndPoints the {@link Point}s defining a box on the {@link Integer} {@link Grid}, with the {@link GridInstruction}
+     * @return the total value of all {@link Integer} {@link Grid} {@link Point}s
      */
     public static long calculateBrightness(final Collection<Triple<GridInstruction, Point, Point>> instructionsAndPoints) {
-        final IntegerGrid integerGrid = IntegerGrid.ofSize(GRID_SIZE);
+        final Grid<Integer> integerGrid = GridFactory.ofIntegersWithSize(GRID_SIZE);
 
         for (final Triple<GridInstruction, Point, Point> instructionAndPoints : instructionsAndPoints) {
+            final GridInstruction gridInstruction = instructionAndPoints.first();
             final Point first = instructionAndPoints.second();
             final Point second = instructionAndPoints.third();
 
-            integerGrid.drawBox(first.x(), first.y(), second.x(), second.y(), instructionAndPoints.first());
+            integerGrid.drawBox(first.x(), first.y(), second.x(), second.y(),
+                currentValue -> updateIntegerGrid(gridInstruction, currentValue));
         }
 
-        return integerGrid.sumValues(IntegerGrid.EVALUATOR);
+        return integerGrid.sumValues(integerValue -> integerValue);
+    }
+
+    private static int updateIntegerGrid(final GridInstruction gridInstruction, final int currentValue) {
+        return switch (gridInstruction) {
+            case ON -> currentValue + 1;
+            case OFF -> Math.max(0, currentValue - 1); // Value should not be less than 0
+            case TOGGLE -> currentValue + 2;
+            default -> throw new IllegalStateException("Cannot update with instruction: " + gridInstruction);
+        };
     }
 }

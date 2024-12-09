@@ -27,12 +27,20 @@ import java.util.stream.Stream;
 public enum MathOperation {
 
     /**
+     * An addition operation:
+     * <pre>
+     *     a + b
+     * </pre>
+     */
+    ADD("+", Long::sum),
+
+    /**
      * A concatenation operation:
      * <pre>
      *     "a" + "b"
      * </pre>
      */
-    CONCATENATE("||", (first, second) -> Long.parseLong("" + first + second)),
+    CONCATENATE("||", (first, second) -> Long.parseLong(String.valueOf(first) + second)),
 
     /**
      * A division operation:
@@ -57,14 +65,6 @@ public enum MathOperation {
      * </pre>
      */
     MULTIPLY("*", (first, second) -> first * second),
-
-    /**
-     * An addition operation:
-     * <pre>
-     *     a + b
-     * </pre>
-     */
-    PLUS("+", Long::sum),
 
     /**
      * A power operation:
@@ -126,11 +126,12 @@ public enum MathOperation {
     }
 
     /**
-     * The symbol of the {@link MathOperation}.
+     * Replacing the default implementation to return the symbol. Can use {@link #name()} if enum name is required.
      *
      * @return the symbol
      */
-    public String symbol() {
+    @Override
+    public String toString() {
         return symbol;
     }
 }

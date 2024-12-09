@@ -36,7 +36,7 @@ public final class LoopFinder {
 
     /**
      * Traverses the input {@link Grid} based on the update rules supplied, and checks if the path crosses over on itself. A 'loop' is determined if
-     * the path revisits a {@link Point} it has already visted <b>AND</b> the current {@link Direction} of travel is the same as previous.
+     * the path revisits a {@link Point} it has already visited <b>AND</b> the current {@link Direction} of travel is the same as previous.
      *
      * <p>
      * An example of how to apply this can be for a {@link Character} {@link Grid} with obstacles denoted by '#'. We begin walking in
@@ -48,15 +48,15 @@ public final class LoopFinder {
      *     final TriFunction<Grid<Character>, Point, Direction, Direction> directionUpdate = (characterGrid, point, direction) -> {
      *             Direction nextDirection = direction;
      *             // Move in the current direction. If it doesn't exist within the Grid, return Direction.INVALID to end the traversal
-     *             final Point nextPoint = point.move(direction);
+     *             Point nextPoint = point.move(direction);
      *             if (!characterGrid.exists(nextPoint)) {
      *                 return Direction.INVALID;
      *             }
      *             // If we find an obstacle, turn right
      *             while (characterGrid.at(nextPoint) == '#') {
      *                 nextDirection = nextDirection.rotateRight();
-     *                 nextPoint = initialPoint.move(nextDirection);
-     *                 if (nextDirection == initialDirection) {
+     *                 nextPoint = point.move(nextDirection);
+     *                 if (nextDirection == direction) {
      *                     return Direction.INVALID;
      *                 }
      *             }
@@ -74,7 +74,7 @@ public final class LoopFinder {
      *
      * @param grid            the {@link Grid} to traverse
      * @param startPoint      the initial {@link Point} from which to start traversing the {@link Grid}
-     * @param startDirection  the inital {@link Direction} in which to move from the start {@link Point}
+     * @param startDirection  the initial {@link Direction} in which to move from the start {@link Point}
      * @param directionUpdate the {@link TriFunction} rule to define how the {@link Direction} of travel updates
      * @param pointUpdate     the {@link TriFunction} rule to define how to move from the current {@link Point} to the next
      * @param <E>             the type of the {@link Grid} to search
@@ -88,7 +88,7 @@ public final class LoopFinder {
         final Collection<Pair<Point, Direction>> visitedPoints = new HashSet<>();
 
         // Keep going until every element has been visited
-        while (visitedPoints.size() < grid.elementsInGrid()) {
+        while (true) {
             if (!visitedPoints.add(Pair.of(currentPoint, currentDirection))) {
                 return true;
             }
@@ -103,11 +103,6 @@ public final class LoopFinder {
             //    currentPoint = currentPoint.move(currentDirection);
             //  I *think* it can, but need more examples using this code to confirm
             currentPoint = pointUpdate.apply(grid, currentPoint, currentDirection);
-            if (!grid.exists(currentPoint)) {
-                return false;
-            }
         }
-
-        return false;
     }
 }

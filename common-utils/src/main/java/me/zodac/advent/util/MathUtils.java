@@ -307,7 +307,7 @@ public final class MathUtils {
     private static long getValueInSequence(final List<Long> existingSequence, final boolean getNextValue) {
         final List<List<Long>> allDiffs = new LinkedList<>();
         // Variable to differentiate between going backwards or forwards for the sequence
-        final MathOperation operation = getNextValue ? MathOperation.PLUS : MathOperation.MINUS;
+        final MathOperation operation = getNextValue ? MathOperation.ADD : MathOperation.MINUS;
         final ToLongFunction<List<Long>> retrievalFunction = getNextValue ? List::getLast : List::getFirst;
         final ObjLongConsumer<List<Long>> additionConsumer = getNextValue ? List::addLast : List::addFirst;
 

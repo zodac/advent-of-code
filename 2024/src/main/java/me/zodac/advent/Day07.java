@@ -18,6 +18,8 @@
 package me.zodac.advent;
 
 import java.util.List;
+import java.util.Set;
+import me.zodac.advent.pojo.MathOperation;
 import me.zodac.advent.util.PermutationUtils;
 import me.zodac.advent.util.StringUtils;
 
@@ -32,22 +34,23 @@ public final class Day07 {
 
     }
 
+    // TODO
     /**
      * Part 1.
      *
+     * @param mathOperations the operations
      * @param values the input values
      * @return the part 1 result
      */
-    public static long part1(final List<String> values) {
+    public static long sumValidResults(final List<String> values, final Set<MathOperation> mathOperations) {
         long total = 0L;
+
         for (final String value : values) {
             final List<Long> nums = StringUtils.collectNumbersInOrder(value);
             final long result = nums.getFirst();
             final List<String> inputs = nums.subList(1, nums.size()).stream().map(String::valueOf).toList();
 
-
-            final List<List<String>> allOptions = PermutationUtils.generateCombinations(inputs, new String[] {"+", "*"});
-
+            final List<List<String>> allOptions = PermutationUtils.generateWithSeparators(inputs, mathOperations);
 
             for (final List<String> anOption : allOptions) {
                 final long evaluatedResult = evaluate(anOption);
@@ -60,79 +63,24 @@ public final class Day07 {
         return total;
     }
 
-
-
     private static long evaluate(final List<String> input) {
-        long total = Long.parseLong(input.getFirst());
+        long currentTotal = Long.parseLong(input.getFirst());
 
-        String operation = "+";
+        MathOperation mathOperation = MathOperation.ADD;
         for (int i = 1; i < input.size(); i++) {
-            String in = input.get(i);
+            final String nextSymbol = input.get(i);
 
-            if (in.equals("+") || in.equals("*")) {
-                operation = in;
-                continue;
-            }
-
-            long val = Long.parseLong(in);
-            if (operation.equals("+")) {
-                total += val;
-            } else if (operation.equals("*")) {
-                total *= val;
-            }
-        }
-
-        return total;
-    }
-
-    private static long evaluate2(final List<String> input) {
-        long total = Long.parseLong(input.getFirst());
-
-        String operation = "+";
-        for (int i = 1; i < input.size(); i++) {
-            String in = input.get(i);
-
-            if (in.equals("+") || in.equals("*") || in.equals("||")) {
-                operation = in;
-                continue;
-            }
-
-            long val = Long.parseLong(in);
-            if (operation.equals("+")) {
-                total += val;
-            } else if (operation.equals("*")) {
-                total *= val;
-            } else if (operation.equals("||")) {
-                total = Long.parseLong("" + total + val);
-            }
-        }
-
-        return total;
-    }
-
-    /**
-     * Part 2.
-     *
-     * @param values the input values
-     * @return the part 2 result
-     */
-    public static long part2(final List<String> values) {
-        long total = 0L;
-        for (final String value : values) {
-            final List<Long> nums = StringUtils.collectNumbersInOrder(value);
-            final long result = nums.getFirst();
-            final List<String> inputs = nums.subList(1, nums.size()).stream().map(String::valueOf).toList();
-
-            final List<List<String>> allOptions = PermutationUtils.generateCombinations(inputs, new String[] {"+", "*", "||"});
-
-            for (final List<String> anOption : allOptions) {
-                final long evaluatedResult = evaluate2(anOption);
-                if (evaluatedResult == result) {
-                    total += result;
-                    break;
+            switch (nextSymbol) {
+                case "+" -> mathOperation = MathOperation.ADD;
+                case "*" -> mathOperation = MathOperation.MULTIPLY;
+                case "||" -> mathOperation = MathOperation.CONCATENATE;
+                default -> {
+                    final long nextValue = Long.parseLong(nextSymbol);
+                    currentTotal = mathOperation.apply(currentTotal, nextValue);
                 }
             }
         }
-        return total;
+
+        return currentTotal;
     }
 }

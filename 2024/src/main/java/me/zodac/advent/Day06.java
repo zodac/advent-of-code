@@ -83,7 +83,7 @@ public final class Day06 {
         final Collection<Point> pointsInPath = traverseGridAndReturnVisitedPoints(characterGrid, startPoint);
         pointsInPath.remove(startPoint); // Remove startPoint since we cannot place an obstacle there
 
-        // TODO: If the point is in a line with an existing updated point, no need to check it again; determine this and remove those points
+        // TODO: If the point is in a line with an existing updated point, no need to check it again? Determine this and remove those points
 
         // For each point in the original path, add an obstacle and see if that forms a loop when traversing
         return pointsInPath

@@ -20,8 +20,6 @@ package me.zodac.advent.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import me.zodac.advent.pojo.MathOperation;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Utility class for permutations of {@link java.util.Collection}s.
@@ -119,106 +117,76 @@ public final class PermutationUtils {
         return combinations;
     }
 
-    // TODO: Horrible naming all round, fix this.
-    public static List<List<String>> generateCombinations(List<String> numbers, final Set<MathOperation> operations) {
-        List<List<String>> result = new ArrayList<>();
-        if (numbers == null || numbers.isEmpty()) {
-            return result;
+    /**
+     * Given an input {@link List} of {@link String} values, generates every possible combination where the gaps between values are replaces by each
+     * possible separator provided. For example, given an input of:
+     *
+     * <pre>
+     *     [ "A", "B", "C" ]
+     * </pre>
+     *
+     * <p>
+     * And a {@link Set} of {@link Integer}s as separators:
+     *
+     * <pre>
+     *     [ 1, 6 ]
+     * </pre>
+     *
+     * <p>
+     * Then the output would be:
+     *
+     * <pre>
+     *     [
+     *          [ "A", "1", "B", "1", "C" ],
+     *          [ "A", "1", "B", "6", "C" ],
+     *          [ "A", "6", "B", "1", "C" ],
+     *          [ "A", "6", "B", "6", "C" ],
+     *     ]
+     * </pre>
+     *
+     * <p>
+     * <b>NOTE:</b> {@link String#valueOf(Object)} will be used to convert the separator into a {@link String}, so ensure the
+     * {@link Object#toString()} has been overridden if necessary.
+     *
+     * @param values     the input {@link String}s
+     * @param separators the values to make the combinations
+     * @param <S>        the type of the separators
+     * @return the a {@link List} of all combinations
+     */
+    public static <S> List<List<String>> generateWithSeparators(final List<String> values, final Set<S> separators) {
+        if (values.isEmpty() || separators.isEmpty()) {
+            return List.of(values);
         }
-        // Start recursive generation
-        generate(numbers, 0, new ArrayList<>(), result, operations);
+
+        final List<List<String>> result = new ArrayList<>();
+        // Start recursive generation with initial index
+        generate(values, 0, new ArrayList<>(), result, separators);
         return result;
     }
 
-    private static void generate(List<String> numbers, int index, List<String> current, List<List<String>> result, final Set<MathOperation> operations) {
-        // Base case: when index reaches the last number
-        if (index == numbers.size() - 1) {
-            current.add(numbers.get(index));
+    private static <S> void generate(final List<String> values,
+                                     final int index,
+                                     final List<String> current,
+                                     final List<List<String>> result,
+                                     final Set<S> separators
+    ) {
+        // Base case for last number
+        if (index == values.size() - 1) {
+            current.add(values.get(index));
             result.add(new ArrayList<>(current));
-            current.remove(current.size() - 1); // Backtrack
+            current.removeLast();
             return;
         }
 
-        // Add current number
-        current.add(numbers.get(index));
+        current.add(values.get(index));
 
-        // Recursively add combinations with operators
-        for (final MathOperation operator : operations) {
-            current.add(operator.symbol()); // Add operator
-            generate(numbers, index + 1, current, result, operations); // Move to the next number
-            current.remove(current.size() - 1); // Remove operator (backtrack)
+        // Recursively add combinations with separators
+        for (final S separator : separators) {
+            current.add(String.valueOf(separator));
+            generate(values, index + 1, current, result, separators); // Recursively move to the next number
+            current.removeLast(); // Backtrack to ensure last separator is removed
         }
 
-        current.remove(current.size() - 1); // Remove number (backtrack)
+        current.removeLast(); // Backtrack to ensure last value is removed
     }
-
-//    public static List<List<String>> generateCombinations(List<String> numbers, Set<String> operators) {
-//        List<List<String>> result = new ArrayList<>();
-//        if (numbers == null || numbers.isEmpty() || operators == null || operators.isEmpty()) {
-//            return result;
-//        }
-//
-//        List<String> operatorList = new ArrayList<>(operators); // Convert Set to List for faster access
-//        int operatorCount = operatorList.size();
-//        int numberCount = numbers.size();
-//        int totalCombinations = (int) Math.pow(operatorCount, numberCount - 1);
-//
-//        for (int i = 0; i < totalCombinations; i++) {
-//            List<String> combination = new ArrayList<>(2 * numberCount - 1); // Preallocate size
-//            combination.add(numbers.get(0)); // Add the first number
-//
-//            int tempIndex = i;
-//            for (int j = 1; j < numberCount; j++) {
-//                // Determine operator based on current combination index
-//                combination.add(operatorList.get(tempIndex % operatorCount));
-//                tempIndex /= operatorCount;
-//
-//                // Add the next number
-//                combination.add(numbers.get(j));
-//            }
-//
-//            result.add(combination);
-//        }
-//
-//        return result;
-//    }
-//    public static List<List<String>> generateCombinations(List<String> numbers, Set<String> operators) {
-//        List<List<String>> result = new ArrayList<>();
-//        if (numbers == null || numbers.isEmpty() || operators == null || operators.isEmpty()) {
-//            return result;
-//        }
-//
-//        int n = numbers.size();
-//        int combinations = (int) Math.pow(operators.size(), n - 1); // Total combinations of operators
-//
-//        for (int i = 0; i < combinations; i++) {
-//            List<String> combination = new ArrayList<>();
-//            combination.add(numbers.get(0)); // Always start with the first number
-//
-//            int operatorIndex = i;
-//            for (int j = 1; j < n; j++) {
-//                // Pick the operator corresponding to the current combination
-//                combination.add(getOperatorByIndex(operators, operatorIndex % operators.size()));
-//                operatorIndex /= operators.size();
-//
-//                // Add the next number
-//                combination.add(numbers.get(j));
-//            }
-//
-//            result.add(combination);
-//        }
-//
-//        return result;
-//    }
-//
-//    private static @Nullable String getOperatorByIndex(Set<String> operators, int index) {
-//        int currentIndex = 0;
-//        for (String operator : operators) {
-//            if (currentIndex == index) {
-//                return operator;
-//            }
-//            currentIndex++;
-//        }
-//        return null; // Should not happen if index is valid
-//    }
 }

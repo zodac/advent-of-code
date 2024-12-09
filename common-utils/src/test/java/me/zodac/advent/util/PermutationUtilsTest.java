@@ -20,6 +20,7 @@ package me.zodac.advent.util;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -92,6 +93,47 @@ public class PermutationUtilsTest {
                     List.of(1, 2),
                     List.of(2, 3),
                     List.of(1, 3)
+                )
+            )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForGenerateWithSeparators")
+    <E> void testGenerateWithSeparators(final List<String> input, final Set<E> separators, final List<List<String>> expected) {
+        final List<List<String>> output = PermutationUtils.generateWithSeparators(input, separators);
+        assertThat(output)
+            .hasSameElementsAs(expected);
+    }
+
+    private static Stream<Arguments> provideForGenerateWithSeparators() {
+        return Stream.of(
+            // Single separator
+            Arguments.of(List.of("A", "B", "C"), Set.of("a"), List.of(
+                    List.of("A", "a", "B", "a", "C")
+                )
+            ),
+            // Multiple separators
+            Arguments.of(List.of("A", "B", "C"), Set.of("a", "b"), List.of(
+                    List.of("A", "a", "B", "a", "C"),
+                    List.of("A", "a", "B", "b", "C"),
+                    List.of("A", "b", "B", "a", "C"),
+                    List.of("A", "b", "B", "b", "C")
+                )
+            ),
+            // Single input
+            Arguments.of(List.of("A"), Set.of("a", "b"), List.of(
+                    List.of("A")
+                )
+            ),
+            // Empty input
+            Arguments.of(List.of(), Set.of("a", "b"), List.of(
+                    List.of()
+                )
+            ),
+            // Empty separators
+            Arguments.of(List.of("A", "B", "C"), Set.of(), List.of(
+                    List.of("A", "B", "C")
                 )
             )
         );

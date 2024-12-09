@@ -20,7 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Set;
 import me.zodac.advent.input.InputReader;
+import me.zodac.advent.pojo.MathOperation;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -37,11 +39,11 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long part1Result = Day07.part1(values);
+        final long part1Result = Day07.sumValidResults(values, Set.of(MathOperation.ADD, MathOperation.MULTIPLY));
         assertThat(part1Result)
             .isEqualTo(3_749L);
 
-        final long part2Result = Day07.part2(values);
+        final long part2Result = Day07.sumValidResults(values, Set.of(MathOperation.ADD, MathOperation.MULTIPLY, MathOperation.CONCATENATE));
         assertThat(part2Result)
             .isEqualTo(11_387L);
     }
@@ -53,7 +55,7 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long part1Result = Day07.part1(values);
+        final long part1Result = Day07.sumValidResults(values, Set.of(MathOperation.ADD, MathOperation.MULTIPLY));
         assertThat(part1Result)
             .isEqualTo(932_137_732_557L);
     }
@@ -65,7 +67,7 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long part2Result = Day07.part2(values);
+        final long part2Result = Day07.sumValidResults(values, Set.of(MathOperation.ADD, MathOperation.MULTIPLY, MathOperation.CONCATENATE));
         assertThat(part2Result)
             .isEqualTo(661_823_605_105_500L);
     }

@@ -37,11 +37,11 @@ class Day06Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day06.part1(characterGrid);
+        final long part1Result = Day06.countTraversedPoints(characterGrid);
         assertThat(part1Result)
             .isEqualTo(41L);
 
-        final long part2Result = Day06.part2(characterGrid);
+        final long part2Result = Day06.countPossibleLoops(characterGrid);
         assertThat(part2Result)
             .isEqualTo(6L);
     }
@@ -53,7 +53,7 @@ class Day06Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day06.part1(characterGrid);
+        final long part1Result = Day06.countTraversedPoints(characterGrid);
         assertThat(part1Result)
             .isEqualTo(5_030L);
     }
@@ -65,7 +65,7 @@ class Day06Test {
             .asGrid()
             .ofCharacters();
 
-        final long part2Result = Day06.part2(characterGrid);
+        final long part2Result = Day06.countPossibleLoops(characterGrid);
         assertThat(part2Result)
             .isEqualTo(1_928L);
     }
