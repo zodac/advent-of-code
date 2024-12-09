@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import me.zodac.advent.pojo.PresentGroup;
 import me.zodac.advent.pojo.Replacement;
 
@@ -48,13 +50,13 @@ public final class Day24 {
      */
     public static long findQuantumEntanglementOfSmallestGroupOfPresents(final Collection<Integer> values, final int numberOfGroups) {
         final int totalSize = values
-            .stream()
+            .parallelStream()
             .mapToInt(Integer::intValue)
             .sum();
         final int groupSize = totalSize / numberOfGroups;
 
         return findSmallestFirstGroup(values, groupSize)
-            .stream()
+            .parallelStream()
             .mapToLong(PresentGroup::calculateQuantumEntanglement)
             .min()
             .orElse(0L);
@@ -92,23 +94,14 @@ public final class Day24 {
     }
 
     private static Queue<Replacement<PresentGroup>> createNextGroups(final Replacement<PresentGroup> current, final int groupSize) {
-        final Queue<Replacement<PresentGroup>> queue = createPriorityQueue();
         final PresentGroup source = current.source();
         final PresentGroup target = current.target();
 
-        for (final int present : source.presents()) {
-            if (target.calculateTotalWeight() + present <= groupSize) {
-
-                // Shift present from source group to target group
-                final Replacement<PresentGroup> next = Replacement.of(
-                    source.createWithoutPresent(present),
-                    target.createWithPresent(present)
-                );
-                queue.add(next);
-            }
-        }
-
-        return queue;
+        return source.presents()
+                .stream()
+                .filter(present -> target.calculateTotalWeight() + present <= groupSize)
+                .map(present -> Replacement.of(source.createWithoutPresent(present), target.createWithPresent(present)))
+                .collect(Collectors.toCollection(Day24::createPriorityQueue));
     }
 
     private static Queue<Replacement<PresentGroup>> createPriorityQueue() {
