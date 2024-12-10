@@ -161,19 +161,19 @@ public final class Day14 {
         return floorPoints;
     }
 
-    // As the Y coordinate increases as you go down, but our Point values decrease as you go down, we use unexpected deltaX and deltaY values
+    // As the Y coordinate increases as you go down, but our Point values decrease as you go down, we use unexpected directions
     private static Point dropSandPoint(final Collection<? super Point> filledPoints, final Point startSandPoint) {
-        final Point possibleDownPoint = startSandPoint.move(0, 1);
+        final Point possibleDownPoint = startSandPoint.moveRight();
         if (!filledPoints.contains(possibleDownPoint)) {
             return possibleDownPoint;
         }
 
-        final Point possibleDownLeftPoint = startSandPoint.move(-1, 1);
+        final Point possibleDownLeftPoint = startSandPoint.moveUpRight();
         if (!filledPoints.contains(possibleDownLeftPoint)) {
             return possibleDownLeftPoint;
         }
 
-        final Point possibleDownRightPoint = startSandPoint.move(1, 1);
+        final Point possibleDownRightPoint = startSandPoint.moveDownRight();
         if (!filledPoints.contains(possibleDownRightPoint)) {
             return possibleDownRightPoint;
         }

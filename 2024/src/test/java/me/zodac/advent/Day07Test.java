@@ -55,7 +55,8 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long part1Result = Day07.sumValidResults(values, Set.of(MathOperation.ADD, MathOperation.MULTIPLY));
+        final Set<MathOperation> mathOperations = Set.of(MathOperation.ADD, MathOperation.MULTIPLY);
+        final long part1Result = Day07.sumValidResults(values, mathOperations);
         assertThat(part1Result)
             .isEqualTo(932_137_732_557L);
     }
@@ -67,7 +68,8 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long part2Result = Day07.sumValidResults(values, Set.of(MathOperation.ADD, MathOperation.MULTIPLY, MathOperation.CONCATENATE));
+        final Set<MathOperation> mathOperations = Set.of(MathOperation.ADD, MathOperation.MULTIPLY, MathOperation.CONCATENATE);
+        final long part2Result = Day07.sumValidResults(values, mathOperations);
         assertThat(part2Result)
             .isEqualTo(661_823_605_105_500L);
     }

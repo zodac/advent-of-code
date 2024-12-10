@@ -26,12 +26,12 @@ import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.grid.AdjacentDirection;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
 import me.zodac.advent.pojo.grid.Grid;
-import me.zodac.advent.pojo.grid.IntegerGrid;
+import me.zodac.advent.pojo.tuple.Pair;
 
 /**
- * Solution for %YEAR%, Day %DAY%.
+ * Solution for 2024, Day 10.
  *
- * @see <a href="https://adventofcode.com/2024/day/10">[%YEAR%: 10] %TITLE%</a>
+ * @see <a href="https://adventofcode.com/2024/day/10">[2024: 10] Hoof It</a>
  */
 public final class Day10 {
 
@@ -52,11 +52,11 @@ public final class Day10 {
      * Also, a rating for each path can be calculated, which is the number of unique paths between a valid start/end {@link Point} route. Otherwise,
      * the value is <b>1</b> per unique start/end {@link Point} route.
      *
-     * @param integerGrid     the input {@link IntegerGrid}
+     * @param integerGrid     the input {@link Integer} {@link Grid}
      * @param calculateRating whether to calculate the rating for each route
      * @return the value of valid paths
      */
-    public static long calculateValueOfValidPaths(final IntegerGrid integerGrid, boolean calculateRating) {
+    public static long calculateValueOfValidPaths(final Grid<Integer> integerGrid, final boolean calculateRating) {
         final Collection<Point> startPoints = integerGrid
             .findValue(integer -> integer == START_POINT_VALUE)
             .toList();
@@ -66,30 +66,41 @@ public final class Day10 {
             Set<Point> nextPoints = getNextPoints(integerGrid, startPoint);
 
             while (!nextPoints.isEmpty()) {
-                final Set<Point> pointsToCheck = new HashSet<>();
-                for (final Point nextPoint : nextPoints) {
-                    if (integerGrid.at(nextPoint) == END_POINT_VALUE) {
-                        if (calculateRating) {
-                            final List<List<Point>> allPaths = integerGrid.findAllPaths(startPoint, nextPoint, AdjacentDirection.CARDINAL_ONLY,
-                                (currentPoint, potentialNextPoint) -> integerGrid.at(currentPoint) + 1 == integerGrid.at(potentialNextPoint)
-                            );
-                            total += allPaths.size();
-                        } else {
-                            total++;
-                        }
-                    } else {
-                        pointsToCheck.addAll(getNextPoints(integerGrid, nextPoint));
-                    }
-                }
-
-                nextPoints = pointsToCheck;
+                final Pair<Long, Set<Point>> valueAndNextPoints = calculateValueAndNextPoints(integerGrid, calculateRating, startPoint, nextPoints);
+                total += valueAndNextPoints.first();
+                nextPoints = valueAndNextPoints.second();
             }
         }
 
         return total;
     }
 
-    private static Set<Point> getNextPoints(IntegerGrid integerGrid, Point startPoint) {
+    private static Pair<Long, Set<Point>> calculateValueAndNextPoints(final Grid<Integer> integerGrid,
+                                                                      final boolean calculateRating,
+                                                                      final Point startPoint,
+                                                                      final Set<Point> nextPoints
+    ) {
+        long value = 0L;
+        final Set<Point> pointsToCheck = new HashSet<>();
+
+        for (final Point nextPoint : nextPoints) {
+            if (integerGrid.at(nextPoint) == END_POINT_VALUE) {
+                if (calculateRating) {
+                    final List<List<Point>> allPaths = integerGrid.findAllPaths(startPoint, nextPoint, AdjacentDirection.CARDINAL_ONLY,
+                        (currentPoint, potentialNextPoint) -> integerGrid.at(currentPoint) + 1 == integerGrid.at(potentialNextPoint)
+                    );
+                    value += allPaths.size();
+                } else {
+                    value++;
+                }
+            } else {
+                pointsToCheck.addAll(getNextPoints(integerGrid, nextPoint));
+            }
+        }
+        return Pair.of(value, pointsToCheck);
+    }
+
+    private static Set<Point> getNextPoints(final Grid<Integer> integerGrid, final Point startPoint) {
         final int currentValue = integerGrid.at(startPoint);
         final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false,
             AdjacentDirection.CARDINAL_ONLY, integerGrid.numberOfRows());

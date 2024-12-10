@@ -26,6 +26,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import me.zodac.advent.pojo.grid.AdjacentDirection;
 import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
+import me.zodac.advent.pojo.tuple.Pair;
+import me.zodac.advent.util.StringUtils;
 
 /**
  * Simple POJO defining a point on a coordinate system.
@@ -35,17 +37,9 @@ import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
  */
 public record Point(int x, int y) implements Comparable<Point> {
 
-    private static final Pattern POINT_DELIMITER_PATTERN = Pattern.compile(" -> ");
+    private static final int NUMBER_OF_COORDINATES_IN_A_POINT = 2;
+    private static final Pattern POINT_DELIMITER_PATTERN = Pattern.compile(" -> "); // TODO: Should this be here?
     private static final int DEFAULT_MOVE_DISTANCE = 1;
-
-    /**
-     * Creates a {@link Point} starting at the origin (0, 0).
-     *
-     * @return the created {@link Point}
-     */
-    public static Point atOrigin() {
-        return new Point(0, 0);
-    }
 
     /**
      * Creates a {@link Point} starting at the provided (x, y) coordinates.
@@ -57,17 +51,39 @@ public record Point(int x, int y) implements Comparable<Point> {
     }
 
     /**
-     * Creates a {@link Point} from an input in the format:
-     * <pre>
-     *     [x],[y]
-     * </pre>
+     * Creates a {@link Point} starting at the origin (0, 0).
+     *
+     * @return the created {@link Point}
+     */
+    public static Point atOrigin() {
+        return of(0, 0);
+    }
+
+    /**
+     * Creates a {@link Point} from an input {@link String} that contains two separate {@link Integer}s. The values can be separated by any character,
+     * but there must only be two {@link Integer}s in total.
      *
      * @param input the input to parse
      * @return the {@link Point}
+     * @throws IllegalArgumentException thrown if the input does not have exactly <b>2</b> {@link Integer}s
+     * @see StringUtils#collectNumbersInOrder(CharSequence)
      */
     public static Point parse(final String input) {
-        final String[] pairOfCoordinates = input.split(",");
-        return of(Integer.parseInt(pairOfCoordinates[0]), Integer.parseInt(pairOfCoordinates[1]));
+        final List<Long> coordinates = StringUtils.collectNumbersInOrder(input);
+
+        if (coordinates.size() != NUMBER_OF_COORDINATES_IN_A_POINT) {
+            throw new IllegalArgumentException(String.format("Cannot find two values in input: '%s'", input));
+        }
+
+        if (coordinates.getFirst() > Integer.MAX_VALUE || coordinates.getLast() > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException(String.format("Input has values larger than an integer: '%s'", input));
+        }
+
+        if (coordinates.getFirst() < Integer.MIN_VALUE || coordinates.getLast() < Integer.MIN_VALUE) {
+            throw new IllegalArgumentException(String.format("Input has values smaller than an integer: '%s'", input));
+        }
+
+        return of(coordinates.getFirst().intValue(), coordinates.getLast().intValue());
     }
 
     /**
@@ -81,7 +97,6 @@ public record Point(int x, int y) implements Comparable<Point> {
      */
     public static List<Point> ofMany(final CharSequence input) {
         final List<Point> points = new ArrayList<>();
-
         final String[] coordinates = POINT_DELIMITER_PATTERN.split(input);
 
         for (final String coordinate : coordinates) {
@@ -92,37 +107,25 @@ public record Point(int x, int y) implements Comparable<Point> {
     }
 
     /**
-     * Calculates the Manhatten distance between this {@link Point} and another. The Manhatten distance can be considered as how many spaces up/down
+     * Returns the delta in X and Y coordinates between the current {@link Point} and the provided {@link Point}.
+     *
+     * @param other the other {@link Point}
+     * @return the delta for X and Y coordinates to the other {@link Point}
+     */
+    public Pair<Integer, Integer> deltaTo(final Point other) {
+        return Pair.of(other.x - x, other.y - y);
+    }
+
+    /**
+     * Calculates the Manhattan distance between this {@link Point} and another. The Manhattan distance can be considered as how many spaces up/down
      * and left/right between the {@link Point}s
      *
      * @param other the other {@link Point}
      * @return the distance to the other {@link Point}
-     * @see <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Manhatten Distance</a>
+     * @see <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Manhattan Distance</a>
      */
     public long distanceTo(final Point other) {
         return (long) Math.abs(x - other.x) + Math.abs(y - other.y);
-    }
-
-    /**
-     * Finds all {@link Point}s in a line from the current {@link Point} in the given {@link Direction} for {@code numberOfAdditionalPoints}
-     * additional {@link Point}s. Note that the current {@link Point} is included in the returned {@link List}.
-     *
-     * @param direction                the {@link Direction} in which to find {@link Point}s
-     * @param numberOfAdditionalPoints the length of the line to form
-     * @return the {@link Point}s in the defined line
-     */
-    public List<Point> findPointsInLine(final Direction direction, final int numberOfAdditionalPoints) {
-        final List<Point> output = new ArrayList<>();
-        output.add(this);
-
-        Point currentPoint = this;
-        for (int i = 1; i <= numberOfAdditionalPoints; i++) {
-            final Point nextPoint = currentPoint.move(direction);
-            output.add(nextPoint);
-            currentPoint = nextPoint;
-        }
-
-        return output;
     }
 
     /**
@@ -241,6 +244,28 @@ public record Point(int x, int y) implements Comparable<Point> {
      */
     public Point moveDownRight() {
         return move(DEFAULT_MOVE_DISTANCE, DEFAULT_MOVE_DISTANCE);
+    }
+
+    /**
+     * Finds all {@link Point}s in a line from the current {@link Point} in the given {@link Direction} for {@code numberOfAdditionalPoints}
+     * additional {@link Point}s. Note that the current {@link Point} is included in the returned {@link List}.
+     *
+     * @param direction                the {@link Direction} in which to find {@link Point}s
+     * @param numberOfAdditionalPoints the length of the line to form
+     * @return the {@link Point}s in the defined line
+     */
+    public List<Point> findPointsInLine(final Direction direction, final int numberOfAdditionalPoints) {
+        final List<Point> output = new ArrayList<>();
+        output.add(this);
+
+        Point currentPoint = this;
+        for (int i = 1; i <= numberOfAdditionalPoints; i++) {
+            final Point nextPoint = currentPoint.move(direction);
+            output.add(nextPoint);
+            currentPoint = nextPoint;
+        }
+
+        return output;
     }
 
     /**
