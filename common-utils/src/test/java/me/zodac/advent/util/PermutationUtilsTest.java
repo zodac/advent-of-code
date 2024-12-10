@@ -29,7 +29,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 /**
  * Unit tests for {@link PermutationUtils}.
  */
-public class PermutationUtilsTest {
+class PermutationUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideForGenerateAll")

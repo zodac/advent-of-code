@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
@@ -471,6 +472,64 @@ public class Grid<E> {
      */
     public Grid<E> rotate(final RotationDirection rotationDirection) {
         return new Grid<>(ArrayUtils.rotate(internalGrid, rotationDirection));
+    }
+
+    /**
+     * Finds all possible paths between the start {@link Point} and the end {@link Point}. Retrieves all neighbour {@link Point}s based off the
+     * {@link AdjacentDirection}. The potential neighbours are filtered by the {@link BiPredicate} for the current and next {@link Point} on the
+     * {@link Grid}.
+     *
+     * @param startPoint          the start {@link Point}
+     * @param endPoint            the end {@link Point}
+     * @param adjacentDirection   the {@link AdjacentDirection} to select neighbour {@link Point}s
+     * @param adjacentPointFilter the {@link BiPredicate} to filter potential neighbour {@link Point}s
+     * @return all valid paths from the start {@link Point} to the end {@link Point}
+     * @see AdjacentPointsSelector
+     */
+    public List<List<Point>> findAllPaths(final Point startPoint, final Point endPoint, final AdjacentDirection adjacentDirection,
+                                          final BiPredicate<Point, Point> adjacentPointFilter) {
+        final List<List<Point>> routes = new ArrayList<>();
+        final List<Point> currentPath = new ArrayList<>();
+        final Set<Point> visited = new HashSet<>();
+
+        dfs(startPoint, endPoint, currentPath, routes, visited, adjacentDirection, adjacentPointFilter);
+        return routes;
+    }
+
+    private void dfs(final Point current,
+                     final Point end,
+                     final List<Point> currentPath,
+                     final List<List<Point>> paths,
+                     final Set<Point> visited,
+                     final AdjacentDirection adjacentDirection,
+                     final BiPredicate<Point, Point> adjacentPointFilter
+    ) {
+        currentPath.add(current);
+        visited.add(current);
+
+        // If the end point is reached, add the current path to the routes
+        if (current.equals(end)) {
+            paths.add(new ArrayList<>(currentPath));
+        } else {
+            getValidAdjacentPoints(current, adjacentDirection, adjacentPointFilter)
+                .stream()
+                .filter(neighbour -> !visited.contains(neighbour))
+                .forEach(neighbour -> dfs(neighbour, end, currentPath, paths, visited, adjacentDirection, adjacentPointFilter));
+        }
+
+        // Remove current point from the path and unmark as visited
+        currentPath.removeLast();
+        visited.remove(current);
+    }
+
+    private List<Point> getValidAdjacentPoints(final Point currentPoint,
+                                               final AdjacentDirection adjacentDirection,
+                                               final BiPredicate<Point, Point> adjacentPointFilter
+    ) {
+        return currentPoint
+            .getAdjacentPoints(AdjacentPointsSelector.bounded(false, adjacentDirection, gridSize))
+            .filter(nextPoint -> adjacentPointFilter.test(currentPoint, nextPoint))
+            .toList();
     }
 
     /**

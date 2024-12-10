@@ -1,6 +1,6 @@
 # Advent Of Code: Java Edition
 
-![2024](https://img.shields.io/badge/2024%20⭐-14-orange)
+![2024](https://img.shields.io/badge/2024%20⭐-16-orange)
 ![2023](https://img.shields.io/badge/2023%20⭐-32-yellow)
 ![2022](https://img.shields.io/badge/2022%20⭐-28-yellow)
 ![2021](https://img.shields.io/badge/2021%20⭐-19-orange)
@@ -56,15 +56,18 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 <details>
     <summary>2024 Results</summary>
 
-| Day                                          |   Part 1 |   Part 2 |
-|:---------------------------------------------|---------:|---------:|
-| [Day 1](https://adventofcode.com/2024/day/1) |  2,369 ⭐ |  2,112 ⭐ |
-| [Day 2](https://adventofcode.com/2024/day/2) | 19,045 ⭐ | 16,440 ⭐ |
-| [Day 3](https://adventofcode.com/2024/day/3) |  6,666 ⭐ |  4,855 ⭐ |
-| [Day 4](https://adventofcode.com/2024/day/4) |  6,532 ⭐ |  4,501 ⭐ |
-| [Day 5](https://adventofcode.com/2024/day/5) |  6,528 ⭐ |  5,066 ⭐ |
-| [Day 6](https://adventofcode.com/2024/day/6) |  1,686 ⭐ |  2,576 ⭐ |
-| [Day 7](https://adventofcode.com/2024/day/7) |  5,892 ⭐ |  5,164 ⭐ |
+| Day                                            |   Part 1 |   Part 2 |
+|:-----------------------------------------------|---------:|---------:|
+| [Day 1](https://adventofcode.com/2024/day/1)   |  2,369 ⭐ |  2,112 ⭐ |
+| [Day 2](https://adventofcode.com/2024/day/2)   | 19,045 ⭐ | 16,440 ⭐ |
+| [Day 3](https://adventofcode.com/2024/day/3)   |  6,666 ⭐ |  4,855 ⭐ |
+| [Day 4](https://adventofcode.com/2024/day/4)   |  6,532 ⭐ |  4,501 ⭐ |
+| [Day 5](https://adventofcode.com/2024/day/5)   |  6,528 ⭐ |  5,066 ⭐ |
+| [Day 6](https://adventofcode.com/2024/day/6)   |  1,686 ⭐ |  2,576 ⭐ |
+| [Day 7](https://adventofcode.com/2024/day/7)   |  5,892 ⭐ |  5,164 ⭐ |
+| [Day 8](https://adventofcode.com/2024/day/8)   |          |          |
+| [Day 9](https://adventofcode.com/2024/day/9)   |          |          |
+| [Day 10](https://adventofcode.com/2024/day/10) |  2,066 ⭐ |  5,784 ⭐ |
 
 </details>
 

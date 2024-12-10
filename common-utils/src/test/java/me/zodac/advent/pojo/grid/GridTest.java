@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Unit tests for {@link Grid}. Placeholder tests to fix PIT failures until I build the test coverage up.
  */
-public class GridTest {
+class GridTest {
 
     @Test
     void testEquals() {

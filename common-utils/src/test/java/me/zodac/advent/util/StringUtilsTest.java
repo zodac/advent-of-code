@@ -58,7 +58,7 @@ class StringUtilsTest {
         "'     ',Cannot bisect input of length: 5", // Blank, with invalid length
         "'',Input cannot be empty",                 // Empty
     })
-    void testBisect_givenInvalidInputs(final String input, final String errorMessage) {
+    void testBisect_invalid(final String input, final String errorMessage) {
         assertThatThrownBy(() -> StringUtils.bisect(input))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(errorMessage);

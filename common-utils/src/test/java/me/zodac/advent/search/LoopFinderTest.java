@@ -32,7 +32,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 /**
  * Unit tests for {@link LoopFinder}.
  */
-public class LoopFinderTest {
+class LoopFinderTest {
 
     @ParameterizedTest
     @MethodSource("provideForHasLoop_integerGrid")

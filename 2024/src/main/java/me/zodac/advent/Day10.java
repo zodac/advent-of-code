@@ -1,0 +1,102 @@
+/*
+ * BSD Zero Clause License
+ *
+ * Copyright (c) 2021-2024 zodac.me
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+ * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+package me.zodac.advent;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import me.zodac.advent.pojo.Point;
+import me.zodac.advent.pojo.grid.AdjacentDirection;
+import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
+import me.zodac.advent.pojo.grid.Grid;
+import me.zodac.advent.pojo.grid.IntegerGrid;
+
+/**
+ * Solution for %YEAR%, Day %DAY%.
+ *
+ * @see <a href="https://adventofcode.com/2024/day/10">[%YEAR%: 10] %TITLE%</a>
+ */
+public final class Day10 {
+
+    private static final int START_POINT_VALUE = 0;
+    private static final int END_POINT_VALUE = 9;
+
+    private Day10() {
+
+    }
+
+    /**
+     * Given an {@link Integer} {@link Grid}, where a {@value #START_POINT_VALUE} value is the start of a trail and a {@value #END_POINT_VALUE} value
+     * is the end of a trail, calculate the 'value' of each start {@link Point}. This is done by traversing from each possible start {@link Point} and
+     * attempting to find a route to the end {@link Point}. Only cardinal directions (UP, DOWN, LEFT, RIGHT) may be used, and a {@link Point} is only
+     * valid if the value is exactly <b>1</b> greater than the current value.
+     *
+     * <p>
+     * Also, a rating for each path can be calculated, which is the number of unique paths between a valid start/end {@link Point} route. Otherwise,
+     * the value is <b>1</b> per unique start/end {@link Point} route.
+     *
+     * @param integerGrid     the input {@link IntegerGrid}
+     * @param calculateRating whether to calculate the rating for each route
+     * @return the value of valid paths
+     */
+    public static long calculateValueOfValidPaths(final IntegerGrid integerGrid, boolean calculateRating) {
+        final Collection<Point> startPoints = integerGrid
+            .findValue(integer -> integer == START_POINT_VALUE)
+            .toList();
+
+        long total = 0L;
+        for (final Point startPoint : startPoints) {
+            Set<Point> nextPoints = getNextPoints(integerGrid, startPoint);
+
+            while (!nextPoints.isEmpty()) {
+                final Set<Point> pointsToCheck = new HashSet<>();
+                for (final Point nextPoint : nextPoints) {
+                    if (integerGrid.at(nextPoint) == END_POINT_VALUE) {
+                        if (calculateRating) {
+                            final List<List<Point>> allPaths = integerGrid.findAllPaths(startPoint, nextPoint, AdjacentDirection.CARDINAL_ONLY,
+                                (currentPoint, potentialNextPoint) -> integerGrid.at(currentPoint) + 1 == integerGrid.at(potentialNextPoint)
+                            );
+                            total += allPaths.size();
+                        } else {
+                            total++;
+                        }
+                    } else {
+                        pointsToCheck.addAll(getNextPoints(integerGrid, nextPoint));
+                    }
+                }
+
+                nextPoints = pointsToCheck;
+            }
+        }
+
+        return total;
+    }
+
+    private static Set<Point> getNextPoints(IntegerGrid integerGrid, Point startPoint) {
+        final int currentValue = integerGrid.at(startPoint);
+        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false,
+            AdjacentDirection.CARDINAL_ONLY, integerGrid.numberOfRows());
+
+        return startPoint
+            .getAdjacentPoints(adjacentPointsSelector)
+            .filter(point -> integerGrid.at(point) == currentValue + 1)
+            .collect(Collectors.toSet());
+    }
+}
