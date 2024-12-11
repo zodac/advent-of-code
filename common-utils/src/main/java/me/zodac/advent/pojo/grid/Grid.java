@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -42,6 +43,16 @@ import me.zodac.advent.util.ArrayUtils;
  */
 // TODO: Lots of 'x/y', 'i/j', 'row/column'; be more consistent
 public class Grid<E> {
+
+    public Set<Point> allPoints() {
+        final Set<Point> allPoints = new TreeSet<>();
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                allPoints.add(Point.of(i, j));
+            }
+        }
+        return allPoints;
+    }
 
     /**
      * The length (or width) of the {@link Grid}.
@@ -556,7 +567,7 @@ public class Grid<E> {
             }
 
             for (final E val : row) {
-                logLine(val);
+                log(val);
             }
             logLine("");
         }
