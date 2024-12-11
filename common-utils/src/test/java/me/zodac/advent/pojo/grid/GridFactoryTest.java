@@ -18,6 +18,7 @@
 package me.zodac.advent.pojo.grid;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import me.zodac.advent.pojo.Point;
@@ -63,5 +64,12 @@ class GridFactoryTest {
             .isEqualTo(0);
         assertThat(output.at(Point.of(1, 1)))
             .isEqualTo(0);
+
+        assertThatThrownBy(() -> GridFactory.ofIntegersWithSize(0))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Size must be positive integer, found: 0");
+        assertThatThrownBy(() -> GridFactory.ofIntegersWithSize(-1))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Size must be positive integer, found: -1");
     }
 }
