@@ -20,7 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import me.zodac.advent.input.InputReader;
-import me.zodac.advent.pojo.grid.IntegerGrid;
+import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,7 +32,7 @@ class Day08Test {
 
     @Test
     void example() {
-        final IntegerGrid integerGrid = InputReader
+        final Grid<Integer> integerGrid = InputReader
             .forExample(INPUT_FILENAME)
             .asGrid()
             .ofIntegers();
@@ -48,7 +48,7 @@ class Day08Test {
 
     @Test
     void part1() {
-        final IntegerGrid integerGrid = InputReader
+        final Grid<Integer> integerGrid = InputReader
             .forPuzzle(INPUT_FILENAME)
             .asGrid()
             .ofIntegers();
@@ -60,7 +60,7 @@ class Day08Test {
 
     @Test
     void part2() {
-        final IntegerGrid integerGrid = InputReader
+        final Grid<Integer> integerGrid = InputReader
             .forPuzzle(INPUT_FILENAME)
             .asGrid()
             .ofIntegers();

@@ -17,8 +17,7 @@
 
 package me.zodac.advent;
 
-import java.util.List;
-import me.zodac.advent.pojo.grid.IntegerGrid;
+import me.zodac.advent.pojo.grid.Grid;
 import me.zodac.advent.util.ArrayUtils;
 
 /**
@@ -33,8 +32,8 @@ public final class Day08 {
     }
 
     /**
-     * Given an {@link IntegerGrid} where each value represents a single tree's height in a forest, we count the numberof trees that can be viewed
-     * from outside a forest.
+     * Given an {@link Integer} {@link Grid} where each value represents a single tree's height in a forest, we count the number of trees that can be
+     * viewed from outside a forest.
      *
      * <p>
      * For example, the input:
@@ -51,12 +50,11 @@ public final class Day08 {
      * direction (up, down, left, right). It will be visible from a direction if there are no trees equal to or greater than its height. In the above
      * example, we have 5 visible trees in the middle, and 16 visible trees along the edge.
      *
-     * @param integerGrid the input {@link IntegerGrid}
+     * @param integerGrid the input {@link Integer} {@link Grid}
      * @return the number of trees visible from outside
      * @see ArrayUtils#countPerimeterElements(Object[][])
-     * @see IntegerGrid#parse(List)
      */
-    public static long countTreesVisibleFromOutsideForest(final IntegerGrid integerGrid) {
+    public static long countTreesVisibleFromOutsideForest(final Grid<Integer> integerGrid) {
         final Integer[][] trees = integerGrid.getInternalGrid();
 
         long innerCount = 0L;
@@ -121,8 +119,8 @@ public final class Day08 {
     }
 
     /**
-     * Given an {@link IntegerGrid} where each value represents a single tree's height in a forest, find the tree with the highest 'scenic score'. The
-     * scenic score is defined as:
+     * Given an {@link Integer} {@link Grid} where each value represents a single tree's height in a forest, find the tree with the highest 'scenic
+     * score'. The scenic score is defined as:
      * <pre>
      *     treesWeCanSeeLookingUp * treesWeCanSeeLookingDown * treesWeCanSeeLookingLeft * treesWeCanSeeLookingRight
      * </pre>
@@ -142,12 +140,11 @@ public final class Day08 {
      * check.  We can see trees in a given direction (up, down, left, right) if the tree is less than the height of our tree, or we reach the edge. In
      * the above example, the middle 5 in the 2nd last row has the highest scenic score, of <b>8</b>.
      *
-     * @param integerGrid the input {@link IntegerGrid}
+     * @param integerGrid the input {@link Integer} {@link Grid}
      * @return the highest scenic score
      * @see ArrayUtils#countPerimeterElements(Object[][])
-     * @see IntegerGrid#parse(List)
      */
-    public static long findHighestScenicScore(final IntegerGrid integerGrid) {
+    public static long findHighestScenicScore(final Grid<Integer> integerGrid) {
         final Integer[][] trees = integerGrid.getInternalGrid();
         long max = Long.MIN_VALUE;
 

@@ -19,8 +19,9 @@ package me.zodac.advent;
 
 import java.util.Collection;
 import me.zodac.advent.pojo.Line;
-import me.zodac.advent.pojo.grid.AllowedLineType;
-import me.zodac.advent.pojo.grid.IntegerGrid;
+import me.zodac.advent.pojo.Point;
+import me.zodac.advent.pojo.grid.Grid;
+import me.zodac.advent.pojo.grid.GridFactory;
 
 /**
  * Solution for 2021, Day 5.
@@ -29,49 +30,51 @@ import me.zodac.advent.pojo.grid.IntegerGrid;
  */
 public final class Day05 {
 
+    private static final int NUMBER_SIGNIFYING_OVERLAP = 2;
+
     private Day05() {
 
     }
 
     /**
-     * Draws only the horizontal and vertical {@link Line}s in the supplied {@code coordinateLines} onto a {@link IntegerGrid} and counts the
+     * Draws only the horizontal and vertical {@link Line}s in the supplied {@code coordinateLines} onto a {@link Integer} {@link Grid} and counts the
      * number of points that have overlapping {@link Line}s.
      *
-     * @param coordinateLines the {@link Line}s to be drawn on the {@link IntegerGrid}
+     * @param coordinateLines the {@link Line}s to be drawn on the {@link Integer} {@link Grid}
      * @return the number of overlapping points
      * @see Line#isHorizontal()
      * @see Line#isVertical()
      */
-    public static int addHorizontalAndVerticalLinesAndReturnOverlap(final Collection<Line> coordinateLines) {
+    public static long addHorizontalAndVerticalLinesAndReturnOverlap(final Collection<Line> coordinateLines) {
         final int maxGridSize = getMaxGridSize(coordinateLines);
-        final IntegerGrid integerGrid = IntegerGrid.ofSize(maxGridSize);
+        Grid<Integer> integerGrid = GridFactory.ofIntegersWithSize(maxGridSize);
 
         for (final Line coordinateLine : coordinateLines) {
-            integerGrid.addLine(coordinateLine, AllowedLineType.NO_DIAGONAL_LINES);
+            integerGrid = addLine(integerGrid, coordinateLine, false);
         }
 
-        return integerGrid.numberOfOverlaps();
+        return integerGrid.findValue(integer -> integer >= NUMBER_SIGNIFYING_OVERLAP).count();
     }
 
     /**
-     * Draws the horizontal, vertical and 'perfect' diagonal {@link Line}s in the supplied {@code coordinateLines} onto a {@link IntegerGrid} and
-     * counts the number of points that have overlapping {@link Line}s.
+     * Draws the horizontal, vertical and 'perfect' diagonal {@link Line}s in the supplied {@code coordinateLines} onto a {@link Integer} {@link Grid}
+     * and counts the number of points that have overlapping {@link Line}s.
      *
-     * @param coordinateLines the {@link Line}s to be drawn on the {@link IntegerGrid}
+     * @param coordinateLines the {@link Line}s to be drawn on the {@link Integer} {@link Grid}
      * @return the number of overlapping points
      * @see Line#isHorizontal()
      * @see Line#isVertical()
      * @see Line#isPerfectDiagonal()
      */
-    public static int addAllLinesAndReturnOverlap(final Collection<Line> coordinateLines) {
+    public static long addAllLinesAndReturnOverlap(final Collection<Line> coordinateLines) {
         final int maxGridSize = getMaxGridSize(coordinateLines);
-        final IntegerGrid integerGrid = IntegerGrid.ofSize(maxGridSize);
+        Grid<Integer> integerGrid = GridFactory.ofIntegersWithSize(maxGridSize);
 
         for (final Line coordinateLine : coordinateLines) {
-            integerGrid.addLine(coordinateLine, AllowedLineType.ALL_LINES);
+            integerGrid = addLine(integerGrid, coordinateLine, true);
         }
 
-        return integerGrid.numberOfOverlaps();
+        return integerGrid.findValue(integer -> integer >= NUMBER_SIGNIFYING_OVERLAP).count();
     }
 
     private static int getMaxGridSize(final Collection<Line> coordinateLines) {
@@ -84,5 +87,19 @@ public final class Day05 {
 
         // Coordinates (0,0) would need a grid of size 1, not 0, so make sure to add 1
         return max + 1;
+    }
+
+    // Don't think this is needed in the base Grid class, but maybe one day...
+    private static Grid<Integer> addLine(final Grid<Integer> integerGrid, final Line line, final boolean allowAllLines) {
+        if (!allowAllLines && line.isPerfectDiagonal()) {
+            return integerGrid;
+        }
+
+        final Integer[][] internalGrid = integerGrid.getInternalGrid();
+        for (final Point point : line.getPointsInLine()) {
+            internalGrid[point.y()][point.x()]++;
+        }
+
+        return new Grid<>(internalGrid);
     }
 }

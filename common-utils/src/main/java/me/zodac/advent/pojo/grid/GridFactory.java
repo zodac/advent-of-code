@@ -18,6 +18,7 @@
 package me.zodac.advent.pojo.grid;
 
 import java.util.List;
+import me.zodac.advent.util.NumberUtils;
 
 /**
  * Factory class to create instances of {@link Grid}.
@@ -65,14 +66,14 @@ public final class GridFactory {
     }
 
     /**
-     * Converts the {@link List} of {@link String}s to a {@link IntegerGrid}. Note that this expects no blank spaces, and will assume every character
-     * is a single digit {@link Integer}.
+     * Converts the {@link List} of {@link String}s to a {@link Integer} {@link Grid}. Note that this expects no blank spaces, and will assume every
+     * character is a single digit {@link Integer}.
      *
      * @param strings the input {@link List} of {@link String}s
-     * @return the {@link IntegerGrid}
+     * @return the {@link Integer} {@link Grid}
      */
-    public static IntegerGrid ofIntegers(final List<String> strings) {
-        return IntegerGrid.parse(strings);
+    public static Grid<Integer> ofIntegers(final List<String> strings) {
+        return Grid.parseGrid(strings, character -> NumberUtils.toIntOrDefault(character, 0));
     }
 
     /**

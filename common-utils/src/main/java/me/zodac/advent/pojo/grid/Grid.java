@@ -151,7 +151,7 @@ public class Grid<E> {
      *}
      *
      * <p>
-     * In this case, each value in the box will be incremented by one, giving an updated {@link IntegerGrid} like:
+     * In this case, each value in the box will be incremented by one, giving an updated {@link Grid} like:
      * <pre>
      *     1 1 1 1 1 0 0 0 0 0
      *     1 1 1 1 1 0 0 0 0 0
@@ -193,7 +193,7 @@ public class Grid<E> {
      *}
      *
      * <p>
-     * This results in a final {@link IntegerGrid} of:
+     * This results in a final {@link Grid} of:
      * <pre>
      *     1 3 2 2 3 2 2 2 2 2
      *     1 1 0 0 1 0 0 0 0 0

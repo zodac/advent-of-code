@@ -35,7 +35,6 @@ import java.util.stream.Stream;
 import me.zodac.advent.pojo.grid.BooleanGrid;
 import me.zodac.advent.pojo.grid.Grid;
 import me.zodac.advent.pojo.grid.GridFactory;
-import me.zodac.advent.pojo.grid.IntegerGrid;
 import me.zodac.advent.util.StringUtils;
 
 /**
@@ -470,12 +469,12 @@ public final class InputReader {
         }
 
         /**
-         * Converts the {@link List} of {@link String}s to a {@link IntegerGrid}.
+         * Converts the {@link List} of {@link String}s to a {@link Integer} {@link Grid}.
          *
-         * @return the {@link IntegerGrid}
+         * @return the {@link Integer} {@link Grid}
          * @see GridFactory#ofIntegers(List)
          */
-        public IntegerGrid ofIntegers() {
+        public Grid<Integer> ofIntegers() {
             return GridFactory.ofIntegers(strings);
         }
 

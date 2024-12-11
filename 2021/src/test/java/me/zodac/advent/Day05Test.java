@@ -39,13 +39,13 @@ class Day05Test {
             .as(Day05Test::convertToLine)
             .readAllLines();
 
-        final int numberOfOverlaps1 = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
+        final long numberOfOverlaps1 = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
         assertThat(numberOfOverlaps1)
-            .isEqualTo(5);
+            .isEqualTo(5L);
 
-        final int numberOfOverlaps2 = Day05.addAllLinesAndReturnOverlap(coordinateLines);
+        final long numberOfOverlaps2 = Day05.addAllLinesAndReturnOverlap(coordinateLines);
         assertThat(numberOfOverlaps2)
-            .isEqualTo(12);
+            .isEqualTo(12L);
     }
 
     @Test
@@ -55,9 +55,9 @@ class Day05Test {
             .as(Day05Test::convertToLine)
             .readAllLines();
 
-        final int numberOfOverlaps = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
+        final long numberOfOverlaps = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
         assertThat(numberOfOverlaps)
-            .isEqualTo(6_113);
+            .isEqualTo(6_113L);
     }
 
     @Test
@@ -67,9 +67,9 @@ class Day05Test {
             .as(Day05Test::convertToLine)
             .readAllLines();
 
-        final int numberOfOverlaps = Day05.addAllLinesAndReturnOverlap(coordinateLines);
+        final long numberOfOverlaps = Day05.addAllLinesAndReturnOverlap(coordinateLines);
         assertThat(numberOfOverlaps)
-            .isEqualTo(20_373);
+            .isEqualTo(20_373L);
     }
 
     private static Line convertToLine(final String input) {

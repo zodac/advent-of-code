@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import me.zodac.advent.pojo.Point;
+import me.zodac.advent.util.NumberUtils;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -68,17 +69,17 @@ class GridTest {
             "23"
         );
 
-        final IntegerGrid integerGrid = IntegerGrid.parse(input);
-        assertThat(integerGrid.at(Point.of(0, 0)))
-            .isEqualTo(1);
-        assertThat(integerGrid.at(Point.of(0, 1)))
-            .isEqualTo(2);
-        assertThat(integerGrid.at(Point.of(1, 0)))
-            .isEqualTo(2);
-        assertThat(integerGrid.at(Point.of(1, 1)))
-            .isEqualTo(3);
-        assertThat(integerGrid.elementsInGrid())
+        final Grid<Integer> output = Grid.parseGrid(input, character -> NumberUtils.toIntOrDefault(character, 0));
+        assertThat(output.elementsInGrid())
             .isEqualTo(4);
 
+        assertThat(output.at(Point.of(0, 0)))
+            .isEqualTo(1);
+        assertThat(output.at(Point.of(0, 1)))
+            .isEqualTo(2);
+        assertThat(output.at(Point.of(1, 0)))
+            .isEqualTo(2);
+        assertThat(output.at(Point.of(1, 1)))
+            .isEqualTo(3);
     }
 }

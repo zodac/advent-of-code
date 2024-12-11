@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 /**
  * Enum defining an instruction on how to handle a point in a coordinate grid.
  */
+// TODO: This shouldn't be common
 public enum GridInstruction {
 
     /**
