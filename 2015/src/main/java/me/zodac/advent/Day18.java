@@ -17,8 +17,12 @@
 
 package me.zodac.advent;
 
+import java.util.Set;
+import java.util.function.ToIntFunction;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.BooleanGrid;
+import me.zodac.advent.pojo.grid.AdjacentDirection;
+import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
+import me.zodac.advent.pojo.grid.Grid;
 
 /**
  * Solution for 2015, Day 18.
@@ -27,43 +31,63 @@ import me.zodac.advent.pojo.grid.BooleanGrid;
  */
 public final class Day18 {
 
+    private static final Set<Integer> NEIGHBOUR_VALUES_FOR_OFF_POINT = Set.of(3);
+    private static final Set<Integer> NEIGHBOUR_VALUES_FOR_ON_POINT = Set.of(2, 3);
+    private static final ToIntFunction<Boolean> EVALUATOR = booleanValue -> booleanValue ? 1 : 0;
+
     private Day18() {
 
     }
 
     /**
-     * Given a {@link BooleanGrid}, plays the {@link BooleanGrid#playGameOfLife()} a number of times.
+     * Given a {@link Boolean} {@link Grid}, plays <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway's Game of Life</a> a number
+     * of times.
      *
-     * @param initialState       the inital state of the {@link BooleanGrid}
-     * @param numberOfIterations the number of times to execute {@link BooleanGrid#playGameOfLife()}
-     * @return the number of {@link BooleanGrid} {@link Point}s that have been turned on
+     * @param initialState       the initial state of the {@link Boolean} {@link Grid}
+     * @param numberOfIterations the number of times to execute the 'Game of Life'
+     * @return the number of {@link Point}s that have been turned on
      */
-    public static long playGameOfLife(final BooleanGrid initialState, final int numberOfIterations) {
-        BooleanGrid booleanGrid = initialState;
-        for (int i = 0; i < numberOfIterations; i++) {
-            booleanGrid = booleanGrid.playGameOfLife();
+    public static long playGameOfLife(final Grid<Boolean> initialState, final int numberOfIterations, final boolean cornersAlwaysOn) {
+        Grid<Boolean> booleanGrid = initialState;
+        if (cornersAlwaysOn) {
+            booleanGrid = initialState.updateCorners(true);
         }
 
-        return booleanGrid.sumValues(BooleanGrid.EVALUATOR);
+        for (int i = 0; i < numberOfIterations; i++) {
+            booleanGrid = playGameOfLife(booleanGrid, cornersAlwaysOn);
+        }
+
+        return booleanGrid.sumValues(EVALUATOR);
     }
 
-    /**
-     * Given a {@link BooleanGrid}, plays the {@link BooleanGrid#playGameOfLife(boolean)} a number of times.
-     *
-     * <p>
-     * For this execute, the corners of the {@link BooleanGrid} must be set to {@code true}.
-     *
-     * @param initialState       the inital state of the {@link BooleanGrid}
-     * @param numberOfIterations the number of times to execute {@link BooleanGrid#playGameOfLife(boolean)}
-     * @return the number of {@link BooleanGrid} {@link Point}s that have been turned on
-     * @see BooleanGrid#updateCorners(Boolean)
-     */
-    public static long playGameOfLifeWithCornersAlwaysOn(final BooleanGrid initialState, final int numberOfIterations) {
-        BooleanGrid booleanGrid = initialState.updateCorners(true);
-        for (int i = 0; i < numberOfIterations; i++) {
-            booleanGrid = booleanGrid.playGameOfLife(true);
+    private static Grid<Boolean> playGameOfLife(final Grid<Boolean> booleanGrid, final boolean cornersAlwaysOn) {
+        final int numberOfRows = booleanGrid.numberOfRows();
+        final int numberOfColumns = booleanGrid.numberOfColumns();
+        final Boolean[][] newGrid = new Boolean[numberOfRows][numberOfColumns];
+
+        for (int row = 0; row < numberOfRows; row++) {
+            for (int column = 0; column < numberOfColumns; column++) {
+                if (cornersAlwaysOn && booleanGrid.isCorner(row, column)) {
+                    newGrid[row][column] = true;
+                    continue;
+                }
+
+                final Point currentPoint = Point.of(row, column);
+                final boolean isSet = booleanGrid.at(currentPoint);
+
+                final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, numberOfRows);
+                final int valueOfSetNeighbours = currentPoint.getAdjacentPoints(adjacentPointsSelector)
+                    .mapToInt(point -> EVALUATOR.applyAsInt(booleanGrid.at(point)))
+                    .sum();
+
+                if (isSet) {
+                    newGrid[row][column] = NEIGHBOUR_VALUES_FOR_ON_POINT.contains(valueOfSetNeighbours);
+                } else {
+                    newGrid[row][column] = NEIGHBOUR_VALUES_FOR_OFF_POINT.contains(valueOfSetNeighbours);
+                }
+            }
         }
 
-        return booleanGrid.sumValues(BooleanGrid.EVALUATOR);
+        return new Grid<>(newGrid);
     }
 }

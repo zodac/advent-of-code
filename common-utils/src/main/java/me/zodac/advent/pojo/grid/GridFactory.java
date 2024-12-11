@@ -30,14 +30,14 @@ public final class GridFactory {
     }
 
     /**
-     * Converts the {@link List} of {@link String}s to a {@link BooleanGrid}.
+     * Converts the {@link List} of {@link String}s to a {@link Boolean} {@link Grid}.
      *
      * @param strings              the input {@link List} of {@link String}s
      * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
-     * @return the {@link BooleanGrid}
+     * @return the {@link Boolean} {@link Grid}
      */
-    public static BooleanGrid ofBooleans(final List<String> strings, final char symbolSignifyingTrue) {
-        return BooleanGrid.parse(strings, symbolSignifyingTrue);
+    public static Grid<Boolean> ofBooleans(final List<String> strings, final char symbolSignifyingTrue) {
+        return Grid.parseGrid(strings, character -> character == symbolSignifyingTrue);
     }
 
     /**

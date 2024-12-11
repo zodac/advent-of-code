@@ -32,7 +32,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import me.zodac.advent.pojo.grid.BooleanGrid;
 import me.zodac.advent.pojo.grid.Grid;
 import me.zodac.advent.pojo.grid.GridFactory;
 import me.zodac.advent.util.StringUtils;
@@ -448,13 +447,13 @@ public final class InputReader {
         }
 
         /**
-         * Converts the {@link List} of {@link String}s to a {@link BooleanGrid}.
+         * Converts the {@link List} of {@link String}s to a {@link Boolean} {@link Grid}.
          *
          * @param symbolSignifyingTrue the symbol in the {@link String} that defines a {@code true} {@link Boolean}
-         * @return the {@link BooleanGrid}
+         * @return the {@link Boolean} {@link Grid}
          * @see GridFactory#ofBooleans(List, char)
          */
-        public BooleanGrid ofBooleans(final char symbolSignifyingTrue) {
+        public Grid<Boolean> ofBooleans(final char symbolSignifyingTrue) {
             return GridFactory.ofBooleans(strings, symbolSignifyingTrue);
         }
 

@@ -126,6 +126,22 @@ public class Grid<E> {
     }
 
     /**
+     * Sets the corners of the {@link Grid} to the input {@code newValue}.
+     *
+     * @param newValue the new value for the corners
+     * @return a new instance of {@link Grid} with the updated corners
+     */
+    public Grid<E> updateCorners(final E newValue) {
+        final E[][] internalGridCopy = ArrayUtils.deepCopy(internalGrid);
+        internalGridCopy[0][0] = newValue;
+        internalGridCopy[0][gridSize - 1] = newValue;
+        internalGridCopy[gridSize - 1][0] = newValue;
+        internalGridCopy[gridSize - 1][gridSize - 1] = newValue;
+
+        return new Grid<>(internalGridCopy);
+    }
+
+    /**
      * Draws a box on the {@link Grid}, where each {@link Point} is updated based according to the update
      * {@link Function}. All values inside the box are also updated.
      *
@@ -244,29 +260,13 @@ public class Grid<E> {
     }
 
     /**
-     * Sets the corners of the {@link Grid} to the input {@code newValue}.
-     *
-     * @param newValue the new value for the corners
-     * @return the updated {@code grid}
-     */
-    protected E[][] updateCornersToValue(final E newValue) {
-        // TODO: If you're setting new values for the grid, what's the point of returning a clone?!
-        internalGrid[0][0] = newValue;
-        internalGrid[0][gridSize - 1] = newValue;
-        internalGrid[gridSize - 1][0] = newValue;
-        internalGrid[gridSize - 1][gridSize - 1] = newValue;
-
-        return internalGrid.clone();
-    }
-
-    /**
      * Checks if the input point is one of the corners of the {@link Grid}.
      *
      * @param row    the x coordinate
      * @param column the y coordinate
      * @return {@code true} if the input {@link Point} is a corner of the {@link Grid}
      */
-    protected boolean isCorner(final int row, final int column) {
+    public boolean isCorner(final int row, final int column) {
         return (row == 0 && column == 0)
             || (row == gridSize - 1 && column == gridSize - 1)
             || (row == 0 && column == gridSize - 1)

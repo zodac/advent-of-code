@@ -20,7 +20,7 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import me.zodac.advent.input.InputReader;
-import me.zodac.advent.pojo.grid.BooleanGrid;
+import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,40 +33,40 @@ class Day18Test {
 
     @Test
     void example() {
-        final BooleanGrid booleanGrid = InputReader
+        final Grid<Boolean> booleanGrid = InputReader
             .forExample(INPUT_FILENAME)
             .asGrid()
             .ofBooleans(SYMBOL_SIGNIFYING_TRUE);
 
-        final long numberOfCombinations1 = Day18.playGameOfLife(booleanGrid, 4);
+        final long numberOfCombinations1 = Day18.playGameOfLife(booleanGrid, 4, false);
         assertThat(numberOfCombinations1)
             .isEqualTo(4L);
 
-        final long numberOfCombinations2 = Day18.playGameOfLifeWithCornersAlwaysOn(booleanGrid, 5);
+        final long numberOfCombinations2 = Day18.playGameOfLife(booleanGrid, 5, true);
         assertThat(numberOfCombinations2)
             .isEqualTo(17L);
     }
 
     @Test
     void part1() {
-        final BooleanGrid booleanGrid = InputReader
+        final Grid<Boolean> booleanGrid = InputReader
             .forPuzzle(INPUT_FILENAME)
             .asGrid()
             .ofBooleans(SYMBOL_SIGNIFYING_TRUE);
 
-        final long numberOfCombinations = Day18.playGameOfLife(booleanGrid, 100);
+        final long numberOfCombinations = Day18.playGameOfLife(booleanGrid, 100, false);
         assertThat(numberOfCombinations)
             .isEqualTo(814L);
     }
 
     @Test
     void part2() {
-        final BooleanGrid booleanGrid = InputReader
+        final Grid<Boolean> booleanGrid = InputReader
             .forPuzzle(INPUT_FILENAME)
             .asGrid()
             .ofBooleans(SYMBOL_SIGNIFYING_TRUE);
 
-        final long numberOfCombinations = Day18.playGameOfLifeWithCornersAlwaysOn(booleanGrid, 100);
+        final long numberOfCombinations = Day18.playGameOfLife(booleanGrid, 100, true);
         assertThat(numberOfCombinations)
             .isEqualTo(924L);
     }
