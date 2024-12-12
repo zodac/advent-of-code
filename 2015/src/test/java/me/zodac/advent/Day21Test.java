@@ -49,8 +49,8 @@ class Day21Test {
             .readAllAsSingleString();
         final Warrior boss = Warrior.parse(value);
 
-        final long cheapestEquimentCost = Day21.costOfCheapestEquipmentThatDefeatsBoss(EQUIPMENT_COMBINATIONS, boss);
-        assertThat(cheapestEquimentCost)
+        final long cheapestEquipmentCost = Day21.costOfCheapestEquipmentThatDefeatsBoss(EQUIPMENT_COMBINATIONS, boss);
+        assertThat(cheapestEquipmentCost)
             .isEqualTo(91L);
     }
 
@@ -62,8 +62,8 @@ class Day21Test {
             .readAllAsSingleString();
         final Warrior boss = Warrior.parse(value);
 
-        final long cheapestEquimentCost = Day21.costOfPriciestArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);
-        assertThat(cheapestEquimentCost)
+        final long cheapestEquipmentCost = Day21.costOfPriciestArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);
+        assertThat(cheapestEquipmentCost)
             .isEqualTo(158L);
     }
 
@@ -74,7 +74,7 @@ class Day21Test {
             Armour.class, equipments -> equipments != null && equipments.size() == 1,
             Ring.class, equipments -> {
                 final int count = equipments == null ? 0 : equipments.size();
-                return count >= 0 && count <= 2 && !CollectionUtils.containsDuplicates(equipments);
+                return count > 0 && count <= 2 && !CollectionUtils.containsDuplicates(equipments);
             },
             Weapon.class, equipments -> equipments != null && equipments.size() == 1
         );

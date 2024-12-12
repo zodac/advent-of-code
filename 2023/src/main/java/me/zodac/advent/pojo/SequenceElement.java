@@ -86,7 +86,7 @@ public record SequenceElement(String sequenceElement, String label, char operati
      *      <li>For each {@link Character}:
      *      <ol>
      *          <li>Get the {@link #getAsciiValue(char)}, add to the {@code counter}</li>
-     *          <li>Multiple the {@code counter} by {@link #HASH_ALGORITHM_MULTIPLIER}</li>
+     *          <li>Multiply the {@code counter} by {@link #HASH_ALGORITHM_MULTIPLIER}</li>
      *          <li>Get the remainder of the {@code counter} after dividing by {@link #HASH_ALGORITHM_MODULO}</li>
      *      </ol>
      *     </li>

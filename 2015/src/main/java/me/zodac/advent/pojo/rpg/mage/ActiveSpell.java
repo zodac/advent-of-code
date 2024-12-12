@@ -18,7 +18,7 @@
 package me.zodac.advent.pojo.rpg.mage;
 
 /**
- * Describes an activly running {@link Spell}, with the remaining duration defined.
+ * Describes an actively running {@link Spell}, with the remaining duration defined.
  */
 public final class ActiveSpell {
 

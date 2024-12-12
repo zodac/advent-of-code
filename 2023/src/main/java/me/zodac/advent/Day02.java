@@ -67,7 +67,7 @@ public final class Day02 {
 
     /**
      * Given some {@link BallGame}s, count the minimum number of balls of each {@link Colour} needed to make the game possible. The values for each
-     * {@link Colour} are multipled together and this is the 'power' for that {@link BallGame}. The 'power' of all {@link BallGame}s are then summed
+     * {@link Colour} are multiplied together and this is the 'power' for that {@link BallGame}. The 'power' of all {@link BallGame}s are then summed
      * up and returned.
      *
      * @param ballGames the {@link BallGame}s to check

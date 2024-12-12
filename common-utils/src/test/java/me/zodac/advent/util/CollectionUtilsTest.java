@@ -219,7 +219,7 @@ class CollectionUtilsTest {
         unsequencedSet.add("d");
 
         return Stream.of(
-            Arguments.of(unsequencedSet, "c", 2),                                // Unsequenced set, order not guaranteed
+            Arguments.of(unsequencedSet, "c", 2),                                       // Non-sequenced set, order not guaranteed
             Arguments.of(new LinkedHashSet<>(List.of("a", "b", "c", "d")), "b", 1),     // Sequenced set
             Arguments.of(new LinkedHashSet<>(List.of("a", "b", "c", "d")), "e", -1),    // Value doesn't exist
             Arguments.of(new LinkedHashSet<>(List.of(1, 2, 3, 4)), 4, 3),               //Integers

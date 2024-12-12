@@ -169,7 +169,7 @@ public final class Day13 {
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                final List<String> newMap = flipCharacterAndReturnpattern(grid, i, j);
+                final List<String> newMap = flipCharacterAndReturnPattern(grid, i, j);
 
                 final ReflectionResult newReflectionResult = getNewReflectionResult(newMap, previous.second());
                 if (newReflectionResult.hasReflection()) {
@@ -181,7 +181,7 @@ public final class Day13 {
         return ReflectionResult.none();
     }
 
-    private static List<String> flipCharacterAndReturnpattern(final Character[][] grid, final int row, final int column) {
+    private static List<String> flipCharacterAndReturnPattern(final Character[][] grid, final int row, final int column) {
         final Character[][] newGrid = ArrayUtils.deepCopy(grid);
         newGrid[row][column] = flipCharacter(newGrid[row][column]);
         return ArrayUtils.toListOfStrings(newGrid, String::valueOf);

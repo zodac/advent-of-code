@@ -47,8 +47,8 @@ public final class Day04 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, find all occurrances of the {@link Character}s: 'X', 'M', 'A', 'S', in any order. The letters can
-     * overlap and be used for multiple matches. For example, the {@link Grid} below as <b>2</b> occurances:
+     * Given a {@link Grid} of {@link Character}s, find all occurrences of the {@link Character}s: 'X', 'M', 'A', 'S', in any order. The letters can
+     * overlap and be used for multiple matches. For example, the {@link Grid} below as <b>2</b> occurrences:
      *
      * <pre>
      *     - X - X -
@@ -60,7 +60,7 @@ public final class Day04 {
      * @param characterGrid the input {@link Character} {@link Grid}
      * @return the number of "XMAS" matches in the {@link Grid}
      */
-    public static long countOccurancesOfXmas(final Grid<Character> characterGrid) {
+    public static long countOccurrencesOfXmas(final Grid<Character> characterGrid) {
         final Collection<Point> starts = new ArrayList<>();
         final Character[][] grid = characterGrid.getInternalGrid();
 
@@ -98,8 +98,8 @@ public final class Day04 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, find all occurrances of the {@link Character} 'A' which has 'M' and 'S' in a line along both
-     * diagonal, in any order. The letters can overlap and be used for multiple matches. For example, the {@link Grid} below as <b>2</b> occurances:
+     * Given a {@link Grid} of {@link Character}s, find all occurrences of the {@link Character} 'A' which has 'M' and 'S' in a line along both
+     * diagonal, in any order. The letters can overlap and be used for multiple matches. For example, the {@link Grid} below as <b>2</b> occurrences:
      *
      * <pre>
      *     M - S - M
@@ -110,7 +110,7 @@ public final class Day04 {
      * @param characterGrid the input {@link Character} {@link Grid}
      * @return the number of "MAS" matches in X-formation in the {@link Grid}
      */
-    public static long countOccurancesOfMasAsX(final Grid<Character> characterGrid) {
+    public static long countOccurrencesOfMasAsX(final Grid<Character> characterGrid) {
         final Collection<Point> starts = new ArrayList<>();
         final Character[][] grid = characterGrid.getInternalGrid();
 

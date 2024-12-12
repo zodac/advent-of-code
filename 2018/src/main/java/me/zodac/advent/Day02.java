@@ -105,7 +105,7 @@ public final class Day02 {
 
         for (int i = 0; i < stringLength - 1; i++) {
             final char currentChar = input.charAt(i);
-            int count = 1; // Start count at 1 as we count the current occurance
+            int count = 1; // Start count at 1 as we count the current occurrence
 
             if (checkedCharacters.contains(currentChar)) {
                 continue;

@@ -22,7 +22,7 @@ import java.util.Set;
 import me.zodac.advent.util.MathUtils;
 
 /**
- * POJO defining a line on a coordinate gird, defined by two {@link Point}s.
+ * POJO defining a line on a coordinate grid, defined by two {@link Point}s.
  *
  * @param first  the first {@link Point}
  * @param second the second {@link Point}

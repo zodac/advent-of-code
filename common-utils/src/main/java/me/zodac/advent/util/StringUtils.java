@@ -58,7 +58,7 @@ public final class StringUtils {
     }
 
     /**
-     * Bisects the given {@link String} and returns both halfs as a {@link Pair} of {@link String}s.
+     * Bisects the given {@link String} and returns both halves as a {@link Pair} of {@link String}s.
      *
      * @param input the {@link String} to split in half
      * @return the {@link String} halves as a {@link Pair}
@@ -161,7 +161,7 @@ public final class StringUtils {
 
     /**
      * Parses the input {@link CharSequence} and returns any {@link Long} values (of any length) in the order provided. Assumes that each 'word'
-     * within the {@code input} is a valid {@link Long}, not that each character may be a sepsrate {@link Long}.
+     * within the {@code input} is a valid {@link Long}, not that each character may be a separate {@link Long}.
      *
      * <p>
      * For example, given the {@code input}:

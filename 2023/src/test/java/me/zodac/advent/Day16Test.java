@@ -41,8 +41,8 @@ class Day16Test {
         assertThat(numberOfPointsEnergisedByBeam)
             .isEqualTo(46L);
 
-        final long maxumberOfPointsEnergisedBySingleBeam = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
-        assertThat(maxumberOfPointsEnergisedBySingleBeam)
+        final long maxNumberOfPointsEnergisedBySingleBeam = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
+        assertThat(maxNumberOfPointsEnergisedBySingleBeam)
             .isEqualTo(51L);
     }
 
@@ -65,8 +65,8 @@ class Day16Test {
             .asGrid()
             .ofCharacters();
 
-        final long maxumberOfPointsEnergisedBySingleBeam = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
-        assertThat(maxumberOfPointsEnergisedBySingleBeam)
+        final long maxNumberOfPointsEnergisedBySingleBeam = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
+        assertThat(maxNumberOfPointsEnergisedBySingleBeam)
             .isEqualTo(7_438L);
     }
 }

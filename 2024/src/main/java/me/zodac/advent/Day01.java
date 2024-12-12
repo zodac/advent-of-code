@@ -66,8 +66,8 @@ public final class Day01 {
 
     /**
      * Given a {@link List} of {@link String}s, where each row has two numbers, extract the values and create two {@link List}s of {@link Long}s. For
-     * each index in the first {@link List}, count the number of occurances in the second {@link List}. The number of occuranges * the value itself is
-     * that index's 'match value'. Sum all the match values for all values in the first {@link List}.
+     * each index in the first {@link List}, count the number of occurrences in the second {@link List}. The number of occurrences * the value itself
+     * is that index's 'match value'. Sum all the match values for all values in the first {@link List}.
      *
      * @param values the input {@link String}s
      * @return the total of all match values

@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.grid;
+package me.zodac.advent.pojo;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -24,8 +24,7 @@ import java.util.stream.Stream;
 /**
  * Enum defining an instruction on how to handle a point in a coordinate grid.
  */
-// TODO: This shouldn't be common
-public enum GridInstruction {
+public enum GridUpdateInstruction {
 
     /**
      * Switch the grid point on.
@@ -43,27 +42,27 @@ public enum GridInstruction {
     TOGGLE,
 
     /**
-     * An invalid {@link GridInstruction}.
+     * An invalid {@link GridUpdateInstruction}.
      */
     INVALID;
 
-    private static final Collection<GridInstruction> ALL_VALUES = Stream.of(values())
+    private static final Collection<GridUpdateInstruction> ALL_VALUES = Stream.of(values())
         .filter(value -> value != INVALID)
         .toList();
 
     /**
-     * Retrieve a {@link GridInstruction} that best matches the input {@link String}. The search is case-insensitive.
+     * Retrieve a {@link GridUpdateInstruction} that best matches the input {@link String}. The search is case-insensitive.
      *
      * <p>
-     * We check that the input {@link String} {@link String#contains(CharSequence)} one of the {@link GridInstruction}s.
+     * We check that the input {@link String} {@link String#contains(CharSequence)} one of the {@link GridUpdateInstruction}s.
      *
-     * @param input the {@link GridInstruction} as a {@link String}
-     * @return the matching {@link GridInstruction}, or {@link GridInstruction#INVALID} if none is found
+     * @param input the {@link GridUpdateInstruction} as a {@link String}
+     * @return the matching {@link GridUpdateInstruction}, or {@link GridUpdateInstruction#INVALID} if none is found
      */
-    public static GridInstruction match(final String input) {
+    public static GridUpdateInstruction match(final String input) {
         return ALL_VALUES
             .stream()
-            .filter(gridInstruction -> input.toUpperCase(Locale.UK).contains(gridInstruction.toString()))
+            .filter(gridUpdateInstruction -> input.toUpperCase(Locale.UK).contains(gridUpdateInstruction.toString()))
             .findAny()
             .orElse(INVALID);
     }

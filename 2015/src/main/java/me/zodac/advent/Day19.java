@@ -34,7 +34,7 @@ public final class Day19 {
     }
 
     /**
-     * Given an input {@link String} representaion of a molecule, we find the total number of distinct molecules that can be generated where only one
+     * Given an input {@link String} representation of a molecule, we find the total number of distinct molecules that can be generated where only one
      * replacement is made given the input possible {@link Replacement}s.
      *
      * <p>
@@ -58,7 +58,7 @@ public final class Day19 {
      * </ul>
      *
      * <p>
-     * These are all unique values, so the total number of distinct replacment molecules is <b>6</b>.
+     * These are all unique values, so the total number of distinct replacement molecules is <b>6</b>.
      *
      * @param molecule     the input molecule
      * @param replacements the possible {@link Replacement}s

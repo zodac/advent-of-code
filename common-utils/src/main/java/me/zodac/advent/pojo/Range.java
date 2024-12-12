@@ -68,7 +68,7 @@ public record Range(int start, int end) {
      * </pre>
      *
      * <p>
-     * Both {@link Range}s have a partial overlap, where {@code 1-5} and {@code 2-6} partiall overlap, and where {@code 2-3} is completely overlapped
+     * Both {@link Range}s have a partial overlap, where {@code 1-5} and {@code 2-6} partial overlap, and where {@code 2-3} is completely overlapped
      * by {@code 1-9}.
      *
      * @param other the other {@link Range} to check

@@ -43,7 +43,7 @@ public final class Day03 {
      * each.
      *
      * @param value the input {@link String} containing the {@link MultiplicationOperation}s
-     * @return the sum of all multipled {@link MultiplicationOperation}s
+     * @return the sum of all multiplied {@link MultiplicationOperation}s
      */
     public static long sumOfMultipliedOperations(final CharSequence value) {
         final Collection<MultiplicationOperation> multiplicationOperations = getMultiplicationOperations(value);
@@ -60,7 +60,7 @@ public final class Day03 {
      * {@link MultiplicationOperation}s should be ignored until a {@value #ENABLE_OPERATION_FLAG} is found.
      *
      * @param value the input {@link String} containing the {@link MultiplicationOperation}s
-     * @return the sum of all valid multipled {@link MultiplicationOperation}s
+     * @return the sum of all valid multiplied {@link MultiplicationOperation}s
      */
     public static long sumOfValidMultipliedOperations(final String value) {
         final Collection<MultiplicationOperation> multiplicationOperations = getMultiplicationOperations(value);

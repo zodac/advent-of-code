@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Simple class defining how many objects to move between two stacks (implemented as {@link java.util.Deque}s), that are ID'd by an {@link Integer}.
+ * Simple class defining how many objects to move between two stacks (implemented as {@link java.util.Deque}s), that are IDed by an {@link Integer}.
  *
  * @param sourceStackId          the ID of the source stack
  * @param destinationStackId     the ID of the destination stack

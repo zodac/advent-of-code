@@ -74,8 +74,8 @@ public final class Day07 {
      * @param wantedLabel the label of the value to find
      * @return the evaluated value
      */
-    public int evaulate(final String wantedLabel) {
-        return evaulateWithOverride(wantedLabel, EMPTY_OVERRIDE_LABEL, EMPTY_OVERRIDE_VALUE);
+    public int evaluate(final String wantedLabel) {
+        return evaluateWithOverride(wantedLabel, EMPTY_OVERRIDE_LABEL, EMPTY_OVERRIDE_VALUE);
     }
 
     /**
@@ -86,7 +86,7 @@ public final class Day07 {
      * @param overrideValue the value to override
      * @return the evaluated value
      */
-    public int evaulateWithOverride(final String wantedLabel, final String overrideLabel, final String overrideValue) {
+    public int evaluateWithOverride(final String wantedLabel, final String overrideLabel, final String overrideValue) {
         if (!EMPTY_OVERRIDE_LABEL.equals(overrideLabel)) {
             commandByLabel.put(overrideLabel, Pair.of(BitwiseOperator.SET, overrideValue));
         }

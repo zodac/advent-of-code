@@ -75,7 +75,7 @@ public final class Day21 {
 
     /**
      * Given all valid {@link Equipment} combinations, we calculate the cost of each combination, then attempt to defeat the boss {@link Warrior}. For
-     * the {@link Equipment} combinations that cannotdefeat the {@link Warrior}, we return the highest cost.
+     * the {@link Equipment} combinations that cannot defeat the {@link Warrior}, we return the highest cost.
      *
      * @param equipmentCombinations the {@link Equipment} combinations
      * @param boss                  the boss {@link Warrior} to defeat

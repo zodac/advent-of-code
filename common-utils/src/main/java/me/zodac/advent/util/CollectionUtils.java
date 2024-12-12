@@ -56,7 +56,7 @@ public final class CollectionUtils {
      * @param input       the {@link Collection} to check
      * @param wantedValue the wanted value to find in the {@link Collection}
      * @param <T>         the type of the {@link Collection}
-     * @return the number of occurances of the {@code wantedValue} in the input {@link Collection}
+     * @return the number of occurrences of the {@code wantedValue} in the input {@link Collection}
      */
     public static <T> long countMatches(final Collection<T> input, final T wantedValue) {
         return input
@@ -84,7 +84,7 @@ public final class CollectionUtils {
 
     /**
      * For the provided {@link Collection}, we return all elements that are less than the provided {@code value}. To support generic types, a
-     * {@link Comparator} is provided to do a comparision bewteen elements.
+     * {@link Comparator} is provided to do a comparison between elements.
      *
      * @param values     the {@link Collection} to check
      * @param value      the value to compare against

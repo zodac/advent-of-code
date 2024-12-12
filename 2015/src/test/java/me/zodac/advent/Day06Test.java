@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.zodac.advent.input.InputReader;
+import me.zodac.advent.pojo.GridUpdateInstruction;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.GridInstruction;
 import me.zodac.advent.pojo.tuple.Triple;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +38,7 @@ class Day06Test {
 
     @Test
     void example() {
-        final List<Triple<GridInstruction, Point, Point>> values = InputReader
+        final List<Triple<GridUpdateInstruction, Point, Point>> values = InputReader
             .forExample(INPUT_FILENAME)
             .as(Day06Test::convertToInstructionAndPoints)
             .readAllLines();
@@ -54,7 +54,7 @@ class Day06Test {
 
     @Test
     void part1() {
-        final List<Triple<GridInstruction, Point, Point>> values = InputReader
+        final List<Triple<GridUpdateInstruction, Point, Point>> values = InputReader
             .forPuzzle(INPUT_FILENAME)
             .as(Day06Test::convertToInstructionAndPoints)
             .readAllLines();
@@ -66,7 +66,7 @@ class Day06Test {
 
     @Test
     void part2() {
-        final List<Triple<GridInstruction, Point, Point>> values = InputReader
+        final List<Triple<GridUpdateInstruction, Point, Point>> values = InputReader
             .forPuzzle(INPUT_FILENAME)
             .as(Day06Test::convertToInstructionAndPoints)
             .readAllLines();
@@ -76,7 +76,7 @@ class Day06Test {
             .isEqualTo(14_110_788L);
     }
 
-    private static Triple<GridInstruction, Point, Point> convertToInstructionAndPoints(final String input) {
+    private static Triple<GridUpdateInstruction, Point, Point> convertToInstructionAndPoints(final String input) {
         final Matcher matcher = INSTRUCTION_AND_POINTS_PATTERN.matcher(input);
 
         if (!matcher.find()) {
@@ -84,9 +84,9 @@ class Day06Test {
         }
 
         final String instruction = matcher.group(1);
-        final GridInstruction gridInstruction = GridInstruction.match(instruction);
+        final GridUpdateInstruction gridUpdateInstruction = GridUpdateInstruction.match(instruction);
 
-        if (gridInstruction == GridInstruction.INVALID) {
+        if (gridUpdateInstruction == GridUpdateInstruction.INVALID) {
             throw new IllegalStateException("Invalid instruction found: " + input);
         }
 
@@ -99,6 +99,6 @@ class Day06Test {
             throw new IllegalStateException(String.format("Expected (x1, y1) to be less than (x2, y2), found: (%s, %s) (%s, %s)", x1, y1, x2, y2));
         }
 
-        return Triple.of(gridInstruction, Point.of(x1, y1), Point.of(x2, y2));
+        return Triple.of(gridUpdateInstruction, Point.of(x1, y1), Point.of(x2, y2));
     }
 }

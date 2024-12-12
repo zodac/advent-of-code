@@ -59,13 +59,13 @@ public final class Day06 {
             // This is more flexible code, that can take a variable number of timers for each lanternfish.
             // Not really necessary, and makes the logic harder to follow, so I'm not using it, but keeping for reference
             //
-            //// We need to extract the current values for each timer, so we can then use them later
-            //// This allows us to (for example), update the value for timer 8, while still using the value at the start of the day for timer 7
+            // We need to extract the current values for each timer, so we can then use them later
+            // This allows us to (for example), update the value for timer 8, while still using the value at the start of the day for timer 7
             //final Map<Integer, BigDecimal> lanternfishCountByTimer = getLanternfishCountAtStartOfDay(lanternFishByTimer, day);
             //
-            //// Each timer takes the previous timer's value
-            //// So if there were 5 fish at 3-timer at the start of the day, we set 2-timer to 5, and so on
-            //// Special cases exist for 8 (which uses 0-timer) and 6 (which uses 7-timer and 0-timer, to count the 'new' fish)
+            // Each timer takes the previous timer's value
+            // So if there were 5 fish at 3-timer at the start of the day, we set 2-timer to 5, and so on
+            // Special cases exist for 8 (which uses 0-timer) and 6 (which uses 7-timer and 0-timer, to count the 'new' fish)
             //for (int timer = 0; timer < NUMBER_OF_TIMERS_FOR_LANTERNFISH; timer++) {
             //    if (timer == TIMER_FOR_NEW_FISH) { // TIMER_FOR_NEW_FISH = 6
             //        // Technically we want all 0-timer fish to be reset to timer 6, and a new one at timer 8

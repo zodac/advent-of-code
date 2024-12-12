@@ -205,7 +205,7 @@ public final class ArrayUtils {
     }
 
     /**
-     * Converts the provided {@link List} of {@link String}s into a 2D array. We assume each character in the {@link String} is convertable to the
+     * Converts the provided {@link List} of {@link String}s into a 2D array. We assume each character in the {@link String} is convertible to the
      * wanted output type, and that conversion is defined by the provided {@link Function} {@code converter}.
      *
      * <p>
@@ -328,7 +328,7 @@ public final class ArrayUtils {
     }
 
     /**
-     * Tranposes the provided 2D array. A transpose 'flips' the 2D array along the diagonal axis. For example, given the 2D array:
+     * Performs a transpose on the provided 2D array. A transpose 'flips' the 2D array along the diagonal axis. For example, given the 2D array:
      * <pre>
      *     [
      *      ['a', 'b', 'c'],

@@ -70,20 +70,15 @@ public record Sue(int id, Map<String, Integer> attributes) {
         }
 
         final int id = Integer.parseInt(matcher.group(1));
-        final String attributeName1 = matcher.group(2);
-        final int attributeValue1 = Integer.parseInt(matcher.group(3));
-        final String attributeName2 = matcher.group(4);
-        final int attributeValue2 = Integer.parseInt(matcher.group(5));
-        final String attributeName3 = matcher.group(6);
-        final int attributeValue3 = Integer.parseInt(matcher.group(7));
+        return new Sue(id, parseAttributes(matcher));
+    }
 
-        final Map<String, Integer> attributes = Map.of(
-            attributeName1, attributeValue1,
-            attributeName2, attributeValue2,
-            attributeName3, attributeValue3
+    private static Map<String, Integer> parseAttributes(Matcher matcher) {
+        return Map.of(
+            matcher.group(2), Integer.parseInt(matcher.group(3)),
+            matcher.group(4), Integer.parseInt(matcher.group(5)),
+            matcher.group(6), Integer.parseInt(matcher.group(7))
         );
-
-        return new Sue(id, attributes);
     }
 
     /**

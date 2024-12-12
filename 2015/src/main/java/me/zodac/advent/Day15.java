@@ -64,7 +64,7 @@ public final class Day15 {
      * will be compared with all other combination scores, and the highest value will be returned.
      *
      * @param ingredients the {@link Ingredient}s
-     * @return the score of the highest-scoring combinarion
+     * @return the score of the highest-scoring combination
      * @see #scoreOfBestIngredients(Collection, int)
      */
     public static long scoreOfBestIngredients(final Collection<Ingredient> ingredients) {
@@ -102,7 +102,7 @@ public final class Day15 {
      *
      * @param ingredients        the {@link Ingredient}s
      * @param wantedCalorieCount the wanted total calorie count for a valid combination
-     * @return the score of the highest-scoring combinarion
+     * @return the score of the highest-scoring combination
      */
     public static long scoreOfBestIngredients(final Collection<Ingredient> ingredients, final int wantedCalorieCount) {
         long bestScore = Long.MIN_VALUE;

@@ -37,11 +37,11 @@ class Day04Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day04.countOccurancesOfXmas(characterGrid);
+        final long part1Result = Day04.countOccurrencesOfXmas(characterGrid);
         assertThat(part1Result)
             .isEqualTo(18L);
 
-        final long part2Result = Day04.countOccurancesOfMasAsX(characterGrid);
+        final long part2Result = Day04.countOccurrencesOfMasAsX(characterGrid);
         assertThat(part2Result)
             .isEqualTo(9L);
     }
@@ -53,7 +53,7 @@ class Day04Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day04.countOccurancesOfXmas(characterGrid);
+        final long part1Result = Day04.countOccurrencesOfXmas(characterGrid);
         assertThat(part1Result)
             .isEqualTo(2_591L);
     }
@@ -65,7 +65,7 @@ class Day04Test {
             .asGrid()
             .ofCharacters();
 
-        final long part2Result = Day04.countOccurancesOfMasAsX(characterGrid);
+        final long part2Result = Day04.countOccurrencesOfMasAsX(characterGrid);
         assertThat(part2Result)
             .isEqualTo(1880L);
     }

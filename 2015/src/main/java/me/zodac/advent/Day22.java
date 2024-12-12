@@ -43,7 +43,7 @@ public final class Day22 {
      * @param player                   the {@link MagePlayer}
      * @param boss                     the {@link MageBoss} to defeat
      * @param healthLossEachPlayerTurn the health the player loses at the start of each turn
-     * @return the loest amount of mana that wins the battle
+     * @return the lowest amount of mana that wins the battle
      * @see BattleRound
      * @see DijkstraSearcher
      */

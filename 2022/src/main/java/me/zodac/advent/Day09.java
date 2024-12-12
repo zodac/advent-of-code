@@ -37,7 +37,7 @@ public final class Day09 {
 
     /**
      * Given {@link Movement}s defining a route for a 'head' {@link Point} to follow around a 2D grid, {@code numberOfTails} tails will follow. Each
-     * 'tail' {@link Point} will only follow its direct predecessor (heads--tail0--tail1--tail2...--tailn).
+     * 'tail' {@link Point} will only follow its direct predecessor (heads--tail0--tail1--tail2...--tail-n).
      *
      * <p>
      * After each movement the leading {@link Point} makes, its follower will move according to one of these rules, in priority order.
@@ -108,7 +108,7 @@ public final class Day09 {
             return follower.move(Integer.signum(deltaX), Integer.signum(deltaY));
         }
 
-        // If neither X nor Y coodinate is far away enough, do not move
+        // If neither X nor Y coordinate is far away enough, do not move
         return follower;
     }
 }

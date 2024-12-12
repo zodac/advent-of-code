@@ -38,7 +38,7 @@ class Day07Test {
             .readAllLines();
 
         final Day07 day07 = Day07.create(values);
-        final long valueOfLabel = day07.evaulate("i");
+        final long valueOfLabel = day07.evaluate("i");
         assertThat(valueOfLabel)
             .isEqualTo(65_079L);
     }
@@ -51,7 +51,7 @@ class Day07Test {
             .readAllLines();
 
         final Day07 day07 = Day07.create(values);
-        final long valueOfLabel = day07.evaulate("a");
+        final long valueOfLabel = day07.evaluate("a");
         assertThat(valueOfLabel)
             .isEqualTo(16_076L);
     }
@@ -64,7 +64,7 @@ class Day07Test {
             .readAllLines();
 
         final Day07 day07 = Day07.create(values);
-        final long valueOfLabel = day07.evaulateWithOverride("a", "b", "16076");
+        final long valueOfLabel = day07.evaluateWithOverride("a", "b", "16076");
         assertThat(valueOfLabel)
             .isEqualTo(2_797L);
     }

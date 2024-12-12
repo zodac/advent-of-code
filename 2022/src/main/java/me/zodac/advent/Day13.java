@@ -83,7 +83,7 @@ public final class Day13 {
      * Once sorted, we find the indices of both distress signals, then multiply them
      *
      * @param values the input {@link JsonElement}s
-     * @return the prodict of the distress signal indices
+     * @return the product of the distress signal indices
      */
     public static long calculateProductOfDistressSignalIndices(final Collection<? extends JsonElement> values) {
         final List<JsonElement> allJsonElements = new ArrayList<>(values);

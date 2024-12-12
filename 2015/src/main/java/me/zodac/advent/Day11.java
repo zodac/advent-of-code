@@ -46,7 +46,7 @@ public final class Day11 {
      * A {@link String} is considered a valid password if it meets these three criteria:
      * <ul>
      *     <li>It does not contain the characters <b>i</b>, <b>l</b> or <b>o</b></li>
-     *     <li>It contains two distint pairs of characters (<b>abcddee</b> is valid while <b>aabcdaa</b> is not)</li>
+     *     <li>It contains two distinct pairs of characters (<b>abcddee</b> is valid while <b>aabcdaa</b> is not)</li>
      *     <li>It contains at least one run of three characters in ascending order (<b>ablmnp</b> is valid)</li>
      * </ul>
      *

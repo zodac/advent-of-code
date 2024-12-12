@@ -77,7 +77,7 @@ public final class Day10 {
                 sumOfSignalValuesAtImportantCycles += signalValue;
             }
 
-            // If we have any delayed 'addx' commands to execute this cycle, execute them
+            // If we have any delayed 'addX' commands to execute this cycle, execute them
             if (offsetByTargetCycle.containsKey(cycle)) {
                 valueOfRegisterX += offsetByTargetCycle.get(cycle);
                 instructionIndex++;
@@ -135,7 +135,7 @@ public final class Day10 {
         while (instructionIndex < numberOfAssemblyInstructions) {
             updateSegmentedDisplay(valueOfRegisterX, cycle, segmentedDisplay);
 
-            // If we have any delayed 'addx' commands to execute this cycle, execute them
+            // If we have any delayed 'addX' commands to execute this cycle, execute them
             if (offsetByTargetCycle.containsKey(cycle)) {
                 valueOfRegisterX += offsetByTargetCycle.get(cycle);
                 instructionIndex++;
@@ -162,13 +162,13 @@ public final class Day10 {
         final int displayRow = displayIndex / segmentedDisplay.length();
         final int displayColumn = displayIndex % segmentedDisplay.length();
 
-        // The column value must be within 1 spac of the register X value
+        // The column value must be within 1 space of the register X value
         if (Math.abs(valueOfRegisterX - displayColumn) <= MAXIMUM_PERMITTED_DISTANCE_FOR_SEGMENTED_DISPLAY) {
             segmentedDisplay.turnOn(displayRow, displayColumn);
         }
     }
 
-    // We check at cycle #20, and every subseqent 40 cycles
+    // We check at cycle #20, and every subsequent 40 cycles
     private static boolean isCycleToConsiderSignal(final int cycle) {
         return cycle % CYCLE_INTERVAL_FOR_SIGNAL_CHECK == START_CYCLE_FOR_SIGNAL_CHECK;
     }

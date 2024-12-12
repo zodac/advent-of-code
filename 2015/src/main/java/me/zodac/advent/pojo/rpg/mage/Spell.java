@@ -21,7 +21,7 @@ package me.zodac.advent.pojo.rpg.mage;
  * Simple class defining a magic spell to be used by a {@link MagePlayer}.
  *
  * @param name          the name of the {@link Spell}
- * @param damage        the damaage caused by the {@link Spell}
+ * @param damage        the damage caused by the {@link Spell}
  * @param healing       the healing done by the {@link Spell}
  * @param defence       any damage-mitigation provided by the {@link Spell}
  * @param manaRecovery  the mana recovered by the {@link Spell}
