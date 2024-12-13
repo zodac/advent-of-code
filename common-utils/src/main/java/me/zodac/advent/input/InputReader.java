@@ -48,7 +48,7 @@ import me.zodac.advent.util.StringUtils;
  * Some examples of how to use this class are:
  *
  * <p>
- * - To read an example input as a {@link Grid} of {@link Character}s:
+ * - To read an example input as a {@link Character} {@link Grid}:
  *
  * <p>
  * {@snippet :
@@ -460,7 +460,7 @@ public final class InputReader {
         /**
          * Converts the {@link List} of {@link String}s to a {@link Grid} of {@link Character}s.
          *
-         * @return the {@link Grid} of {@link Character}s
+         * @return the {@link Character} {@link Grid}
          * @see GridFactory#ofCharacters(List)
          */
         public Grid<Character> ofCharacters() {
@@ -483,7 +483,7 @@ public final class InputReader {
          *
          * @param converter the {@link Function} to convert a {@link Character} from the input into the correct type for the {@link Grid}
          * @param <T>       the type of the {@link Grid}
-         * @return the {@link Grid} of {@link Character}s
+         * @return the {@link Character} {@link Grid}
          */
         public <T> Grid<T> of(final Function<? super Character, ? extends T> converter) {
             return Grid.parseGrid(strings, converter);

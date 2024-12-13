@@ -34,31 +34,35 @@ public final class Day07 {
 
     }
 
-    // TODO
     /**
-     * Part 1.
+     * Given a {@link List} of {@link String}s, where each line is a result with input values in the form:
+     * <pre>
+     *     result: value1 value2 value3
+     * </pre>
      *
-     * @param mathOperations the operations
-     * @param values the input values
-     * @return the part 1 result
+     * <p>
+     * There are no operators, so we must use the supplied {@link MathOperation}s and build all possible combinations with all operators. We find each
+     * row that has at least <b>1</b> valid result. The valid results are then summed up and returned.
+     *
+     * @param values         the input values
+     * @param mathOperations the operations to use to build possible combinations
+     * @return the sum of all valid results
+     * @see PermutationUtils#generateWithSeparators(List, Set)
      */
     public static long sumValidResults(final List<String> values, final Set<MathOperation> mathOperations) {
         long total = 0L;
 
         for (final String value : values) {
-            final List<Long> nums = StringUtils.collectNumbersInOrder(value);
-            final long result = nums.getFirst();
-            final List<String> inputs = nums.subList(1, nums.size()).stream().map(String::valueOf).toList();
+            final List<Long> numbers = StringUtils.collectNumbersInOrder(value);
+            final long result = numbers.getFirst();
+            final List<Long> inputs = numbers.subList(1, numbers.size());
 
-            final List<List<String>> allOptions = PermutationUtils.generateWithSeparators(inputs, mathOperations);
-
-            for (final List<String> anOption : allOptions) {
-                final long evaluatedResult = evaluate(anOption);
-                if (evaluatedResult == result) {
-                    total += result;
-                    break;
-                }
-            }
+            total += PermutationUtils.generateWithSeparators(inputs, mathOperations)
+                .parallelStream()
+                .map(Day07::evaluate)
+                .filter(evaluatedResult -> result == evaluatedResult)
+                .findAny()
+                .orElse(0L);
         }
         return total;
     }

@@ -121,6 +121,22 @@ class PermutationUtilsTest {
                     List.of("A", "b", "B", "b", "C")
                 )
             ),
+            // Multiple separators, non-string input
+            Arguments.of(List.of(1, 2, 3), Set.of("a", "b"), List.of(
+                    List.of("1", "a", "2", "a", "3"),
+                    List.of("1", "a", "2", "b", "3"),
+                    List.of("1", "b", "2", "a", "3"),
+                    List.of("1", "b", "2", "b", "3")
+                )
+            ),
+            // Multiple separators, non-string separator
+            Arguments.of(List.of("A", "B", "C"), Set.of(1, 2), List.of(
+                    List.of("A", "1", "B", "1", "C"),
+                    List.of("A", "1", "B", "2", "C"),
+                    List.of("A", "2", "B", "1", "C"),
+                    List.of("A", "2", "B", "2", "C")
+                )
+            ),
             // Single input
             Arguments.of(List.of("A"), Set.of("a", "b"), List.of(
                     List.of("A")

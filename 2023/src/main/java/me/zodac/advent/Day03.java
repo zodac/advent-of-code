@@ -39,7 +39,7 @@ public final class Day03 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, any non-digit {@link Character} that is not {@link #DEFAULT_SYMBOL} is considered an engine part.
+     * Given a {@link Character} {@link Grid}, any non-digit {@link Character} that is not {@link #DEFAULT_SYMBOL} is considered an engine part.
      * If an engine part is touching a number (meaning any of the 8 adjacent points overlaps any digit), then that number is considered an engine part
      * number. This method retrieves all those part numbers, then sums their values.
      *
@@ -111,11 +111,11 @@ public final class Day03 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, any {@link #GEAR_SYMBOL} is considered an engine gear. If that gear has exactly 2 touching numbers
+     * Given a {@link Character} {@link Grid}, any {@link #GEAR_SYMBOL} is considered an engine gear. If that gear has exactly 2 touching numbers
      * (meaning 2 of the 8 adjacent points overlaps any digit), then we can calculate a gear ratio for that gear by calculating the product of the 2
      * numbers touching the gear. These gear ratios are then summed and returned.
      *
-     * @param characterGrid the {@link Grid}
+     * @param characterGrid the {@link Character} {@link Grid}
      * @return the sum of all gear ratios
      * @see Point#getAdjacentPoints(AdjacentPointsSelector)
      */

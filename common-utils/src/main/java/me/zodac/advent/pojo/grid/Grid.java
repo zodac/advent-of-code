@@ -44,16 +44,6 @@ import me.zodac.advent.util.ArrayUtils;
 // TODO: Lots of 'x/y', 'i/j', 'row/column'; be more consistent
 public class Grid<E> {
 
-    public Set<Point> allPoints() {
-        final Set<Point> allPoints = new TreeSet<>();
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                allPoints.add(Point.of(i, j));
-            }
-        }
-        return allPoints;
-    }
-
     /**
      * The length (or width) of the {@link Grid}.
      */
@@ -365,6 +355,21 @@ public class Grid<E> {
         } catch (final ArrayIndexOutOfBoundsException ignored) {
             return false;
         }
+    }
+
+    /**
+     * Returns all {@link Point}s in the {@link Grid}.
+     *
+     * @return all {@link Point}s
+     */
+    public Set<Point> allPoints() {
+        final Set<Point> allPoints = new TreeSet<>();
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                allPoints.add(Point.of(i, j));
+            }
+        }
+        return allPoints;
     }
 
     /**

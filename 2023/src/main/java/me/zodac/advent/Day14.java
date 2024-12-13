@@ -37,7 +37,7 @@ public final class Day14 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, containing rocks ({@link #ROCK_SYMBOL}), we migrate all rocks north, until they no longer find an
+     * Given a {@link Character} {@link Grid}, containing rocks ({@link #ROCK_SYMBOL}), we migrate all rocks north, until they no longer find an
      * existing empty space ({@link #EMPTY_SYMBOL}), at which point they come to rest.
      *
      * <p>
@@ -45,7 +45,7 @@ public final class Day14 {
      * row's load is calculated as {@code numberOfRocks} * {@code rowMultiplier}. The {@code rowMultiplier} starts at <b>1</b> for the final row of
      * the {@link Grid}, and increments by <b>1</b> as iterate up the {@link Grid}.
      *
-     * @param grid the {@link Grid} of {@link Character}s
+     * @param grid the {@link Character} {@link Grid}
      * @return the load after a single migration north
      */
     public static long countLoadAfterSingleNorthTurn(final Grid<Character> grid) {
@@ -54,7 +54,7 @@ public final class Day14 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, containing rocks ({@link #ROCK_SYMBOL}), we migrate all rocks for a full rotation: north -> west ->
+     * Given a {@link Character} {@link Grid}, containing rocks ({@link #ROCK_SYMBOL}), we migrate all rocks for a full rotation: north -> west ->
      * south -> east, in that order. Each rock will move in the given direction until they no longer find an existing empty space
      * ({@link #EMPTY_SYMBOL}), at which point they come to rest. This will be repeated for {@code numberOfCycles} cycles.
      *
@@ -71,7 +71,7 @@ public final class Day14 {
      * Similarly, In order to avoid executing the cycle {@code numberOfCycles} times, we will attempt to search for a {@link Cycle}. If one is found,
      * we will be able to 'jump-ahead' to the result of {@code numberOfCycles} without having to execute each iteration.
      *
-     * @param grid           the {@link Grid} of {@link Character}s
+     * @param grid           the {@link Character} {@link Grid}
      * @param numberOfCycles the number of rotations to perform on the {@link Grid}
      * @return the load after {@code numberOfCycles} full rotations
      * @see CycleFinder

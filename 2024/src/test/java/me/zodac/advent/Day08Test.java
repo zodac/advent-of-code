@@ -37,11 +37,11 @@ class Day08Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day08.part1(characterGrid);
+        final long part1Result = Day08.countUniqueAntinodes(characterGrid, true);
         assertThat(part1Result)
             .isEqualTo(14L);
 
-        final long part2Result = Day08.part2(characterGrid);
+        final long part2Result = Day08.countUniqueAntinodes(characterGrid, false);
         assertThat(part2Result)
             .isEqualTo(34L);
     }
@@ -53,7 +53,7 @@ class Day08Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day08.part1(characterGrid);
+        final long part1Result = Day08.countUniqueAntinodes(characterGrid, true);
         assertThat(part1Result)
             .isEqualTo(222L);
     }
@@ -65,7 +65,7 @@ class Day08Test {
             .asGrid()
             .ofCharacters();
 
-        final long part2Result = Day08.part2(characterGrid);
+        final long part2Result = Day08.countUniqueAntinodes(characterGrid, false);
         assertThat(part2Result)
             .isEqualTo(884L);
     }

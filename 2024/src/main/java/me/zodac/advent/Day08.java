@@ -40,49 +40,61 @@ public final class Day08 {
     }
 
     /**
-     * Part 1.
+     * Given a {@link Character} {@link Grid}, {@link Character}s of the same value indicate antennas transmitting on the same frequency. Each antenna
+     * pair will create an antinode - an area of resonant frequency double the distance from antenna1 to antenna2 (for each antenna). Antennas and
+     * antinodes may overlap, and there is an option for a single antinode per pair, or antinodes in a line along the same axis as the
+     * antenna pair. We restrict the antinodes to only be contained within the bounds of the {@link Grid}.
      *
-     * @param characterGrid the input {@link Character} {@link Grid}
-     * @return the part 1 result
+     * <p>
+     * For each frequency, we count the number of unique antinodes for the provided {@link Grid}.
+     *
+     * @param characterGrid     the {@link Grid} of antennas
+     * @param hasSingleAntinode if each pair of antennas creates a single antinode, or all possible antinodes in a line.
+     * @return the unique antinodes for all antennas
      */
-    public static long part1(final Grid<Character> characterGrid) {
-//        characterGrid.print(false);
+    public static long countUniqueAntinodes(final Grid<Character> characterGrid, final boolean hasSingleAntinode) {
         final Map<Character, Set<Point>> pointsByCharacter = getPointsByCharacter(characterGrid);
 
         final Set<Point> antinodes = new HashSet<>();
         for (final Set<Point> points : pointsByCharacter.values()) {
             for (final Point currentPoint : points) {
-                for (final Point nextPoint : points) {
-                    if (currentPoint.equals(nextPoint)) {
-                        continue;
-                    }
-
-                    final Pair<Integer, Integer> delta = currentPoint.deltaTo(nextPoint);
-                    final Point possibleAntinode = Point.of(nextPoint.x() + delta.first(), nextPoint.y() + delta.second());
-                    if (characterGrid.exists(possibleAntinode)) {
-                        antinodes.add(possibleAntinode);
-                    }
-                }
+                antinodes.addAll(getAntinodesForPoint(characterGrid, points, currentPoint, hasSingleAntinode));
             }
         }
 
-//        Grid<Character> updated = characterGrid;
-//        for (final Point p : antinodes) {
-//            var curr = updated.at(p);
-//            if (curr == '1') {
-//                updated = updated.updateAt(p, '2');
-//            } else if (curr == '2') {
-//                updated = updated.updateAt(p, '3');
-//            } else {
-//                updated = updated.updateAt(p, '1');
-//            }
-//        }
-
-//        System.out.println("----------------");
-//
-//        updated.print(false);
-
         return antinodes.size();
+    }
+
+    private static Set<Point> getAntinodesForPoint(final Grid<Character> characterGrid,
+                                                   final Set<Point> gridPoints,
+                                                   final Point currentPoint,
+                                                   final boolean hasSingleAntinode
+    ) {
+        final Set<Point> antinodes = new HashSet<>();
+
+        for (final Point nextPoint : gridPoints) {
+            if (currentPoint.equals(nextPoint)) {
+                continue;
+            }
+
+            // Include the current point, since it will be in the same line if there are multiple antinodes
+            if (!hasSingleAntinode) {
+                antinodes.add(nextPoint);
+            }
+
+            final Pair<Integer, Integer> delta = currentPoint.deltaTo(nextPoint);
+            Point possibleAntinode = Point.of(nextPoint.x() + delta.first(), nextPoint.y() + delta.second());
+
+            // Always take the first antinode, then loop over if we need more
+            do {
+                if (characterGrid.exists(possibleAntinode)) {
+                    antinodes.add(possibleAntinode);
+                    possibleAntinode = Point.of(possibleAntinode.x() + delta.first(), possibleAntinode.y() + delta.second());
+                }
+            } while (!hasSingleAntinode && characterGrid.exists(possibleAntinode));
+        }
+
+        return antinodes;
     }
 
     private static Map<Character, Set<Point>> getPointsByCharacter(Grid<Character> characterGrid) {
@@ -98,53 +110,5 @@ public final class Day08 {
             pointsByCharacter.put(character, characterGrid.findValue(character1 -> character1.equals(character)).collect(Collectors.toSet()));
         }
         return pointsByCharacter;
-    }
-
-    /**
-     * Part 2.
-     *
-     * @param characterGrid the input {@link Character} {@link Grid}
-     * @return the part 2 result
-     */
-    public static long part2(final Grid<Character> characterGrid) {
-//        characterGrid.print(false);
-        final Map<Character, Set<Point>> pointsByCharacter = getPointsByCharacter(characterGrid);
-
-        final Set<Point> antinodes = new HashSet<>();
-        for (final Set<Point> points : pointsByCharacter.values()) {
-            for (final Point currentPoint : points) {
-                for (final Point nextPoint : points) {
-                    if (currentPoint.equals(nextPoint)) {
-                        continue;
-                    }
-                    antinodes.add(nextPoint);
-
-                    final Pair<Integer, Integer> delta = currentPoint.deltaTo(nextPoint);
-                    Point possibleAntinode = Point.of(nextPoint.x() + delta.first(), nextPoint.y() + delta.second());
-                    while (characterGrid.exists(possibleAntinode)) {
-                        antinodes.add(possibleAntinode);
-                        possibleAntinode = Point.of(possibleAntinode.x() + delta.first(), possibleAntinode.y() + delta.second());
-                    }
-                }
-            }
-        }
-
-//        Grid<Character> updated = characterGrid;
-//        for (final Point p : antinodes) {
-//            var curr = updated.at(p);
-//            if (curr == '1') {
-//                updated = updated.updateAt(p, '2');
-//            } else if (curr == '2') {
-//                updated = updated.updateAt(p, '3');
-//            } else {
-//                updated = updated.updateAt(p, '1');
-//            }
-//        }
-//
-//        System.out.println("----------------");
-//
-//        updated.print(false);
-
-        return antinodes.size();
     }
 }

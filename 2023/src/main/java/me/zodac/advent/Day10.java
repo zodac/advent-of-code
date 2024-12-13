@@ -33,10 +33,10 @@ public final class Day10 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Pipe}s, we need to find the {@link PipeLoop} that exists. From that, we find the number of steps to the furthest
+     * Given a {@link Pipe} {@link Grid}, we need to find the {@link PipeLoop} that exists. From that, we find the number of steps to the furthest
      * part of the {@link PipeLoop}. This can be calculated as {@code numberOfElementsInLoop} / {@code 2}.
      *
-     * @param pipeGrid the {@link Grid} of {@link Pipe}s
+     * @param pipeGrid the {@link Pipe} {@link Grid}
      * @return the number of steps to the furthest {@link Pipe} of the {@link PipeLoop}
      * @see PipeLoop#size()
      */
@@ -46,10 +46,10 @@ public final class Day10 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Pipe}s, we need to find the {@link PipeLoop} that exists. Once it has been found, we need to count the number of
+     * Given a {@link Pipe} {@link Grid}, we need to find the {@link PipeLoop} that exists. Once it has been found, we need to count the number of
      * {@link Pipe} elements within the loop.
      *
-     * @param pipeGrid the {@link Grid} of {@link Pipe}s
+     * @param pipeGrid the {@link Pipe} {@link Grid}
      * @return the number of steps to the furthest {@link Pipe} of the {@link PipeLoop}
      * @see PipeLoop#countPointsInsideLoop()
      */

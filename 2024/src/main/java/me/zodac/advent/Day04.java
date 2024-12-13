@@ -47,7 +47,7 @@ public final class Day04 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, find all occurrences of the {@link Character}s: 'X', 'M', 'A', 'S', in any order. The letters can
+     * Given a {@link Character} {@link Grid}, find all occurrences of the {@link Character}s: 'X', 'M', 'A', 'S', in any order. The letters can
      * overlap and be used for multiple matches. For example, the {@link Grid} below as <b>2</b> occurrences:
      *
      * <pre>
@@ -98,7 +98,7 @@ public final class Day04 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, find all occurrences of the {@link Character} 'A' which has 'M' and 'S' in a line along both
+     * Given a {@link Character} {@link Grid}, find all occurrences of the {@link Character} 'A' which has 'M' and 'S' in a line along both
      * diagonal, in any order. The letters can overlap and be used for multiple matches. For example, the {@link Grid} below as <b>2</b> occurrences:
      *
      * <pre>

@@ -118,7 +118,7 @@ public final class PermutationUtils {
     }
 
     /**
-     * Given an input {@link List} of {@link String} values, generates every possible combination where the gaps between values are replaces by each
+     * Given an input {@link List} of values, generates every possible combination where the gaps between values are replaced by each
      * possible separator provided. For example, given an input of:
      *
      * <pre>
@@ -145,17 +145,18 @@ public final class PermutationUtils {
      * </pre>
      *
      * <p>
-     * <b>NOTE:</b> {@link String#valueOf(Object)} will be used to convert the separator into a {@link String}, so ensure the
+     * <b>NOTE:</b> {@link String#valueOf(Object)} will be used to convert the value and  separator into a {@link String}, so ensure the
      * {@link Object#toString()} has been overridden if necessary.
      *
      * @param values     the input {@link String}s
      * @param separators the values to make the combinations
+     * @param <V>        the type of the input values
      * @param <S>        the type of the separators
      * @return the a {@link List} of all combinations
      */
-    public static <S> List<List<String>> generateWithSeparators(final List<String> values, final Set<S> separators) {
+    public static <V, S> List<List<String>> generateWithSeparators(final List<V> values, final Set<S> separators) {
         if (values.isEmpty() || separators.isEmpty()) {
-            return List.of(values);
+            return List.of(values.stream().map(String::valueOf).toList());
         }
 
         final List<List<String>> result = new ArrayList<>();
@@ -164,7 +165,7 @@ public final class PermutationUtils {
         return result;
     }
 
-    private static <S> void generate(final List<String> values,
+    private static <V, S> void generate(final List<V> values,
                                      final int index,
                                      final List<String> current,
                                      final List<List<String>> result,
@@ -172,13 +173,13 @@ public final class PermutationUtils {
     ) {
         // Base case for last number
         if (index == values.size() - 1) {
-            current.add(values.get(index));
+            current.add(String.valueOf(values.get(index)));
             result.add(new ArrayList<>(current));
             current.removeLast();
             return;
         }
 
-        current.add(values.get(index));
+        current.add(String.valueOf(values.get(index)));
 
         // Recursively add combinations with separators
         for (final S separator : separators) {

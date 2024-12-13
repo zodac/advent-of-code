@@ -45,7 +45,7 @@ public final class Day16 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, a beam of light will shine through the {@link Grid} in a given direction until it falls off the
+     * Given a {@link Character} {@link Grid}, a beam of light will shine through the {@link Grid} in a given direction until it falls off the
      * edge. If it encounters a mirror {@link Character} it is either reflected 90° ({@literal \}, {@literal /}) or split into two beams
      * ({@literal |}, {@literal -}).
      *
@@ -62,7 +62,7 @@ public final class Day16 {
     }
 
     /**
-     * Given a {@link Grid} of {@link Character}s, a beam of light will shine through the {@link Grid} in a given direction until it falls off the
+     * Given a {@link Character} {@link Grid}, a beam of light will shine through the {@link Grid} in a given direction until it falls off the
      * edge. If it encounters a mirror {@link Character} it is either reflected 90° ({@literal \}, {@literal /}) or split into two beams
      * ({@literal |}, {@literal -}).
      *

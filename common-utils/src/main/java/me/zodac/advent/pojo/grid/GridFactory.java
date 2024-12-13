@@ -59,7 +59,7 @@ public final class GridFactory {
      * Converts the {@link List} of {@link String}s to a {@link Grid} of {@link Character}s.
      *
      * @param strings the input {@link List} of {@link String}s
-     * @return the {@link Grid} of {@link Character}s
+     * @return the {@link Character} {@link Grid}
      */
     public static Grid<Character> ofCharacters(final List<String> strings) {
         return Grid.parseGrid(strings, character -> character);
