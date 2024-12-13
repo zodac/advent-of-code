@@ -38,12 +38,12 @@ class Day10Test {
             .as(SyntaxLine::create)
             .readAllLines();
 
-        final long syntaxErrorScore = Day10.calculateSyntaxErrorScoreForLines(syntaxLines);
-        assertThat(syntaxErrorScore)
+        final long part1Result = Day10.calculateSyntaxErrorScoreForLines(syntaxLines);
+        assertThat(part1Result)
             .isEqualTo(26_397L);
 
-        final long middleIncompleteLineScore = Day10.calculateMiddleScoreForIncompleteLines(syntaxLines);
-        assertThat(middleIncompleteLineScore)
+        final long part2Result = Day10.calculateMiddleScoreForIncompleteLines(syntaxLines);
+        assertThat(part2Result)
             .isEqualTo(288_957L);
     }
 
@@ -54,8 +54,8 @@ class Day10Test {
             .as(SyntaxLine::create)
             .readAllLines();
 
-        final long syntaxErrorScore = Day10.calculateSyntaxErrorScoreForLines(syntaxLines);
-        assertThat(syntaxErrorScore)
+        final long part1Result = Day10.calculateSyntaxErrorScoreForLines(syntaxLines);
+        assertThat(part1Result)
             .isEqualTo(278_475L);
     }
 
@@ -66,8 +66,8 @@ class Day10Test {
             .as(SyntaxLine::create)
             .readAllLines();
 
-        final long middleIncompleteLineScore = Day10.calculateMiddleScoreForIncompleteLines(syntaxLines);
-        assertThat(middleIncompleteLineScore)
+        final long part2Result = Day10.calculateMiddleScoreForIncompleteLines(syntaxLines);
+        assertThat(part2Result)
             .isEqualTo(3_015_539_998L);
     }
 }

@@ -37,16 +37,16 @@ class Day11Test {
             .asGrid()
             .ofCharacters();
 
-        final long sumOfDistancesPart1 = Day11.sumOfDistancesBetweenGalaxies(grid, 2);
-        assertThat(sumOfDistancesPart1)
+        final long part1Result = Day11.sumOfDistancesBetweenGalaxies(grid, 2);
+        assertThat(part1Result)
             .isEqualTo(374L);
 
-        final long sumOfDistancesPart2Result1 = Day11.sumOfDistancesBetweenGalaxies(grid, 10);
-        assertThat(sumOfDistancesPart2Result1)
+        final long part2Result1 = Day11.sumOfDistancesBetweenGalaxies(grid, 10);
+        assertThat(part2Result1)
             .isEqualTo(1_030L);
 
-        final long sumOfDistancesPart2Result2 = Day11.sumOfDistancesBetweenGalaxies(grid, 100);
-        assertThat(sumOfDistancesPart2Result2)
+        final long part2Result2 = Day11.sumOfDistancesBetweenGalaxies(grid, 100);
+        assertThat(part2Result2)
             .isEqualTo(8_410L);
     }
 
@@ -57,8 +57,8 @@ class Day11Test {
             .asGrid()
             .ofCharacters();
 
-        final long sumOfDistances = Day11.sumOfDistancesBetweenGalaxies(grid, 2);
-        assertThat(sumOfDistances)
+        final long part1Result = Day11.sumOfDistancesBetweenGalaxies(grid, 2);
+        assertThat(part1Result)
             .isEqualTo(10_289_334L);
     }
 
@@ -69,8 +69,8 @@ class Day11Test {
             .asGrid()
             .ofCharacters();
 
-        final long sumOfDistances = Day11.sumOfDistancesBetweenGalaxies(grid, 1_000_000);
-        assertThat(sumOfDistances)
+        final long part2Result = Day11.sumOfDistancesBetweenGalaxies(grid, 1_000_000);
+        assertThat(part2Result)
             .isEqualTo(649_862_989_626L);
     }
 }

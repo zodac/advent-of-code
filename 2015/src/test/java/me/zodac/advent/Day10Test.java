@@ -36,8 +36,8 @@ class Day10Test {
             .asStrings()
             .readFirstLine();
 
-        final long length = Day10.performLookAndSaySequenceAndReturnLength(value, 5);
-        assertThat(length)
+        final long part1Result = Day10.performLookAndSaySequenceAndReturnLength(value, 5);
+        assertThat(part1Result)
             .isEqualTo(6L);
     }
 
@@ -48,8 +48,8 @@ class Day10Test {
             .asStrings()
             .readFirstLine();
 
-        final long length = Day10.performLookAndSaySequenceAndReturnLength(value, 40);
-        assertThat(length)
+        final long part1Result = Day10.performLookAndSaySequenceAndReturnLength(value, 40);
+        assertThat(part1Result)
             .isEqualTo(252_594L);
     }
 
@@ -60,8 +60,8 @@ class Day10Test {
             .asStrings()
             .readFirstLine();
 
-        final long length = Day10.performLookAndSaySequenceAndReturnLength(value, 50);
-        assertThat(length)
+        final long part2Result = Day10.performLookAndSaySequenceAndReturnLength(value, 50);
+        assertThat(part2Result)
             .isEqualTo(3_579_328L);
     }
 }

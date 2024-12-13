@@ -37,12 +37,12 @@ class Day24Test {
             .asIntegers()
             .readAllLines();
 
-        final long smallestQuantumEntanglement1 = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 3);
-        assertThat(smallestQuantumEntanglement1)
+        final long part1Result = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 3);
+        assertThat(part1Result)
             .isEqualTo(99L);
 
-        final long smallestQuantumEntanglement2 = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 4);
-        assertThat(smallestQuantumEntanglement2)
+        final long part2Result = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 4);
+        assertThat(part2Result)
             .isEqualTo(44L);
     }
 
@@ -53,8 +53,8 @@ class Day24Test {
             .asIntegers()
             .readAllLines();
 
-        final long smallestQuantumEntanglement = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 3);
-        assertThat(smallestQuantumEntanglement)
+        final long part1Result = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 3);
+        assertThat(part1Result)
             .isEqualTo(11_846_773_891L);
     }
 
@@ -65,8 +65,8 @@ class Day24Test {
             .asIntegers()
             .readAllLines();
 
-        final long smallestQuantumEntanglement = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 4);
-        assertThat(smallestQuantumEntanglement)
+        final long part2Result = Day24.findQuantumEntanglementOfSmallestGroupOfPresents(values, 4);
+        assertThat(part2Result)
             .isEqualTo(80_393_059L);
     }
 }

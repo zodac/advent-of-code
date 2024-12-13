@@ -38,8 +38,8 @@ class Day13Test {
             .as(Route::parseSittingNextTo)
             .readAllLines();
 
-        final long changeInHappiness1 = Day13.greatestChangeInHappiness(values);
-        assertThat(changeInHappiness1)
+        final long part1Result = Day13.greatestChangeInHappiness(values);
+        assertThat(part1Result)
             .isEqualTo(330L);
     }
 
@@ -50,8 +50,8 @@ class Day13Test {
             .as(Route::parseSittingNextTo)
             .readAllLines();
 
-        final long changeInHappiness = Day13.greatestChangeInHappiness(values);
-        assertThat(changeInHappiness)
+        final long part1Result = Day13.greatestChangeInHappiness(values);
+        assertThat(part1Result)
             .isEqualTo(664L);
     }
 
@@ -62,8 +62,8 @@ class Day13Test {
             .as(Route::parseSittingNextTo)
             .readAllLines();
 
-        final long changeInHappiness = Day13.greatestChangeInHappinessIncludingSelf(values);
-        assertThat(changeInHappiness)
+        final long part2Result = Day13.greatestChangeInHappinessIncludingSelf(values);
+        assertThat(part2Result)
             .isEqualTo(640L);
     }
 }

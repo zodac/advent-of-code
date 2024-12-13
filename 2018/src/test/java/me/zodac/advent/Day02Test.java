@@ -33,22 +33,22 @@ class Day02Test {
 
     @Test
     void example() {
-        final List<String> valuesPart1 = InputReader
+        final List<String> values1 = InputReader
             .forExample(INPUT_FILENAME)
             .asStrings()
             .readAllLines();
 
-        final long checksumOfBoxIds = Day02.checksumOfBoxIds(valuesPart1);
-        assertThat(checksumOfBoxIds)
+        final long part1Result = Day02.checksumOfBoxIds(values1);
+        assertThat(part1Result)
             .isEqualTo(12L);
 
-        final List<String> valuesPart2 = InputReader
+        final List<String> values2 = InputReader
             .forExample(INPUT_FILENAME_PART_2)
             .asStrings()
             .readAllLines();
 
-        final String commonLetters = Day02.findCommonCharactersForValidBoxIds(valuesPart2);
-        assertThat(commonLetters)
+        final String part2Result = Day02.findCommonCharactersForValidBoxIds(values2);
+        assertThat(part2Result)
             .isEqualTo("fgij");
     }
 
@@ -59,8 +59,8 @@ class Day02Test {
             .asStrings()
             .readAllLines();
 
-        final long checksumOfBoxIds = Day02.checksumOfBoxIds(values);
-        assertThat(checksumOfBoxIds)
+        final long part1Result = Day02.checksumOfBoxIds(values);
+        assertThat(part1Result)
             .isEqualTo(5_880L);
     }
 
@@ -71,8 +71,8 @@ class Day02Test {
             .asStrings()
             .readAllLines();
 
-        final String commonLetters = Day02.findCommonCharactersForValidBoxIds(values);
-        assertThat(commonLetters)
+        final String part2Result = Day02.findCommonCharactersForValidBoxIds(values);
+        assertThat(part2Result)
             .isEqualTo("tiwcdpbseqhxryfmgkvjujvza");
     }
 }

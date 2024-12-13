@@ -37,12 +37,12 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long totalWinningsWithoutJokers = Day07.calculateTotalWinnings(values, false);
-        assertThat(totalWinningsWithoutJokers)
+        final long part1Result = Day07.calculateTotalWinnings(values, false);
+        assertThat(part1Result)
             .isEqualTo(6_440L);
 
-        final long totalWinningsWithJokers = Day07.calculateTotalWinnings(values, true);
-        assertThat(totalWinningsWithJokers)
+        final long part2Result = Day07.calculateTotalWinnings(values, true);
+        assertThat(part2Result)
             .isEqualTo(5_905L);
     }
 
@@ -53,8 +53,8 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long totalWinningsWithoutJokers = Day07.calculateTotalWinnings(values, false);
-        assertThat(totalWinningsWithoutJokers)
+        final long part1Result = Day07.calculateTotalWinnings(values, false);
+        assertThat(part1Result)
             .isEqualTo(253_910_319L);
     }
 
@@ -65,8 +65,8 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long totalWinningsWithJokers = Day07.calculateTotalWinnings(values, true);
-        assertThat(totalWinningsWithJokers)
+        final long part2Result = Day07.calculateTotalWinnings(values, true);
+        assertThat(part2Result)
             .isEqualTo(254_083_736L);
     }
 }

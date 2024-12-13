@@ -41,6 +41,8 @@ class Day21Test {
     private static final String INPUT_FILENAME = "day21.txt";
     private static final List<List<Equipment>> EQUIPMENT_COMBINATIONS = getEquipmentCombinations();
 
+    // TODO: Example?
+
     @Test
     void part1() {
         final String value = InputReader
@@ -49,8 +51,8 @@ class Day21Test {
             .readAllAsSingleString();
         final Warrior boss = Warrior.parse(value);
 
-        final long cheapestEquipmentCost = Day21.costOfCheapestEquipmentThatDefeatsBoss(EQUIPMENT_COMBINATIONS, boss);
-        assertThat(cheapestEquipmentCost)
+        final long part1Result = Day21.costOfCheapestEquipmentThatDefeatsBoss(EQUIPMENT_COMBINATIONS, boss);
+        assertThat(part1Result)
             .isEqualTo(91L);
     }
 
@@ -62,8 +64,8 @@ class Day21Test {
             .readAllAsSingleString();
         final Warrior boss = Warrior.parse(value);
 
-        final long cheapestEquipmentCost = Day21.costOfPriciestArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);
-        assertThat(cheapestEquipmentCost)
+        final long part2Result = Day21.costOfPriciestArmourThatLosesToBoss(EQUIPMENT_COMBINATIONS, boss);
+        assertThat(part2Result)
             .isEqualTo(158L);
     }
 

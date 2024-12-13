@@ -40,12 +40,12 @@ class Day13Test {
             .as(JsonParser::parse)
             .readAllLines();
 
-        final long sumOfValidIndices = Day13.calculateSumOfValidIndices(values);
-        assertThat(sumOfValidIndices)
+        final long part1Result = Day13.calculateSumOfValidIndices(values);
+        assertThat(part1Result)
             .isEqualTo(13L);
 
-        final long productOfDistressSignalIndices = Day13.calculateProductOfDistressSignalIndices(values);
-        assertThat(productOfDistressSignalIndices)
+        final long part2Result = Day13.calculateProductOfDistressSignalIndices(values);
+        assertThat(part2Result)
             .isEqualTo(140L);
     }
 
@@ -57,8 +57,8 @@ class Day13Test {
             .as(JsonParser::parse)
             .readAllLines();
 
-        final long sumOfValidIndices = Day13.calculateSumOfValidIndices(values);
-        assertThat(sumOfValidIndices)
+        final long part1Result = Day13.calculateSumOfValidIndices(values);
+        assertThat(part1Result)
             .isEqualTo(5_185L);
     }
 
@@ -70,8 +70,8 @@ class Day13Test {
             .as(JsonParser::parse)
             .readAllLines();
 
-        final long productOfDistressSignalIndices = Day13.calculateProductOfDistressSignalIndices(values);
-        assertThat(productOfDistressSignalIndices)
+        final long part2Result = Day13.calculateProductOfDistressSignalIndices(values);
+        assertThat(part2Result)
             .isEqualTo(23_751L);
     }
 }

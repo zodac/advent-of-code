@@ -37,12 +37,12 @@ class Day03Test {
             .asGrid()
             .ofCharacters();
 
-        final long sumOfPartNumbers = Day03.sumOfAllPartNumbers(characterGrid);
-        assertThat(sumOfPartNumbers)
+        final long part1Result = Day03.sumOfAllPartNumbers(characterGrid);
+        assertThat(part1Result)
             .isEqualTo(4_361L);
 
-        final long sumOfGearRatios = Day03.sumOfAllGearRatios(characterGrid);
-        assertThat(sumOfGearRatios)
+        final long part2Result = Day03.sumOfAllGearRatios(characterGrid);
+        assertThat(part2Result)
             .isEqualTo(467_835L);
     }
 
@@ -53,8 +53,8 @@ class Day03Test {
             .asGrid()
             .ofCharacters();
 
-        final long sumOfPartNumbers = Day03.sumOfAllPartNumbers(characterGrid);
-        assertThat(sumOfPartNumbers)
+        final long part1Result = Day03.sumOfAllPartNumbers(characterGrid);
+        assertThat(part1Result)
             .isEqualTo(498_559L);
     }
 
@@ -65,8 +65,8 @@ class Day03Test {
             .asGrid()
             .ofCharacters();
 
-        final long sumOfGearRatios = Day03.sumOfAllGearRatios(characterGrid);
-        assertThat(sumOfGearRatios)
+        final long part2Result = Day03.sumOfAllGearRatios(characterGrid);
+        assertThat(part2Result)
             .isEqualTo(72_246_648L);
     }
 }

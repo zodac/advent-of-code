@@ -41,8 +41,8 @@ class Day22Test {
             .readAllAsSingleString();
         final MageBoss boss = MageBoss.parse(value);
 
-        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(EXAMPLE_STARTING_PLAYER, boss, 0);
-        assertThat(cheapestManaCost)
+        final long part1Result = Day22.findCheapestManaCostToWinBattle(EXAMPLE_STARTING_PLAYER, boss, 0);
+        assertThat(part1Result)
             .isEqualTo(641L);
     }
 
@@ -54,8 +54,8 @@ class Day22Test {
             .readAllAsSingleString();
         final MageBoss boss = MageBoss.parse(value);
 
-        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(PUZZLE_STARTING_PLAYER, boss, 0);
-        assertThat(cheapestManaCost)
+        final long part1Result = Day22.findCheapestManaCostToWinBattle(PUZZLE_STARTING_PLAYER, boss, 0);
+        assertThat(part1Result)
             .isEqualTo(953L);
     }
 
@@ -67,8 +67,8 @@ class Day22Test {
             .readAllAsSingleString();
         final MageBoss boss = MageBoss.parse(value);
 
-        final long cheapestManaCost = Day22.findCheapestManaCostToWinBattle(PUZZLE_STARTING_PLAYER, boss, 1);
-        assertThat(cheapestManaCost)
+        final long part2Result = Day22.findCheapestManaCostToWinBattle(PUZZLE_STARTING_PLAYER, boss, 1);
+        assertThat(part2Result)
             .isEqualTo(1_289L);
     }
 }

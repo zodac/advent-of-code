@@ -47,8 +47,8 @@ public final class Day01 {
      * @param values the input defining whether to go up or down
      * @return the final floor
      */
-    public static int findResultFloor(final Collection<Character> values) {
-        int currentFloor = 0;
+    public static long findResultFloor(final Collection<Character> values) {
+        long currentFloor = 0L;
 
         for (final char character : values) {
             if (character == INCREMENT_CHARACTER) {
@@ -76,8 +76,8 @@ public final class Day01 {
      * @param floorToFind the floor we want to find the index of
      * @return the index of {@code values} when we arrived at the wanted floor
      */
-    public static int findIndexOfSpecificFloor(final List<Character> values, final int floorToFind) {
-        int currentFloor = 0;
+    public static long findIndexOfSpecificFloor(final List<Character> values, final int floorToFind) {
+        long currentFloor = 0L;
 
         final int numberOfValues = values.size();
         for (int i = 0; i < numberOfValues; i++) {

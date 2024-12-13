@@ -38,12 +38,12 @@ class Day09Test {
             .as(Route::parseSourceDestination)
             .readAllLines();
 
-        final long shortestPath = Day09.distanceOfShortestPath(values);
-        assertThat(shortestPath)
+        final long part1Result = Day09.distanceOfShortestPath(values);
+        assertThat(part1Result)
             .isEqualTo(605L);
 
-        final long longestPath = Day09.distanceOfLongestPath(values);
-        assertThat(longestPath)
+        final long part2Result = Day09.distanceOfLongestPath(values);
+        assertThat(part2Result)
             .isEqualTo(982L);
     }
 
@@ -54,8 +54,8 @@ class Day09Test {
             .as(Route::parseSourceDestination)
             .readAllLines();
 
-        final long shortestPath = Day09.distanceOfShortestPath(values);
-        assertThat(shortestPath)
+        final long part1Result = Day09.distanceOfShortestPath(values);
+        assertThat(part1Result)
             .isEqualTo(141L);
     }
 
@@ -66,8 +66,8 @@ class Day09Test {
             .as(Route::parseSourceDestination)
             .readAllLines();
 
-        final long longestPath = Day09.distanceOfLongestPath(values);
-        assertThat(longestPath)
+        final long part2Result = Day09.distanceOfLongestPath(values);
+        assertThat(part2Result)
             .isEqualTo(736L);
     }
 }

@@ -38,8 +38,8 @@ class Day16Test {
             .as(Sue::parseThreeAttributes)
             .readAllLines();
 
-        final long matchingId = Day16.findIdOfMatchingSue(values, false);
-        assertThat(matchingId)
+        final long part1Result = Day16.findIdOfMatchingSue(values, false);
+        assertThat(part1Result)
             .isEqualTo(373L);
     }
 
@@ -50,8 +50,8 @@ class Day16Test {
             .as(Sue::parseThreeAttributes)
             .readAllLines();
 
-        final long matchingId = Day16.findIdOfMatchingSue(values, true);
-        assertThat(matchingId)
+        final long part2Result = Day16.findIdOfMatchingSue(values, true);
+        assertThat(part2Result)
             .isEqualTo(260L);
     }
 }

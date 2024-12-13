@@ -17,8 +17,6 @@
 
 package me.zodac.advent;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
@@ -37,13 +35,13 @@ class Day01Test {
             .asLinesOfCharacters()
             .readFirstLine();
 
-        final int floor1 = Day01.findResultFloor(values);
-        assertThat(floor1)
-            .isEqualTo(-1);
+        final long part1Result = Day01.findResultFloor(values);
+        assertThat(part1Result)
+            .isEqualTo(-1L);
 
-        final int floor2 = Day01.findIndexOfSpecificFloor(values, -1);
-        assertThat(floor2)
-            .isEqualTo(5);
+        final long part2Result = Day01.findIndexOfSpecificFloor(values, -1);
+        assertThat(part2Result)
+            .isEqualTo(5L);
     }
 
     @Test
@@ -53,9 +51,9 @@ class Day01Test {
             .asLinesOfCharacters()
             .readFirstLine();
 
-        final int floor = Day01.findResultFloor(values);
-        assertThat(floor)
-            .isEqualTo(74);
+        final long part1Result = Day01.findResultFloor(values);
+        assertThat(part1Result)
+            .isEqualTo(74L);
     }
 
     @Test
@@ -65,8 +63,8 @@ class Day01Test {
             .asLinesOfCharacters()
             .readFirstLine();
 
-        final int floor = Day01.findIndexOfSpecificFloor(values, -1);
-        assertThat(floor)
-            .isEqualTo(1_795);
+        final long part1Result = Day01.findIndexOfSpecificFloor(values, -1);
+        assertThat(part1Result)
+            .isEqualTo(1_795L);
     }
 }

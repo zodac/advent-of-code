@@ -37,12 +37,12 @@ class Day01Test {
             .asStrings()
             .readAllLines();
 
-        final long count1 = Day01.valueOfLargestGroupOfCalories(values);
-        assertThat(count1)
+        final long part1Result = Day01.valueOfLargestGroupOfCalories(values);
+        assertThat(part1Result)
             .isEqualTo(24_000L);
 
-        final long count2 = Day01.valueOfLargestGroupsOfCalories(values, 3);
-        assertThat(count2)
+        final long part2Result = Day01.valueOfLargestGroupsOfCalories(values, 3);
+        assertThat(part2Result)
             .isEqualTo(45_000L);
     }
 
@@ -53,8 +53,8 @@ class Day01Test {
             .asStrings()
             .readAllLines();
 
-        final long count = Day01.valueOfLargestGroupOfCalories(values);
-        assertThat(count)
+        final long part1Result = Day01.valueOfLargestGroupOfCalories(values);
+        assertThat(part1Result)
             .isEqualTo(68_802L);
     }
 
@@ -65,8 +65,8 @@ class Day01Test {
             .asStrings()
             .readAllLines();
 
-        final long count = Day01.valueOfLargestGroupsOfCalories(values, 3);
-        assertThat(count)
+        final long part2Result = Day01.valueOfLargestGroupsOfCalories(values, 3);
+        assertThat(part2Result)
             .isEqualTo(205_370L);
     }
 }

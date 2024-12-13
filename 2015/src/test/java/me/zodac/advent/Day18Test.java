@@ -38,12 +38,12 @@ class Day18Test {
             .asGrid()
             .ofBooleans(SYMBOL_SIGNIFYING_TRUE);
 
-        final long numberOfCombinations1 = Day18.playGameOfLife(booleanGrid, 4, false);
-        assertThat(numberOfCombinations1)
+        final long part1Result = Day18.playGameOfLife(booleanGrid, 4, false);
+        assertThat(part1Result)
             .isEqualTo(4L);
 
-        final long numberOfCombinations2 = Day18.playGameOfLife(booleanGrid, 5, true);
-        assertThat(numberOfCombinations2)
+        final long part2Result = Day18.playGameOfLife(booleanGrid, 5, true);
+        assertThat(part2Result)
             .isEqualTo(17L);
     }
 
@@ -54,8 +54,8 @@ class Day18Test {
             .asGrid()
             .ofBooleans(SYMBOL_SIGNIFYING_TRUE);
 
-        final long numberOfCombinations = Day18.playGameOfLife(booleanGrid, 100, false);
-        assertThat(numberOfCombinations)
+        final long part1Result = Day18.playGameOfLife(booleanGrid, 100, false);
+        assertThat(part1Result)
             .isEqualTo(814L);
     }
 
@@ -66,8 +66,8 @@ class Day18Test {
             .asGrid()
             .ofBooleans(SYMBOL_SIGNIFYING_TRUE);
 
-        final long numberOfCombinations = Day18.playGameOfLife(booleanGrid, 100, true);
-        assertThat(numberOfCombinations)
+        final long part2Result = Day18.playGameOfLife(booleanGrid, 100, true);
+        assertThat(part2Result)
             .isEqualTo(924L);
     }
 }

@@ -38,12 +38,12 @@ public final class Day01 {
      * @param values the {@link SequencedCollection} of {@link Integer}s to be checked
      * @return the count of the values higher than their predecessor
      */
-    public static int countValuesHigherThanPreviousValue(final SequencedCollection<Integer> values) {
+    public static long countValuesHigherThanPreviousValue(final SequencedCollection<Integer> values) {
         if (values.isEmpty()) {
             return 0;
         }
 
-        int count = 0;
+        long count = 0L;
 
         // Initialise with first value, rather than assuming the value cannot be negative
         int currentValue = values.getFirst();
@@ -69,12 +69,12 @@ public final class Day01 {
      * @param values     the {@link List} of {@link Integer}s to be checked
      * @return the count of the windows with a higher summed value than their predecessor
      */
-    public static int countWindowValueHigherThanPreviousValue(final int windowSize, final List<Integer> values) {
+    public static long countWindowValueHigherThanPreviousValue(final int windowSize, final List<Integer> values) {
         if (values.size() < windowSize) {
             return 0;
         }
 
-        int count = 0;
+        long count = 0L;
 
         // Initialise with first value, rather than assuming the value cannot be negative
         int currentValue = 0;

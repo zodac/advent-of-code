@@ -36,12 +36,12 @@ class Day06Test {
             .asStrings()
             .readFirstLine();
 
-        final long result1 = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 4);
-        assertThat(result1)
+        final long part1Result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 4);
+        assertThat(part1Result)
             .isEqualTo(7L);
 
-        final long result2 = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 14);
-        assertThat(result2)
+        final long part2Result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 14);
+        assertThat(part2Result)
             .isEqualTo(19L);
     }
 
@@ -52,8 +52,8 @@ class Day06Test {
             .asStrings()
             .readFirstLine();
 
-        final long result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 4);
-        assertThat(result)
+        final long part1Result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 4);
+        assertThat(part1Result)
             .isEqualTo(1_093L);
     }
 
@@ -64,8 +64,8 @@ class Day06Test {
             .asStrings()
             .readFirstLine();
 
-        final long result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 14);
-        assertThat(result)
+        final long part2Result = Day06.findSequenceOfUniqueCharactersAndReturnLastIndex(value, 14);
+        assertThat(part2Result)
             .isEqualTo(3_534L);
     }
 }

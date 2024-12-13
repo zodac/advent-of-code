@@ -39,12 +39,12 @@ class Day17Test {
             .asIntegers()
             .readAllLines();
 
-        final long numberOfCombinations1 = Day17.numberOfCombinationsMatchingWantedValue(values, EXAMPLE_WANTED_VALUE);
-        assertThat(numberOfCombinations1)
+        final long part1Result = Day17.numberOfCombinationsMatchingWantedValue(values, EXAMPLE_WANTED_VALUE);
+        assertThat(part1Result)
             .isEqualTo(4L);
 
-        final long numberOfCombinations2 = Day17.numberOfSmallestSizeCombinationsMatchingWantedValue(values, EXAMPLE_WANTED_VALUE);
-        assertThat(numberOfCombinations2)
+        final long part2Result = Day17.numberOfSmallestSizeCombinationsMatchingWantedValue(values, EXAMPLE_WANTED_VALUE);
+        assertThat(part2Result)
             .isEqualTo(3L);
     }
 
@@ -55,8 +55,8 @@ class Day17Test {
             .asIntegers()
             .readAllLines();
 
-        final long numberOfCombinations = Day17.numberOfCombinationsMatchingWantedValue(values, PUZZLE_WANTED_VALUE);
-        assertThat(numberOfCombinations)
+        final long part1Result = Day17.numberOfCombinationsMatchingWantedValue(values, PUZZLE_WANTED_VALUE);
+        assertThat(part1Result)
             .isEqualTo(4_372L);
     }
 
@@ -67,8 +67,8 @@ class Day17Test {
             .asIntegers()
             .readAllLines();
 
-        final long numberOfCombinations = Day17.numberOfSmallestSizeCombinationsMatchingWantedValue(values, PUZZLE_WANTED_VALUE);
-        assertThat(numberOfCombinations)
+        final long part2Result = Day17.numberOfSmallestSizeCombinationsMatchingWantedValue(values, PUZZLE_WANTED_VALUE);
+        assertThat(part2Result)
             .isEqualTo(4L);
     }
 }

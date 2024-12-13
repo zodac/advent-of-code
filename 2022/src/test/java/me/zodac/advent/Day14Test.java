@@ -38,12 +38,12 @@ class Day14Test {
             .as(Point::ofMany)
             .readAllLines();
 
-        final long grainsOfSand1 = Day14.countGrainsOfSandBeforeFallingPastTheFloor(values);
-        assertThat(grainsOfSand1)
+        final long part1Result = Day14.countGrainsOfSandBeforeFallingPastTheFloor(values);
+        assertThat(part1Result)
             .isEqualTo(24L);
 
-        final long grainsOfSand2 = Day14.countGrainsOfSandBeforeReachingSandSpawnPoint(values);
-        assertThat(grainsOfSand2)
+        final long part2Result = Day14.countGrainsOfSandBeforeReachingSandSpawnPoint(values);
+        assertThat(part2Result)
             .isEqualTo(93L);
     }
 
@@ -54,8 +54,8 @@ class Day14Test {
             .as(Point::ofMany)
             .readAllLines();
 
-        final long grainsOfSand = Day14.countGrainsOfSandBeforeFallingPastTheFloor(values);
-        assertThat(grainsOfSand)
+        final long part1Result = Day14.countGrainsOfSandBeforeFallingPastTheFloor(values);
+        assertThat(part1Result)
             .isEqualTo(843L);
     }
 
@@ -66,8 +66,8 @@ class Day14Test {
             .as(Point::ofMany)
             .readAllLines();
 
-        final long grainsOfSand = Day14.countGrainsOfSandBeforeReachingSandSpawnPoint(values);
-        assertThat(grainsOfSand)
+        final long part2Result = Day14.countGrainsOfSandBeforeReachingSandSpawnPoint(values);
+        assertThat(part2Result)
             .isEqualTo(27_625L);
     }
 }

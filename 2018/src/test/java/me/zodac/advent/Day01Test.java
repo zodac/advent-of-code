@@ -37,12 +37,12 @@ class Day01Test {
             .asIntegers()
             .readAllLines();
 
-        final long sumOfFrequencies = Day01.sumOfFrequencies(values);
-        assertThat(sumOfFrequencies)
+        final long part1Result = Day01.sumOfFrequencies(values);
+        assertThat(part1Result)
             .isEqualTo(3L);
 
-        final long result = Day01.findFirstFrequencyReachedTwice(values);
-        assertThat(result)
+        final long part2Result = Day01.findFirstFrequencyReachedTwice(values);
+        assertThat(part2Result)
             .isEqualTo(2L);
     }
 
@@ -53,8 +53,8 @@ class Day01Test {
             .asIntegers()
             .readAllLines();
 
-        final long sumOfFrequencies = Day01.sumOfFrequencies(values);
-        assertThat(sumOfFrequencies)
+        final long part1Result = Day01.sumOfFrequencies(values);
+        assertThat(part1Result)
             .isEqualTo(470L);
     }
 
@@ -65,8 +65,8 @@ class Day01Test {
             .asIntegers()
             .readAllLines();
 
-        final long result = Day01.findFirstFrequencyReachedTwice(values);
-        assertThat(result)
+        final long part2Result = Day01.findFirstFrequencyReachedTwice(values);
+        assertThat(part2Result)
             .isEqualTo(790L);
     }
 }

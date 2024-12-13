@@ -37,12 +37,12 @@ class Day12Test {
             .asStrings()
             .readAllLines();
 
-        final long possibleArrangements = Day12.countPossibleArrangements(values, 1);
-        assertThat(possibleArrangements)
+        final long part1Result = Day12.countPossibleArrangements(values, 1);
+        assertThat(part1Result)
             .isEqualTo(21L);
 
-        final long possibleArrangementsPart2 = Day12.countPossibleArrangements(values, 5);
-        assertThat(possibleArrangementsPart2)
+        final long part2Result = Day12.countPossibleArrangements(values, 5);
+        assertThat(part2Result)
             .isEqualTo(525_152L);
     }
 
@@ -53,8 +53,8 @@ class Day12Test {
             .asStrings()
             .readAllLines();
 
-        final long possibleArrangements = Day12.countPossibleArrangements(values, 1);
-        assertThat(possibleArrangements)
+        final long part1Result = Day12.countPossibleArrangements(values, 1);
+        assertThat(part1Result)
             .isEqualTo(6_871L);
     }
 
@@ -65,8 +65,8 @@ class Day12Test {
             .asStrings()
             .readAllLines();
 
-        final long possibleArrangements = Day12.countPossibleArrangements(values, 5);
-        assertThat(possibleArrangements)
+        final long part2Result = Day12.countPossibleArrangements(values, 5);
+        assertThat(part2Result)
             .isEqualTo(2_043_098_029_844L);
     }
 }

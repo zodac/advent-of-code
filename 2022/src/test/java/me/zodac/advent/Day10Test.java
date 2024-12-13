@@ -38,8 +38,8 @@ class Day10Test {
             .as(AssemblyInstruction::parse)
             .readAllLines();
 
-        final long sumOfSignalValues = Day10.sumOfSignalValues(values);
-        assertThat(sumOfSignalValues)
+        final long part1Result = Day10.sumOfSignalValues(values);
+        assertThat(part1Result)
             .isEqualTo(13_140L);
     }
 
@@ -50,8 +50,8 @@ class Day10Test {
             .as(AssemblyInstruction::parse)
             .readAllLines();
 
-        final long sumOfSignalValues = Day10.sumOfSignalValues(values);
-        assertThat(sumOfSignalValues)
+        final long part1Result = Day10.sumOfSignalValues(values);
+        assertThat(part1Result)
             .isEqualTo(16_480L);
     }
 
@@ -62,8 +62,8 @@ class Day10Test {
             .as(AssemblyInstruction::parse)
             .readAllLines();
 
-        final String charactersOnSegmentedDisplay = Day10.charactersOnSegmentedDisplay(values);
-        assertThat(charactersOnSegmentedDisplay)
+        final String part2Result = Day10.charactersOnSegmentedDisplay(values);
+        assertThat(part2Result)
             .isEqualTo("PLEFULPB");
     }
 }

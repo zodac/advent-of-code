@@ -38,12 +38,12 @@ class Day04Test {
             .as(ScratchCard::parse)
             .readAllLines();
 
-        final long totalPoints = Day04.totalPointsForScratchCards(values);
-        assertThat(totalPoints)
+        final long part1Result = Day04.totalPointsForScratchCards(values);
+        assertThat(part1Result)
             .isEqualTo(13L);
 
-        final long numberOfScratchCards = Day04.countTotalNumberOfScratchCards(values);
-        assertThat(numberOfScratchCards)
+        final long part2Result = Day04.countTotalNumberOfScratchCards(values);
+        assertThat(part2Result)
             .isEqualTo(30L);
     }
 
@@ -54,8 +54,8 @@ class Day04Test {
             .as(ScratchCard::parse)
             .readAllLines();
 
-        final long totalPoints = Day04.totalPointsForScratchCards(values);
-        assertThat(totalPoints)
+        final long part1Result = Day04.totalPointsForScratchCards(values);
+        assertThat(part1Result)
             .isEqualTo(18_519L);
     }
 
@@ -66,8 +66,8 @@ class Day04Test {
             .as(ScratchCard::parse)
             .readAllLines();
 
-        final long numberOfScratchCards = Day04.countTotalNumberOfScratchCards(values);
-        assertThat(numberOfScratchCards)
+        final long part2Result = Day04.countTotalNumberOfScratchCards(values);
+        assertThat(part2Result)
             .isEqualTo(11_787_590L);
     }
 }

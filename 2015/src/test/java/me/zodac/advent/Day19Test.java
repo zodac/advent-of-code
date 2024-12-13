@@ -43,11 +43,10 @@ class Day19Test {
             .stream()
             .map(Replacement::parse)
             .toList();
-
         final String molecule = values.getLast();
 
-        final long numberOfDistinctMolecules = Day19.numberOfDistinctReplacementMolecules(molecule, replacements);
-        assertThat(numberOfDistinctMolecules)
+        final long part1Result = Day19.numberOfDistinctReplacementMolecules(molecule, replacements);
+        assertThat(part1Result)
             .isEqualTo(4L);
     }
 
@@ -63,11 +62,10 @@ class Day19Test {
             .stream()
             .map(Replacement::parse)
             .toList();
-
         final String molecule = values.getLast();
 
-        final long numberOfDistinctMolecules = Day19.numberOfDistinctReplacementMolecules(molecule, replacements);
-        assertThat(numberOfDistinctMolecules)
+        final long part1Result = Day19.numberOfDistinctReplacementMolecules(molecule, replacements);
+        assertThat(part1Result)
             .isEqualTo(518L);
     }
 
@@ -83,11 +81,10 @@ class Day19Test {
             .stream()
             .map(Replacement::parse)
             .toList();
-
         final String molecule = values.getLast();
 
-        final long numberOfDistinctMolecules = Day19.minimumStepsToCreateOutputFromInput("e", molecule, replacements);
-        assertThat(numberOfDistinctMolecules)
+        final long part2Result = Day19.minimumStepsToCreateOutputFromInput("e", molecule, replacements);
+        assertThat(part2Result)
             .isEqualTo(200L);
     }
 }

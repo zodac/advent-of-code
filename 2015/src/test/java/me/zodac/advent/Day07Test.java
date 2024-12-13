@@ -37,9 +37,9 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final Day07 day07 = Day07.create(values);
-        final long valueOfLabel = day07.evaluate("i");
-        assertThat(valueOfLabel)
+        final Day07 day = Day07.create(values);
+        final long part1Result = day.evaluate("i");
+        assertThat(part1Result)
             .isEqualTo(65_079L);
     }
 
@@ -50,9 +50,9 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final Day07 day07 = Day07.create(values);
-        final long valueOfLabel = day07.evaluate("a");
-        assertThat(valueOfLabel)
+        final Day07 day = Day07.create(values);
+        final long part1Result = day.evaluate("a");
+        assertThat(part1Result)
             .isEqualTo(16_076L);
     }
 
@@ -63,9 +63,9 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final Day07 day07 = Day07.create(values);
-        final long valueOfLabel = day07.evaluateWithOverride("a", "b", "16076");
-        assertThat(valueOfLabel)
+        final Day07 day = Day07.create(values);
+        final long part2Result = day.evaluateWithOverride("a", "b", "16076");
+        assertThat(part2Result)
             .isEqualTo(2_797L);
     }
 }

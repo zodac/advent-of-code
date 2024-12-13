@@ -41,12 +41,12 @@ class Day15Test {
             .map(SequenceElement::parse)
             .toList();
 
-        final long sumOfHashAlgorithms = Day15.calculateSumOfHashAlgorithms(values);
-        assertThat(sumOfHashAlgorithms)
+        final long part1Result = Day15.calculateSumOfHashAlgorithms(values);
+        assertThat(part1Result)
             .isEqualTo(1_320L);
 
-        final long totalFocusPower = Day15.calculateTotalFocusPower(values);
-        assertThat(totalFocusPower)
+        final long part2Result = Day15.calculateTotalFocusPower(values);
+        assertThat(part2Result)
             .isEqualTo(145L);
     }
 
@@ -60,8 +60,8 @@ class Day15Test {
             .map(SequenceElement::parse)
             .toList();
 
-        final long sumOfHashAlgorithms = Day15.calculateSumOfHashAlgorithms(values);
-        assertThat(sumOfHashAlgorithms)
+        final long part1Result = Day15.calculateSumOfHashAlgorithms(values);
+        assertThat(part1Result)
             .isEqualTo(512_797L);
     }
 
@@ -75,8 +75,8 @@ class Day15Test {
             .map(SequenceElement::parse)
             .toList();
 
-        final long totalFocusPower = Day15.calculateTotalFocusPower(values);
-        assertThat(totalFocusPower)
+        final long part2Result = Day15.calculateTotalFocusPower(values);
+        assertThat(part2Result)
             .isEqualTo(262_454L);
     }
 }

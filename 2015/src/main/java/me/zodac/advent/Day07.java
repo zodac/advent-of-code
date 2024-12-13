@@ -35,7 +35,7 @@ import me.zodac.advent.util.StringUtils;
 public final class Day07 {
 
     private static final Pattern OUTPUT_PATTERN = Pattern.compile(" -> ");
-    private static final int BIT_MASK = 0xFFFF;
+    private static final int BIT_MASK = 0xFFFF; // Removed 2nd 16-bits from an integer
     private static final String EMPTY_OVERRIDE_LABEL = "";
     private static final String EMPTY_OVERRIDE_VALUE = "";
 

@@ -37,12 +37,12 @@ class Day03Test {
             .asStrings()
             .readAllLines();
 
-        final long sum1 = Day03.sumCommonCharacterValuesInStringHalves(values);
-        assertThat(sum1)
+        final long part1Result = Day03.sumCommonCharacterValuesInStringHalves(values);
+        assertThat(part1Result)
             .isEqualTo(157L);
 
-        final long sum2 = Day03.sumCommonCharacterValuesInGroupedStrings(values, 3);
-        assertThat(sum2)
+        final long part2Result = Day03.sumCommonCharacterValuesInGroupedStrings(values, 3);
+        assertThat(part2Result)
             .isEqualTo(70L);
     }
 
@@ -53,8 +53,8 @@ class Day03Test {
             .asStrings()
             .readAllLines();
 
-        final long sum = Day03.sumCommonCharacterValuesInStringHalves(values);
-        assertThat(sum)
+        final long part1Result = Day03.sumCommonCharacterValuesInStringHalves(values);
+        assertThat(part1Result)
             .isEqualTo(7_824L);
     }
 
@@ -65,8 +65,8 @@ class Day03Test {
             .asStrings()
             .readAllLines();
 
-        final long sum = Day03.sumCommonCharacterValuesInGroupedStrings(values, 3);
-        assertThat(sum)
+        final long part2Result = Day03.sumCommonCharacterValuesInGroupedStrings(values, 3);
+        assertThat(part2Result)
             .isEqualTo(2_798L);
     }
 }

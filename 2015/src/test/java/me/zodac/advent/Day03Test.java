@@ -41,13 +41,13 @@ class Day03Test {
             .mapToObj(i -> Direction.get((char) i))
             .toList();
 
-        final int uniqueHouses1 = Day03.countUniqueHouses(values);
-        assertThat(uniqueHouses1)
-            .isEqualTo(2);
+        final long part1Result = Day03.countUniqueHouses(values);
+        assertThat(part1Result)
+            .isEqualTo(2L);
 
-        final int uniqueHouses2 = Day03.countUniqueHousesTwoUsers(values);
-        assertThat(uniqueHouses2)
-            .isEqualTo(11);
+        final long part2Result = Day03.countUniqueHousesTwoUsers(values);
+        assertThat(part2Result)
+            .isEqualTo(11L);
     }
 
     @Test
@@ -60,9 +60,9 @@ class Day03Test {
             .mapToObj(i -> Direction.get((char) i))
             .toList();
 
-        final int uniqueHouses = Day03.countUniqueHouses(values);
-        assertThat(uniqueHouses)
-            .isEqualTo(2_081);
+        final long part1Result = Day03.countUniqueHouses(values);
+        assertThat(part1Result)
+            .isEqualTo(2_081L);
     }
 
     @Test
@@ -75,8 +75,8 @@ class Day03Test {
             .mapToObj(i -> Direction.get((char) i))
             .toList();
 
-        final int uniqueHouses = Day03.countUniqueHousesTwoUsers(values);
-        assertThat(uniqueHouses)
-            .isEqualTo(2_341);
+        final long part2Result = Day03.countUniqueHousesTwoUsers(values);
+        assertThat(part2Result)
+            .isEqualTo(2_341L);
     }
 }

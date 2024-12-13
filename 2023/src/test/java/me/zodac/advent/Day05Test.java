@@ -37,12 +37,12 @@ class Day05Test {
             .asStrings()
             .readAllLines();
 
-        final long lowestLocationForSeedNumbers = Day05.findLowestLocationForSeedNumbers(values);
-        assertThat(lowestLocationForSeedNumbers)
+        final long part1Result = Day05.findLowestLocationForSeedNumbers(values);
+        assertThat(part1Result)
             .isEqualTo(35L);
 
-        final long lowestLocationForSeedNumberIntervals = Day05.findLowestLocationForSeedNumberIntervals(values);
-        assertThat(lowestLocationForSeedNumberIntervals)
+        final long part2Result = Day05.findLowestLocationForSeedNumberIntervals(values);
+        assertThat(part2Result)
             .isEqualTo(46L);
     }
 
@@ -53,8 +53,8 @@ class Day05Test {
             .asStrings()
             .readAllLines();
 
-        final long lowestLocationForSeedNumbers = Day05.findLowestLocationForSeedNumbers(values);
-        assertThat(lowestLocationForSeedNumbers)
+        final long part1Result = Day05.findLowestLocationForSeedNumbers(values);
+        assertThat(part1Result)
             .isEqualTo(178_159_714L);
     }
 
@@ -65,8 +65,8 @@ class Day05Test {
             .asStrings()
             .readAllLines();
 
-        final long lowestLocationForSeedNumberIntervals = Day05.findLowestLocationForSeedNumberIntervals(values);
-        assertThat(lowestLocationForSeedNumberIntervals)
+        final long part2Result = Day05.findLowestLocationForSeedNumberIntervals(values);
+        assertThat(part2Result)
             .isEqualTo(100_165_128L);
     }
 }

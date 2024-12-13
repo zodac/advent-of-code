@@ -40,12 +40,12 @@ class Day15Test {
             .as(Ingredient::parse)
             .readAllLines();
 
-        final long score1 = Day15.scoreOfBestIngredients(values, PART_1_WANTED_CALORIE_COUNT);
-        assertThat(score1)
+        final long part1Result = Day15.scoreOfBestIngredients(values, PART_1_WANTED_CALORIE_COUNT);
+        assertThat(part1Result)
             .isEqualTo(62_842_880L);
 
-        final long score2 = Day15.scoreOfBestIngredients(values, PART_2_WANTED_CALORIE_COUNT);
-        assertThat(score2)
+        final long part2Result = Day15.scoreOfBestIngredients(values, PART_2_WANTED_CALORIE_COUNT);
+        assertThat(part2Result)
             .isEqualTo(57_600_000L);
     }
 
@@ -56,8 +56,8 @@ class Day15Test {
             .as(Ingredient::parse)
             .readAllLines();
 
-        final long score = Day15.scoreOfBestIngredients(values, PART_1_WANTED_CALORIE_COUNT);
-        assertThat(score)
+        final long part1Result = Day15.scoreOfBestIngredients(values, PART_1_WANTED_CALORIE_COUNT);
+        assertThat(part1Result)
             .isEqualTo(21_367_368L);
     }
 
@@ -68,8 +68,8 @@ class Day15Test {
             .as(Ingredient::parse)
             .readAllLines();
 
-        final long score = Day15.scoreOfBestIngredients(values, PART_2_WANTED_CALORIE_COUNT);
-        assertThat(score)
+        final long part2Result = Day15.scoreOfBestIngredients(values, PART_2_WANTED_CALORIE_COUNT);
+        assertThat(part2Result)
             .isEqualTo(1_766_400L);
     }
 }

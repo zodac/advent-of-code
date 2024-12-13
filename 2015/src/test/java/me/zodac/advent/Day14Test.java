@@ -41,12 +41,12 @@ class Day14Test {
             .as(Reindeer::parse)
             .readAllLines();
 
-        final long furthestDistance = Day14.distanceOfFurthestTravelledReindeer(values, EXAMPLE_TRAVEL_TIME);
-        assertThat(furthestDistance)
+        final long part1Result = Day14.distanceOfFurthestTravelledReindeer(values, EXAMPLE_TRAVEL_TIME);
+        assertThat(part1Result)
             .isEqualTo(1_120L);
 
-        final long highestScore = Day14.calculateTheHighestScore(values, EXAMPLE_TRAVEL_TIME);
-        assertThat(highestScore)
+        final long part2Result = Day14.calculateTheHighestScore(values, EXAMPLE_TRAVEL_TIME);
+        assertThat(part2Result)
             .isEqualTo(689L);
     }
 
@@ -57,8 +57,8 @@ class Day14Test {
             .as(Reindeer::parse)
             .readAllLines();
 
-        final long furthestDistance = Day14.distanceOfFurthestTravelledReindeer(values, PUZZLE_TRAVEL_TIME);
-        assertThat(furthestDistance)
+        final long part1Result = Day14.distanceOfFurthestTravelledReindeer(values, PUZZLE_TRAVEL_TIME);
+        assertThat(part1Result)
             .isEqualTo(2_660L);
     }
 
@@ -69,8 +69,8 @@ class Day14Test {
             .as(Reindeer::parse)
             .readAllLines();
 
-        final long highestScore = Day14.calculateTheHighestScore(values, PUZZLE_TRAVEL_TIME);
-        assertThat(highestScore)
+        final long part2Result = Day14.calculateTheHighestScore(values, PUZZLE_TRAVEL_TIME);
+        assertThat(part2Result)
             .isEqualTo(1_256L);
     }
 }

@@ -17,7 +17,7 @@
 
 package me.zodac.advent;
 
-import me.zodac.advent.pojo.grid.IntegerGrid;
+import me.zodac.advent.pojo.grid.Grid;
 
 /**
  * Solution for %YEAR%, Day %DAY%.
@@ -33,20 +33,22 @@ public final class Day%DAY_LONG% {
     /**
      * Part 1.
      *
-     * @param integerGrid the input {@link IntegerGrid}
+     * @param integerGrid the input {@link Integer} {@link Grid}
      * @return the part 1 result
      */
     public static long part1(final IntegerGrid integerGrid) {
-        return 0L;
+        long total = 0L;
+        return total;
     }
 
     /**
      * Part 2.
      *
-     * @param integerGrid the input {@link IntegerGrid}
+     * @param integerGrid the input {@link Integer} {@link Grid}
      * @return the part 2 result
      */
     public static long part2(final IntegerGrid integerGrid) {
-        return 0L;
+        long total = 0L;
+        return total;
     }
 }

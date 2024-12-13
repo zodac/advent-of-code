@@ -43,12 +43,12 @@ class Day06Test {
             .as(Day06Test::convertToInstructionAndPoints)
             .readAllLines();
 
-        final long numberOfLitLights = Day06.countSwitchedOnLights(values);
-        assertThat(numberOfLitLights)
+        final long part1Result = Day06.countSwitchedOnLights(values);
+        assertThat(part1Result)
             .isEqualTo(1_000_000L);
 
-        final long brightnessOfLights = Day06.calculateBrightness(values);
-        assertThat(brightnessOfLights)
+        final long part2Result = Day06.calculateBrightness(values);
+        assertThat(part2Result)
             .isEqualTo(2_000_000L);
     }
 
@@ -59,8 +59,8 @@ class Day06Test {
             .as(Day06Test::convertToInstructionAndPoints)
             .readAllLines();
 
-        final long numberOfLitLights = Day06.countSwitchedOnLights(values);
-        assertThat(numberOfLitLights)
+        final long part1Result = Day06.countSwitchedOnLights(values);
+        assertThat(part1Result)
             .isEqualTo(377_891L);
     }
 
@@ -71,8 +71,8 @@ class Day06Test {
             .as(Day06Test::convertToInstructionAndPoints)
             .readAllLines();
 
-        final long brightnessOfLights = Day06.calculateBrightness(values);
-        assertThat(brightnessOfLights)
+        final long part2Result = Day06.calculateBrightness(values);
+        assertThat(part2Result)
             .isEqualTo(14_110_788L);
     }
 

@@ -38,12 +38,12 @@ class Day08Test {
             .as(Signal::create)
             .readAllLines();
 
-        final long numberOfUniqueOutputSignals = Day08.identifyUniqueOutputValues(signals);
-        assertThat(numberOfUniqueOutputSignals)
+        final long part1Result = Day08.identifyUniqueOutputValues(signals);
+        assertThat(part1Result)
             .isEqualTo(26L);
 
-        final long sumOfDecodedOutputs = Day08.sumOfDecodedOutputs(signals);
-        assertThat(sumOfDecodedOutputs)
+        final long part2Result = Day08.sumOfDecodedOutputs(signals);
+        assertThat(part2Result)
             .isEqualTo(61_229L);
     }
 
@@ -54,8 +54,8 @@ class Day08Test {
             .as(Signal::create)
             .readAllLines();
 
-        final long numberOfUniqueOutputSignals = Day08.identifyUniqueOutputValues(signals);
-        assertThat(numberOfUniqueOutputSignals)
+        final long part1Result = Day08.identifyUniqueOutputValues(signals);
+        assertThat(part1Result)
             .isEqualTo(245L);
     }
 
@@ -66,8 +66,8 @@ class Day08Test {
             .as(Signal::create)
             .readAllLines();
 
-        final long sumOfDecodedOutputs = Day08.sumOfDecodedOutputs(signals);
-        assertThat(sumOfDecodedOutputs)
+        final long part2Result = Day08.sumOfDecodedOutputs(signals);
+        assertThat(part2Result)
             .isEqualTo(983_026L);
     }
 }

@@ -42,12 +42,12 @@ class Day04Test {
             .as(Day04Test::convert)
             .readAllLines();
 
-        final long count1 = Day04.countCompleteOverlaps(values);
-        assertThat(count1)
+        final long part1Result = Day04.countCompleteOverlaps(values);
+        assertThat(part1Result)
             .isEqualTo(2L);
 
-        final long count2 = Day04.countPartialOverlaps(values);
-        assertThat(count2)
+        final long part2Result = Day04.countPartialOverlaps(values);
+        assertThat(part2Result)
             .isEqualTo(4L);
     }
 
@@ -58,8 +58,8 @@ class Day04Test {
             .as(Day04Test::convert)
             .readAllLines();
 
-        final long count = Day04.countCompleteOverlaps(values);
-        assertThat(count)
+        final long part1Result = Day04.countCompleteOverlaps(values);
+        assertThat(part1Result)
             .isEqualTo(560L);
     }
 
@@ -70,8 +70,8 @@ class Day04Test {
             .as(Day04Test::convert)
             .readAllLines();
 
-        final long count = Day04.countPartialOverlaps(values);
-        assertThat(count)
+        final long part2Result = Day04.countPartialOverlaps(values);
+        assertThat(part2Result)
             .isEqualTo(839L);
     }
 

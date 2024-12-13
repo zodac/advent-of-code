@@ -39,12 +39,12 @@ class Day07Test {
             .asLinesOfSeparatedNumbers()
             .readFirstLine();
 
-        final long minimumMoves1 = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
-        assertThat(minimumMoves1)
+        final long part1Result = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
+        assertThat(part1Result)
             .isEqualTo(37L);
 
-        final long minimumMoves2 = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);
-        assertThat(minimumMoves2)
+        final long part2Result = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);
+        assertThat(part2Result)
             .isEqualTo(168L);
     }
 
@@ -55,8 +55,8 @@ class Day07Test {
             .asLinesOfSeparatedNumbers()
             .readFirstLine();
 
-        final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
-        assertThat(minimumMoves)
+        final long part1Result = Day07.minimumMovesNeededToAlignVertically(verticalLocations, CONSTANT);
+        assertThat(part1Result)
             .isEqualTo(341_558L);
     }
 
@@ -67,8 +67,8 @@ class Day07Test {
             .asLinesOfSeparatedNumbers()
             .readFirstLine();
 
-        final long minimumMoves = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);
-        assertThat(minimumMoves)
+        final long part2Result = Day07.minimumMovesNeededToAlignVertically(verticalLocations, VARIABLE);
+        assertThat(part2Result)
             .isEqualTo(93_214_037L);
     }
 }

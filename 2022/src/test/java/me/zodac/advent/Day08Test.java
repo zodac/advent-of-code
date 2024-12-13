@@ -37,12 +37,12 @@ class Day08Test {
             .asGrid()
             .ofIntegers();
 
-        final long result1 = Day08.countTreesVisibleFromOutsideForest(integerGrid);
-        assertThat(result1)
+        final long part1Result = Day08.countTreesVisibleFromOutsideForest(integerGrid);
+        assertThat(part1Result)
             .isEqualTo(21L);
 
-        final long result2 = Day08.findHighestScenicScore(integerGrid);
-        assertThat(result2)
+        final long part2Result = Day08.findHighestScenicScore(integerGrid);
+        assertThat(part2Result)
             .isEqualTo(8L);
     }
 
@@ -53,8 +53,8 @@ class Day08Test {
             .asGrid()
             .ofIntegers();
 
-        final long result = Day08.countTreesVisibleFromOutsideForest(integerGrid);
-        assertThat(result)
+        final long part1Result = Day08.countTreesVisibleFromOutsideForest(integerGrid);
+        assertThat(part1Result)
             .isEqualTo(1_679L);
     }
 
@@ -65,8 +65,8 @@ class Day08Test {
             .asGrid()
             .ofIntegers();
 
-        final long result = Day08.findHighestScenicScore(integerGrid);
-        assertThat(result)
+        final long part2Result = Day08.findHighestScenicScore(integerGrid);
+        assertThat(part2Result)
             .isEqualTo(536_625L);
     }
 }

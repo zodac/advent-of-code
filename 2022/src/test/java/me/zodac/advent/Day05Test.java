@@ -47,15 +47,15 @@ class Day05Test {
 
         final Map<Integer, Deque<String>> stacksById1 = getStacksById(values);
         final List<StackInstruction> stackInstructions1 = getStackInstructions(values);
-        final String result1 = Day05.moveElementsBetweenStacksLastInFirstOutOrderAndCreateCode(stacksById1, stackInstructions1);
-        assertThat(result1)
+        final String part1Result = Day05.moveElementsBetweenStacksLastInFirstOutOrderAndCreateCode(stacksById1, stackInstructions1);
+        assertThat(part1Result)
             .isEqualTo("CMZ");
 
-        // Need to create a fresh map since the deques are being changed
+        // Need to create a fresh map since each Deque is changed
         final Map<Integer, Deque<String>> stacksById2 = getStacksById(values);
         final List<StackInstruction> stackInstructions2 = getStackInstructions(values);
-        final String result2 = Day05.moveElementsBetweenStacksRetainingOrderAndCreateCode(stacksById2, stackInstructions2);
-        assertThat(result2)
+        final String part2Result = Day05.moveElementsBetweenStacksRetainingOrderAndCreateCode(stacksById2, stackInstructions2);
+        assertThat(part2Result)
             .isEqualTo("MCD");
     }
 
@@ -70,8 +70,8 @@ class Day05Test {
         final Map<Integer, Deque<String>> stacksById = getStacksById(values);
         final List<StackInstruction> stackInstructions = getStackInstructions(values);
 
-        final String result = Day05.moveElementsBetweenStacksLastInFirstOutOrderAndCreateCode(stacksById, stackInstructions);
-        assertThat(result)
+        final String part1Result = Day05.moveElementsBetweenStacksLastInFirstOutOrderAndCreateCode(stacksById, stackInstructions);
+        assertThat(part1Result)
             .isEqualTo("RFFFWBPNS");
     }
 
@@ -86,8 +86,8 @@ class Day05Test {
         final Map<Integer, Deque<String>> stacksById = getStacksById(values);
         final List<StackInstruction> stackInstructions = getStackInstructions(values);
 
-        final String result = Day05.moveElementsBetweenStacksRetainingOrderAndCreateCode(stacksById, stackInstructions);
-        assertThat(result)
+        final String part2Result = Day05.moveElementsBetweenStacksRetainingOrderAndCreateCode(stacksById, stackInstructions);
+        assertThat(part2Result)
             .isEqualTo("CQQBBJFCS");
     }
 

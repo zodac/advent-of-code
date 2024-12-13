@@ -37,12 +37,12 @@ class Day12Test {
             .asStrings()
             .readAllLines();
 
-        final long distanceOfShortestPath1 = Day12.findShortestPathFromPossibleStartsToEnd(values, 'S');
-        assertThat(distanceOfShortestPath1)
+        final long part1Result = Day12.findShortestPathFromPossibleStartsToEnd(values, 'S');
+        assertThat(part1Result)
             .isEqualTo(31L);
 
-        final long distanceOfShortestPath2 = Day12.findShortestPathFromPossibleStartsToEnd(values, 'a');
-        assertThat(distanceOfShortestPath2)
+        final long part2Result = Day12.findShortestPathFromPossibleStartsToEnd(values, 'a');
+        assertThat(part2Result)
             .isEqualTo(29L);
     }
 
@@ -53,8 +53,8 @@ class Day12Test {
             .asStrings()
             .readAllLines();
 
-        final long distanceOfShortestPath = Day12.findShortestPathFromPossibleStartsToEnd(values, 'S');
-        assertThat(distanceOfShortestPath)
+        final long part1Result = Day12.findShortestPathFromPossibleStartsToEnd(values, 'S');
+        assertThat(part1Result)
             .isEqualTo(370L);
     }
 
@@ -65,8 +65,8 @@ class Day12Test {
             .asStrings()
             .readAllLines();
 
-        final long distanceOfShortestPath = Day12.findShortestPathFromPossibleStartsToEnd(values, 'a');
-        assertThat(distanceOfShortestPath)
+        final long part2Result = Day12.findShortestPathFromPossibleStartsToEnd(values, 'a');
+        assertThat(part2Result)
             .isEqualTo(363L);
     }
 }

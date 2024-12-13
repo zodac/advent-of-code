@@ -37,12 +37,12 @@ class Day05Test {
             .asStrings()
             .readAllLines();
 
-        final long numberOfValidStrings1 = Day05.countValidStringsPartOne(values);
-        assertThat(numberOfValidStrings1)
+        final long part1Result = Day05.countValidStringsPartOne(values);
+        assertThat(part1Result)
             .isEqualTo(2L);
 
-        final long numberOfValidStrings2 = Day05.countValidStringsPartTwo(values);
-        assertThat(numberOfValidStrings2)
+        final long part2Result = Day05.countValidStringsPartTwo(values);
+        assertThat(part2Result)
             .isEqualTo(2L);
     }
 
@@ -53,8 +53,8 @@ class Day05Test {
             .asStrings()
             .readAllLines();
 
-        final long numberOfValidStrings = Day05.countValidStringsPartOne(values);
-        assertThat(numberOfValidStrings)
+        final long part1Result = Day05.countValidStringsPartOne(values);
+        assertThat(part1Result)
             .isEqualTo(258L);
     }
 
@@ -65,8 +65,8 @@ class Day05Test {
             .asStrings()
             .readAllLines();
 
-        final long numberOfValidStrings = Day05.countValidStringsPartTwo(values);
-        assertThat(numberOfValidStrings)
+        final long part2Result = Day05.countValidStringsPartTwo(values);
+        assertThat(part2Result)
             .isEqualTo(53L);
     }
 }

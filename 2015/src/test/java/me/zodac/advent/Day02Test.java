@@ -38,12 +38,12 @@ class Day02Test {
             .as(Box::parse)
             .readAllLines();
 
-        final long totalPaperNeeded = Day02.calculateWrappingPaperNeeded(values);
-        assertThat(totalPaperNeeded)
+        final long part1Result = Day02.calculateWrappingPaperNeeded(values);
+        assertThat(part1Result)
             .isEqualTo(101L);
 
-        final long totalRibbonNeeded = Day02.calculateRibbonNeeded(values);
-        assertThat(totalRibbonNeeded)
+        final long part2Result = Day02.calculateRibbonNeeded(values);
+        assertThat(part2Result)
             .isEqualTo(48L);
     }
 
@@ -54,8 +54,8 @@ class Day02Test {
             .as(Box::parse)
             .readAllLines();
 
-        final long totalPaperNeeded = Day02.calculateWrappingPaperNeeded(values);
-        assertThat(totalPaperNeeded)
+        final long part1Result = Day02.calculateWrappingPaperNeeded(values);
+        assertThat(part1Result)
             .isEqualTo(1_606_483L);
     }
 
@@ -66,8 +66,8 @@ class Day02Test {
             .as(Box::parse)
             .readAllLines();
 
-        final long totalRibbonNeeded = Day02.calculateRibbonNeeded(values);
-        assertThat(totalRibbonNeeded)
+        final long part2Result = Day02.calculateRibbonNeeded(values);
+        assertThat(part2Result)
             .isEqualTo(3_842_356L);
     }
 }

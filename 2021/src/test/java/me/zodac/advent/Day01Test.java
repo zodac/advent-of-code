@@ -38,13 +38,13 @@ class Day01Test {
             .asIntegers()
             .readAllLines();
 
-        final int count1 = Day01.countValuesHigherThanPreviousValue(values);
-        assertThat(count1)
-            .isEqualTo(7);
+        final long part1Result = Day01.countValuesHigherThanPreviousValue(values);
+        assertThat(part1Result)
+            .isEqualTo(7L);
 
-        final int count2 = Day01.countWindowValueHigherThanPreviousValue(WINDOW_SIZE, values);
-        assertThat(count2)
-            .isEqualTo(5);
+        final long part2Result = Day01.countWindowValueHigherThanPreviousValue(WINDOW_SIZE, values);
+        assertThat(part2Result)
+            .isEqualTo(5L);
     }
 
     @Test
@@ -54,9 +54,9 @@ class Day01Test {
             .asIntegers()
             .readAllLines();
 
-        final int count = Day01.countValuesHigherThanPreviousValue(values);
-        assertThat(count)
-            .isEqualTo(1_766);
+        final long part1Result = Day01.countValuesHigherThanPreviousValue(values);
+        assertThat(part1Result)
+            .isEqualTo(1_766L);
     }
 
     @Test
@@ -66,8 +66,8 @@ class Day01Test {
             .asIntegers()
             .readAllLines();
 
-        final int count = Day01.countWindowValueHigherThanPreviousValue(WINDOW_SIZE, values);
-        assertThat(count)
-            .isEqualTo(1_797);
+        final long part2Result = Day01.countWindowValueHigherThanPreviousValue(WINDOW_SIZE, values);
+        assertThat(part2Result)
+            .isEqualTo(1_797L);
     }
 }

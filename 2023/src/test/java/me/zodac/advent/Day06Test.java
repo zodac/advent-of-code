@@ -37,12 +37,12 @@ class Day06Test {
             .asStrings()
             .readAllLines();
 
-        final long waysToWinMultipleRaces = Day06.countNumberOfWaysToWin(values, true);
-        assertThat(waysToWinMultipleRaces)
+        final long part1Result = Day06.countNumberOfWaysToWin(values, true);
+        assertThat(part1Result)
             .isEqualTo(288L);
 
-        final long waysToWinSingleRace = Day06.countNumberOfWaysToWin(values, false);
-        assertThat(waysToWinSingleRace)
+        final long part2Result = Day06.countNumberOfWaysToWin(values, false);
+        assertThat(part2Result)
             .isEqualTo(71_503L);
     }
 
@@ -53,8 +53,8 @@ class Day06Test {
             .asStrings()
             .readAllLines();
 
-        final long waysToWinMultipleRaces = Day06.countNumberOfWaysToWin(values, true);
-        assertThat(waysToWinMultipleRaces)
+        final long part1Result = Day06.countNumberOfWaysToWin(values, true);
+        assertThat(part1Result)
             .isEqualTo(771_628L);
     }
 
@@ -65,8 +65,8 @@ class Day06Test {
             .asStrings()
             .readAllLines();
 
-        final long waysToWinSingleRace = Day06.countNumberOfWaysToWin(values, false);
-        assertThat(waysToWinSingleRace)
+        final long part2Result = Day06.countNumberOfWaysToWin(values, false);
+        assertThat(part2Result)
             .isEqualTo(27_363_861L);
     }
 }

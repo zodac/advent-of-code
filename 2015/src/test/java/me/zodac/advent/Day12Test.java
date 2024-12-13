@@ -36,12 +36,12 @@ class Day12Test {
             .asStrings()
             .readFirstLine();
 
-        final long sum1 = Day12.sumOfAllNumbers(value);
-        assertThat(sum1)
+        final long part1Result = Day12.sumOfAllNumbers(value);
+        assertThat(part1Result)
             .isEqualTo(15L);
 
-        final long sum2 = Day12.sumOfAllNumbersWithNoInvalidLabel(value, "red");
-        assertThat(sum2)
+        final long part2Result = Day12.sumOfAllNumbersWithNoInvalidLabel(value, "red");
+        assertThat(part2Result)
             .isZero();
     }
 
@@ -52,8 +52,8 @@ class Day12Test {
             .asStrings()
             .readFirstLine();
 
-        final long sum = Day12.sumOfAllNumbers(value);
-        assertThat(sum)
+        final long part1Result = Day12.sumOfAllNumbers(value);
+        assertThat(part1Result)
             .isEqualTo(156_366L);
     }
 
@@ -64,8 +64,8 @@ class Day12Test {
             .asStrings()
             .readFirstLine();
 
-        final long sum = Day12.sumOfAllNumbersWithNoInvalidLabel(value, "red");
-        assertThat(sum)
+        final long part2Result = Day12.sumOfAllNumbersWithNoInvalidLabel(value, "red");
+        assertThat(part2Result)
             .isEqualTo(96_852L);
     }
 }

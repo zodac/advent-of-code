@@ -45,6 +45,7 @@ public final class Day18 {
      *
      * @param initialState       the initial state of the {@link Boolean} {@link Grid}
      * @param numberOfIterations the number of times to execute the 'Game of Life'
+     * @param cornersAlwaysOn    if {@code true}, the value of the corners of the {@link Grid} must always be set to <b>true</b>
      * @return the number of {@link Point}s that have been turned on
      */
     public static long playGameOfLife(final Grid<Boolean> initialState, final int numberOfIterations, final boolean cornersAlwaysOn) {

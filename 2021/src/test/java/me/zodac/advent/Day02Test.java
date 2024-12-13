@@ -38,12 +38,12 @@ class Day02Test {
             .as(Movement::parse)
             .readAllLines();
 
-        final long magnitude1 = Day02.magnitudeOfAllMovements(movements);
-        assertThat(magnitude1)
+        final long part1Result = Day02.magnitudeOfAllMovements(movements);
+        assertThat(part1Result)
             .isEqualTo(150L);
 
-        final long magnitude2 = Day02.magnitudeOfAllMovementsWithAim(movements);
-        assertThat(magnitude2)
+        final long part2Result = Day02.magnitudeOfAllMovementsWithAim(movements);
+        assertThat(part2Result)
             .isEqualTo(900L);
     }
 

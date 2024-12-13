@@ -33,22 +33,22 @@ class Day01Test {
 
     @Test
     void example() {
-        final List<String> valuesPart1 = InputReader
+        final List<String> values1 = InputReader
             .forExample(INPUT_FILENAME)
             .asStrings()
             .readAllLines();
 
-        final long sumOfFrequencies = Day01.sumAllCalibrationValues(valuesPart1, false);
-        assertThat(sumOfFrequencies)
+        final long part1Result = Day01.sumAllCalibrationValues(values1, false);
+        assertThat(part1Result)
             .isEqualTo(142L);
 
-        final List<String> valuesPart2 = InputReader
+        final List<String> values2 = InputReader
             .forExample(INPUT_FILENAME_PART_2)
             .asStrings()
             .readAllLines();
 
-        final long sumOfCalibrationValues = Day01.sumAllCalibrationValues(valuesPart2, true);
-        assertThat(sumOfCalibrationValues)
+        final long part2Result = Day01.sumAllCalibrationValues(values2, true);
+        assertThat(part2Result)
             .isEqualTo(281L);
     }
 
@@ -59,8 +59,8 @@ class Day01Test {
             .asStrings()
             .readAllLines();
 
-        final long sumOfFrequencies = Day01.sumAllCalibrationValues(values, false);
-        assertThat(sumOfFrequencies)
+        final long part1Result = Day01.sumAllCalibrationValues(values, false);
+        assertThat(part1Result)
             .isEqualTo(54_450L);
     }
 
@@ -71,8 +71,8 @@ class Day01Test {
             .asStrings()
             .readAllLines();
 
-        final long sumOfCalibrationValues = Day01.sumAllCalibrationValues(values, true);
-        assertThat(sumOfCalibrationValues)
+        final long part2Result = Day01.sumAllCalibrationValues(values, true);
+        assertThat(part2Result)
             .isEqualTo(54_265L);
     }
 }

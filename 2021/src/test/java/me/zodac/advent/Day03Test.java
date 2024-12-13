@@ -37,12 +37,12 @@ class Day03Test {
             .asStrings()
             .readAllLines();
 
-        final long powerConsumption = Day03.calculatePowerConsumption(values);
-        assertThat(powerConsumption)
+        final long part1Result = Day03.calculatePowerConsumption(values);
+        assertThat(part1Result)
             .isEqualTo(198L);
 
-        final long lifeSupportRating = Day03.calculateLifeSupportRating(values);
-        assertThat(lifeSupportRating)
+        final long part2Result = Day03.calculateLifeSupportRating(values);
+        assertThat(part2Result)
             .isEqualTo(230L);
     }
 
@@ -53,8 +53,8 @@ class Day03Test {
             .asStrings()
             .readAllLines();
 
-        final long powerConsumption = Day03.calculatePowerConsumption(values);
-        assertThat(powerConsumption)
+        final long part1Result = Day03.calculatePowerConsumption(values);
+        assertThat(part1Result)
             .isEqualTo(3_374_136L);
     }
 
@@ -65,8 +65,8 @@ class Day03Test {
             .asStrings()
             .readAllLines();
 
-        final long lifeSupportRating = Day03.calculateLifeSupportRating(values);
-        assertThat(lifeSupportRating)
+        final long part2Result = Day03.calculateLifeSupportRating(values);
+        assertThat(part2Result)
             .isEqualTo(4_432_698L);
     }
 }

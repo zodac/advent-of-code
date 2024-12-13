@@ -37,12 +37,12 @@ class Day08Test {
             .asStrings()
             .readAllLines();
 
-        final long diff1 = Day08.calculateDiffOfLiteralAndInMemoryLength(values);
-        assertThat(diff1)
+        final long part1Result = Day08.calculateDiffOfLiteralAndInMemoryLength(values);
+        assertThat(part1Result)
             .isEqualTo(12L);
 
-        final long diff2 = Day08.calculateDiffOfEscapedAndLiteralLength(values);
-        assertThat(diff2)
+        final long part2Result = Day08.calculateDiffOfEscapedAndLiteralLength(values);
+        assertThat(part2Result)
             .isEqualTo(19L);
     }
 
@@ -53,8 +53,8 @@ class Day08Test {
             .asStrings()
             .readAllLines();
 
-        final long diff = Day08.calculateDiffOfLiteralAndInMemoryLength(values);
-        assertThat(diff)
+        final long part1Result = Day08.calculateDiffOfLiteralAndInMemoryLength(values);
+        assertThat(part1Result)
             .isEqualTo(1_333L);
     }
 
@@ -65,8 +65,8 @@ class Day08Test {
             .asStrings()
             .readAllLines();
 
-        final long diff = Day08.calculateDiffOfEscapedAndLiteralLength(values);
-        assertThat(diff)
+        final long part2Result = Day08.calculateDiffOfEscapedAndLiteralLength(values);
+        assertThat(part2Result)
             .isEqualTo(2_046L);
     }
 }

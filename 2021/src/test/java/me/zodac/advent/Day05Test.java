@@ -39,12 +39,12 @@ class Day05Test {
             .as(Day05Test::convertToLine)
             .readAllLines();
 
-        final long numberOfOverlaps1 = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
-        assertThat(numberOfOverlaps1)
+        final long part1Result = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
+        assertThat(part1Result)
             .isEqualTo(5L);
 
-        final long numberOfOverlaps2 = Day05.addAllLinesAndReturnOverlap(coordinateLines);
-        assertThat(numberOfOverlaps2)
+        final long part2Result = Day05.addAllLinesAndReturnOverlap(coordinateLines);
+        assertThat(part2Result)
             .isEqualTo(12L);
     }
 
@@ -55,8 +55,8 @@ class Day05Test {
             .as(Day05Test::convertToLine)
             .readAllLines();
 
-        final long numberOfOverlaps = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
-        assertThat(numberOfOverlaps)
+        final long part1Result = Day05.addHorizontalAndVerticalLinesAndReturnOverlap(coordinateLines);
+        assertThat(part1Result)
             .isEqualTo(6_113L);
     }
 
@@ -67,8 +67,8 @@ class Day05Test {
             .as(Day05Test::convertToLine)
             .readAllLines();
 
-        final long numberOfOverlaps = Day05.addAllLinesAndReturnOverlap(coordinateLines);
-        assertThat(numberOfOverlaps)
+        final long part2Result = Day05.addAllLinesAndReturnOverlap(coordinateLines);
+        assertThat(part2Result)
             .isEqualTo(20_373L);
     }
 

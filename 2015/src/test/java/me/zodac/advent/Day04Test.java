@@ -37,12 +37,12 @@ class Day04Test {
             .asStrings()
             .readFirstLine();
 
-        final long indexPart1 = Day04.indexOfHashWithPrefix(value, "00000");
-        assertThat(indexPart1)
+        final long part1Result = Day04.indexOfHashWithPrefix(value, "00000");
+        assertThat(part1Result)
             .isEqualTo(609_043L);
 
-        final long indexPart2 = Day04.indexOfHashWithPrefix(value, "000000");
-        assertThat(indexPart2)
+        final long part2Result = Day04.indexOfHashWithPrefix(value, "000000");
+        assertThat(part2Result)
             .isEqualTo(6_742_839L);
     }
 
@@ -52,8 +52,9 @@ class Day04Test {
             .forPuzzle(INPUT_FILENAME)
             .asStrings()
             .readFirstLine();
-        final long index = Day04.indexOfHashWithPrefix(value, "00000");
-        assertThat(index)
+
+        final long part1Result = Day04.indexOfHashWithPrefix(value, "00000");
+        assertThat(part1Result)
             .isEqualTo(282_749L);
     }
 
@@ -63,8 +64,9 @@ class Day04Test {
             .forPuzzle(INPUT_FILENAME)
             .asStrings()
             .readFirstLine();
-        final long index = Day04.indexOfHashWithPrefix(value, "000000");
-        assertThat(index)
+
+        final long part2Result = Day04.indexOfHashWithPrefix(value, "000000");
+        assertThat(part2Result)
             .isEqualTo(9_962_624L);
     }
 }

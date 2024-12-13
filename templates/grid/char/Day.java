@@ -37,7 +37,8 @@ public final class Day%DAY_LONG% {
      * @return the part 1 result
      */
     public static long part1(final Grid<Character> characterGrid) {
-        return 0L;
+        long total = 0L;
+        return total;
     }
 
     /**
@@ -47,6 +48,7 @@ public final class Day%DAY_LONG% {
      * @return the part 2 result
      */
     public static long part2(final Grid<Character> characterGrid) {
-        return 0L;
+        long total = 0L;
+        return total;
     }
 }

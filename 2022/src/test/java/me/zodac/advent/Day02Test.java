@@ -37,12 +37,12 @@ class Day02Test {
             .asStrings()
             .readAllLines();
 
-        final long score1 = Day02.finalScoreFollowingGuideWithMoves(values);
-        assertThat(score1)
+        final long part1Result = Day02.finalScoreFollowingGuideWithMoves(values);
+        assertThat(part1Result)
             .isEqualTo(15L);
 
-        final long score2 = Day02.finalScoreFollowingGuideWithResults(values);
-        assertThat(score2)
+        final long part2Result = Day02.finalScoreFollowingGuideWithResults(values);
+        assertThat(part2Result)
             .isEqualTo(12L);
     }
 
@@ -53,8 +53,8 @@ class Day02Test {
             .asStrings()
             .readAllLines();
 
-        final long score = Day02.finalScoreFollowingGuideWithMoves(values);
-        assertThat(score)
+        final long part1Result = Day02.finalScoreFollowingGuideWithMoves(values);
+        assertThat(part1Result)
             .isEqualTo(13_052L);
     }
 
@@ -65,8 +65,8 @@ class Day02Test {
             .asStrings()
             .readAllLines();
 
-        final long score = Day02.finalScoreFollowingGuideWithResults(values);
-        assertThat(score)
+        final long part2Result = Day02.finalScoreFollowingGuideWithResults(values);
+        assertThat(part2Result)
             .isEqualTo(13_693L);
     }
 }

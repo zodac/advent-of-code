@@ -17,8 +17,6 @@
 
 package me.zodac.advent;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
@@ -36,8 +34,8 @@ class Day11Test {
             .asStrings()
             .readFirstLine();
 
-        final String newPassword = Day11.findNextValidPassword(value);
-        assertThat(newPassword)
+        final String part1Result = Day11.findNextValidPassword(value);
+        assertThat(part1Result)
             .isEqualTo("abcdffaa");
     }
 
@@ -48,17 +46,17 @@ class Day11Test {
             .asStrings()
             .readFirstLine();
 
-        final String newPassword = Day11.findNextValidPassword(value);
-        assertThat(newPassword)
+        final String part1Result = Day11.findNextValidPassword(value);
+        assertThat(part1Result)
             .isEqualTo("hxbxxyzz");
     }
 
     @Test
     void part2() {
-        final String value = "hxbxxyzz"; // Reusing the answer from part 1 rather than doing it twice
+        final String value = "hxbxxyzz"; // Hardcoding the answer from part 1 rather than doing it twice
 
-        final String newPassword = Day11.findNextValidPassword(value);
-        assertThat(newPassword)
+        final String part2Result = Day11.findNextValidPassword(value);
+        assertThat(part2Result)
             .isEqualTo("hxcaabcc");
     }
 }

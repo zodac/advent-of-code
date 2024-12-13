@@ -38,12 +38,12 @@ class Day06Test {
             .asLinesOfSeparatedNumbers()
             .readFirstLine();
 
-        final BigDecimal finalNumberOfLanterns1 = Day06.countLanternFishAfterDays(lanternValues, 80);
-        assertThat(finalNumberOfLanterns1)
+        final BigDecimal part1Result = Day06.countLanternFishAfterDays(lanternValues, 80);
+        assertThat(part1Result)
             .isEqualTo(BigDecimal.valueOf(5_934L));
 
-        final BigDecimal finalNumberOfLanterns2 = Day06.countLanternFishAfterDays(lanternValues, 256);
-        assertThat(finalNumberOfLanterns2)
+        final BigDecimal part2Result = Day06.countLanternFishAfterDays(lanternValues, 256);
+        assertThat(part2Result)
             .isEqualTo(BigDecimal.valueOf(26_984_457_539L));
     }
 
@@ -54,8 +54,8 @@ class Day06Test {
             .asLinesOfSeparatedNumbers()
             .readFirstLine();
 
-        final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 80);
-        assertThat(finalNumberOfLanterns)
+        final BigDecimal part1Result = Day06.countLanternFishAfterDays(lanternValues, 80);
+        assertThat(part1Result)
             .isEqualTo(BigDecimal.valueOf(362_346L));
     }
 
@@ -66,8 +66,8 @@ class Day06Test {
             .asLinesOfSeparatedNumbers()
             .readFirstLine();
 
-        final BigDecimal finalNumberOfLanterns = Day06.countLanternFishAfterDays(lanternValues, 256);
-        assertThat(finalNumberOfLanterns)
+        final BigDecimal part1Result = Day06.countLanternFishAfterDays(lanternValues, 256);
+        assertThat(part1Result)
             .isEqualTo(BigDecimal.valueOf(1_639_643_057_051L));
     }
 }

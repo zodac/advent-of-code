@@ -33,20 +33,21 @@ class Day08Test {
 
     @Test
     void example() {
-        final List<String> valuesPart1 = InputReader
+        final List<String> values1 = InputReader
             .forExample(INPUT_FILENAME)
             .asStrings()
             .readAllLines();
 
-        final long stepsToEndNode = Day08.countStepsToReachEndNode(valuesPart1);
-        assertThat(stepsToEndNode)
+        final long part1Result = Day08.countStepsToReachEndNode(values1);
+        assertThat(part1Result)
             .isEqualTo(6L);
 
-        final List<String> valuesPart2 = InputReader
+        final List<String> values2 = InputReader
             .forExample(INPUT_FILENAME_PART_2)
             .asStrings()
             .readAllLines();
-        final long part2Result = Day08.countStepsToReachAllEndNodesAtSameTime(valuesPart2);
+
+        final long part2Result = Day08.countStepsToReachAllEndNodesAtSameTime(values2);
         assertThat(part2Result)
             .isEqualTo(6L);
     }
@@ -58,8 +59,8 @@ class Day08Test {
             .asStrings()
             .readAllLines();
 
-        final long stepsToEndNode = Day08.countStepsToReachEndNode(values);
-        assertThat(stepsToEndNode)
+        final long part1Result = Day08.countStepsToReachEndNode(values);
+        assertThat(part1Result)
             .isEqualTo(14_893L);
     }
 
@@ -70,8 +71,8 @@ class Day08Test {
             .asStrings()
             .readAllLines();
 
-        final long stepsToAllEndNodes = Day08.countStepsToReachAllEndNodesAtSameTime(values);
-        assertThat(stepsToAllEndNodes)
+        final long part2Result = Day08.countStepsToReachAllEndNodesAtSameTime(values);
+        assertThat(part2Result)
             .isEqualTo(10_241_191_004_509L);
     }
 }

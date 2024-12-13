@@ -38,9 +38,11 @@ class Day23Test {
             .asStrings()
             .readAllLines();
 
-        final long registerValue = Day23.calculateRegisterValue(values, 'a', Map.of());
-        assertThat(registerValue)
+        final long part1Result = Day23.calculateRegisterValue(values, 'a', Map.of());
+        assertThat(part1Result)
             .isEqualTo(2L);
+
+        // TODO: Part 2?
     }
 
     @Test
@@ -50,8 +52,8 @@ class Day23Test {
             .asStrings()
             .readAllLines();
 
-        final long registerValue = Day23.calculateRegisterValue(values, 'b', Map.of());
-        assertThat(registerValue)
+        final long part1Result = Day23.calculateRegisterValue(values, 'b', Map.of());
+        assertThat(part1Result)
             .isEqualTo(307L);
     }
 
@@ -62,8 +64,8 @@ class Day23Test {
             .asStrings()
             .readAllLines();
 
-        final long registerValue = Day23.calculateRegisterValue(values, 'b', Map.of('a', 1L));
-        assertThat(registerValue)
+        final long part2Result = Day23.calculateRegisterValue(values, 'b', Map.of('a', 1L));
+        assertThat(part2Result)
             .isEqualTo(160L);
     }
 }

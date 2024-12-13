@@ -38,12 +38,12 @@ class Day02Test {
             .as(BallGame::parse)
             .readAllLines();
 
-        final long sumOfIds = Day02.sumOfIdsOfPossibleGames(values);
-        assertThat(sumOfIds)
+        final long part1Result = Day02.sumOfIdsOfPossibleGames(values);
+        assertThat(part1Result)
             .isEqualTo(8L);
 
-        final long sumOfPowers = Day02.sumOfPowersOfGames(values);
-        assertThat(sumOfPowers)
+        final long part2Result = Day02.sumOfPowersOfGames(values);
+        assertThat(part2Result)
             .isEqualTo(2_286L);
     }
 
@@ -54,8 +54,8 @@ class Day02Test {
             .as(BallGame::parse)
             .readAllLines();
 
-        final long sumOfFrequencies = Day02.sumOfIdsOfPossibleGames(values);
-        assertThat(sumOfFrequencies)
+        final long part1Result = Day02.sumOfIdsOfPossibleGames(values);
+        assertThat(part1Result)
             .isEqualTo(2_447L);
     }
 
@@ -66,8 +66,8 @@ class Day02Test {
             .as(BallGame::parse)
             .readAllLines();
 
-        final long sumOfPowers = Day02.sumOfPowersOfGames(values);
-        assertThat(sumOfPowers)
+        final long part2Result = Day02.sumOfPowersOfGames(values);
+        assertThat(part2Result)
             .isEqualTo(56_322L);
     }
 }

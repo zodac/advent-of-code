@@ -40,8 +40,8 @@ class Day25Test {
             .as(Day25Test::getPoint)
             .readFirstLine();
 
-        final long instructionManualCode = Day25.calculateInstructionManualCode(point.x(), point.y());
-        assertThat(instructionManualCode)
+        final long part1Result = Day25.calculateInstructionManualCode(point.x(), point.y());
+        assertThat(part1Result)
             .isEqualTo(32_451_966L);
     }
 
@@ -52,8 +52,8 @@ class Day25Test {
             .as(Day25Test::getPoint)
             .readFirstLine();
 
-        final long instructionManualCode = Day25.calculateInstructionManualCode(point.x(), point.y());
-        assertThat(instructionManualCode)
+        final long part1Result = Day25.calculateInstructionManualCode(point.x(), point.y());
+        assertThat(part1Result)
             .isEqualTo(19_980_801L);
     }
 

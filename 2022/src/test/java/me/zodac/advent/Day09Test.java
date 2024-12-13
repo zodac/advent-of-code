@@ -38,12 +38,12 @@ class Day09Test {
             .as(Movement::parse)
             .readAllLines();
 
-        final long uniquePointsVisited1 = Day09.uniquePointsVisitedByTail(values, 1);
-        assertThat(uniquePointsVisited1)
+        final long part1Result = Day09.uniquePointsVisitedByTail(values, 1);
+        assertThat(part1Result)
             .isEqualTo(13L);
 
-        final long uniquePointsVisited2 = Day09.uniquePointsVisitedByTail(values, 9);
-        assertThat(uniquePointsVisited2)
+        final long part2Result = Day09.uniquePointsVisitedByTail(values, 9);
+        assertThat(part2Result)
             .isEqualTo(1L);
     }
 
@@ -54,8 +54,8 @@ class Day09Test {
             .as(Movement::parse)
             .readAllLines();
 
-        final long uniquePointsVisited = Day09.uniquePointsVisitedByTail(values, 1);
-        assertThat(uniquePointsVisited)
+        final long part1Result = Day09.uniquePointsVisitedByTail(values, 1);
+        assertThat(part1Result)
             .isEqualTo(6_332L);
     }
 
@@ -66,8 +66,8 @@ class Day09Test {
             .as(Movement::parse)
             .readAllLines();
 
-        final long uniquePointsVisited = Day09.uniquePointsVisitedByTail(values, 9);
-        assertThat(uniquePointsVisited)
+        final long part2Result = Day09.uniquePointsVisitedByTail(values, 9);
+        assertThat(part2Result)
             .isEqualTo(2_511L);
     }
 }

@@ -37,12 +37,12 @@ class Day16Test {
             .asGrid()
             .ofCharacters();
 
-        final long numberOfPointsEnergisedByBeam = Day16.countNumberOfPointsEnergisedByBeam(grid);
-        assertThat(numberOfPointsEnergisedByBeam)
+        final long part1Result = Day16.countNumberOfPointsEnergisedByBeam(grid);
+        assertThat(part1Result)
             .isEqualTo(46L);
 
-        final long maxNumberOfPointsEnergisedBySingleBeam = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
-        assertThat(maxNumberOfPointsEnergisedBySingleBeam)
+        final long part2Result = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
+        assertThat(part2Result)
             .isEqualTo(51L);
     }
 
@@ -53,8 +53,8 @@ class Day16Test {
             .asGrid()
             .ofCharacters();
 
-        final long numberOfPointsEnergisedByBeam = Day16.countNumberOfPointsEnergisedByBeam(grid);
-        assertThat(numberOfPointsEnergisedByBeam)
+        final long part1Result = Day16.countNumberOfPointsEnergisedByBeam(grid);
+        assertThat(part1Result)
             .isEqualTo(7_199L);
     }
 
@@ -65,8 +65,8 @@ class Day16Test {
             .asGrid()
             .ofCharacters();
 
-        final long maxNumberOfPointsEnergisedBySingleBeam = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
-        assertThat(maxNumberOfPointsEnergisedBySingleBeam)
+        final long part2Result = Day16.countMaxNumberOfPointsEnergisedBySingleBeam(grid);
+        assertThat(part2Result)
             .isEqualTo(7_438L);
     }
 }

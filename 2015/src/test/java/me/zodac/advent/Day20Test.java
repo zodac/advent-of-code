@@ -36,9 +36,13 @@ class Day20Test {
             .asIntegers()
             .readFirstLine();
 
-        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(value, 10);
-        assertThat(firstVisitedHouseWithExpectedNumberOfGifts)
+        final long part1Result = Day20.deliverToHouses(value, 10);
+        assertThat(part1Result)
             .isEqualTo(6L);
+
+        final long part2Result = Day20.deliverToHouses(value, 11);
+        assertThat(part2Result)
+            .isEqualTo(4L);
     }
 
     @Test
@@ -48,8 +52,8 @@ class Day20Test {
             .asIntegers()
             .readFirstLine();
 
-        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(value, 10);
-        assertThat(firstVisitedHouseWithExpectedNumberOfGifts)
+        final long part1Result = Day20.deliverToHouses(value, 10);
+        assertThat(part1Result)
             .isEqualTo(831_600L);
     }
 
@@ -60,8 +64,8 @@ class Day20Test {
             .asIntegers()
             .readFirstLine();
 
-        final long firstVisitedHouseWithExpectedNumberOfGifts = Day20.deliverToHouses(value, 11, 50);
-        assertThat(firstVisitedHouseWithExpectedNumberOfGifts)
+        final long part2Result = Day20.deliverToHouses(value, 11, 50);
+        assertThat(part2Result)
             .isEqualTo(884_520L);
     }
 }

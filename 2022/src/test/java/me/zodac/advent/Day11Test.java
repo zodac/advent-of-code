@@ -42,13 +42,13 @@ class Day11Test {
             .byDelimiter(String::isBlank);
         final Map<Integer, Monkey> monkeysById1 = parseMonkeys(values, true);
 
-        final long productOfActiveMonkeys1 = Day11.productOfActiveMonkeys(monkeysById1, 20);
-        assertThat(productOfActiveMonkeys1)
+        final long part1Result = Day11.productOfActiveMonkeys(monkeysById1, 20);
+        assertThat(part1Result)
             .isEqualTo(10_605L);
 
         final Map<Integer, Monkey> monkeysById2 = parseMonkeys(values, false);
-        final long productOfActiveMonkeys2 = Day11.productOfActiveMonkeys(monkeysById2, 10_000);
-        assertThat(productOfActiveMonkeys2)
+        final long part2Result = Day11.productOfActiveMonkeys(monkeysById2, 10_000);
+        assertThat(part2Result)
             .isEqualTo(2_713_310_158L);
     }
 
@@ -61,8 +61,8 @@ class Day11Test {
             .byDelimiter(String::isBlank);
         final Map<Integer, Monkey> monkeysById = parseMonkeys(values, true);
 
-        final long productOfActiveMonkeys = Day11.productOfActiveMonkeys(monkeysById, 20);
-        assertThat(productOfActiveMonkeys)
+        final long part1Result = Day11.productOfActiveMonkeys(monkeysById, 20);
+        assertThat(part1Result)
             .isEqualTo(151_312L);
     }
 
@@ -75,8 +75,8 @@ class Day11Test {
             .byDelimiter(String::isBlank);
         final Map<Integer, Monkey> monkeysById = parseMonkeys(values, false);
 
-        final long productOfActiveMonkeys = Day11.productOfActiveMonkeys(monkeysById, 10_000);
-        assertThat(productOfActiveMonkeys)
+        final long part2Result = Day11.productOfActiveMonkeys(monkeysById, 10_000);
+        assertThat(part2Result)
             .isEqualTo(51_382_025_916L);
     }
 

@@ -34,22 +34,22 @@ class Day10Test {
 
     @Test
     void example() {
-        final Grid<Pipe> pipeGridPart1 = InputReader
+        final Grid<Pipe> pipeGrid1 = InputReader
             .forExample(INPUT_FILENAME)
             .asGrid()
             .of(Pipe::get);
 
-        final long numberOfSteps = Day10.numberOfStepsToFurthestPartOfLoop(pipeGridPart1);
-        assertThat(numberOfSteps)
+        final long part1Result = Day10.numberOfStepsToFurthestPartOfLoop(pipeGrid1);
+        assertThat(part1Result)
             .isEqualTo(8L);
 
-        final Grid<Pipe> pipeGridPart2 = InputReader
+        final Grid<Pipe> pipeGrid2 = InputReader
             .forExample(INPUT_FILENAME_PART_2)
             .asGrid()
             .of(Pipe::get);
 
-        final long numberOfPointsInsidePipeLoop = Day10.numberOfPointsInsidePipeLoop(pipeGridPart2);
-        assertThat(numberOfPointsInsidePipeLoop)
+        final long part2Result = Day10.numberOfPointsInsidePipeLoop(pipeGrid2);
+        assertThat(part2Result)
             .isEqualTo(10L);
     }
 
@@ -60,8 +60,8 @@ class Day10Test {
             .asGrid()
             .of(Pipe::get);
 
-        final long numberOfSteps = Day10.numberOfStepsToFurthestPartOfLoop(pipeGrid);
-        assertThat(numberOfSteps)
+        final long part1Result = Day10.numberOfStepsToFurthestPartOfLoop(pipeGrid);
+        assertThat(part1Result)
             .isEqualTo(6_812L);
     }
 
@@ -72,8 +72,8 @@ class Day10Test {
             .asGrid()
             .of(Pipe::get);
 
-        final long numberOfPointsInsidePipeLoop = Day10.numberOfPointsInsidePipeLoop(pipeGrid);
-        assertThat(numberOfPointsInsidePipeLoop)
+        final long part2Result = Day10.numberOfPointsInsidePipeLoop(pipeGrid);
+        assertThat(part2Result)
             .isEqualTo(527L);
     }
 }

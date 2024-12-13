@@ -40,8 +40,8 @@ class Day21Test {
             .as(Integer::parseInt)
             .readAllLines();
 
-        final long result = Day21.getLosingScoreTimesNumberOfRolls(startPositions, 3, 100, 10, 1_000L);
-        assertThat(result)
+        final long part1Result = Day21.getLosingScoreTimesNumberOfRolls(startPositions, 3, 100, 10, 1_000L);
+        assertThat(part1Result)
             .isEqualTo(739_785L);
     }
 
@@ -53,8 +53,8 @@ class Day21Test {
             .as(Integer::parseInt)
             .readAllLines();
 
-        final long result = Day21.getLosingScoreTimesNumberOfRolls(startPositions, 3, 100, 10, 1_000L);
-        assertThat(result)
+        final long part1Result = Day21.getLosingScoreTimesNumberOfRolls(startPositions, 3, 100, 10, 1_000L);
+        assertThat(part1Result)
             .isEqualTo(797_160L);
     }
 }

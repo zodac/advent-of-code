@@ -38,12 +38,12 @@ class Day13Test {
             .grouped()
             .byDelimiter(String::isBlank);
 
-        final long sumOfReflectionValues = Day13.calculateSumOfReflectionValues(values);
-        assertThat(sumOfReflectionValues)
+        final long part1Result = Day13.calculateSumOfReflectionValues(values);
+        assertThat(part1Result)
             .isEqualTo(405L);
 
-        final long sumOfSecondReflectionValues = Day13.calculateSumOfSecondReflectionValues(values);
-        assertThat(sumOfSecondReflectionValues)
+        final long part2Result = Day13.calculateSumOfSecondReflectionValues(values);
+        assertThat(part2Result)
             .isEqualTo(400L);
     }
 
@@ -55,8 +55,8 @@ class Day13Test {
             .grouped()
             .byDelimiter(String::isBlank);
 
-        final long sumOfReflectionValues = Day13.calculateSumOfReflectionValues(values);
-        assertThat(sumOfReflectionValues)
+        final long part1Result = Day13.calculateSumOfReflectionValues(values);
+        assertThat(part1Result)
             .isEqualTo(43_614L);
     }
 
@@ -68,8 +68,8 @@ class Day13Test {
             .grouped()
             .byDelimiter(String::isBlank);
 
-        final long sumOfSecondReflectionValues = Day13.calculateSumOfSecondReflectionValues(values);
-        assertThat(sumOfSecondReflectionValues)
+        final long part2Result = Day13.calculateSumOfSecondReflectionValues(values);
+        assertThat(part2Result)
             .isEqualTo(36_771L);
     }
 }

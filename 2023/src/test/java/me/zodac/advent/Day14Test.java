@@ -38,12 +38,12 @@ class Day14Test {
             .asGrid()
             .ofCharacters();
 
-        final long loadAfterSingleNorthTurn = Day14.countLoadAfterSingleNorthTurn(characterGrid);
-        assertThat(loadAfterSingleNorthTurn)
+        final long part1Result = Day14.countLoadAfterSingleNorthTurn(characterGrid);
+        assertThat(part1Result)
             .isEqualTo(136L);
 
-        final long loadAfterFullCycleOfTurns = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
-        assertThat(loadAfterFullCycleOfTurns)
+        final long part2Result = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
+        assertThat(part2Result)
             .isEqualTo(64L);
     }
 
@@ -54,8 +54,8 @@ class Day14Test {
             .asGrid()
             .ofCharacters();
 
-        final long loadAfterSingleNorthTurn = Day14.countLoadAfterSingleNorthTurn(characterGrid);
-        assertThat(loadAfterSingleNorthTurn)
+        final long part2Result = Day14.countLoadAfterSingleNorthTurn(characterGrid);
+        assertThat(part2Result)
             .isEqualTo(105_461L);
     }
 
@@ -66,8 +66,8 @@ class Day14Test {
             .asGrid()
             .ofCharacters();
 
-        final long loadAfterFullCycleOfTurns = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
-        assertThat(loadAfterFullCycleOfTurns)
+        final long part2Result = Day14.calculateLoadAfterFullCycleOfTurns(characterGrid, NUMBER_OF_CYCLES);
+        assertThat(part2Result)
             .isEqualTo(102_829L);
     }
 }

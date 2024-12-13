@@ -17,8 +17,6 @@
 
 package me.zodac.advent;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
@@ -37,12 +35,12 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long totalSize = Day07.totalSizeOfDirectoriesOverThreshold(values);
-        assertThat(totalSize)
+        final long part1Result = Day07.totalSizeOfDirectoriesOverThreshold(values);
+        assertThat(part1Result)
             .isEqualTo(95_437L);
 
-        final long smallestDirectorySize = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirements(values);
-        assertThat(smallestDirectorySize)
+        final long part2Result = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirements(values);
+        assertThat(part2Result)
             .isEqualTo(24_933_642L);
     }
 
@@ -53,8 +51,8 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long totalSize = Day07.totalSizeOfDirectoriesOverThreshold(values);
-        assertThat(totalSize)
+        final long part1Result = Day07.totalSizeOfDirectoriesOverThreshold(values);
+        assertThat(part1Result)
             .isEqualTo(1_648_397L);
     }
 
@@ -65,8 +63,8 @@ class Day07Test {
             .asStrings()
             .readAllLines();
 
-        final long smallestDirectorySize = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirements(values);
-        assertThat(smallestDirectorySize)
+        final long part2Result = Day07.smallestDirectorySizeToDeleteToMeetSpaceRequirements(values);
+        assertThat(part2Result)
             .isEqualTo(1_815_525L);
     }
 }

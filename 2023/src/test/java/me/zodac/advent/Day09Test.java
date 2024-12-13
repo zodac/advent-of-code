@@ -37,12 +37,12 @@ class Day09Test {
             .asStrings()
             .readAllLines();
 
-        final long sumOfNextValues = Day09.sumOfNextValues(values);
-        assertThat(sumOfNextValues)
+        final long part1Result = Day09.sumOfNextValues(values);
+        assertThat(part1Result)
             .isEqualTo(114L);
 
-        final long sumOfPreviousValues = Day09.sumOfPreviousValues(values);
-        assertThat(sumOfPreviousValues)
+        final long part2Result = Day09.sumOfPreviousValues(values);
+        assertThat(part2Result)
             .isEqualTo(2L);
     }
 
@@ -53,8 +53,8 @@ class Day09Test {
             .asStrings()
             .readAllLines();
 
-        final long sumOfNextValues = Day09.sumOfNextValues(values);
-        assertThat(sumOfNextValues)
+        final long part1Result = Day09.sumOfNextValues(values);
+        assertThat(part1Result)
             .isEqualTo(2_038_472_161L);
     }
 
@@ -65,8 +65,8 @@ class Day09Test {
             .asStrings()
             .readAllLines();
 
-        final long sumOfPreviousValues = Day09.sumOfPreviousValues(values);
-        assertThat(sumOfPreviousValues)
+        final long part2Result = Day09.sumOfPreviousValues(values);
+        assertThat(part2Result)
             .isEqualTo(1_091L);
     }
 }
