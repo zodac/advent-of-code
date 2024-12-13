@@ -46,9 +46,9 @@ import me.zodac.advent.util.StringUtils;
  * @param id         the ID of the Aunt {@link Sue} (they do not have names)
  * @param attributes the attributes for the Aunt {@link Sue}
  */
-public record Sue(int id, Map<String, Integer> attributes) {
+public record Sue(long id, Map<String, Integer> attributes) {
 
-    private static final int DEFAULT_SUE_NUMBER = 0;
+    private static final long DEFAULT_SUE_NUMBER = 0;
     private static final int MAXIMUM_NUMBER_OF_ATTRIBUTES = 10;
     private static final Set<String> ATTRIBUTES_WITH_MINIMUM_VALUE = Set.of("cats", "trees");
     private static final Set<String> ATTRIBUTES_WITH_MAXIMUM_VALUE = Set.of("pomeranians", "goldfish");
@@ -117,29 +117,15 @@ public record Sue(int id, Map<String, Integer> attributes) {
      * attributes the provided {@link Sue} has, and compares them to this {@link Sue}.
      *
      * <p>
-     * Some attributes will not be a direct match, but will instead be considered a minimum or a maximum.
+     * Some attributes will not be a direct match, but can instead be considered a minimum or a maximum if selected.
      *
-     * @param otherSue the other {@link Sue} to check
+     * @param otherSue   the other {@link Sue} to check
+     * @param withRanges whether to consider ranges when finding a matching {@link Sue}
      * @return {@code true} if all attribute values for the other {@link Sue} match the values for this {@link Sue}
      * @see #ATTRIBUTES_WITH_MINIMUM_VALUE
      * @see #ATTRIBUTES_WITH_MAXIMUM_VALUE
      */
-    public boolean isMatchWithRanges(final Sue otherSue) {
-        return isMatch(otherSue, true);
-    }
-
-    /**
-     * Checks if the provided {@link Sue} is a match to this {@link Sue}. We assume this {@link Sue} has all attributes, so we compare whichever
-     * attributes the provided {@link Sue} has, and compares them to this {@link Sue}.
-     *
-     * @param otherSue the other {@link Sue} to check
-     * @return {@code true} if all attribute values for the other {@link Sue} match the values for this {@link Sue}
-     */
-    public boolean isMatch(final Sue otherSue) {
-        return isMatch(otherSue, false);
-    }
-
-    private boolean isMatch(final Sue otherSue, final boolean withRanges) {
+    public boolean isMatch(final Sue otherSue, final boolean withRanges) {
         if (attributes.size() != MAXIMUM_NUMBER_OF_ATTRIBUTES) {
             throw new IllegalStateException(String.format("Expected this %s to have %s attributes, found %s",
                 Sue.class.getSimpleName(), MAXIMUM_NUMBER_OF_ATTRIBUTES, attributes.size()));

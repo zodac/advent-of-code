@@ -44,32 +44,16 @@ public final class Day16 {
     }
 
     /**
-     * For the {@link Collection} of provided {@link Sue}s, we will compare each and see if it is a {@link Sue#isMatch(Sue)} with the
-     * {@code WANTED_SUE}.
+     * For the {@link Collection} of provided {@link Sue}s, we will compare each and see if it is a matching {@link Sue} with the {@code WANTED_SUE}.
      *
-     * @param partialSues the {@link Sue}s to check
+     * @param partialSues     the {@link Sue}s to check
+     * @param matchWithRanges whether to match {@link Sue}s directly, or with a range of values
      * @return the ID of the matching {@link Sue}, or of {@code WANTED_SUE} if no match is found
      */
-    public static int findIdOfMatchingSue(final Collection<Sue> partialSues) {
+    public static long findIdOfMatchingSue(final Collection<Sue> partialSues, final boolean matchWithRanges) {
         return partialSues
             .stream()
-            .filter(WANTED_SUE::isMatch)
-            .findFirst()
-            .orElse(WANTED_SUE)
-            .id();
-    }
-
-    /**
-     * For the {@link Collection} of provided {@link Sue}s, we will compare each and see if it is a {@link Sue#isMatchWithRanges(Sue)} with the
-     * {@code WANTED_SUE}.
-     *
-     * @param partialSues the {@link Sue}s to check
-     * @return the ID of the matching {@link Sue}, or of {@code WANTED_SUE} if no match is found
-     */
-    public static int findIdOfMatchingSueWithRanges(final Collection<Sue> partialSues) {
-        return partialSues
-            .stream()
-            .filter(WANTED_SUE::isMatchWithRanges)
+            .filter(otherSue -> WANTED_SUE.isMatch(otherSue, matchWithRanges))
             .findFirst()
             .orElse(WANTED_SUE)
             .id();
