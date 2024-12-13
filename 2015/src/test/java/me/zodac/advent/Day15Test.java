@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Ingredient;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,11 +30,23 @@ import org.junit.jupiter.api.Test;
 class Day15Test {
 
     private static final String INPUT_FILENAME = "day15.txt";
+    private static final int PART_1_WANTED_CALORIE_COUNT = 0;
     private static final int PART_2_WANTED_CALORIE_COUNT = 500;
 
-    @Disabled("Solution only works with 4 inputs, will fail with 2 from the example")
+    @Test
     void example() {
-        // TODO: Build this some day
+        final List<Ingredient> values = InputReader
+            .forExample(INPUT_FILENAME)
+            .as(Ingredient::parse)
+            .readAllLines();
+
+        final long score1 = Day15.scoreOfBestIngredients(values, PART_1_WANTED_CALORIE_COUNT);
+        assertThat(score1)
+            .isEqualTo(62_842_880L);
+
+        final long score2 = Day15.scoreOfBestIngredients(values, PART_2_WANTED_CALORIE_COUNT);
+        assertThat(score2)
+            .isEqualTo(57_600_000L);
     }
 
     @Test
@@ -45,7 +56,7 @@ class Day15Test {
             .as(Ingredient::parse)
             .readAllLines();
 
-        final long score = Day15.scoreOfBestIngredients(values);
+        final long score = Day15.scoreOfBestIngredients(values, PART_1_WANTED_CALORIE_COUNT);
         assertThat(score)
             .isEqualTo(21_367_368L);
     }

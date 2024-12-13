@@ -19,6 +19,7 @@ package me.zodac.advent;
 
 import static me.zodac.advent.util.CollectionUtils.extractValuesAsList;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import me.zodac.advent.pojo.Ingredient;
@@ -63,38 +64,6 @@ public final class Day15 {
      * Once all totals have been calculated, the total score for the combination is calculated by multiplying the total property values together. This
      * will be compared with all other combination scores, and the highest value will be returned.
      *
-     * @param ingredients the {@link Ingredient}s
-     * @return the score of the highest-scoring combination
-     * @see #scoreOfBestIngredients(Collection, int)
-     */
-    public static long scoreOfBestIngredients(final Collection<Ingredient> ingredients) {
-        return scoreOfBestIngredients(ingredients, VALUE_FOR_NO_CALORIE_CHECK);
-    }
-
-    /**
-     * Given a {@link Collection} of <b>4</b> {@link Ingredient}s, we calculate the score for every combination of these ingredients that add up to
-     * {@value #MAXIMUM_AMOUNT_OF_INGREDIENTS} units. For example, we might have 100 units of {@link Ingredient} #1, then 0 of the remainder. Or we
-     * could have a mixture, such as 24 units of {@link Ingredient} #1, 45 units of {@link Ingredient} #2, etc. All {@link Ingredient}s must add up to
-     * {@value #MAXIMUM_AMOUNT_OF_INGREDIENTS} units.
-     *
-     * <p>
-     * The score is calculated by getting the total value of each property of an {@link Ingredient}:
-     * <ul>
-     *     <li>{@link Ingredient#capacity()}</li>
-     *     <li>{@link Ingredient#durability()}</li>
-     *     <li>{@link Ingredient#flavour()}</li>
-     *     <li>{@link Ingredient#texture()}</li>
-     * </ul>
-     * The total value of any property is:
-     * <pre>
-     *     (valueOfIngredient1 * unitsOfIngredient1) + (valueOfIngredient1 * unitsOfIngredient1) ... + (valueOfIngredientN * unitsOfIngredientN)
-     * </pre>
-     * <b>NOTE:</b> If any property total is less than <b>0</b>, it will be instead set to <b>0</b>.
-     *
-     * <p>
-     * Once all totals have been calculated, the total score for the combination is calculated by multiplying the total property values together. This
-     * will be compared with all other combination scores, and the highest value will be returned.
-     *
      * <p>
      * If {@code wantedCalorieCount} is set to any value other than {@value #VALUE_FOR_NO_CALORIE_CHECK}, the total calorie count of the combination
      * will be calculated as above for {@link Ingredient#calories()}. If it is not exactly equal to {@code wantedCalorieCount}, it will not be
@@ -105,21 +74,27 @@ public final class Day15 {
      * @return the score of the highest-scoring combination
      */
     public static long scoreOfBestIngredients(final Collection<Ingredient> ingredients, final int wantedCalorieCount) {
+        final List<Integer> initialCombination = new ArrayList<>();
+        for (int i = 0; i < ingredients.size(); i++) {
+            initialCombination.add(0);
+        }
+
+        return calculateBestScore(ingredients, wantedCalorieCount, initialCombination, 0, MAXIMUM_AMOUNT_OF_INGREDIENTS);
+    }
+
+    private static long calculateBestScore(final Collection<Ingredient> ingredients, final int wantedCalorieCount,
+                                           final List<Integer> currentCombination, final int currentIndex, final int remainingAmount) {
+        if (currentIndex == ingredients.size() - 1) {
+            currentCombination.set(currentIndex, remainingAmount);
+            return calculateScore(ingredients, wantedCalorieCount, currentCombination);
+        }
+
         long bestScore = Long.MIN_VALUE;
 
-        for (int ingredient1Amount = 0; ingredient1Amount < MAXIMUM_AMOUNT_OF_INGREDIENTS; ingredient1Amount++) {
-            for (int ingredient2Amount = 0; ingredient2Amount < MAXIMUM_AMOUNT_OF_INGREDIENTS; ingredient2Amount++) {
-                for (int ingredient3Amount = 0; ingredient3Amount < MAXIMUM_AMOUNT_OF_INGREDIENTS; ingredient3Amount++) {
-                    final int ingredient4Amount = MAXIMUM_AMOUNT_OF_INGREDIENTS - ingredient1Amount - ingredient2Amount - ingredient3Amount;
-
-                    final List<Integer> amounts = List.of(ingredient1Amount, ingredient2Amount, ingredient3Amount, ingredient4Amount);
-                    final Long totalScore = calculateScore(ingredients, wantedCalorieCount, amounts);
-
-                    if (totalScore > bestScore) {
-                        bestScore = totalScore;
-                    }
-                }
-            }
+        for (int i = 0; i <= remainingAmount; i++) {
+            currentCombination.set(currentIndex, i);
+            long score = calculateBestScore(ingredients, wantedCalorieCount, currentCombination, currentIndex + 1, remainingAmount - i);
+            bestScore = Math.max(bestScore, score);
         }
 
         return bestScore;
