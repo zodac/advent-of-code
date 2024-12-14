@@ -42,7 +42,7 @@ class Day11Test {
 
         final long part2Result = Day11.part1(value, 75);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(65_601_038_650_482L);
     }
 
     @Test
@@ -66,6 +66,6 @@ class Day11Test {
 
         final long part2Result = Day11.part1(value, 75);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(284_973_560_658_514L);
     }
 }

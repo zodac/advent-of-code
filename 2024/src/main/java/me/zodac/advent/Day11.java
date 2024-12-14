@@ -17,8 +17,9 @@
 
 package me.zodac.advent;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.StringUtils;
 
@@ -28,38 +29,52 @@ public final class Day11 {
 
     }
 
-    public static long part1(final String value,int iterations) {
+    public static long part1(final CharSequence value, final int iterations) { // TODO: Stop using CharSequence, for God's sake...
         final List<Long> numbers = StringUtils.collectNumbersInOrder(value);
+        final Map<String, Long> cache = new HashMap<>(); // Should I make this a variable and stop making everything static? Check performance...
 
         long count = 0L;
         for (final Long number : numbers) {
-            count += expand(number, iterations);
+            count += expand2Loop(cache, iterations, number);
         }
 
         return count;
     }
 
-    private static long expand(final long start, final int iterations) {
-        List<Long> numbers = List.of(start);
-        for (int i = 0; i < iterations; i++) {
-            final List<Long> newNumbers = new ArrayList<>();
-            for (final long number : numbers) {
-                if (number == 0) {
-                    newNumbers.add(1L);
-                } else if (String.valueOf(number).length() % 2 == 0) {
-                    final Pair<String, String> split = StringUtils.bisect(String.valueOf(number));
-                    newNumbers.add(Long.parseLong(split.first()));
-                    newNumbers.add(Long.parseLong(split.second()));
-                } else {
-                    newNumbers.add(number * 2_024L);
-                }
-            }
-            numbers = newNumbers;
-        }
-        return numbers.size();
-    }
+    // TODO: Remove this recursive function if possible, might be nicer iterative?
+    private static long expand2Loop(final Map<? super String, Long> cache, final long iterations, final long number) {
+        final String cacheKey = String.format("%s-%s", iterations, number);
 
-    public static long part2(final String value) {
-        return 0L;
+        // Check cache if value has already been calculated
+        if (cache.containsKey(cacheKey)) {
+            return cache.get(cacheKey);
+        }
+
+        // Base case for recursive call
+        if (iterations == 0L) {
+            return 1L;
+        }
+
+        // Below are the three problem conditions, recursively calling the function and caching the result
+        // TODO: Extract cases to functions
+        if (number == 0) {
+            final long result = expand2Loop(cache, iterations - 1, 1);
+            cache.put(cacheKey, result);
+            return result;
+        }
+
+        if (String.valueOf(number).length() % 2 == 0) {
+            final Pair<String, String> split = StringUtils.bisect(String.valueOf(number));
+            final long first = Long.parseLong(split.first());
+            final long second = Long.parseLong(split.second());
+
+            final long result = expand2Loop(cache, iterations - 1, first) + expand2Loop(cache, iterations - 1, second);
+            cache.put(cacheKey, result);
+            return result;
+        }
+
+        final long result = expand2Loop(cache, iterations - 1, number * 2_024L); // TODO: Constant
+        cache.put(cacheKey, result);
+        return result;
     }
 }
