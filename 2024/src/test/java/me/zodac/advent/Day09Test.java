@@ -42,7 +42,7 @@ class Day09Test {
 
         final long part2Result = Day09.part2(value);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(2_858L);
     }
 
     @Test
@@ -54,7 +54,7 @@ class Day09Test {
 
         final long part1Result = Day09.part1(value);
         assertThat(part1Result)
-            .isEqualTo(0L);
+            .isEqualTo(6_346_871_685_398L);
     }
 
     @Test
@@ -66,6 +66,6 @@ class Day09Test {
 
         final long part2Result = Day09.part2(value);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(6_373_055_193_464L);
     }
 }
