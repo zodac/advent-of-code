@@ -57,8 +57,7 @@ class GridTest {
         final Grid<Boolean> likeFirst = new Grid<>(5, new Boolean[5][5], false);
 
         assertThat(first)
-            .hasSameHashCodeAs(likeFirst);
-        assertThat(first)
+            .hasSameHashCodeAs(likeFirst)
             .doesNotHaveSameHashCodeAs(second);
     }
 
