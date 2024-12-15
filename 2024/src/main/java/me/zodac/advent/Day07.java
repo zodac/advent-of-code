@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import me.zodac.advent.pojo.MathOperation;
@@ -49,7 +50,7 @@ public final class Day07 {
      * @return the sum of all valid results
      * @see PermutationUtils#generateWithSeparators(List, Set)
      */
-    public static long sumValidResults(final List<String> values, final Set<MathOperation> mathOperations) {
+    public static long sumValidResults(final Collection<String> values, final Set<MathOperation> mathOperations) {
         long total = 0L;
 
         for (final String value : values) {

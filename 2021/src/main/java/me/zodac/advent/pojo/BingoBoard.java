@@ -30,7 +30,7 @@ public final class BingoBoard {
     // As numbers are marked on the board, this value will replace the existing value
     private static final int MARKED_VALUE = 0;
 
-    private final int[][] board; // TODO: Why is this not Grid<Integer>? Answer if this is needed
+    private final int[][] board; // TODO: Why is this not Grid<Integer>? Document if this typing is needed
     private final Map<Integer, Pair<Integer, Integer>> cellsAndIndex; // Used to easily find the index for a given number on the board
 
     private BingoBoard(final int[][] board, final Map<Integer, Pair<Integer, Integer>> cellsAndIndex) {

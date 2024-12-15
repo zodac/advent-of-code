@@ -82,7 +82,7 @@ class PipeLoopFinder {
         return grid.updateAt(startPoint, replacementForStartSymbol);
     }
 
-    // TODO: Can this be modified
+    // TODO: Can this be modified to use common LoopFinder class?
     private Set<Point> findLoopPointsFromStartPoint(final Point startPoint) {
         Pair<Point, Point> currentAndPreviousPoint = Pair.of(startPoint, startPoint);
         final Set<Point> pointsInLoop = new LinkedHashSet<>();

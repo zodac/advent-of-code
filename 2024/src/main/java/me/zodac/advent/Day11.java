@@ -23,27 +23,52 @@ import java.util.Map;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.StringUtils;
 
+/**
+ * Solution for 2024, Day 11.
+ *
+ * @see <a href="https://adventofcode.com/2024/day/11">[2024: 11] Plutonian Pebbles</a>
+ */
 public final class Day11 {
+
+    private static final String CACHE_KEY_FORMAT = "%s-%s";
+    private static final long DEFAULT_MULTIPLICATION_VALUE = 2_024L;
 
     private Day11() {
 
     }
 
-    public static long part1(final CharSequence value, final int iterations) { // TODO: Stop using CharSequence, for God's sake...
-        final List<Long> numbers = StringUtils.collectNumbersInOrder(value);
-        final Map<String, Long> cache = new HashMap<>(); // Should I make this a variable and stop making everything static? Check performance...
+    /**
+     * Given an input {@link String} defining a {@link List} of stone values, we blink {@code numberOfBlinks} times. After each blink the stones will
+     * change based on the following rules. Only one of the following will be performed, in order of priority:
+     *
+     * <ol>
+     *     <li>If the value is <b>0</b>, replace with a value of <b>1</b></li>
+     *     <li>If the value has an even number of digits, replace with two values (both halves of the existing value)</li>
+     *     <li>Multiply the value by {@value #DEFAULT_MULTIPLICATION_VALUE}</li>
+     * </ol>
+     *
+     * <p>
+     * When the blinks are finished, count the number of stones.
+     *
+     * @param inputStoneValues the input value of the stones
+     * @param numberOfBlinks   the number of times to blink
+     * @return the final number of stones
+     */
+    public static long countStonesAfterBlinks(final CharSequence inputStoneValues,
+                                              final int numberOfBlinks) { // TODO: Stop using CharSequence, for God's sake
+        final List<Long> stoneValues = StringUtils.collectNumbersInOrder(inputStoneValues);
+        final Map<String, Long> cache = new HashMap<>();
 
         long count = 0L;
-        for (final Long number : numbers) {
-            count += expand2Loop(cache, iterations, number);
+        for (final Long stoneValue : stoneValues) {
+            count += updateStonesOnBlinks(cache, numberOfBlinks, stoneValue);
         }
 
         return count;
     }
 
-    // TODO: Remove this recursive function if possible, might be nicer iterative?
-    private static long expand2Loop(final Map<? super String, Long> cache, final long iterations, final long number) {
-        final String cacheKey = String.format("%s-%s", iterations, number);
+    private static long updateStonesOnBlinks(final Map<? super String, Long> cache, final long numberOfBlinksRemaining, final long stoneValue) {
+        final String cacheKey = String.format(CACHE_KEY_FORMAT, numberOfBlinksRemaining, stoneValue);
 
         // Check cache if value has already been calculated
         if (cache.containsKey(cacheKey)) {
@@ -51,30 +76,30 @@ public final class Day11 {
         }
 
         // Base case for recursive call
-        if (iterations == 0L) {
+        if (numberOfBlinksRemaining == 0L) {
             return 1L;
         }
 
+        final long result = updateStone(cache, numberOfBlinksRemaining, stoneValue);
+
+        cache.put(cacheKey, result);
+        return result;
+    }
+
+    private static long updateStone(final Map<? super String, Long> cache, final long numberOfBlinksRemaining, final long stoneValue) {
         // Below are the three problem conditions, recursively calling the function and caching the result
-        // TODO: Extract cases to functions
-        if (number == 0) {
-            final long result = expand2Loop(cache, iterations - 1, 1);
-            cache.put(cacheKey, result);
-            return result;
+        if (stoneValue == 0) {
+            return updateStonesOnBlinks(cache, numberOfBlinksRemaining - 1, 1);
         }
 
-        if (String.valueOf(number).length() % 2 == 0) {
-            final Pair<String, String> split = StringUtils.bisect(String.valueOf(number));
+        if (String.valueOf(stoneValue).length() % 2 == 0) {
+            final Pair<String, String> split = StringUtils.bisect(String.valueOf(stoneValue));
             final long first = Long.parseLong(split.first());
             final long second = Long.parseLong(split.second());
 
-            final long result = expand2Loop(cache, iterations - 1, first) + expand2Loop(cache, iterations - 1, second);
-            cache.put(cacheKey, result);
-            return result;
+            return updateStonesOnBlinks(cache, numberOfBlinksRemaining - 1, first) + updateStonesOnBlinks(cache, numberOfBlinksRemaining - 1, second);
         }
 
-        final long result = expand2Loop(cache, iterations - 1, number * 2_024L); // TODO: Constant
-        cache.put(cacheKey, result);
-        return result;
+        return updateStonesOnBlinks(cache, numberOfBlinksRemaining - 1, stoneValue * DEFAULT_MULTIPLICATION_VALUE);
     }
 }

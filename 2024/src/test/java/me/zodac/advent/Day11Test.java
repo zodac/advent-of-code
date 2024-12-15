@@ -33,14 +33,14 @@ class Day11Test {
     void example() {
         final String value = InputReader
             .forExample(INPUT_FILENAME)
-            .asStrings()
+            .asStrings() // TODO: As list of longs?
             .readAllAsSingleString();
 
-        final long part1Result = Day11.part1(value, 25);
+        final long part1Result = Day11.countStonesAfterBlinks(value, 25);
         assertThat(part1Result)
             .isEqualTo(55_312L);
 
-        final long part2Result = Day11.part1(value, 75);
+        final long part2Result = Day11.countStonesAfterBlinks(value, 75);
         assertThat(part2Result)
             .isEqualTo(65_601_038_650_482L);
     }
@@ -52,7 +52,7 @@ class Day11Test {
             .asStrings()
             .readAllAsSingleString();
 
-        final long part1Result = Day11.part1(value, 25);
+        final long part1Result = Day11.countStonesAfterBlinks(value, 25);
         assertThat(part1Result)
             .isEqualTo(239_714L);
     }
@@ -64,7 +64,7 @@ class Day11Test {
             .asStrings()
             .readAllAsSingleString();
 
-        final long part2Result = Day11.part1(value, 75);
+        final long part2Result = Day11.countStonesAfterBlinks(value, 75);
         assertThat(part2Result)
             .isEqualTo(284_973_560_658_514L);
     }

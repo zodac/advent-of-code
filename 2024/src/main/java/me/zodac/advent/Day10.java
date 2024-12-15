@@ -78,7 +78,7 @@ public final class Day10 {
     private static Pair<Long, Set<Point>> calculateValueAndNextPoints(final Grid<Integer> integerGrid,
                                                                       final boolean calculateRating,
                                                                       final Point startPoint,
-                                                                      final Set<Point> nextPoints
+                                                                      final Collection<Point> nextPoints
     ) {
         long value = 0L;
         final Set<Point> pointsToCheck = new HashSet<>();

@@ -20,6 +20,7 @@ package me.zodac.advent.pojo;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.zodac.advent.util.StringUtils;
@@ -64,7 +65,6 @@ public record Sue(long id, Map<String, Integer> attributes) {
      */
     public static Sue parseThreeAttributes(final CharSequence input) {
         final Matcher matcher = SUE_PATTERN.matcher(input);
-
         if (!matcher.find()) {
             throw new IllegalArgumentException("Unable to find match in input: " + input);
         }
@@ -73,7 +73,7 @@ public record Sue(long id, Map<String, Integer> attributes) {
         return new Sue(id, parseAttributes(matcher));
     }
 
-    private static Map<String, Integer> parseAttributes(Matcher matcher) {
+    private static Map<String, Integer> parseAttributes(final MatchResult matcher) {
         return Map.of(
             matcher.group(2), Integer.parseInt(matcher.group(3)),
             matcher.group(4), Integer.parseInt(matcher.group(5)),

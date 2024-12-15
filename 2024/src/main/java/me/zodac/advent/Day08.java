@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -55,7 +56,7 @@ public final class Day08 {
     public static long countUniqueAntinodes(final Grid<Character> characterGrid, final boolean hasSingleAntinode) {
         final Map<Character, Set<Point>> pointsByCharacter = getPointsByCharacter(characterGrid);
 
-        final Set<Point> antinodes = new HashSet<>();
+        final Collection<Point> antinodes = new HashSet<>();
         for (final Set<Point> points : pointsByCharacter.values()) {
             for (final Point currentPoint : points) {
                 antinodes.addAll(getAntinodesForPoint(characterGrid, points, currentPoint, hasSingleAntinode));
@@ -66,7 +67,7 @@ public final class Day08 {
     }
 
     private static Set<Point> getAntinodesForPoint(final Grid<Character> characterGrid,
-                                                   final Set<Point> gridPoints,
+                                                   final Collection<Point> gridPoints,
                                                    final Point currentPoint,
                                                    final boolean hasSingleAntinode
     ) {
@@ -97,7 +98,7 @@ public final class Day08 {
         return antinodes;
     }
 
-    private static Map<Character, Set<Point>> getPointsByCharacter(Grid<Character> characterGrid) {
+    private static Map<Character, Set<Point>> getPointsByCharacter(final Grid<Character> characterGrid) {
         final Set<Character> allValues = characterGrid
             .allPoints()
             .stream()

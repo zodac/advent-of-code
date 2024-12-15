@@ -93,7 +93,7 @@ public final class Day15 {
 
         for (int i = 0; i <= remainingAmount; i++) {
             currentCombination.set(currentIndex, i);
-            long score = calculateBestScore(ingredients, wantedCalorieCount, currentCombination, currentIndex + 1, remainingAmount - i);
+            final long score = calculateBestScore(ingredients, wantedCalorieCount, currentCombination, currentIndex + 1, remainingAmount - i);
             bestScore = Math.max(bestScore, score);
         }
 

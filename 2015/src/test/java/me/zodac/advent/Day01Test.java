@@ -17,6 +17,8 @@
 
 package me.zodac.advent;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
