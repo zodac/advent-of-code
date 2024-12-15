@@ -30,6 +30,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
@@ -230,7 +231,7 @@ public class Grid<E> {
      * @param y2             the second y coordinate
      * @param updateFunction the {@link Function} to update the internal {@link Grid} value based on the current value
      */
-    public void drawBox(final int x1, final int y1, final int x2, final int y2, final Function<E, E> updateFunction) {
+    public void drawBox(final int x1, final int y1, final int x2, final int y2, final UnaryOperator<E> updateFunction) {
         if (x1 < 0 || y1 < 0) {
             throw new IllegalArgumentException(String.format("x1, y1 must be at least 0, found: (%s, %s)", x1, y1));
         }
@@ -503,7 +504,7 @@ public class Grid<E> {
      * @see AdjacentPointsSelector
      */
     public List<List<Point>> findAllPaths(final Point startPoint, final Point endPoint, final AdjacentDirection adjacentDirection,
-                                          final BiPredicate<Point, Point> adjacentPointFilter) {
+                                          final BiPredicate<? super Point, ? super Point> adjacentPointFilter) {
         final List<List<Point>> routes = new ArrayList<>();
         final List<Point> currentPath = new ArrayList<>();
         final Set<Point> visited = new HashSet<>();
@@ -515,10 +516,10 @@ public class Grid<E> {
     private void dfs(final Point current,
                      final Point end,
                      final List<Point> currentPath,
-                     final List<List<Point>> paths,
-                     final Set<Point> visited,
+                     final List<? super List<Point>> paths,
+                     final Set<? super Point> visited,
                      final AdjacentDirection adjacentDirection,
-                     final BiPredicate<Point, Point> adjacentPointFilter
+                     final BiPredicate<? super Point, ? super Point> adjacentPointFilter
     ) {
         currentPath.add(current);
         visited.add(current);
@@ -540,7 +541,7 @@ public class Grid<E> {
 
     private List<Point> getValidAdjacentPoints(final Point currentPoint,
                                                final AdjacentDirection adjacentDirection,
-                                               final BiPredicate<Point, Point> adjacentPointFilter
+                                               final BiPredicate<? super Point, ? super Point> adjacentPointFilter
     ) {
         return currentPoint
             .getAdjacentPoints(AdjacentPointsSelector.bounded(false, adjacentDirection, gridSize))

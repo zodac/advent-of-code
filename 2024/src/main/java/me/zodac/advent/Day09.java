@@ -241,7 +241,8 @@ public final class Day09 {
         int value = 0;
 
         for (final DiskBlock diskBlock : defragmentedDiskBlocks) {
-            for (int i = 0; i < diskBlock.size(); i++) {
+            final int size = diskBlock.size();
+            for (int i = 0; i < size; i++) {
                 if (!diskBlock.isFreeDiskSpace()) {
                     total += Long.parseLong(diskBlock.blockValue()) * value;
                 }

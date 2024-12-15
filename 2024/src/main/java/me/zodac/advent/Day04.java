@@ -73,16 +73,23 @@ public final class Day04 {
                     continue;
                 }
 
-                // Find the next 3 points in each direction, and check if the values add to 'XMAS'
-                for (final Direction direction : Direction.ALL_VALUES) {
-                    if (isValidStartOfXmas(point, direction, characterGrid)) {
-                        starts.add(point);
-                    }
-                }
+                // A point may be the start of multiple XMAS values, so check all directions for multiple starts
+                starts.addAll(findValidStartsOfXmas(point, characterGrid));
             }
         }
 
         return starts.size();
+    }
+
+    private static Collection<Point> findValidStartsOfXmas(final Point point, final Grid<Character> characterGrid) {
+        final Collection<Point> validStartPoints = new ArrayList<>();
+        // Find the next 3 points in each direction, and check if the values add to 'XMAS'
+        for (final Direction direction : Direction.ALL_VALUES) {
+            if (isValidStartOfXmas(point, direction, characterGrid)) {
+                validStartPoints.add(point);
+            }
+        }
+        return validStartPoints;
     }
 
     private static boolean isValidStartOfXmas(final Point point, final Direction direction, final Grid<Character> characterGrid) {

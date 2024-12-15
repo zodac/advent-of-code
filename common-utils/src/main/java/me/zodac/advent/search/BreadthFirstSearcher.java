@@ -54,7 +54,7 @@ public final class BreadthFirstSearcher {
         final Point startPoint,
         final Collection<Point> endPoints,
         final Map<Point, Integer> valuesByPoint,
-        final Function<? super Point, ? extends Set<Point>> pointNeighbourFunction
+        final Function<? super Point, ? extends Set<Point>> pointNeighbourFunction // TODO: Keep using super/extends, or remove to simplify?
     ) {
         final Map<Point, Long> distanceByNeighbourNode = new HashMap<>();
         distanceByNeighbourNode.put(startPoint, START_NODE_DISTANCE);

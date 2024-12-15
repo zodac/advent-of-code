@@ -72,7 +72,8 @@ public final class Day07 {
         long currentTotal = Long.parseLong(input.getFirst());
 
         MathOperation mathOperation = MathOperation.ADD;
-        for (int i = 1; i < input.size(); i++) {
+        final int size = input.size();
+        for (int i = 1; i < size; i++) {
             final String nextSymbol = input.get(i);
 
             switch (nextSymbol) {

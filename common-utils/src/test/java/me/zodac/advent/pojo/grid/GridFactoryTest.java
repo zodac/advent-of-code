@@ -57,13 +57,13 @@ class GridFactoryTest {
             .isEqualTo(4);
 
         assertThat(output.at(Point.of(0, 0)))
-            .isEqualTo(0);
+            .isZero();
         assertThat(output.at(Point.of(0, 1)))
-            .isEqualTo(0);
+            .isZero();
         assertThat(output.at(Point.of(1, 0)))
-            .isEqualTo(0);
+            .isZero();
         assertThat(output.at(Point.of(1, 1)))
-            .isEqualTo(0);
+            .isZero();
 
         assertThatThrownBy(() -> GridFactory.ofIntegersWithSize(0))
             .isInstanceOf(IllegalArgumentException.class)

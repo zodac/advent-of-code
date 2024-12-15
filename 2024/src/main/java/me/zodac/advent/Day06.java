@@ -116,14 +116,12 @@ public final class Day06 {
         return LoopFinder.doesLoopExist(grid, startPoint, START_DIRECTION,
             (characterGrid, point, direction) -> {
                 final Point nextPoint = point.move(direction);
-                Direction nextDirection = direction;
-
                 if (!characterGrid.exists(nextPoint)) {
                     return Direction.INVALID;
                 }
 
+                Direction nextDirection = direction;
                 nextDirection = rotateAroundObstacles(characterGrid, point, nextDirection);
-
                 return nextDirection;
             },
             (_, point, direction) -> point.move(direction)

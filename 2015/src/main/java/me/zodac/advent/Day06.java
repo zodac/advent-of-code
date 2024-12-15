@@ -55,7 +55,7 @@ public final class Day06 {
                 currentValue -> updateBooleanGrid(gridUpdateInstruction, currentValue));
         }
 
-        return booleanGrid.sumValues(booleanValue -> booleanValue ? 1 : 0);
+        return booleanGrid.sumValues(booleanValue -> Boolean.TRUE.equals(booleanValue) ? 1 : 0);
     }
 
     private static boolean updateBooleanGrid(final GridUpdateInstruction gridUpdateInstruction, final boolean currentValue) {

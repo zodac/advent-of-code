@@ -75,7 +75,8 @@ public final class Day15 {
      */
     public static long scoreOfBestIngredients(final Collection<Ingredient> ingredients, final int wantedCalorieCount) {
         final List<Integer> initialCombination = new ArrayList<>();
-        for (int i = 0; i < ingredients.size(); i++) {
+        final int size = ingredients.size();
+        for (int i = 0; i < size; i++) {
             initialCombination.add(0);
         }
 

@@ -57,7 +57,8 @@ public final class Day01 {
         Collections.sort(second);
 
         long diff = 0L;
-        for (int i = 0; i < first.size(); i++) {
+        final int size = first.size();
+        for (int i = 0; i < size; i++) {
             diff += Math.abs(first.get(i) - second.get(i));
         }
 

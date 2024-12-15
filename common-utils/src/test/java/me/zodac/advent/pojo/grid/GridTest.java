@@ -38,7 +38,7 @@ class GridTest {
         for (int row = 0; row < 5; row++) {
             for (int column = 0; column < 5; column++) {
                 assertThat(first.at(row, column))
-                    .isEqualTo(false);
+                    .isFalse();
             }
         }
 
@@ -56,10 +56,10 @@ class GridTest {
         final Grid<Boolean> second = new Grid<>(5, new Boolean[5][5], true);
         final Grid<Boolean> likeFirst = new Grid<>(5, new Boolean[5][5], false);
 
-        assertThat(first.hashCode())
-            .isEqualTo(likeFirst.hashCode());
-        assertThat(first.hashCode())
-            .isNotEqualTo(second.hashCode());
+        assertThat(first)
+            .hasSameHashCodeAs(likeFirst);
+        assertThat(first)
+            .doesNotHaveSameHashCodeAs(second);
     }
 
     @Test

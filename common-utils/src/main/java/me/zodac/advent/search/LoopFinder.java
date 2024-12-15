@@ -99,9 +99,6 @@ public final class LoopFinder {
                 return false;
             }
 
-            // TODO: Is this function needed, or can we assume this will always apply:
-            //    currentPoint = currentPoint.move(currentDirection);
-            //  I *think* it can, but need more examples using this code to confirm
             currentPoint = pointUpdate.apply(grid, currentPoint, currentDirection);
         }
     }

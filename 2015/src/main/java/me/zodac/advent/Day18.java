@@ -33,7 +33,7 @@ public final class Day18 {
 
     private static final Set<Integer> NEIGHBOUR_VALUES_FOR_OFF_POINT = Set.of(3);
     private static final Set<Integer> NEIGHBOUR_VALUES_FOR_ON_POINT = Set.of(2, 3);
-    private static final ToIntFunction<Boolean> EVALUATOR = booleanValue -> booleanValue ? 1 : 0;
+    private static final ToIntFunction<Boolean> EVALUATOR = booleanValue -> Boolean.TRUE.equals(booleanValue) ? 1 : 0;
 
     private Day18() {
 

@@ -108,7 +108,8 @@ public final class PermutationUtils {
     public static <E> List<List<E>> generateAllWithOneRemovedEntry(final List<? extends E> input) {
         final List<List<E>> combinations = new ArrayList<>();
 
-        for (int i = 0; i < input.size(); i++) {
+        final int size = input.size();
+        for (int i = 0; i < size; i++) {
             final List<E> combination = new ArrayList<>(input);
             combination.remove(i);
             combinations.add(combination);

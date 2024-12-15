@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 class TriFunctionTest {
 
     @Test
-    void basicTest() {
+    void testTriFunction() {
         final TriFunction<Integer, String, String, Boolean> triFunction =
             (integer, string1, string2) -> integer > 0 && string1.isEmpty() && !string2.isEmpty();
 

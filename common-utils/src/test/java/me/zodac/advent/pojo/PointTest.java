@@ -43,9 +43,9 @@ class PointTest {
 
         final Point originPoint = Point.atOrigin();
         assertThat(originPoint.x())
-            .isEqualTo(0);
+            .isZero();
         assertThat(originPoint.y())
-            .isEqualTo(0);
+            .isZero();
     }
 
     @ParameterizedTest

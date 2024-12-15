@@ -90,7 +90,7 @@ public final class Day01 {
             }
 
             if (currentFloor == floorToFind) {
-                return i + 1; // Expected index starts at 1, not 0
+                return i + 1L; // Expected index starts at 1, not 0
             }
         }
 

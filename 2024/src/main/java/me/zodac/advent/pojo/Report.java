@@ -54,7 +54,8 @@ public record Report(List<Long> inputs) {
     }
 
     private boolean isMaxAdjacentDiffInRange(final int endRangeInclusive) {
-        for (int i = 0; i < inputs.size() - 1; i++) {
+        final int size = inputs.size();
+        for (int i = 0; i < size - 1; i++) {
             final long curr = inputs.get(i);
             final long next = inputs.get(i + 1);
 
