@@ -18,10 +18,10 @@
 package me.zodac.advent;
 
 import java.util.Collection;
+import me.zodac.advent.grid.Grid;
+import me.zodac.advent.grid.GridFactory;
 import me.zodac.advent.pojo.GridUpdateInstruction;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.Grid;
-import me.zodac.advent.pojo.grid.GridFactory;
 import me.zodac.advent.pojo.tuple.Triple;
 
 /**
@@ -52,13 +52,13 @@ public final class Day06 {
             final Point second = instructionAndPoints.third();
 
             booleanGrid.drawBox(first.x(), first.y(), second.x(), second.y(),
-                currentValue -> updateBooleanGrid(gridUpdateInstruction, currentValue));
+                currentValue -> canUpdateBooleanGrid(gridUpdateInstruction, currentValue));
         }
 
         return booleanGrid.sumValues(booleanValue -> Boolean.TRUE.equals(booleanValue) ? 1 : 0);
     }
 
-    private static boolean updateBooleanGrid(final GridUpdateInstruction gridUpdateInstruction, final boolean currentValue) {
+    private static boolean canUpdateBooleanGrid(final GridUpdateInstruction gridUpdateInstruction, final boolean currentValue) {
         return switch (gridUpdateInstruction) {
             case ON -> true;
             case OFF -> false;

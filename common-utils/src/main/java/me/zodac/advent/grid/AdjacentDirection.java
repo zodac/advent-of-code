@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.grid;
+package me.zodac.advent.grid;
 
 /**
  * Defines the directions in which to search for adjacent {@link me.zodac.advent.pojo.Point}s.

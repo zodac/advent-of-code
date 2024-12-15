@@ -17,8 +17,8 @@
 
 package me.zodac.advent;
 
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.pojo.RotationDirection;
-import me.zodac.advent.pojo.grid.Grid;
 import me.zodac.advent.search.Cycle;
 import me.zodac.advent.search.CycleFinder;
 

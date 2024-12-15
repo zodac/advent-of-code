@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import me.zodac.advent.pojo.grid.AdjacentDirection;
-import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
+import me.zodac.advent.grid.AdjacentDirection;
+import me.zodac.advent.grid.AdjacentPointsSelector;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.StringUtils;
 

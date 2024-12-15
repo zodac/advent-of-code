@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.grid;
+package me.zodac.advent.grid;
 
 import me.zodac.advent.pojo.Point;
 

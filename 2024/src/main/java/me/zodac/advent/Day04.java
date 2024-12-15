@@ -22,11 +22,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import me.zodac.advent.grid.AdjacentDirection;
+import me.zodac.advent.grid.AdjacentPointsSelector;
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.AdjacentDirection;
-import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
-import me.zodac.advent.pojo.grid.Grid;
 
 /**
  * Solution for 2024, Day 4.

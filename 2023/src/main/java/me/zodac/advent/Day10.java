@@ -17,9 +17,9 @@
 
 package me.zodac.advent;
 
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.pojo.Pipe;
 import me.zodac.advent.pojo.PipeLoop;
-import me.zodac.advent.pojo.grid.Grid;
 
 /**
  * Solution for 2023, Day 10.

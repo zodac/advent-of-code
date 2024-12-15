@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo.grid;
+package me.zodac.advent.grid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -505,12 +505,12 @@ public class Grid<E> {
      */
     public List<List<Point>> findAllPaths(final Point startPoint, final Point endPoint, final AdjacentDirection adjacentDirection,
                                           final BiPredicate<? super Point, ? super Point> adjacentPointFilter) {
-        final List<List<Point>> routes = new ArrayList<>();
+        final List<List<Point>> paths = new ArrayList<>();
         final List<Point> currentPath = new ArrayList<>();
         final Set<Point> visited = new HashSet<>();
 
-        dfs(startPoint, endPoint, currentPath, routes, visited, adjacentDirection, adjacentPointFilter);
-        return routes;
+        dfs(startPoint, endPoint, currentPath, paths, visited, adjacentDirection, adjacentPointFilter);
+        return paths;
     }
 
     private void dfs(final Point current,

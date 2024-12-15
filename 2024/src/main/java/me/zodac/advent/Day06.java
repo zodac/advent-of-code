@@ -20,9 +20,9 @@ package me.zodac.advent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.Grid;
 import me.zodac.advent.search.LoopFinder;
 
 /**

@@ -23,10 +23,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.pojo.BeamStep;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.Grid;
 
 /**
  * Solution for 2023, Day 16.

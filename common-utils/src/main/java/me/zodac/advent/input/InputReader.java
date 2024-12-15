@@ -32,8 +32,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import me.zodac.advent.pojo.grid.Grid;
-import me.zodac.advent.pojo.grid.GridFactory;
+import me.zodac.advent.grid.Grid;
+import me.zodac.advent.grid.GridFactory;
 import me.zodac.advent.util.StringUtils;
 
 /**
@@ -52,7 +52,7 @@ import me.zodac.advent.util.StringUtils;
  *
  * <p>
  * {@snippet :
- *     final Grid<Character> grid = forExample(inputFilePath)
+ *     import me.zodac.advent.grid.Grid;final Grid<Character> grid = forExample(inputFilePath)
  *         .asGrid()
  *         .ofCharacters();
  *}
@@ -62,7 +62,7 @@ import me.zodac.advent.util.StringUtils;
  *
  * <p>
  * {@snippet :
- *     final Grid<Character> grid = forPuzzle(inputFilePath)
+ *     import me.zodac.advent.grid.Grid;final Grid<Character> grid = forPuzzle(inputFilePath)
  *         .asIntegers()
  *         .filter(i -> i != 9)
  *         .readAllLines();

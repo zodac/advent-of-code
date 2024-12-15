@@ -19,10 +19,10 @@ package me.zodac.advent;
 
 import java.util.Set;
 import java.util.function.ToIntFunction;
+import me.zodac.advent.grid.AdjacentDirection;
+import me.zodac.advent.grid.AdjacentPointsSelector;
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.AdjacentDirection;
-import me.zodac.advent.pojo.grid.AdjacentPointsSelector;
-import me.zodac.advent.pojo.grid.Grid;
 
 /**
  * Solution for 2015, Day 18.

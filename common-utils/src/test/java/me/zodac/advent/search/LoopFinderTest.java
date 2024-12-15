@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.stream.Stream;
+import me.zodac.advent.grid.Grid;
+import me.zodac.advent.grid.GridFactory;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.Grid;
-import me.zodac.advent.pojo.grid.GridFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -106,7 +106,7 @@ class LoopFinderTest {
                     return Direction.INVALID;
                 }
                 // If we find a value greater than 3, turn right
-                while (integerGrid.at(nextPoint).equals("NO")) {
+                while ("NO".equals(integerGrid.at(nextPoint))) {
                     nextDirection = nextDirection.rotateRight();
                     nextPoint = point.move(nextDirection);
 

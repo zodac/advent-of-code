@@ -20,9 +20,9 @@ package me.zodac.advent.search;
 import java.util.Collection;
 import java.util.HashSet;
 import me.zodac.advent.function.TriFunction;
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.pojo.Direction;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.Grid;
 import me.zodac.advent.pojo.tuple.Pair;
 
 /**

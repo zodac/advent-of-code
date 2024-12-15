@@ -19,8 +19,8 @@ package me.zodac.advent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.input.InputReader;
-import me.zodac.advent.pojo.grid.Grid;
 import org.junit.jupiter.api.Test;
 
 /**

@@ -20,8 +20,8 @@ package me.zodac.advent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.pojo.Point;
-import me.zodac.advent.pojo.grid.Grid;
 import me.zodac.advent.util.CollectionUtils;
 
 /**
