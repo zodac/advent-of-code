@@ -36,11 +36,11 @@ class Day09Test {
             .asStrings()
             .readAllAsSingleString();
 
-        final long part1Result = Day09.part1(value);
+        final long part1Result = Day09.calculateChecksumOfFragmentedFiles(value);
         assertThat(part1Result)
             .isEqualTo(1_928L);
 
-        final long part2Result = Day09.part2(value);
+        final long part2Result = Day09.calculateChecksumOfDefragmentedFiles(value);
         assertThat(part2Result)
             .isEqualTo(2_858L);
     }
@@ -52,7 +52,7 @@ class Day09Test {
             .asStrings()
             .readAllAsSingleString();
 
-        final long part1Result = Day09.part1(value);
+        final long part1Result = Day09.calculateChecksumOfFragmentedFiles(value);
         assertThat(part1Result)
             .isEqualTo(6_346_871_685_398L);
     }
@@ -64,7 +64,7 @@ class Day09Test {
             .asStrings()
             .readAllAsSingleString();
 
-        final long part2Result = Day09.part2(value);
+        final long part2Result = Day09.calculateChecksumOfDefragmentedFiles(value);
         assertThat(part2Result)
             .isEqualTo(6_373_055_193_464L);
     }

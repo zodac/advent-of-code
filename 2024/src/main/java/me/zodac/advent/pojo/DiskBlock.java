@@ -31,10 +31,21 @@ public record DiskBlock(String blockValue, int size) {
     public static final String FREE_SPACE_SYMBOL = ".";
 
     /**
+     * Creates a {@link DiskBlock} of the given value.
+     *
+     * @param blockValue the value in the {@link DiskBlock}
+     * @param size       the number of occurrences of the value
+     * @return the create {@link DiskBlock}
+     */
+    public static DiskBlock create(final int blockValue, final int size) {
+        return new DiskBlock(String.valueOf(blockValue), size);
+    }
+
+    /**
      * Creates a {@link DiskBlock} of free space.
      *
      * @param size the number of occurrences of the free space
-     * @return the creates free space {@link DiskBlock}
+     * @return the created free space {@link DiskBlock}
      */
     public static DiskBlock ofFreeSpace(final int size) {
         return new DiskBlock(FREE_SPACE_SYMBOL, size);

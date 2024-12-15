@@ -54,8 +54,8 @@ public final class Day11 {
      * @param numberOfBlinks   the number of times to blink
      * @return the final number of stones
      */
-    public static long countStonesAfterBlinks(final CharSequence inputStoneValues,
-                                              final int numberOfBlinks) { // TODO: Stop using CharSequence, for God's sake
+    // TODO: Stop using CharSequence, for God's sake
+    public static long countStonesAfterBlinks(final CharSequence inputStoneValues, final int numberOfBlinks) {
         final List<Long> stoneValues = StringUtils.collectNumbersInOrder(inputStoneValues);
         final Map<String, Long> cache = new HashMap<>();
 
@@ -67,7 +67,7 @@ public final class Day11 {
         return count;
     }
 
-    private static long updateStonesOnBlinks(final Map<? super String, Long> cache, final long numberOfBlinksRemaining, final long stoneValue) {
+    private static long updateStonesOnBlinks(final Map<? super String, Long> cache, final int numberOfBlinksRemaining, final long stoneValue) {
         final String cacheKey = String.format(CACHE_KEY_FORMAT, numberOfBlinksRemaining, stoneValue);
 
         // Check cache if value has already been calculated
@@ -76,7 +76,7 @@ public final class Day11 {
         }
 
         // Base case for recursive call
-        if (numberOfBlinksRemaining == 0L) {
+        if (numberOfBlinksRemaining == 0) {
             return 1L;
         }
 
@@ -86,7 +86,7 @@ public final class Day11 {
         return result;
     }
 
-    private static long updateStone(final Map<? super String, Long> cache, final long numberOfBlinksRemaining, final long stoneValue) {
+    private static long updateStone(final Map<? super String, Long> cache, final int numberOfBlinksRemaining, final long stoneValue) {
         // Below are the three problem conditions, recursively calling the function and caching the result
         if (stoneValue == 0) {
             return updateStonesOnBlinks(cache, numberOfBlinksRemaining - 1, 1);
