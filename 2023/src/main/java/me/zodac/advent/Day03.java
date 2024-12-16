@@ -73,8 +73,7 @@ public final class Day03 {
     }
 
     private static long findSumOfNumbersForPart(final Grid<Character> characterGrid, final Point partPoint) {
-        final AdjacentPointsSelector adjacentPointsSelector =
-            AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, characterGrid.numberOfRows());
+        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, characterGrid.size());
 
         return partPoint
             .getAdjacentPoints(adjacentPointsSelector)

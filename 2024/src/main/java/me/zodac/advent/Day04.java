@@ -141,7 +141,7 @@ public final class Day04 {
 
     private static boolean isValidCenterOfXmas(final Point point, final Grid<Character> characterGrid) {
         final String combination = point
-            .getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.DIAGONAL_ONLY, characterGrid.numberOfRows()))
+            .getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.DIAGONAL, characterGrid.size()))
             .filter(characterGrid::exists)
             .sorted() // Must sort so the Points are in a consistent order so we can compare to the expected Strings
             .map(characterGrid::at)

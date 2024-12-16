@@ -86,7 +86,7 @@ public final class Day10 {
         for (final Point nextPoint : nextPoints) {
             if (integerGrid.at(nextPoint) == END_POINT_VALUE) {
                 if (calculateRating) {
-                    final List<List<Point>> allPaths = integerGrid.findAllPaths(startPoint, nextPoint, AdjacentDirection.CARDINAL_ONLY,
+                    final List<List<Point>> allPaths = integerGrid.findAllPaths(startPoint, nextPoint, AdjacentDirection.CARDINAL,
                         (currentPoint, potentialNextPoint) -> integerGrid.at(currentPoint) + 1 == integerGrid.at(potentialNextPoint)
                     );
                     value += allPaths.size();
@@ -102,8 +102,7 @@ public final class Day10 {
 
     private static Set<Point> getNextPoints(final Grid<Integer> integerGrid, final Point startPoint) {
         final int currentValue = integerGrid.at(startPoint);
-        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false,
-            AdjacentDirection.CARDINAL_ONLY, integerGrid.numberOfRows());
+        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.CARDINAL, integerGrid.size());
 
         return startPoint
             .getAdjacentPoints(adjacentPointsSelector)

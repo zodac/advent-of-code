@@ -127,7 +127,7 @@ class PipeLoopFinder {
                                         final Collection<Point> pointsInLoop,
                                         final BiFunction<? super Pipe, ? super Pipe, Pipe> connectionFunction) {
         final int size = grid.numberOfRows();
-        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.CARDINAL_ONLY, size);
+        final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.CARDINAL, size);
         final Set<Point> adjacentPoints = point.getAdjacentPoints(adjacentPointsSelector).collect(Collectors.toSet());
         // Order is important, as we want to go from top-left to bottom-right
         final List<Point> pipeConnections = new ArrayList<>(CollectionUtils.intersection(adjacentPoints, pointsInLoop));

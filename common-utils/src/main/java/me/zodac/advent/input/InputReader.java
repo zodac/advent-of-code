@@ -52,7 +52,7 @@ import me.zodac.advent.util.StringUtils;
  *
  * <p>
  * {@snippet :
- *     import me.zodac.advent.grid.Grid;final Grid<Character> grid = forExample(inputFilePath)
+ *     final Grid<Character> grid = forExample(inputFilePath)
  *         .asGrid()
  *         .ofCharacters();
  *}
@@ -62,7 +62,7 @@ import me.zodac.advent.util.StringUtils;
  *
  * <p>
  * {@snippet :
- *     import me.zodac.advent.grid.Grid;final Grid<Character> grid = forPuzzle(inputFilePath)
+ *     final Grid<Character> grid = forPuzzle(inputFilePath)
  *         .asIntegers()
  *         .filter(i -> i != 9)
  *         .readAllLines();

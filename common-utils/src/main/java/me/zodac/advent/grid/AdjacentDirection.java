@@ -30,30 +30,30 @@ public enum AdjacentDirection {
     /**
      * Search the cardinal directions (up, down, left, right) only.
      */
-    CARDINAL_ONLY,
+    CARDINAL,
 
     /**
      * Search the diagonals (up-left, up-right, down-left, down-right) only.
      */
-    DIAGONAL_ONLY;
+    DIAGONAL;
 
     /**
      * Check if the {@link AdjacentDirection} is meant to find adjacent points in the cardinal directions.
      *
      * @param adjacentDirection the {@link AdjacentDirection} to check
-     * @return {@code true} if the {@link AdjacentDirection} is {@link #ALL} or {@link #CARDINAL_ONLY}
+     * @return {@code true} if the {@link AdjacentDirection} is {@link #ALL} or {@link #CARDINAL}
      */
     public static boolean isCardinal(final AdjacentDirection adjacentDirection) {
-        return adjacentDirection == ALL || adjacentDirection == CARDINAL_ONLY;
+        return adjacentDirection == ALL || adjacentDirection == CARDINAL;
     }
 
     /**
      * Check if the {@link AdjacentDirection} is meant to find adjacent points in the diagonal directions.
      *
      * @param adjacentDirection the {@link AdjacentDirection} to check
-     * @return {@code true} if the {@link AdjacentDirection} is {@link #ALL} or {@link #DIAGONAL_ONLY}
+     * @return {@code true} if the {@link AdjacentDirection} is {@link #ALL} or {@link #DIAGONAL}
      */
     public static boolean isDiagonal(final AdjacentDirection adjacentDirection) {
-        return adjacentDirection == ALL || adjacentDirection == DIAGONAL_ONLY;
+        return adjacentDirection == ALL || adjacentDirection == DIAGONAL;
     }
 }

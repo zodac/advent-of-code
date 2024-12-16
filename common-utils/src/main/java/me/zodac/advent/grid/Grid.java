@@ -303,6 +303,15 @@ public class Grid<E> {
     }
 
     /**
+     * The size of the {@link Grid}. Equivalent to {@link #numberOfRows()}.
+     *
+     * @return the size of the {@link Grid}
+     */
+    public int size() {
+        return numberOfRows();
+    }
+
+    /**
      * Returns the total number of elements in the {@link Grid}.
      *
      * @return the number of elements
@@ -349,6 +358,7 @@ public class Grid<E> {
      * @return {@code true} if the {@link Point} is valid for this {@link Grid}
      */
     // TODO: Update all boundary checks to use this instead? Less efficient, but simpler
+    //   Name? Maybe inBounds() would be better?
     public boolean exists(final Point point) {
         try {
             at(point);

@@ -24,11 +24,11 @@ import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests to verify answers for {@link Day%DAY_LONG%}.
+ * Tests to verify answers for {@link Day12}.
  */
-class Day%DAY_LONG%Test {
+class Day12Test {
 
-    private static final String INPUT_FILENAME = "day%DAY_LONG%.txt";
+    private static final String INPUT_FILENAME = "day12.txt";
 
     @Test
     void example() {
@@ -37,13 +37,13 @@ class Day%DAY_LONG%Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day%DAY_LONG%.part1(characterGrid);
+        final long part1Result = Day12.totalValueOfGroups(characterGrid, false);
         assertThat(part1Result)
-            .isEqualTo(0L);
+            .isEqualTo(1_930L);
 
-        final long part2Result = Day%DAY_LONG%.part2(characterGrid);
+        final long part2Result = Day12.totalValueOfGroups(characterGrid, true);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(1_206L);
     }
 
     @Test
@@ -53,9 +53,9 @@ class Day%DAY_LONG%Test {
             .asGrid()
             .ofCharacters();
 
-        final long part1Result = Day%DAY_LONG%.part1(characterGrid);
+        final long part1Result = Day12.totalValueOfGroups(characterGrid, false);
         assertThat(part1Result)
-            .isEqualTo(0L);
+            .isEqualTo(1_446_042L);
     }
 
     @Test
@@ -65,8 +65,8 @@ class Day%DAY_LONG%Test {
             .asGrid()
             .ofCharacters();
 
-        final long part2Result = Day%DAY_LONG%.part2(characterGrid);
+        final long part2Result = Day12.totalValueOfGroups(characterGrid, true);
         assertThat(part2Result)
-            .isEqualTo(0L);
+            .isEqualTo(902_742L);
     }
 }

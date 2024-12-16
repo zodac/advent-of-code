@@ -21,7 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
+import me.zodac.advent.grid.AdjacentDirection;
+import me.zodac.advent.grid.AdjacentPointsSelector;
 import me.zodac.advent.pojo.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -169,5 +172,196 @@ class PointTest {
             Arguments.of(Point.of(0, 0), Point.of(-1, 1), 2),   // Mixed
             Arguments.of(Point.of(5, 5), Point.of(5, 5), 0, 0)  // No distance
         );
+    }
+
+    @Test
+    void testMove() {
+        final Point startPoint = Point.atOrigin();
+
+        assertThat(Point.of(-2, 2))
+            .isEqualTo(startPoint.move(-2, 2));
+
+        assertThat(Point.of(-1, 0))
+            .isEqualTo(startPoint.moveUp())
+            .isEqualTo(startPoint.move(Direction.UP));
+
+        assertThat(Point.of(1, 0))
+            .isEqualTo(startPoint.moveDown())
+            .isEqualTo(startPoint.move(Direction.DOWN));
+
+        assertThat(Point.of(0, -1))
+            .isEqualTo(startPoint.moveLeft())
+            .isEqualTo(startPoint.move(Direction.LEFT));
+
+        assertThat(Point.of(0, 1))
+            .isEqualTo(startPoint.moveRight())
+            .isEqualTo(startPoint.move(Direction.RIGHT));
+
+        assertThat(Point.of(-1, -1))
+            .isEqualTo(startPoint.moveUpLeft())
+            .isEqualTo(startPoint.move(Direction.UP_LEFT));
+
+        assertThat(Point.of(-1, 1))
+            .isEqualTo(startPoint.moveUpRight())
+            .isEqualTo(startPoint.move(Direction.UP_RIGHT));
+
+        assertThat(Point.of(1, -1))
+            .isEqualTo(startPoint.moveDownLeft())
+            .isEqualTo(startPoint.move(Direction.DOWN_LEFT));
+
+        assertThat(Point.of(1, 1))
+            .isEqualTo(startPoint.moveDownRight())
+            .isEqualTo(startPoint.move(Direction.DOWN_RIGHT));
+
+        assertThatThrownBy(() -> startPoint.move(Direction.INVALID))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Cannot move in 'INVALID' direction");
+    }
+
+    @Test
+    void testAdjacentPoints_validPoints() {
+        final Point unboundedPoint = Point.atOrigin();
+
+        assertThat(unboundedPoint.getAdjacentPoints(AdjacentPointsSelector.unbounded(true, AdjacentDirection.ALL)))
+            .hasSameElementsAs(Set.of(
+                Point.of(0, 0),
+                Point.of(0, -1),
+                Point.of(0, 1),
+                Point.of(1, -1),
+                Point.of(1, 1),
+                Point.of(-1, -1),
+                Point.of(-1, 1),
+                Point.of(1, 0),
+                Point.of(-1, 0)
+            ));
+        assertThat(unboundedPoint.getAdjacentPoints(AdjacentPointsSelector.unbounded(true, AdjacentDirection.CARDINAL)))
+            .hasSameElementsAs(Set.of(
+                Point.of(0, 0),
+                Point.of(0, -1),
+                Point.of(0, 1),
+                Point.of(1, 0),
+                Point.of(-1, 0)
+            ));
+        assertThat(unboundedPoint.getAdjacentPoints(AdjacentPointsSelector.unbounded(true, AdjacentDirection.DIAGONAL)))
+            .hasSameElementsAs(Set.of(
+                Point.of(0, 0),
+                Point.of(1, -1),
+                Point.of(1, 1),
+                Point.of(-1, -1),
+                Point.of(-1, 1)
+            ));
+        assertThat(unboundedPoint.getAdjacentPoints(AdjacentPointsSelector.unbounded(false, AdjacentDirection.ALL)))
+            .hasSameElementsAs(Set.of(
+                Point.of(0, -1),
+                Point.of(0, 1),
+                Point.of(1, -1),
+                Point.of(1, 1),
+                Point.of(-1, -1),
+                Point.of(-1, 1),
+                Point.of(1, 0),
+                Point.of(-1, 0)
+            ));
+        assertThat(unboundedPoint.getAdjacentPoints(AdjacentPointsSelector.unbounded(false, AdjacentDirection.CARDINAL)))
+            .hasSameElementsAs(Set.of(
+                Point.of(0, -1),
+                Point.of(0, 1),
+                Point.of(1, 0),
+                Point.of(-1, 0)
+            ));
+        assertThat(unboundedPoint.getAdjacentPoints(AdjacentPointsSelector.unbounded(false, AdjacentDirection.DIAGONAL)))
+            .hasSameElementsAs(Set.of(
+                Point.of(1, -1),
+                Point.of(1, 1),
+                Point.of(-1, -1),
+                Point.of(-1, 1)
+            ));
+
+        final int gridSize = 500;
+        final Point validPoint = Point.of(gridSize / 2, gridSize / 2);
+
+        assertThat(validPoint.getAdjacentPoints(AdjacentPointsSelector.bounded(true, AdjacentDirection.ALL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(250, 250),
+                Point.of(250, 249),
+                Point.of(250, 251),
+                Point.of(251, 249),
+                Point.of(251, 251),
+                Point.of(249, 249),
+                Point.of(249, 251),
+                Point.of(251, 250),
+                Point.of(249, 250)
+            ));
+        assertThat(validPoint.getAdjacentPoints(AdjacentPointsSelector.bounded(true, AdjacentDirection.CARDINAL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(250, 250),
+                Point.of(250, 249),
+                Point.of(250, 251),
+                Point.of(251, 250),
+                Point.of(249, 250)
+            ));
+        assertThat(validPoint.getAdjacentPoints(AdjacentPointsSelector.bounded(true, AdjacentDirection.DIAGONAL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(250, 250),
+                Point.of(251, 249),
+                Point.of(251, 251),
+                Point.of(249, 249),
+                Point.of(249, 251)
+            ));
+        assertThat(validPoint.getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(250, 249),
+                Point.of(250, 251),
+                Point.of(251, 249),
+                Point.of(251, 251),
+                Point.of(249, 249),
+                Point.of(249, 251),
+                Point.of(251, 250),
+                Point.of(249, 250)
+            ));
+        assertThat(validPoint.getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.CARDINAL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(250, 249),
+                Point.of(250, 251),
+                Point.of(251, 250),
+                Point.of(249, 250)
+            ));
+        assertThat(validPoint.getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.DIAGONAL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(251, 249),
+                Point.of(251, 251),
+                Point.of(249, 249),
+                Point.of(249, 251)
+            ));
+    }
+
+    @Test
+    void testAdjacentPoints_invalidPoints() {
+        final int gridSize = 2;
+
+        // Testing all four corners of the grid for out of bound points
+        assertThat(Point.of(0, 0).getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(0, 1),
+                Point.of(1, 1),
+                Point.of(1, 0)
+            ));
+        assertThat(Point.of(1, 1).getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(0, 0),
+                Point.of(0, 1),
+                Point.of(1, 0)
+            ));
+        assertThat(Point.of(0, 1).getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(0, 0),
+                Point.of(1, 1),
+                Point.of(1, 0)
+            ));
+        assertThat(Point.of(1, 0).getAdjacentPoints(AdjacentPointsSelector.bounded(false, AdjacentDirection.ALL, gridSize)))
+            .hasSameElementsAs(Set.of(
+                Point.of(0, 0),
+                Point.of(0, 1),
+                Point.of(1, 1)
+            ));
     }
 }

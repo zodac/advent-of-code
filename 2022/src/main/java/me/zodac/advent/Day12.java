@@ -98,7 +98,7 @@ public final class Day12 {
         long minDistance = Long.MAX_VALUE;
         for (final Point startingPoint : startPoints) {
             final long shortestDistance = BreadthFirstSearcher.findShortestDistance(startingPoint, endPoints, heightsByPoint,
-                point -> point.getAdjacentPoints(AdjacentPointsSelector.unbounded(false, AdjacentDirection.CARDINAL_ONLY))
+                point -> point.getAdjacentPoints(AdjacentPointsSelector.unbounded(false, AdjacentDirection.CARDINAL))
                     .collect(Collectors.toSet()));
             minDistance = Math.min(minDistance, shortestDistance);
         }
