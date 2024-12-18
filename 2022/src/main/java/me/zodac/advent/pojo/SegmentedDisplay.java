@@ -41,7 +41,7 @@ public final class SegmentedDisplay {
     private final Boolean[][] array;
 
     private SegmentedDisplay(final Boolean[][] array) {
-        this.array = array.clone();
+        this.array = ArrayUtils.deepCopy(array);
     }
 
     /**

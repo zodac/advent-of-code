@@ -77,7 +77,7 @@ public class Grid<E> {
      */
     public Grid(final int gridSize, final E[][] internalGrid, final E initialValue) {
         this.gridSize = gridSize;
-        this.internalGrid = internalGrid.clone();
+        this.internalGrid = ArrayUtils.deepCopy(internalGrid);
         elementsInGrid = gridSize * gridSize;
 
         for (int row = 0; row < gridSize; row++) {
@@ -281,7 +281,7 @@ public class Grid<E> {
      * @return the {@link Grid} as a 2D array
      */
     public E[][] getInternalGrid() {
-        return internalGrid.clone();
+        return ArrayUtils.deepCopy(internalGrid);
     }
 
     /**
@@ -358,7 +358,7 @@ public class Grid<E> {
      * @return {@code true} if the {@link Point} is valid for this {@link Grid}
      */
     // TODO: Update all boundary checks to use this instead? Less efficient, but simpler
-    //   Name? Maybe inBounds() would be better?
+    //   Name? Maybe isInBounds() would be better?
     public boolean exists(final Point point) {
         try {
             at(point);
@@ -375,8 +375,8 @@ public class Grid<E> {
      */
     public Set<Point> allPoints() {
         final Set<Point> allPoints = new TreeSet<>();
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
+        for (int i = 0; i < internalGrid.length; i++) {
+            for (int j = 0; j < internalGrid[0].length; j++) {
                 allPoints.add(Point.of(i, j));
             }
         }
@@ -562,10 +562,11 @@ public class Grid<E> {
     /**
      * Prints the content of the {@link Grid}.
      *
-     * @param withHeaders whether to also print numeric headers for each column and row
+     * @param withHeaders       whether to also print numeric headers for each column and row
+     * @param transformFunction {@link Function} to convert a value into a {@link Character} to be output on the screen
      */
     @SuppressWarnings("unused") // Only used for debugging
-    public void print(final boolean withHeaders) {
+    public void print(final boolean withHeaders, final Function<? super E, Character> transformFunction) {
         if (withHeaders) {
             log(" | ");
             for (int i = 0; i < internalGrid[0].length; i++) {
@@ -583,7 +584,7 @@ public class Grid<E> {
             }
 
             for (final E val : row) {
-                log(val);
+                log(transformFunction.apply(val));
             }
             logLine("");
         }

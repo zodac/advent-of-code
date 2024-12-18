@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import me.zodac.advent.grid.AdjacentDirection;
 import me.zodac.advent.grid.AdjacentPointsSelector;
@@ -38,7 +37,6 @@ import me.zodac.advent.util.StringUtils;
 public record Point(int x, int y) implements Comparable<Point> {
 
     private static final int NUMBER_OF_COORDINATES_IN_A_POINT = 2;
-    private static final Pattern POINT_DELIMITER_PATTERN = Pattern.compile(" -> "); // TODO: Should this be here?
     private static final int DEFAULT_MOVE_DISTANCE = 1;
 
     /**
@@ -87,6 +85,18 @@ public record Point(int x, int y) implements Comparable<Point> {
     }
 
     /**
+     * Returns a {@link Point} with the current {@link Point}'s X and Y values flipped.
+     *
+     * <p>
+     * This can be useful for some problems where the input is in a different orientation and debugging can be more difficult.
+     *
+     * @return the flipped {@link Point}
+     */
+    public Point flip() {
+        return of(y, x);
+    }
+
+    /**
      * Creates a {@link List} of {@link Point}s from an input in the format:
      * <pre>
      *     [x1],[y1] -> [x2],[y2] -> [x3],[y3]... -> [xn],[yn]
@@ -97,10 +107,10 @@ public record Point(int x, int y) implements Comparable<Point> {
      */
     public static List<Point> ofMany(final CharSequence input) {
         final List<Point> points = new ArrayList<>();
-        final String[] coordinates = POINT_DELIMITER_PATTERN.split(input);
+        final List<Long> coordinates = StringUtils.collectNumbersInOrder(input);
 
-        for (final String coordinate : coordinates) {
-            points.add(parse(coordinate));
+        for (int i = 0; i < coordinates.size(); i += 2) {
+            points.add(of(coordinates.get(i).intValue(), coordinates.get(i + 1).intValue()));
         }
 
         return points;
@@ -331,6 +341,31 @@ public record Point(int x, int y) implements Comparable<Point> {
         }
 
         return output;
+    }
+
+    /**
+     * Moves the {@link Point} a {@code numberOfMovements} number of times given the provided delta values for the X and Y co-ordinates. The bounds
+     * of number of rows and columns is also provided.
+     *
+     * <p>
+     * If the {@link Point} exceeds the boundary in either direction, it 'wraps around' to the other side of the bounded area.
+     *
+     * @param deltaX            the number of spaces in the X coordinate to move
+     * @param deltaY            the number of spaces in the X coordinate to move
+     * @param numberOfMovements the number of movements to apply in the X and Y directions
+     * @param numberOfRows      the number of rows bounding the area
+     * @param numberOfColumn    the number of columns bounding the area
+     * @return the final destination {@link Point}
+     */
+    public Point wrapAround(final int deltaX, final int deltaY, final int numberOfMovements, final int numberOfRows, final int numberOfColumn) {
+        final int newX = wrapValue(x, deltaX, numberOfRows, numberOfMovements);
+        final int newY = wrapValue(y, deltaY, numberOfColumn, numberOfMovements);
+        return of(newX, newY);
+    }
+
+    private static int wrapValue(final int startValue, final int deltaValue, final int maxValue, final int numberOfMovements) {
+        final int newVal = (startValue + (deltaValue * numberOfMovements)) % maxValue;
+        return newVal >= 0 ? newVal : maxValue + newVal;
     }
 
     @Override

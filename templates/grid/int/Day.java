@@ -36,7 +36,7 @@ public final class Day%DAY_LONG% {
      * @param integerGrid the input {@link Integer} {@link Grid}
      * @return the part 1 result
      */
-    public static long part1(final IntegerGrid integerGrid) {
+    public static long part1(final Grid<Integer> integerGrid) {
         long total = 0L;
         return total;
     }
@@ -47,7 +47,7 @@ public final class Day%DAY_LONG% {
      * @param integerGrid the input {@link Integer} {@link Grid}
      * @return the part 2 result
      */
-    public static long part2(final IntegerGrid integerGrid) {
+    public static long part2(final Grid<Integer> integerGrid) {
         long total = 0L;
         return total;
     }

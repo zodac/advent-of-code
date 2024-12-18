@@ -35,7 +35,7 @@ public final class BingoBoard {
 
     private BingoBoard(final int[][] board, final Map<Integer, Pair<Integer, Integer>> cellsAndIndex) {
         this.cellsAndIndex = new HashMap<>(cellsAndIndex);
-        this.board = board.clone();
+        this.board = board.clone(); // TODO: Should be ArrayUtils.deepCopy(board) when typing is fixed
     }
 
     /**
