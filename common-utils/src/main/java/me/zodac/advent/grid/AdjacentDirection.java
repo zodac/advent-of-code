@@ -18,7 +18,7 @@
 package me.zodac.advent.grid;
 
 /**
- * Defines the directions in which to search for adjacent {@link me.zodac.advent.pojo.Point}s.
+ * Defines the directions in which to search for adjacent {@link Point}s.
  */
 public enum AdjacentDirection {
 

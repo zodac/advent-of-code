@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.pojo;
+package me.zodac.advent.grid;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,8 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
-import me.zodac.advent.grid.AdjacentDirection;
-import me.zodac.advent.grid.AdjacentPointsSelector;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.StringUtils;
 

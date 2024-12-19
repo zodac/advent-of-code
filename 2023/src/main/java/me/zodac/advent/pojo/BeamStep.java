@@ -17,6 +17,9 @@
 
 package me.zodac.advent.pojo;
 
+import me.zodac.advent.grid.Direction;
+import me.zodac.advent.grid.Point;
+
 /**
  * Basic record holding details of a single step/movement for a beam.
  *

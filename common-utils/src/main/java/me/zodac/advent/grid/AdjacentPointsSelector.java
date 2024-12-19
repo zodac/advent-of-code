@@ -17,8 +17,6 @@
 
 package me.zodac.advent.grid;
 
-import me.zodac.advent.pojo.Point;
-
 /**
  * Record class defining the possible options when selection adjacent {@link Point}s.
  *

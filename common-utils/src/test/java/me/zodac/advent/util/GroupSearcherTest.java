@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import me.zodac.advent.grid.Grid;
 import me.zodac.advent.grid.GridFactory;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 import me.zodac.advent.search.GroupSearcher;
 import org.junit.jupiter.api.Test;
 

@@ -23,7 +23,7 @@ import java.util.function.BiPredicate;
 import me.zodac.advent.grid.AdjacentDirection;
 import me.zodac.advent.grid.Grid;
 import me.zodac.advent.grid.GridFactory;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 import me.zodac.advent.search.PathFinder;
 
 /**

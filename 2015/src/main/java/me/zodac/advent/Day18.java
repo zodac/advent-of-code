@@ -22,7 +22,7 @@ import java.util.function.ToIntFunction;
 import me.zodac.advent.grid.AdjacentDirection;
 import me.zodac.advent.grid.AdjacentPointsSelector;
 import me.zodac.advent.grid.Grid;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 
 /**
  * Solution for 2015, Day 18.

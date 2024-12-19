@@ -25,6 +25,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 import me.zodac.advent.grid.AdjacentDirection;
 import me.zodac.advent.grid.AdjacentPointsSelector;
+import me.zodac.advent.grid.Direction;
+import me.zodac.advent.grid.Point;
 import me.zodac.advent.pojo.tuple.Pair;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

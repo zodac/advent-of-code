@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
 import me.zodac.advent.grid.AdjacentDirection;
 import me.zodac.advent.grid.AdjacentPointsSelector;
 import me.zodac.advent.grid.Grid;
-import me.zodac.advent.pojo.Direction;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Direction;
+import me.zodac.advent.grid.Point;
 
 /**
  * Solution for 2024, Day 4.

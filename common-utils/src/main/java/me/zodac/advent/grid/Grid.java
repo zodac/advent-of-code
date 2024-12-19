@@ -31,8 +31,6 @@ import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
-import me.zodac.advent.pojo.Direction;
-import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.RotationDirection;
 import me.zodac.advent.util.ArrayUtils;
 

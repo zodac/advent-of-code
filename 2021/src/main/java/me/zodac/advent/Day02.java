@@ -18,7 +18,7 @@
 package me.zodac.advent;
 
 import java.util.Collection;
-import me.zodac.advent.pojo.Direction;
+import me.zodac.advent.grid.Direction;
 import me.zodac.advent.pojo.Movement;
 
 /**

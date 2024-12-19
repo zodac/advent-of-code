@@ -31,7 +31,7 @@ import java.util.function.BiPredicate;
 import me.zodac.advent.grid.AdjacentDirection;
 import me.zodac.advent.grid.AdjacentPointsSelector;
 import me.zodac.advent.grid.Grid;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 
 /**
  * Utility class used to perform different types of path-finding algorithms on {@link Point}s within a {@link Grid}.

@@ -19,6 +19,7 @@ package me.zodac.advent.pojo;
 
 import java.util.HashSet;
 import java.util.Set;
+import me.zodac.advent.grid.Point;
 import me.zodac.advent.util.MathUtils;
 
 /**

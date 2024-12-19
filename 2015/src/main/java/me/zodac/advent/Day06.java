@@ -21,7 +21,7 @@ import java.util.Collection;
 import me.zodac.advent.grid.Grid;
 import me.zodac.advent.grid.GridFactory;
 import me.zodac.advent.pojo.GridUpdateInstruction;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 import me.zodac.advent.pojo.tuple.Triple;
 
 /**

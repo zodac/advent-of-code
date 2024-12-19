@@ -30,7 +30,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import me.zodac.advent.grid.AdjacentDirection;
 import me.zodac.advent.grid.AdjacentPointsSelector;
+import me.zodac.advent.grid.Direction;
 import me.zodac.advent.grid.Grid;
+import me.zodac.advent.grid.Point;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.CollectionUtils;
 

@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 import me.zodac.advent.grid.Grid;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 import me.zodac.advent.pojo.tuple.Pair;
 
 /**

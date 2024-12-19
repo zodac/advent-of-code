@@ -19,6 +19,7 @@ package me.zodac.advent.pojo;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import me.zodac.advent.grid.Direction;
 
 /**
  * Simple POJO defining a movement in a given {@link Direction} for a number of spaces.

@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 import me.zodac.advent.grid.AdjacentDirection;
 import me.zodac.advent.grid.AdjacentPointsSelector;
 import me.zodac.advent.grid.Grid;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 
 /**
  * Utility class to find all groups in a {@link Grid}. A group is defined as any set of connected {@link Point}s (connected by cardinal direction)

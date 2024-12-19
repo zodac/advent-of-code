@@ -24,6 +24,7 @@ import java.util.Set;
 import me.zodac.advent.grid.AdjacentDirection;
 import me.zodac.advent.grid.AdjacentPointsSelector;
 import me.zodac.advent.grid.Grid;
+import me.zodac.advent.grid.Point;
 
 /**
  * Utility class used to check a {@link Set} of connected {@link Point}s and count the size of the perimeter needed to enclose the {@link Set}.

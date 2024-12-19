@@ -20,7 +20,6 @@ package me.zodac.advent.grid;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import me.zodac.advent.pojo.Point;
 import me.zodac.advent.util.NumberUtils;
 import org.junit.jupiter.api.Test;
 

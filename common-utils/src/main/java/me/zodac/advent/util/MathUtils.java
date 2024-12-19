@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.ObjLongConsumer;
 import java.util.function.ToLongFunction;
-import me.zodac.advent.pojo.MathOperation;
+import me.zodac.advent.math.MathOperation;
 
 /**
  * Utility class with {@link Math}-based functions.

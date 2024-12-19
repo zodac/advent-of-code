@@ -21,7 +21,7 @@ import java.util.Collection;
 import me.zodac.advent.grid.Grid;
 import me.zodac.advent.grid.GridFactory;
 import me.zodac.advent.pojo.Line;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 
 /**
  * Solution for 2021, Day 5.

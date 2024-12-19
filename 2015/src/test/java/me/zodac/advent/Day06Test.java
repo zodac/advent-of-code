@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.GridUpdateInstruction;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 import me.zodac.advent.pojo.tuple.Triple;
 import org.junit.jupiter.api.Test;
 

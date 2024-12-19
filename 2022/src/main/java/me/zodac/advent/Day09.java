@@ -20,7 +20,7 @@ package me.zodac.advent;
 import java.util.Collection;
 import java.util.HashSet;
 import me.zodac.advent.pojo.Movement;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 
 /**
  * Solution for 2022, Day 9.

@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
-import me.zodac.advent.pojo.Point;
 import org.junit.jupiter.api.Test;
 
 /**

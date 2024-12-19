@@ -21,6 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import me.zodac.advent.grid.Grid;
+import me.zodac.advent.grid.Point;
 
 /**
  * Utility class used to define a loop of {@link Point}s within a {@link Grid}.

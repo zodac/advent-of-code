@@ -20,7 +20,7 @@ package me.zodac.advent;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import me.zodac.advent.pojo.MathOperation;
+import me.zodac.advent.math.MathOperation;
 import me.zodac.advent.util.PermutationUtils;
 import me.zodac.advent.util.StringUtils;
 

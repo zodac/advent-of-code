@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import me.zodac.advent.pojo.Point;
+import me.zodac.advent.grid.Point;
 
 /**
  * An implementation of Breadth-First Search to find the shortest distance between two nodes, where all edges between nodes have the same cost/weight.
