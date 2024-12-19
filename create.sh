@@ -102,11 +102,11 @@ function main() {
     fi
 
     echo "${output}" | head -n -1 > "./advent-of-code-inputs/${year}/day${day_long}.txt" || exit 1
-    cd ./advent-of-code-inputs || exit 1
-    git add "${year}/day${day_long}.txt"
-    git commit --quiet -m "Adding input for ${year}, Day ${day_long}"
-    git push origin HEAD:main --quiet
-    cd .. || exit 1
+#    cd ./advent-of-code-inputs || exit 1
+#    git add "${year}/day${day_long}.txt"
+#    git commit --quiet -m "Adding input for ${year}, Day ${day_long}"
+#    git push origin HEAD:main --quiet
+#    cd .. || exit 1
   fi
 
   # Example input file
