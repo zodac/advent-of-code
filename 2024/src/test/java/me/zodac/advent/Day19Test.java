@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 import me.zodac.advent.input.InputReader;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +33,7 @@ import org.junit.jupiter.api.Test;
 class Day19Test {
 
     private static final String INPUT_FILENAME = "day19.txt";
+    private static final Pattern COMMA_AND_SPACE_DELIMITER = Pattern.compile(", ");
 
     @Test
     void example() {
@@ -85,8 +87,9 @@ class Day19Test {
             .isEqualTo(723_524_534_506_343L);
     }
 
-    private static List<String> parseKeys(List<List<String>> valuesRaw) {
-        final String[] keys = valuesRaw.getFirst().getFirst().split(", ");
+    // Sort in reverse order of size (largest first), to make it easier to replace values
+    private static List<String> parseKeys(final List<? extends List<String>> valuesRaw) {
+        final String[] keys = COMMA_AND_SPACE_DELIMITER.split(valuesRaw.getFirst().getFirst());
         return new ArrayList<>(Arrays.asList(keys)).stream().sorted(Comparator.comparingInt(String::length).reversed()).toList();
     }
 }

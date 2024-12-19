@@ -17,6 +17,7 @@
 
 package me.zodac.advent;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public final class Day19 {
      * @param finalDesigns the input values (designs)
      * @return the number of valid designs that can be created
      */
-    public static long countPossibleDesigns(final List<String> towels, final List<String> finalDesigns) {
+    public static long countPossibleDesigns(final List<String> towels, final Collection<String> finalDesigns) {
         return finalDesigns
             .stream()
             .filter(design -> hasDesignAnyValidCombinations(design, towels))
@@ -56,7 +57,7 @@ public final class Day19 {
      * @param finalDesigns the input values (designs)
      * @return the total number of towel combinations to create valid designs
      */
-    public static long countAllCombinationsOfValidDesigns(final List<String> towels, final List<String> finalDesigns) {
+    public static long countAllCombinationsOfValidDesigns(final List<String> towels, final Collection<String> finalDesigns) {
         return finalDesigns
             .stream()
             .filter(design -> hasDesignAnyValidCombinations(design, towels))
@@ -70,7 +71,7 @@ public final class Day19 {
             .anyMatch(key -> value.equals(key) || (value.startsWith(key) && hasDesignAnyValidCombinations(value.substring(key.length()), keys)));
     }
 
-    private static long countCombinationsForDesign(final String design, final List<String> towels, final Map<String, Long> cache) {
+    private static long countCombinationsForDesign(final String design, final List<String> towels, final Map<? super String, Long> cache) {
         if (cache.containsKey(design)) {
             return cache.get(design);
         }
