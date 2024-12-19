@@ -72,9 +72,9 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 12](https://adventofcode.com/2024/day/12) | 45,080 ⭐ | 35,116 ⭐ |
 | [Day 13](https://adventofcode.com/2024/day/13) | 42,105 ⭐ | 37,422 ⭐ |
 | [Day 14](https://adventofcode.com/2024/day/14) | 40,754 ⭐ | 37,375 ⭐ |
-| [Day 15](https://adventofcode.com/2024/day/15) |        ⭐ |        ⭐ |
-| [Day 16](https://adventofcode.com/2024/day/16) |        ⭐ |        ⭐ |
-| [Day 17](https://adventofcode.com/2024/day/17) |        ⭐ |        ⭐ |
+| [Day 15](https://adventofcode.com/2024/day/15) |          |          |
+| [Day 16](https://adventofcode.com/2024/day/16) |          |          |
+| [Day 17](https://adventofcode.com/2024/day/17) |          |          |
 | [Day 18](https://adventofcode.com/2024/day/18) | 22,587 ⭐ | 21,997 ⭐ |
 
 </details>

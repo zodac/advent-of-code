@@ -50,9 +50,11 @@ public final class GroupSearcher {
         // Map to store the result
         final Map<E, Set<Set<Point>>> groupedPointsByValue = new HashMap<>();
         final Set<Point> visited = new HashSet<>();
+        final int numberOfRows = grid.numberOfRows();
+        final int numberOfColumns = grid.numberOfColumns();
 
-        for (int i = 0; i < grid.numberOfRows(); i++) {
-            for (int j = 0; j < grid.numberOfColumns(); j++) {
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j < numberOfColumns; j++) {
                 final Point currentPoint = Point.of(i, j);
                 if (visited.contains(currentPoint)) {
                     continue;

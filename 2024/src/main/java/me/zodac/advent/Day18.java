@@ -59,7 +59,7 @@ public final class Day18 {
 
         // Ignore first point, since we're looking for number of steps
         final BiPredicate<Point, Point> filter = (_, nextPoint) -> grid.at(nextPoint) != OBSTACLE_SYMBOL;
-        return PathFinder.shortest(grid, startPoint, endPoint, AdjacentDirection.CARDINAL, filter).size() - 1;
+        return PathFinder.shortest(grid, startPoint, endPoint, AdjacentDirection.CARDINAL, filter).size() - 1L;
     }
 
     /**
@@ -83,7 +83,8 @@ public final class Day18 {
         final Point endPoint = Point.of(gridSize - 1, gridSize - 1);
         Grid<Character> grid = createPopulatedGrid(obstaclePoints, gridSize, previouslyCheckedPoints);
 
-        for (int i = previouslyCheckedPoints; i <= obstaclePoints.size(); i++) {
+        final int numberOfObstaclePoints = obstaclePoints.size();
+        for (int i = previouslyCheckedPoints; i <= numberOfObstaclePoints; i++) {
             final Point point = obstaclePoints.get(i);
 
             grid = grid.updateAt(point, OBSTACLE_SYMBOL);

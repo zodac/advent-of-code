@@ -109,7 +109,8 @@ public record Point(int x, int y) implements Comparable<Point> {
         final List<Point> points = new ArrayList<>();
         final List<Long> coordinates = StringUtils.collectNumbersInOrder(input);
 
-        for (int i = 0; i < coordinates.size(); i += 2) {
+        final int numberOfCoordinates = coordinates.size();
+        for (int i = 0; i < numberOfCoordinates; i += 2) {
             points.add(of(coordinates.get(i).intValue(), coordinates.get(i + 1).intValue()));
         }
 
@@ -365,7 +366,7 @@ public record Point(int x, int y) implements Comparable<Point> {
 
     private static int wrapValue(final int startValue, final int deltaValue, final int maxValue, final int numberOfMovements) {
         final int newVal = (startValue + (deltaValue * numberOfMovements)) % maxValue;
-        return newVal >= 0 ? newVal : maxValue + newVal;
+        return newVal >= 0 ? newVal : (maxValue + newVal);
     }
 
     @Override

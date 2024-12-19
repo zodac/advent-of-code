@@ -30,6 +30,8 @@ import me.zodac.advent.grid.Grid;
  */
 public final class PerimeterCounter {
 
+    private static final int DEFAULT_MAX_PERIMETERS = 4; // Start with 4 possible perimeters, and remove as matching neighbours are found
+
     private PerimeterCounter() {
 
     }
@@ -47,7 +49,7 @@ public final class PerimeterCounter {
         long countForGroup = 0;
 
         for (final Point point : points) {
-            int countForPoint = 4; // Start with 4 possible perimeters, and remove as matching neighbours are found
+            int countForPoint = DEFAULT_MAX_PERIMETERS;
             final AdjacentPointsSelector adjacentPointsSelector = AdjacentPointsSelector.bounded(false, AdjacentDirection.CARDINAL, grid.size());
             final List<Point> neighbourPoints = point.getAdjacentPoints(adjacentPointsSelector).toList();
             final E currentValue = grid.at(point);
@@ -75,7 +77,7 @@ public final class PerimeterCounter {
         long cornersForGroup = 0; // Count the corners, which should be equal to the number of sides
 
         for (final Point point : points) {
-            int corners = 4; // Start with 4 possible perimeters, and remove as matching neighbours are found
+            int corners = DEFAULT_MAX_PERIMETERS;
 
             if (hasFirstCorner(points, point)) {
                 corners--;

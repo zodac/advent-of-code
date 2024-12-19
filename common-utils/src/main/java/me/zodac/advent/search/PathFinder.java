@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -91,10 +92,14 @@ public final class PathFinder {
     }
 
     private static Set<Point> rebuildPath(final Map<Point, Point> previousPointsInPath, final Point latestPointInPath) {
-        final Set<Point> path = new HashSet<>();
-        for (Point at = latestPointInPath; at != null; at = previousPointsInPath.get(at)) {
-            path.add(at);
+        final Set<Point> path = new LinkedHashSet<>();
+        Point current = latestPointInPath;
+
+        while (current != null) {
+            path.add(current);
+            current = previousPointsInPath.get(current);
         }
+
         return path;
     }
 
