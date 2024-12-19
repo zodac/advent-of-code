@@ -27,6 +27,7 @@ import me.zodac.advent.grid.AdjacentPointsSelector;
 import me.zodac.advent.grid.Grid;
 import me.zodac.advent.pojo.Point;
 import me.zodac.advent.pojo.tuple.Pair;
+import me.zodac.advent.search.PathFinder;
 
 /**
  * Solution for 2024, Day 10.
@@ -86,7 +87,7 @@ public final class Day10 {
         for (final Point nextPoint : nextPoints) {
             if (integerGrid.at(nextPoint) == END_POINT_VALUE) {
                 if (calculateRating) {
-                    final List<List<Point>> allPaths = integerGrid.findAllPaths(startPoint, nextPoint, AdjacentDirection.CARDINAL,
+                    final List<List<Point>> allPaths = PathFinder.all(integerGrid, startPoint, nextPoint, AdjacentDirection.CARDINAL,
                         (currentPoint, potentialNextPoint) -> integerGrid.at(currentPoint) + 1 == integerGrid.at(potentialNextPoint)
                     );
                     value += allPaths.size();

@@ -44,7 +44,7 @@ public final class GridFactory {
      * Creates a {@link Boolean} {@link Grid} with the dimensions {@code gridSize}x{@code gridSize}.
      *
      * @param gridSize the length and width of the {@link Boolean} {@link Grid}
-     * @return the created {@link Boolean} {@link Grid}
+     * @return the created {@link Boolean} {@link Grid}, with default value <b>false</b>
      * @throws IllegalArgumentException thrown if input size is less than <b>0</b>
      */
     public static Grid<Boolean> ofBooleansWithSize(final int gridSize) {
@@ -66,11 +66,26 @@ public final class GridFactory {
     }
 
     /**
+     * Creates a {@link Character} {@link Grid} with the dimensions {@code gridSize}x{@code gridSize}.
+     *
+     * @param gridSize the length and width of the {@link Character} {@link Grid}
+     * @return the created {@link Character} {@link Grid}, with default value <b>.</b>
+     * @throws IllegalArgumentException thrown if input size is less than <b>0</b>
+     */
+    public static Grid<Character> ofCharactersWithSize(final int gridSize) {
+        if (gridSize <= 0) {
+            throw new IllegalArgumentException("Size must be positive integer, found: " + gridSize);
+        }
+
+        return new Grid<>(gridSize, new Character[gridSize][gridSize], '.');
+    }
+
+    /**
      * Converts the {@link List} of {@link String}s to a {@link Integer} {@link Grid}. Note that this expects no blank spaces, and will assume every
      * character is a single digit {@link Integer}.
      *
      * @param strings the input {@link List} of {@link String}s
-     * @return the {@link Integer} {@link Grid}
+     * @return the {@link Integer} {@link Grid}, with default value <b>0</b>
      */
     public static Grid<Integer> ofIntegers(final List<String> strings) {
         return Grid.parseGrid(strings, character -> NumberUtils.toIntOrDefault(character, 0));
@@ -80,7 +95,7 @@ public final class GridFactory {
      * Creates a {@link Integer} {@link Grid} with the dimensions {@code gridSize}x{@code gridSize}.
      *
      * @param gridSize the length and width of the {@link Integer} {@link Grid}
-     * @return the created {@link Integer} {@link Grid}
+     * @return the created {@link Integer} {@link Grid}, with default value <b>0</b>
      * @throws IllegalArgumentException thrown if input size is less than <b>0</b>
      */
     public static Grid<Integer> ofIntegersWithSize(final int gridSize) {

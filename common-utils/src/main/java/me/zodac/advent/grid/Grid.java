@@ -538,25 +538,14 @@ public class Grid<E> {
         if (current.equals(end)) {
             paths.add(new ArrayList<>(currentPath));
         } else {
-            getValidAdjacentPoints(current, adjacentDirection, adjacentPointFilter)
-                .stream()
-                .filter(neighbour -> !visited.contains(neighbour))
+            current.getAdjacentPoints(AdjacentPointsSelector.bounded(false, adjacentDirection, gridSize))
+                .filter(nextPoint -> adjacentPointFilter.test(current, nextPoint) && !visited.contains(nextPoint))
                 .forEach(neighbour -> dfs(neighbour, end, currentPath, paths, visited, adjacentDirection, adjacentPointFilter));
         }
 
         // Remove current point from the path and unmark as visited
         currentPath.removeLast();
         visited.remove(current);
-    }
-
-    private List<Point> getValidAdjacentPoints(final Point currentPoint,
-                                               final AdjacentDirection adjacentDirection,
-                                               final BiPredicate<? super Point, ? super Point> adjacentPointFilter
-    ) {
-        return currentPoint
-            .getAdjacentPoints(AdjacentPointsSelector.bounded(false, adjacentDirection, gridSize))
-            .filter(nextPoint -> adjacentPointFilter.test(currentPoint, nextPoint))
-            .toList();
     }
 
     /**
