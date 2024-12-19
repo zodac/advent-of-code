@@ -20,9 +20,9 @@ package me.zodac.advent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import me.zodac.advent.grid.Point;
 import me.zodac.advent.input.InputReader;
 import me.zodac.advent.pojo.Line;
-import me.zodac.advent.grid.Point;
 import org.junit.jupiter.api.Test;
 
 /**

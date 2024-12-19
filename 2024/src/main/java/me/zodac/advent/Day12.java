@@ -19,8 +19,8 @@ package me.zodac.advent;
 
 import java.util.Collection;
 import me.zodac.advent.grid.Grid;
-import me.zodac.advent.pojo.PerimeterCounter;
 import me.zodac.advent.grid.Point;
+import me.zodac.advent.pojo.PerimeterCounter;
 import me.zodac.advent.search.GroupSearcher;
 
 /**

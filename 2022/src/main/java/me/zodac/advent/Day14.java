@@ -20,8 +20,8 @@ package me.zodac.advent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import me.zodac.advent.pojo.Line;
 import me.zodac.advent.grid.Point;
+import me.zodac.advent.pojo.Line;
 
 /**
  * Solution for 2022, Day 14.

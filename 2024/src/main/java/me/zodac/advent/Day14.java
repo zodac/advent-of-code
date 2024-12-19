@@ -76,7 +76,7 @@ public final class Day14 {
      *
      * <p>
      * It is possible to find a Christmas Tree in the output of one of the grids after an unknown number of seconds. We iterate through the
-     * {@link Grid}s after every second (up to a maximum of {@value #MAXIMUM_SECONDS_TO_FIND_CHRISTMAS_TREE}.
+     * {@link Grid}s after every second (up to a maximum of {@value #MAXIMUM_SECONDS_TO_FIND_CHRISTMAS_TREE}).
      *
      * <p>
      * We determine that a Chrismas Tree exists for a {@link Grid} where the 'safety rating' is lowest. This is assumed since a Christmas Tree would

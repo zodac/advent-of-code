@@ -20,8 +20,8 @@ package me.zodac.advent.search;
 import java.util.Collection;
 import java.util.HashSet;
 import me.zodac.advent.function.TriFunction;
-import me.zodac.advent.grid.Grid;
 import me.zodac.advent.grid.Direction;
+import me.zodac.advent.grid.Grid;
 import me.zodac.advent.grid.Point;
 import me.zodac.advent.pojo.tuple.Pair;
 
@@ -45,7 +45,7 @@ public final class LoopFinder {
      *
      * <p>
      * {@snippet :
-     *     import me.zodac.advent.grid.Direction;import me.zodac.advent.grid.Point;final TriFunction<Grid<Character>, Point, Direction, Direction> directionUpdate = (characterGrid, point, direction) -> {
+     *     final TriFunction<Grid<Character>, Point, Direction, Direction> directionUpdate = (characterGrid, point, direction) -> {
      *             Direction nextDirection = direction;
      *             // Move in the current direction. If it doesn't exist within the Grid, return Direction.INVALID to end the traversal
      *             Point nextPoint = point.move(direction);
@@ -69,7 +69,7 @@ public final class LoopFinder {
      *
      * <p>
      * {@snippet :
-     *      import me.zodac.advent.grid.Direction;import me.zodac.advent.grid.Point;final TriFunction<Grid<Character>, Point, Direction, Direction> pointUpdate = (_, point, direction) -> point.move(direction);
+     *      final TriFunction<Grid<Character>, Point, Direction, Direction> pointUpdate = (_, point, direction) -> point.move(direction);
      *}
      *
      * @param grid            the {@link Grid} to traverse

@@ -21,9 +21,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.stream.Stream;
+import me.zodac.advent.grid.Direction;
 import me.zodac.advent.grid.Grid;
 import me.zodac.advent.grid.GridFactory;
-import me.zodac.advent.grid.Direction;
 import me.zodac.advent.grid.Point;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
