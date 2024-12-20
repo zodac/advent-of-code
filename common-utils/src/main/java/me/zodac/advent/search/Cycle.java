@@ -20,7 +20,7 @@ package me.zodac.advent.search;
 import java.util.Optional;
 
 /**
- * Class which holds the result of a {@link CycleFinder} invocation.
+ * Class that holds the result of a {@link CycleFinder} invocation.
  *
  * @param finalCycleValue the final value at the end of the cycle
  * @param cycleSize       the size of the cycle/loop

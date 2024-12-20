@@ -18,7 +18,7 @@
 package me.zodac.advent.util;
 
 /**
- * Basic int and long utilities.
+ * Utility class for basic {@code int} and {@code long} calculations.
  */
 public final class NumberUtils {
 

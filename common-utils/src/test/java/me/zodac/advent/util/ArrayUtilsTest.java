@@ -79,7 +79,7 @@ class ArrayUtilsTest {
             .contains(new Integer[] {4, 5, 6}, atIndex(1))
             .contains(new Integer[] {7, 8, 9}, atIndex(2));
 
-        // Confirm original array is not modified if copy is modified
+        // Confirm that the original array is not modified if copy is modified
         output[1][1] = 100;
         assertThat(output)
             .contains(new Integer[] {1, 2, 3}, atIndex(0))
@@ -504,7 +504,7 @@ class ArrayUtilsTest {
                 (Function<Boolean, String>) booleanValue -> booleanValue ? "a" : "b",
                 List.of("abb", "bab", "aaa")
             ),
-            // Valid list of Booleans, where first inner array is longer than others
+            // Valid list of Booleans, where the first inner array is longer than others
             Arguments.of(
                 new Boolean[][] {
                     {Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE},
@@ -584,7 +584,7 @@ class ArrayUtilsTest {
                 (Function<Integer, String>) String::valueOf,
                 List.of("123", "456", "7890")
             ),
-            // Valid list of Integers, with multiple-digit Integers which are supported
+            // Valid list of Integers, with multiple-digit Integers that are supported
             Arguments.of(
                 new Integer[][] {
                     {11, 12, 13},
@@ -594,7 +594,7 @@ class ArrayUtilsTest {
                 (Function<Integer, String>) String::valueOf,
                 List.of("111213", "141516", "171819")
             ),
-            // Valid list of Integers, with multiple-digit Integers which are truncated to the last digit only
+            // Valid list of Integers, with multiple-digit Integers that are truncated to the last digit only
             Arguments.of(
                 new Integer[][] {
                     {11, 12, 13},

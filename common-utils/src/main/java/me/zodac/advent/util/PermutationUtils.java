@@ -146,7 +146,7 @@ public final class PermutationUtils {
      * </pre>
      *
      * <p>
-     * <b>NOTE:</b> {@link String#valueOf(Object)} will be used to convert the value and  separator into a {@link String}, so ensure the
+     * <b>NOTE:</b> {@link String#valueOf(Object)} will be used to convert the value and separator into a {@link String}, so ensure the
      * {@link Object#toString()} has been overridden if necessary.
      *
      * @param values     the input {@link String}s
@@ -169,7 +169,7 @@ public final class PermutationUtils {
     private static <V, S> void generate(final List<V> values,
                                      final int index,
                                      final List<String> current,
-                                     final List<List<String>> result,
+                                     final List<? super List<String>> result,
                                      final Set<S> separators
     ) {
         // Base case for last number

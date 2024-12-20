@@ -60,10 +60,10 @@ public record Reindeer(int flyingVelocity, Duration flyingDuration, Duration res
     }
 
     /**
-     * Calculates the distance that the {@link Reindeer} can travel in the provided {@link Duration} of time, in KM.
+     * Calculates the distance that the {@link Reindeer} can travel in the provided {@link Duration} of time, in <b>km</b>.
      *
      * @param travelDuration the {@link Duration} the {@link Reindeer} will travel
-     * @return the total distance covered, in KM
+     * @return the total distance covered, in <b>km</b>
      */
     public long calculateDistance(final Duration travelDuration) {
         final long fullCycleDuration = flyingDuration.toSeconds() + restDuration.toSeconds();

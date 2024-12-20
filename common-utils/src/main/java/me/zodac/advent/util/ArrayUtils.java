@@ -237,7 +237,7 @@ public final class ArrayUtils {
      * </pre>
      *
      * <p>
-     * Similarly, given an input which we want to convert to a 2D array of {@link Boolean}s, we would have the following:
+     * Similarly, given an input that we want to convert to a 2D array of {@link Boolean}s, we would have the following:
      * <pre>
      *     [
      *       "abbb",

@@ -31,7 +31,7 @@ public final class Day20 {
     }
 
     /**
-     * Delivers items to houses. There are an infinite number of deliverers, and they stagger which houses to deliver to. For example:
+     * Delivers items to houses. There are an infinite number of deliverers, and they stagger the houses to deliver to. For example:
      * <pre>
      *     Deliverer 1 delivers to house   1,   2,   3...
      *     Deliverer 2 delivers to house   2,   4,   6...
@@ -58,7 +58,7 @@ public final class Day20 {
     }
 
     /**
-     * Delivers items to houses. There are an infinite number of deliverers, and they stagger which houses to deliver to. For example:
+     * Delivers items to houses. There are an infinite number of deliverers, and they stagger the houses to deliver to. For example:
      * <pre>
      *     Deliverer 1 delivers to house   1,   2,   3...
      *     Deliverer 2 delivers to house   2,   4,   6...

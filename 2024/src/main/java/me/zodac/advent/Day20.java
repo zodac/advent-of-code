@@ -53,19 +53,22 @@ public final class Day20 {
      * <p>
      * We can determine this by doing the following. For each {@link Point} on the known shortest path:
      * <ol>
-     *     <li>Find all {@link Point}s remaining on the path with a {@link Point#distanceTo(Point)} <= {@code maximumDistanceBetweenPoints}</li>
+     *     <li>Find all {@link Point}s remaining on the path with a Manhattan distance less that {@code maximumDistanceBetweenPoints}</li>
      *     <li>
-     *         For that pair of first, second {@link Point}s, calculate the potential savings by performing a cheat.
+     *         For that pair of first and second {@link Point}s, calculate the potential savings by performing a cheat.
      *         The saving is calculated as the distance between the two {@link Point}s (distance using the cheat), <b>minus</b> the distance between
      *         the {@link Point}s along the shortest path (can be retrieved by the index of the {@link Point}s within an ordered {@link List} of the
      *         shortest path).
      *     </li>
-     *     <li>If the saving is >= {@code minimumSavings}, it is a valid cheat</li>
+     *     <li>If the saving is greater than {@code minimumSavings}, it is a valid cheat</li>
      * </ol>
      *
-     * @param characterGrid the input {@link Character} {@link Grid}
+     * @param characterGrid                the input {@link Character} {@link Grid}
+     * @param maximumDistanceBetweenPoints the distance between {@link Point}s to consider for the cheat
+     * @param minimumSavings               the minimum saving required for a cheat to be valid
      * @return the number of cheats that save at least {@code minimumSavings}
      * @see PathFinder#shortest(Grid, Point, Point, AdjacentDirection, BiPredicate)
+     * @see Point#distanceTo(Point)
      */
     public static long findNumberOfCheats(final Grid<Character> characterGrid, final int maximumDistanceBetweenPoints, final int minimumSavings) {
         final Point start = characterGrid.findValue(c -> c == START_SYMBOL).toList().getFirst();

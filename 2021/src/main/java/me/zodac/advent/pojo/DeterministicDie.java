@@ -18,7 +18,7 @@
 package me.zodac.advent.pojo;
 
 /**
- * Simple die that returns a deterministic roll. Each roll will increment the value by 1 until it reaches {@code maxValue}.
+ * A simple die that returns a deterministic roll. Each roll will increment the value by 1 until it reaches {@code maxValue}.
  */
 public final class DeterministicDie {
 

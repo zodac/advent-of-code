@@ -42,7 +42,7 @@ public enum CamelCardType {
     FULL_HOUSE(4, List.of(3L, 2L)),
 
     /**
-     * A hand with 3 of the same card, and 2 others which are both different.
+     * A hand with 3 of the same card, and 2 others that are both different.
      */
     THREE_OF_A_KIND(3, List.of(3L, 1L, 1L)),
 
@@ -52,7 +52,7 @@ public enum CamelCardType {
     TWO_PAIR(2, List.of(2L, 2L, 1L)),
 
     /**
-     * A hand with 2 of the same card, and 3 others which are all different.
+     * A hand with 2 of the same card, and 3 others that are all different.
      */
     ONE_PAIR(1, List.of(2L, 1L, 1L, 1L)),
 

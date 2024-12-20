@@ -40,6 +40,8 @@ public record Point(int x, int y) implements Comparable<Point> {
     /**
      * Creates a {@link Point} starting at the provided (x, y) coordinates.
      *
+     * @param x the X coordinate, or row
+     * @param y the Y coordinate, or column
      * @return the created {@link Point}
      */
     public static Point of(final int x, final int y) {

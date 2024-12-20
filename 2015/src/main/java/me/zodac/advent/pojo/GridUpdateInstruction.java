@@ -62,7 +62,7 @@ public enum GridUpdateInstruction {
     public static GridUpdateInstruction match(final String input) {
         return ALL_VALUES
             .stream()
-            .filter(gridUpdateInstruction -> input.toUpperCase(Locale.UK).contains(gridUpdateInstruction.toString()))
+            .filter(instruction -> input.toUpperCase(Locale.UK).contains(instruction.toString()))
             .findAny()
             .orElse(INVALID);
     }

@@ -503,7 +503,7 @@ public class Grid<E> {
      *
      * @return the border {@link Point}s
      */
-    public Set<Point> border() {
+    public Set<Point> borderPoints() {
         final Set<Point> borderPoints = new HashSet<>();
 
         // Top and bottom borders

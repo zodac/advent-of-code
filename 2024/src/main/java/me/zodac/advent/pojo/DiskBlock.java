@@ -21,7 +21,7 @@ package me.zodac.advent.pojo;
  * POJO defining contiguous blocks on a file system's storage space.
  *
  * @param blockValue the value in the {@link DiskBlock}
- * @param size       the number of occurences of the value in the {@link DiskBlock}
+ * @param size       the number of occurrences of the value in the {@link DiskBlock}
  */
 public record DiskBlock(String blockValue, int size) {
 

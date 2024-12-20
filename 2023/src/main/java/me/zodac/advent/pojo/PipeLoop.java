@@ -27,7 +27,7 @@ import me.zodac.advent.grid.Point;
  * Utility class used to define a loop of {@link Point}s within a {@link Grid}.
  *
  * <p>
- * Currently only supports {@link Pipe}, but hopefully this can be made generic eventually.
+ * Only supports {@link Pipe}, but hopefully this can be made generic eventually.
  */
 public class PipeLoop {
 
@@ -51,7 +51,7 @@ public class PipeLoop {
      * Creates the {@link PipeLoop} for a looping of points within a {@link Grid}. Using the provided {@link Predicate}, the start {@link Point} of
      * the loop is determined, and the {@link PipeLoopFinder} works to find a looping of {@link Point}s back to the start {@link Point}.
      *
-     * @param grid                the {@link Grid} of elements which contains the {@link PipeLoop}
+     * @param grid                the {@link Grid} of elements that contains the {@link PipeLoop}
      * @param startPointPredicate the {@link Predicate} defining how to find the start {@link Point}
      * @return the {@link PipeLoop}
      * @throws IllegalArgumentException if no valid {@link PipeLoop} is found for the provided {@link Grid}

@@ -43,7 +43,7 @@ public final class Day06 {
 
     /**
      * Given a {@link Character} {@link Grid}, find the start {@link Point} denoted by {@value START_SYMBOL}, then traverse the path. The rules
-     * for traversal are:
+     * for the traversal are:
      * <ol>
      *     <li>Start moving {@link Direction#UP}, one space at a time</li>
      *     <li>If the next cell is a {@value #OBSTACLE_SYMBOL}, change the {@link Direction} to the right by 90°</li>
@@ -64,7 +64,7 @@ public final class Day06 {
 
     /**
      * Given a {@link Character} {@link Grid}, find the start {@link Point} denoted by {@value START_SYMBOL}, then traverse the path. The rules
-     * for traversal are:
+     * for the traversal are:
      * <ol>
      *     <li>Start moving {@link Direction#UP}, one space at a time</li>
      *     <li>If the next cell is a {@value #OBSTACLE_SYMBOL}, change the {@link Direction} to the right by 90°</li>

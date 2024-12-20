@@ -49,8 +49,7 @@ public final class Day05 {
      * </pre>
      *
      * <p>
-     * Based on this, we must determine which of the {@code inputPageNumbers} are <b>valid</b>. For the valid ones, find the middle value and sum
-     * these values.
+     * Based on this, we must determine the {@code inputPageNumbers} that are <b>valid</b>. For the valid ones, find the middle value and sum them.
      *
      * @param pageRules        the rules determining the orders the pages must be in
      * @param inputPageNumbers the page numbers to be checked
@@ -80,8 +79,8 @@ public final class Day05 {
      * </pre>
      *
      * <p>
-     * Based on this, we must determine which of the {@code inputPageNumbers} are <b>invalid</b>. For the invalid ones, sort them so they are valid,
-     * then find the middle value and sum these values.
+     * Based on this, we must determine the {@code inputPageNumbers} that are <b>invalid</b>. For the invalid ones, sort them so they are valid, then
+     * find the middle value and sum these values.
      *
      * @param pageRules        the rules determining the orders the pages must be in
      * @param inputPageNumbers the page numbers to be checked

@@ -38,7 +38,7 @@ public final class Day22 {
     /**
      * Given a {@link MageBoss}, we generate a {@link MagePlayer} and simulate a battle. Each round we will determine the possible next round,
      * based on available {@link Spell}s and the {@link MagePlayer} mana. Using {@link DijkstraSearcher}'s algorithm, we will attempt to find the
-     * shortest path in terms of mana usage that still lead to a victory.
+     * shortest path for mana usage that still lead to a victory.
      *
      * @param player                   the {@link MagePlayer}
      * @param boss                     the {@link MageBoss} to defeat

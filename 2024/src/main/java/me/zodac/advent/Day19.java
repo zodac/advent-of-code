@@ -34,8 +34,8 @@ public final class Day19 {
     }
 
     /**
-     * Given a {@link List} of values (representing a final 'design'), and a {@link List} of keys (representing a single 'towel' which is part of the
-     * full design), find which values have a possible valid combination from the provided keys.
+     * Given a {@link List} of values (representing a final 'design'), and a {@link List} of keys (representing a single 'towel' that is part of the
+     * full design), find all values have a possible valid combination from the provided keys.
      *
      * @param towels       the input keys (towels to make the designs)
      * @param finalDesigns the input values (designs)
@@ -49,8 +49,8 @@ public final class Day19 {
     }
 
     /**
-     * Given a {@link List} of values (representing a final 'design'), and a {@link List} of keys (representing a single 'towel' which is part of the
-     * full design), find which values have a possible valid combination from the provided keys. For each of these, find the total number of possible
+     * Given a {@link List} of values (representing a final 'design'), and a {@link List} of keys (representing a single 'towel' that is part of the
+     * full design), find all values have a possible valid combination from the provided keys. For each of these, find the total number of possible
      * combinations of towels that can make the design.
      *
      * @param towels       the input keys (towels to make the designs)

@@ -72,7 +72,7 @@ public final class CollectionUtils {
      * @param elements           the {@link Collection} to be mapped
      * @param extractionFunction the {@link Function} used to extract a value
      * @param <I>                the type of the input {@link Collection} of {@code elements}
-     * @param <O>                the type of the output values which will be mapped by the {@link Function}
+     * @param <O>                the type of the output values that will be mapped by the {@link Function}
      * @return the updated {@link Collection}, or an empty {@link Collection} if input is {@link Collection#isEmpty()}
      */
     public static <I, O> List<O> extractValuesAsList(final Collection<I> elements, final Function<? super I, O> extractionFunction) {

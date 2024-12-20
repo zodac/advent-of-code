@@ -100,7 +100,7 @@ class PermutationUtilsTest {
 
     @ParameterizedTest
     @MethodSource("provideForGenerateWithSeparators")
-    <E> void testGenerateWithSeparators(final List<String> input, final Set<E> separators, final List<List<String>> expected) {
+    <E> void testGenerateWithSeparators(final List<String> input, final Set<E> separators, final List<? extends List<String>> expected) {
         final List<List<String>> output = PermutationUtils.generateWithSeparators(input, separators);
         assertThat(output)
             .hasSameElementsAs(expected);

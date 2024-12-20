@@ -41,7 +41,7 @@ public final class Day05 {
 
     /**
      * Given an {@code input} containing a definition include <b>seed</b> values, and {@link Mapping} values, we must determine the <b>seed</b> value
-     * which results in the lowest <b>location</b> value. The first {@link String} in {@code values} will be the space-separated <b>seed</b> numbers,
+     * that results in the lowest <b>location</b> value. The first {@link String} in {@code values} will be the space-separated <b>seed</b> numbers,
      * with an identifier.
      *
      * <p>
@@ -69,8 +69,8 @@ public final class Day05 {
 
     /**
      * Given an {@code input} containing a definition include <b>seed</b> values, and {@link Mapping} values, we must determine the <b>seed</b> value
-     * which results in the lowest <b>location</b> value. This is very similar to {@link #findLowestLocationForSeedNumbers(List)}, but instead of the
-     * first {@link String} in {@code values} listing all <b>seed</b> numbers, each pair of numbers is the seed start number, and the size of its
+     * that results in the lowest <b>location</b> value. This is similar to {@link #findLowestLocationForSeedNumbers(List)}, but instead of the first
+     * {@link String} in {@code values} listing all <b>seed</b> numbers, each pair of numbers is the seed start number, and the size of its
      * {@link Interval}.
      *
      * <p>

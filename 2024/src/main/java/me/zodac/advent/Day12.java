@@ -41,7 +41,7 @@ public final class Day12 {
      * </pre>
      *
      * <p>
-     * or:
+     * Or:
      * <pre>
      *     unique sides in perimeter * area
      * </pre>

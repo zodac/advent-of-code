@@ -69,7 +69,7 @@ public final class Day02 {
      * <p>
      * A {@link Movement} with {@link Direction} of {@link Direction#DOWN} or {@link Direction#UP} does not change the vertical value, but instead
      * sets and {@code aim} value. When a {@link Direction#RIGHT} {@link Movement} is found, it will calculate the change in the vertical position
-     * as this {@code aim} and the number of spaces. It will also increment the horizontal position at this time.
+     * as this {@code aim} and the number of spaces. It will also increment the horizontal position at the same time.
      *
      * <p>
      * The magnitude is the resultant vertical multiplied by the resultant horizontal.

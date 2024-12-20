@@ -23,7 +23,7 @@ import java.util.Optional;
 import me.zodac.advent.pojo.tuple.Pair;
 
 /**
- * POJO defining a simultaneous equation - a pair of mathematic equations in the format:
+ * POJO defining a simultaneous equation - a pair of equations in the format:
  * <pre>
  *     2x + 4y = 14
  *     4x − 4y =  4

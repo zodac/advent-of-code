@@ -69,7 +69,7 @@ public final class GridFactory {
      * Creates a {@link Character} {@link Grid} with the dimensions {@code gridSize}x{@code gridSize}.
      *
      * @param gridSize the length and width of the {@link Character} {@link Grid}
-     * @return the created {@link Character} {@link Grid}, with default value <b>.</b>
+     * @return the created {@link Character} {@link Grid}, with default value <b>'.'</b>
      * @throws IllegalArgumentException thrown if input size is less than <b>0</b>
      */
     public static Grid<Character> ofCharactersWithSize(final int gridSize) {

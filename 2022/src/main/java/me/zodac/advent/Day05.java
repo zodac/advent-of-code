@@ -66,7 +66,7 @@ public final class Day05 {
      *
      * <p>
      * When all {@link StackInstruction}s have been applied, we take the top {@link String} from each stack (in ascending order of IDs), then combine
-     * them into a new {@link String} code which is returned.
+     * them into a new {@link String} code that is returned.
      *
      * @param stacksById        the {@link Deque} stacked, keyed by ID
      * @param stackInstructions the {@link StackInstruction}s to be applied
@@ -104,7 +104,7 @@ public final class Day05 {
      *
      * <p>
      * When all {@link StackInstruction}s have been applied, we take the top {@link String} from each stack (in ascending order of IDs), then combine
-     * them into a new {@link String} code which is returned.
+     * them into a new {@link String} code that is returned.
      *
      * @param stacksById        the {@link Deque} stacked, keyed by ID
      * @param stackInstructions the {@link StackInstruction}s to be applied

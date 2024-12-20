@@ -40,7 +40,7 @@ public final class Day09 {
      * </pre>
      *
      * <p>
-     * Each index of the {@link String} altnerates between references populated disk space or free disk space. The populated space is incremented
+     * Each index of the {@link String} alternates between references populated disk space or free disk space. The populated space is incremented
      * every <b>2</b> indices of the {@link String}, while the free space is denoted by {@link DiskBlock#FREE_SPACE_SYMBOL}. The above value would be
      * expanded to a representation of a disk space as follows:
      *
@@ -138,7 +138,7 @@ public final class Day09 {
      * </pre>
      *
      * <p>
-     * Each index of the {@link String} altnerates between references populated disk space or free disk space. The populated space is incremented
+     * Each index of the {@link String} alternates between references populated disk space or free disk space. The populated space is incremented
      * every <b>2</b> indices of the {@link String}, while the free space is denoted by {@link DiskBlock#FREE_SPACE_SYMBOL}. The above value would be
      * expanded to a representation of a disk space as follows:
      *
@@ -214,18 +214,16 @@ public final class Day09 {
                 if (block.size() == fileBlockSize) {
                     diskBlocks.remove(i);
                     diskBlocks.add(i, lastBlock);
-
-                    diskBlocks.remove(reversePointer);
-                    diskBlocks.add(reversePointer, DiskBlock.ofFreeSpace(fileBlockSize));
                 } else {
                     diskBlocks.remove(i);
                     diskBlocks.add(i, DiskBlock.ofFreeSpace(block.size() - fileBlockSize));
                     diskBlocks.add(i, lastBlock);
 
                     reversePointer++; // Add 1 to pointer since we've increased the number of elements in the list
-                    diskBlocks.remove(reversePointer);
-                    diskBlocks.add(reversePointer, DiskBlock.ofFreeSpace(fileBlockSize));
                 }
+
+                diskBlocks.remove(reversePointer);
+                diskBlocks.add(reversePointer, DiskBlock.ofFreeSpace(fileBlockSize));
 
                 break; // NOPMD: AvoidBranchingStatementAsLastInLoop - Once some free space of valid size is found, stop searching
             }

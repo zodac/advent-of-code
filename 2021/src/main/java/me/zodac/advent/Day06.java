@@ -36,8 +36,8 @@ public final class Day06 {
     }
 
     /**
-     * Provided a {@link List} of {@link Integer}s, each number will be assumed to  define a lanternfish's internal timer. As each day increments, the
-     * lanternfish timer will decrement. A lanternfish with a timer of <b>0</b> will be reset to <b>6</b> the next day, and also spawn a new
+     * Provided a {@link List} of {@link Integer}s, each number will be assumed to define the internal timer of a lanternfish. As each day increments,
+     * the lanternfish timer will decrement. A lanternfish with a timer of <b>0</b> will be reset to <b>6</b> the next day, and also spawn a new
      * lanternfish with an internal timer of <b>8</b>.
      *
      * @param lanternFish  the initial number of lanternfish and their timers

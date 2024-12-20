@@ -36,6 +36,7 @@ public final class Day04 {
 
     // To be used when no winning bingo board can be found
     private static final int INVALID_WINNING_NUMBER = -1;
+    private static final char BLANK_SPACE = ' ';
 
     private Day04() {
 
@@ -142,7 +143,7 @@ public final class Day04 {
         for (int i = 0; i < numberOfBoardValues; i += boardSize) {
             final StringBuilder boardNumbersRaw = new StringBuilder();
             for (int j = 0; j < boardSize; j++) {
-                boardNumbersRaw.append(bingoBoardValues.get(i + j)).append(' ');
+                boardNumbersRaw.append(bingoBoardValues.get(i + j)).append(BLANK_SPACE);
             }
 
             final List<Integer> boardNumbers =

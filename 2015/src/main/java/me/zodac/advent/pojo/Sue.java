@@ -134,7 +134,7 @@ public record Sue(long id, Map<String, Integer> attributes) {
         for (final Map.Entry<String, Integer> otherSueAttribute : otherSue.attributes.entrySet()) {
             final String attributeName = otherSueAttribute.getKey();
 
-            // Since source has all attributes, no need to check if key exists
+            // Since the source has all attributes, no need to check if key exists
             // However, since the Integer value *could* technically be null, we'll set it to the max value, so it wins in any comparisons
             final int sourceValue = attributes.getOrDefault(attributeName, Integer.MAX_VALUE);
             final int otherValue = otherSueAttribute.getValue();

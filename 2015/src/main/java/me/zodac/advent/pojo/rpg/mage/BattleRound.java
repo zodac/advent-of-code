@@ -79,7 +79,7 @@ public final class BattleRound implements SearchNode {
      *
      * @param player                   the {@link MagePlayer}
      * @param boss                     the {@link MageBoss}
-     * @param activeSpells             the {@link ActiveSpell}s currently running
+     * @param activeSpells             the {@link ActiveSpell}s that are running
      * @param castSpells               the {@link Spell}s that have been cast
      * @param heathLossEachPlayerRound the health the player loses at the start of each {@link BattleRound}
      * @return the created {@link MagePlayer} {@link BattleRound}
@@ -94,7 +94,7 @@ public final class BattleRound implements SearchNode {
      *
      * @param player                   the {@link MagePlayer}
      * @param boss                     the {@link MageBoss}
-     * @param activeSpells             the {@link ActiveSpell}s currently running
+     * @param activeSpells             the {@link ActiveSpell}s that are running
      * @param castSpells               the {@link Spell}s that have been cast
      * @param heathLossEachPlayerRound the health the player loses at the start of each {@link BattleRound}
      * @return the created {@link MageBoss} {@link BattleRound}

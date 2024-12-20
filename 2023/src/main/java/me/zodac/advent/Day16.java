@@ -67,7 +67,7 @@ public final class Day16 {
      * ({@literal |}, {@literal -}).
      *
      * <p>
-     * We consider all {@link Point}s along the perimeter to be a valid starting {@link Point}. For each, we will progress the beam,a nd
+     * We consider all {@link Point}s along the perimeter to be a valid starting {@link Point}.
      * We start off the {@link Grid}, and come in at {@link Point} (0, 0) from the {@link Direction#LEFT}, and progress
      * the beam. Once all beams have completed their movements, we sum all the {@link Point}s that were 'energised' by the beam sum all the
      * {@link Point}s that were 'energised' by the beam. We are only interested in the start {@link Point} that energises the most {@link Point}s, and

@@ -305,7 +305,7 @@ public final class InputReader {
          * Creates a new instance of {@link Reader} where the current {@link Stream} has been filtered with elements that match the supplied
          * {@link Predicate}.
          *
-         * @param predicate the {@link Predicate} defining which elements of the {@link Stream} to keep
+         * @param predicate the {@link Predicate} defining the elements of the {@link Stream} to keep
          * @return the new {@link Reader}
          */
         public Reader<T> filter(final Predicate<? super T> predicate) {
@@ -400,11 +400,11 @@ public final class InputReader {
         }
 
         /**
-         * Groups the {@code stream} of lines into {@link List}s, where each group is a split which is delimited when the provided
+         * Groups the {@code stream} of lines into {@link List}s, where each group is a split that is delimited when the provided
          * {@link Predicate} is met.
          *
          * <ul>
-         *     <li>The line which matches the {@link Predicate} is discarded and not included in the output</li>
+         *     <li>Any lines that match the {@link Predicate} are discarded and not included in the output</li>
          *     <li>If the {@link Predicate} is not met, we return an empty {@link List}</li>
          *     <li>Empty groups are not included in the output</li>
          * </ul>

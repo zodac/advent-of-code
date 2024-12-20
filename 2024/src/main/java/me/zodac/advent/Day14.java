@@ -51,7 +51,7 @@ public final class Day14 {
      * {@value #SECONDS_TO_MOVE} seconds.
      *
      * <p>
-     * When complete, the {@link Grid} should be split into quadrants. For each quadrent, count the number of {@link Point}s. If multiple
+     * When complete, the {@link Grid} should be split into quadrants. For each quadrant, count the number of {@link Point}s. If multiple
      * {@link Point}s exist in the same location, they should each be counted. The four quadrant values should then be multiplied together to find the
      * 'safety rating' of the {@link Grid}.
      *
@@ -79,7 +79,7 @@ public final class Day14 {
      * {@link Grid}s after every second (up to a maximum of {@value #MAXIMUM_SECONDS_TO_FIND_CHRISTMAS_TREE}).
      *
      * <p>
-     * We determine that a Chrismas Tree exists for a {@link Grid} where the 'safety rating' is lowest. This is assumed since a Christmas Tree would
+     * We determine that a Christmas Tree exists for a {@link Grid} where the 'safety rating' is lowest. This is assumed since a Christmas Tree would
      * require most points in a single quadrant (or two), resulting in a lower rating. We iterate through all possible options then return the second
      * that returns the lowest rating.
      *

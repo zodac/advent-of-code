@@ -105,7 +105,7 @@ public final class Day04 {
     }
 
     /**
-     * Given a {@link Character} {@link Grid}, find all occurrences of the {@link Character} 'A' which has 'M' and 'S' in a line along both
+     * Given a {@link Character} {@link Grid}, find all occurrences of the {@link Character} 'A' that has 'M' and 'S' in a line along both
      * diagonal, in any order. The letters can overlap and be used for multiple matches. For example, the {@link Grid} below as <b>2</b> occurrences:
      *
      * <pre>

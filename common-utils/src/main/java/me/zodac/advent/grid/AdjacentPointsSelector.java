@@ -30,7 +30,7 @@ public record AdjacentPointsSelector(boolean withSelf, AdjacentDirection adjacen
     private static final int DEFAULT_GRID_SIZE = 0;
 
     /**
-     * Creates an {@link AdjacentPointsSelector} for a 2D grid which is unbounded (meaning all adjacent {@link Point}s should be returned, even if
+     * Creates an {@link AdjacentPointsSelector} for a 2D grid that is unbounded (meaning all adjacent {@link Point}s should be returned, even if
      * they would be out of bounds).
      *
      * @param withSelf          whether to include the current {@link Point}
@@ -42,7 +42,7 @@ public record AdjacentPointsSelector(boolean withSelf, AdjacentDirection adjacen
     }
 
     /**
-     * Creates an {@link AdjacentPointsSelector} for a 2D grid which is bounded (meaning any adjacent {@link Point}s that would be out of bounds
+     * Creates an {@link AdjacentPointsSelector} for a 2D grid that is bounded (meaning any adjacent {@link Point}s that would be out of bounds
      * should be excluded).
      *
      * @param withSelf          whether to include the current {@link Point}

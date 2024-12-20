@@ -36,7 +36,7 @@ public final class Day02 {
     }
 
     /**
-     * Given a {@link Collection} of {@link Report}s, we must determine which of the {@link Report}s are 'safe'.
+     * Given a {@link Collection} of {@link Report}s, we must determine the {@link Report}s that are 'safe'.
      *
      * @param reports            the input {@link Report}s
      * @param allowSingleFailure if {@code true}, allows for a single failure to be ignored when determining if the {@link Report} is safe

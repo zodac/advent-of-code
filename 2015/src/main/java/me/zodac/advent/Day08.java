@@ -76,8 +76,8 @@ public final class Day08 {
      * Calculates the different between the length of the fully-escaped version of the {@link String}s provided, and the length of those literal
      * {@link String}s. We can assume the following characters are to be escaped:
      * <ul>
-     *     <li>" becomes \"</li>
-     *     <li>\ becomes \\</li>
+     *     <li>A " becomes \"</li>
+     *     <li>A \ becomes \\</li>
      * </ul>
      *
      * <p>

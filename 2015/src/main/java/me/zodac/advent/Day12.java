@@ -43,7 +43,7 @@ public final class Day12 {
      * @param input the input to be parsed
      * @return the sum of all numbers
      */
-    public static long sumOfAllNumbers(final String input) {
+    public static long sumOfAllNumbers(final CharSequence input) {
         return StringUtils.collectNumbersInOrder(input)
             .stream()
             .mapToLong(l -> l)

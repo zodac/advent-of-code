@@ -91,13 +91,4 @@ public record Interval(long start, long end) {
     public boolean isEmpty() {
         return start == 0L && end == 0L;
     }
-
-    /**
-     * The size of the {@link Interval}.
-     *
-     * @return the size of the {@link Interval}
-     */
-    public long size() {
-        return end - start;
-    }
 }
