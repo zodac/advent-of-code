@@ -28,9 +28,12 @@ function main() {
     esac
   done
 
-  if [[ -z "${year}" ]] || [[ -z "${day}" ]]; then
-      print_usage
-      exit 1
+  if [[ -z "${year}" ]]; then
+      year=$(date +%Y)
+  fi
+
+  if [[ -z "${day}" ]]; then
+      day=$(date +%d)
   fi
 
   if ! [[ "${year}" =~ ${YEAR_REGEX} ]] ; then
@@ -200,7 +203,7 @@ function _error() {
 }
 
 function print_usage() {
-  _warning "Usage:\n\t-y: Year (2015-2024)\n\t-d: Day (1-25)\n\t-t: Type (Optional: 'basic', 'char_grid', 'int_grid')"
+  _warning "Usage:\n\t-y: Year (Optional: 2015-2024)\n\t-d: Day (Optional: 1-25)\n\t-t: Type (Optional: 'basic', 'char_grid', 'int_grid')"
 }
 
 # Start script execution
