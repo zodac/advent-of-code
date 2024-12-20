@@ -499,6 +499,29 @@ public class Grid<E> {
     }
 
     /**
+     * Returns all {@link Point}s along the border of the {@link Grid}.
+     *
+     * @return the border {@link Point}s
+     */
+    public Set<Point> border() {
+        final Set<Point> borderPoints = new HashSet<>();
+
+        // Top and bottom borders
+        for (int col = 0; col < numberOfColumns(); col++) {
+            borderPoints.add(Point.of(0, col)); // Top row
+            borderPoints.add(Point.of(numberOfRows() - 1, col)); // Bottom row
+        }
+
+        // Left and right borders
+        for (int row = 1; row < numberOfRows(); row++) {
+            borderPoints.add(Point.of(row, 0)); // Left column
+            borderPoints.add(Point.of(row, numberOfColumns() - 1)); // Right column
+        }
+
+        return borderPoints;
+    }
+
+    /**
      * Prints the content of the {@link Grid}.
      *
      * @param withHeaders       whether to also print numeric headers for each column and row

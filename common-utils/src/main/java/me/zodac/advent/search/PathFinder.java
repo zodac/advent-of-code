@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.SequencedSet;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import me.zodac.advent.grid.AdjacentDirection;
@@ -53,12 +54,12 @@ public final class PathFinder {
      * @param adjacentDirection   the {@link AdjacentDirection} to select neighbour {@link Point}s
      * @param adjacentPointFilter the {@link BiPredicate} to filter potential neighbour {@link Point}s
      * @param <E>                 the type of the {@link Grid}
-     * @return the shorttest paths from the start {@link Point} to the end {@link Point}
+     * @return the shortest paths from the start {@link Point} to the end {@link Point} as a {@link SequencedSet}
      * @see AdjacentPointsSelector
      */
-    public static <E> Set<Point> shortest(final Grid<E> grid, final Point startPoint, final Point endPoint,
-                                          final AdjacentDirection adjacentDirection,
-                                          final BiPredicate<? super Point, ? super Point> adjacentPointFilter) {
+    public static <E> SequencedSet<Point> shortest(final Grid<E> grid, final Point startPoint, final Point endPoint,
+                                                   final AdjacentDirection adjacentDirection,
+                                                   final BiPredicate<? super Point, ? super Point> adjacentPointFilter) {
         final Map<Point, Point> previousPointsInPath = new HashMap<>();
         final Queue<Point> queue = new LinkedList<>();
         queue.add(startPoint);
@@ -88,11 +89,11 @@ public final class PathFinder {
         }
 
         // If no path is found, return an empty list
-        return Set.of();
+        return new LinkedHashSet<>();
     }
 
-    private static Set<Point> rebuildPath(final Map<Point, Point> previousPointsInPath, final Point latestPointInPath) {
-        final Set<Point> path = new LinkedHashSet<>();
+    private static SequencedSet<Point> rebuildPath(final Map<Point, Point> previousPointsInPath, final Point latestPointInPath) {
+        final SequencedSet<Point> path = new LinkedHashSet<>();
         Point current = latestPointInPath;
 
         while (current != null) {
@@ -100,7 +101,7 @@ public final class PathFinder {
             current = previousPointsInPath.get(current);
         }
 
-        return path;
+        return path.reversed();
     }
 
     /**
