@@ -506,16 +506,14 @@ public class Grid<E> {
     public Set<Point> borderPoints() {
         final Set<Point> borderPoints = new HashSet<>();
 
-        // Top and bottom borders
-        for (int col = 0; col < numberOfColumns(); col++) {
+        for (int col = 0; col < internalGrid[0].length; col++) {
             borderPoints.add(Point.of(0, col)); // Top row
-            borderPoints.add(Point.of(numberOfRows() - 1, col)); // Bottom row
+            borderPoints.add(Point.of(internalGrid.length - 1, col)); // Bottom row
         }
 
-        // Left and right borders
-        for (int row = 1; row < numberOfRows(); row++) {
+        for (int row = 1; row < internalGrid.length; row++) {
             borderPoints.add(Point.of(row, 0)); // Left column
-            borderPoints.add(Point.of(row, numberOfColumns() - 1)); // Right column
+            borderPoints.add(Point.of(row, internalGrid[0].length - 1)); // Right column
         }
 
         return borderPoints;

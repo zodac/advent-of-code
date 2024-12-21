@@ -93,23 +93,13 @@ public final class Day15 {
         final Point nextPoint = point.move(direction);
         final Character nextValue = grid.at(nextPoint);
 
-        if (nextValue == EMPTY_SYMBOL) {
-            return movePoint(point, nextPoint, grid);
-        }
-
-        if (nextValue == OBSTACLE_SYMBOL) {
-            return Pair.of(point, grid);
-        }
-
-        if (nextValue == BOX_SYMBOL) {
-            return moveBoxes(point, direction, grid, nextPoint);
-        }
-
-        if (BOX_HALVES.contains(nextValue)) {
-            return moveSplitBoxes(point, direction, grid, nextPoint, nextValue);
-        }
-
-        throw new IllegalStateException("Unrecognized symbol at point: " + nextPoint);
+        return switch (nextValue) {
+            case EMPTY_SYMBOL -> movePoint(point, nextPoint, grid);
+            case OBSTACLE_SYMBOL -> Pair.of(point, grid);
+            case BOX_SYMBOL -> moveBoxes(point, direction, grid, nextPoint);
+            case SPLIT_BOX_LEFT_SYMBOL, SPLIT_BOX_RIGHT_SYMBOL -> moveSplitBoxes(point, direction, grid, nextPoint, nextValue);
+            default -> throw new IllegalStateException("Unrecognized symbol at point: " + nextPoint);
+        };
     }
 
     private static Pair<Point, Grid<Character>> movePoint(final Point from, final Point to, final Grid<Character> grid) {
@@ -159,7 +149,9 @@ public final class Day15 {
 
     private static Grid<Character> movePointsAlongPath(final List<Point> pointsToMove, final Direction direction, final Grid<Character> grid) {
         Grid<Character> updatedGrid = grid;
-        for (int i = pointsToMove.size() - 1; i >= 0; i--) {
+        final int numberOfPoints = pointsToMove.size() - 1;
+
+        for (int i = numberOfPoints; i >= 0; i--) {
             final Point from = pointsToMove.get(i);
             final Point to = from.move(direction);
             updatedGrid = updatedGrid.updateAt(to, grid.at(from));
@@ -218,20 +210,26 @@ public final class Day15 {
     private static Grid<Character> expandGridWidthwise(final Grid<Character> grid) {
         final int newGridSize = grid.size() << 1;
         final Character[][] newInternalGrid = new Character[grid.size()][newGridSize];
+        final int numberOfRows = grid.numberOfRows();
+        final int numberOfColumns = grid.numberOfColumns();
 
-        for (int i = 0; i < grid.numberOfRows(); i++) {
-            for (int j = 0; j < grid.numberOfColumns(); j++) {
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j < numberOfColumns; j++) {
                 final char current = grid.at(i, j);
 
-                if (current == BOX_SYMBOL) {
-                    newInternalGrid[i][(j << 1)] = SPLIT_BOX_LEFT_SYMBOL;
-                    newInternalGrid[i][(j << 1) + 1] = SPLIT_BOX_RIGHT_SYMBOL;
-                } else if (current == START_SYMBOL) {
-                    newInternalGrid[i][(j << 1)] = START_SYMBOL;
-                    newInternalGrid[i][(j << 1) + 1] = EMPTY_SYMBOL;
-                } else {
-                    newInternalGrid[i][(j << 1)] = current;
-                    newInternalGrid[i][(j << 1) + 1] = current;
+                switch (current) {
+                    case BOX_SYMBOL -> {
+                        newInternalGrid[i][(j << 1)] = SPLIT_BOX_LEFT_SYMBOL;
+                        newInternalGrid[i][(j << 1) + 1] = SPLIT_BOX_RIGHT_SYMBOL;
+                    }
+                    case START_SYMBOL -> {
+                        newInternalGrid[i][(j << 1)] = START_SYMBOL;
+                        newInternalGrid[i][(j << 1) + 1] = EMPTY_SYMBOL;
+                    }
+                    default -> {
+                        newInternalGrid[i][(j << 1)] = current;
+                        newInternalGrid[i][(j << 1) + 1] = current;
+                    }
                 }
             }
         }
