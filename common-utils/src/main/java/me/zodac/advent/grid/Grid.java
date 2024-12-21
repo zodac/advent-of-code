@@ -532,7 +532,7 @@ public class Grid<E> {
         if (withHeaders) {
             log(" | ");
             for (int i = 0; i < internalGrid[0].length; i++) {
-                log((i + 1) % 10);
+                log(i % 10);
             }
 
             logLine("\n" + "-".repeat(internalGrid[0].length) + "---");
@@ -542,7 +542,7 @@ public class Grid<E> {
             final E[] row = internalGrid[i];
 
             if (withHeaders) {
-                log((i + 1) % 10 + "| ");
+                log((i % 10) + "| ");
             }
 
             for (final E val : row) {
