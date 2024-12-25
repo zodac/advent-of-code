@@ -336,7 +336,7 @@ public final class MathUtils {
             final long currentLastRemainingDiff = retrievalFunction.applyAsLong(lastRemainingDiffs);
             final long currentSecondLastRemainingDiff = retrievalFunction.applyAsLong(secondLastRemainingDiffs);
 
-            final long newDiff = operation.apply(currentSecondLastRemainingDiff, currentLastRemainingDiff);
+            final long newDiff = operation.calculate(currentSecondLastRemainingDiff, currentLastRemainingDiff);
             additionConsumer.accept(secondLastRemainingDiffs, newDiff);
         }
 
@@ -344,6 +344,6 @@ public final class MathUtils {
         final long currentLastRemainingDiff = retrievalFunction.applyAsLong(lastRemainingDiffs);
         final long currentLastValue = retrievalFunction.applyAsLong(existingSequence);
 
-        return operation.apply(currentLastValue, currentLastRemainingDiff);
+        return operation.calculate(currentLastValue, currentLastRemainingDiff);
     }
 }

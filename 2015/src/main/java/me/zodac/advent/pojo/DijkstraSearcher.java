@@ -15,7 +15,7 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent.search;
+package me.zodac.advent.pojo;
 
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -27,7 +27,7 @@ import java.util.Queue;
  *
  * @see <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm</a>
  */
-public final class DijkstraSearcher {
+public final class DijkstraSearcher { // TODO: Replace with common implementation
 
     private static final long START_NODE_DISTANCE = 0L;
 

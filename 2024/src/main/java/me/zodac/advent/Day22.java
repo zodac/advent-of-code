@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import me.zodac.advent.math.BitwiseOperation;
 
 /**
  * Solution for 2024, Day 22.
@@ -34,8 +35,8 @@ public final class Day22 {
     private static final int STEP_1_MULTIPLICATION_CONSTANT = 6;  // 2^6 = 64
     private static final int STEP_3_MULTIPLICATION_CONSTANT = 11; // 2^11 = 2048
     private static final int DIVISION_CONSTANT = 32;
-    private static final long PRUNE_CONSTANT = 16777216L;
-    private static final int SECRET_NUMBER_INDEX_TO_FIND = 2000;
+    private static final long PRUNE_CONSTANT = 16_777_216L;
+    private static final int SECRET_NUMBER_INDEX_TO_FIND = 2_000;
 
     // Radix values for part2 speed up
     private static final int DIFF_RADIX = 19;
@@ -136,33 +137,33 @@ public final class Day22 {
     }
 
     private static long step1(final long secretNumber) {
-        final long multiplicationResult = mul(secretNumber, true);
+        final long multiplicationResult = multiply(secretNumber, true);
         final long mixedResult = mix(multiplicationResult, secretNumber);
         return prune(mixedResult);
     }
 
     private static long step2(final long secretNumber) {
-        final long divisionResult = div(secretNumber);
+        final long divisionResult = divide(secretNumber);
         final long mixedResult = mix(divisionResult, secretNumber);
         return prune(mixedResult);
     }
 
     private static long step3(final long secretNumber) {
-        final long multiplicationResult = mul(secretNumber, false);
+        final long multiplicationResult = multiply(secretNumber, false);
         final long mixedResult = mix(multiplicationResult, secretNumber);
         return prune(mixedResult);
     }
 
-    private static long mul(final long input, final boolean isStep1) {
-        return input << (isStep1 ? STEP_1_MULTIPLICATION_CONSTANT : STEP_3_MULTIPLICATION_CONSTANT);
+    private static long multiply(final long input, final boolean isStep1) {
+        return BitwiseOperation.LSHIFT.calculate(input, (isStep1 ? STEP_1_MULTIPLICATION_CONSTANT : STEP_3_MULTIPLICATION_CONSTANT));
     }
 
-    private static long div(final long input) {
+    private static long divide(final long input) {
         return Math.floorDiv(input, DIVISION_CONSTANT);
     }
 
     private static long mix(final long first, final long second) {
-        return first ^ second;
+        return BitwiseOperation.XOR.calculate(first, second);
     }
 
     private static long prune(final long input) {

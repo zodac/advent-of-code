@@ -39,7 +39,7 @@ import me.zodac.advent.util.CollectionUtils;
 /**
  * Utility class used to create a {@link PipeLoop}.
  */
-class PipeLoopFinder {
+class PipeLoopFinder { // TODO: Replace with common implementation?
 
     private static final int EXPECTED_NUMBER_OF_START_POINTS = 1;
 

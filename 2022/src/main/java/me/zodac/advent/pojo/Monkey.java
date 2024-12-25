@@ -110,7 +110,7 @@ public final class Monkey {
         final MathOperation mathOperation;
         final int opValue;
         if (NumberUtils.isInteger(operationString)) {
-            mathOperation = MathOperation.get(matcher.group(4).charAt(0));
+            mathOperation = MathOperation.getBySymbol(matcher.group(4).charAt(0));
             opValue = Integer.parseInt(operationString);
         } else {
             mathOperation = MathOperation.POWER;
@@ -155,7 +155,7 @@ public final class Monkey {
     }
 
     private long calculateNewItemValue(final long lowestCommonMultiple, final long currentItemValue) {
-        long newItemValue = mathOperation.apply(currentItemValue, operand);
+        long newItemValue = mathOperation.calculate(currentItemValue, operand);
 
         if (isWorried) {
             newItemValue = newItemValue / DIVISOR_WHEN_WORRIED;

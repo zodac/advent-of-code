@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import me.zodac.advent.search.SearchNode;
+import me.zodac.advent.pojo.SearchNode;
 
 /**
  * Implementation of {@link SearchNode} that defines each {@link SearchNode} as a round of a battle (pitting a {@link MagePlayer} against a

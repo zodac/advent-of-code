@@ -100,29 +100,42 @@ public enum MathOperation {
     }
 
     /**
-     * Applies this function to the given arguments.
+     * Calculates the value of the given arguments.
      *
      * @param t the first function argument
      * @param u the second function argument
-     * @return the function result
+     * @return the {@link MathOperation} result
      */
-    public long apply(final long t, final long u) {
+    public long calculate(final long t, final long u) {
         return function.apply(t, u);
     }
 
     /**
-     * Retrieve a {@link MathOperation} based on the input.
+     * Retrieve a {@link MathOperation} based on if the input matches the {@link MathOperation#name()}.
      *
      * @param input the potential {@link MathOperation}
-     * @return the matching {@link MathOperation}
-     * @throws IllegalArgumentException thrown if the input {@code char} is not a valid value for any {@link MathOperation}
+     * @return the matching {@link MathOperation}, or {@link MathOperation#INVALID} if none is found
      */
-    public static MathOperation get(final Object input) {
+    public static MathOperation getByName(final String input) {
         return ALL_VALUES
             .stream()
-            .filter(direction -> direction.symbol.equals(String.valueOf(input)))
+            .filter(mathOperation -> mathOperation.name().equalsIgnoreCase(String.valueOf(input)))
             .findAny()
-            .orElseThrow(() -> new IllegalArgumentException(String.format("Invalid %s: '%s'", MathOperation.class.getSimpleName(), input)));
+            .orElse(INVALID);
+    }
+
+    /**
+     * Retrieve a {@link MathOperation} based on if the input matches the {@link MathOperation#symbol}.
+     *
+     * @param input the potential {@link MathOperation}
+     * @return the matching {@link MathOperation}, or {@link MathOperation#INVALID} if none is found
+     */
+    public static MathOperation getBySymbol(final char input) {
+        return ALL_VALUES
+            .stream()
+            .filter(mathOperation -> mathOperation.symbol.equals(String.valueOf(input)))
+            .findAny()
+            .orElse(INVALID);
     }
 
     /**

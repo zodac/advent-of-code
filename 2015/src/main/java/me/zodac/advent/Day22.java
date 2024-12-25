@@ -17,12 +17,12 @@
 
 package me.zodac.advent;
 
+import me.zodac.advent.pojo.DijkstraSearcher;
+import me.zodac.advent.pojo.SearchNode;
 import me.zodac.advent.pojo.rpg.mage.BattleRound;
 import me.zodac.advent.pojo.rpg.mage.MageBoss;
 import me.zodac.advent.pojo.rpg.mage.MagePlayer;
 import me.zodac.advent.pojo.rpg.mage.Spell;
-import me.zodac.advent.search.DijkstraSearcher;
-import me.zodac.advent.search.SearchNode;
 
 /**
  * Solution for 2015, Day 22.

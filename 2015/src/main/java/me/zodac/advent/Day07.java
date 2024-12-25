@@ -19,10 +19,9 @@ package me.zodac.advent;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import me.zodac.advent.pojo.BitwiseOperator;
+import me.zodac.advent.math.BitwiseOperation;
 import me.zodac.advent.pojo.tuple.Pair;
 import me.zodac.advent.util.NumberUtils;
 import me.zodac.advent.util.StringUtils;
@@ -39,10 +38,10 @@ public final class Day07 {
     private static final String EMPTY_OVERRIDE_LABEL = "";
     private static final String EMPTY_OVERRIDE_VALUE = "";
 
-    private final Map<String, Integer> calculatedValuesByLabel;
-    private final Map<? super String, Pair<BitwiseOperator, String>> commandByLabel;
+    private final Map<String, Long> calculatedValuesByLabel;
+    private final Map<? super String, Pair<BitwiseOperation, String>> commandByLabel;
 
-    private Day07(final Map<? super String, Pair<BitwiseOperator, String>> commandByLabel) {
+    private Day07(final Map<? super String, Pair<BitwiseOperation, String>> commandByLabel) {
         calculatedValuesByLabel = new HashMap<>();
         this.commandByLabel = new HashMap<>(commandByLabel);
     }
@@ -54,15 +53,15 @@ public final class Day07 {
      * @return the created {@link Day07} instance
      */
     public static Day07 create(final Collection<String> values) {
-        final Map<String, Pair<BitwiseOperator, String>> commandByLabel = new HashMap<>();
+        final Map<String, Pair<BitwiseOperation, String>> commandByLabel = new HashMap<>();
         for (final String value : values) {
             final String[] commandAndOutputLabel = OUTPUT_PATTERN.split(value, 2);
             final String command = commandAndOutputLabel[0];
 
-            final BitwiseOperator bitwiseOperator = StringUtils.findFirstFullyUpperCaseWord(command)
-                .map(BitwiseOperator::get)
-                .orElse(BitwiseOperator.SET);
-            commandByLabel.put(commandAndOutputLabel[1], Pair.of(bitwiseOperator, command));
+            final BitwiseOperation bitwiseOperation = StringUtils.findFirstFullyUpperCaseWord(command)
+                .map(BitwiseOperation::get)
+                .orElse(BitwiseOperation.INVALID);
+            commandByLabel.put(commandAndOutputLabel[1], Pair.of(bitwiseOperation, command));
         }
 
         return new Day07(commandByLabel);
@@ -74,7 +73,7 @@ public final class Day07 {
      * @param wantedLabel the label of the value to find
      * @return the evaluated value
      */
-    public int evaluate(final String wantedLabel) {
+    public long evaluate(final String wantedLabel) {
         return evaluateWithOverride(wantedLabel, EMPTY_OVERRIDE_LABEL, EMPTY_OVERRIDE_VALUE);
     }
 
@@ -86,25 +85,25 @@ public final class Day07 {
      * @param overrideValue the value to override
      * @return the evaluated value
      */
-    public int evaluateWithOverride(final String wantedLabel, final String overrideLabel, final String overrideValue) {
+    public long evaluateWithOverride(final String wantedLabel, final String overrideLabel, final String overrideValue) {
         if (!EMPTY_OVERRIDE_LABEL.equals(overrideLabel)) {
-            commandByLabel.put(overrideLabel, Pair.of(BitwiseOperator.SET, overrideValue));
+            commandByLabel.put(overrideLabel, Pair.of(BitwiseOperation.INVALID, overrideValue));
         }
 
         return getValue(wantedLabel);
     }
 
-    private int getValue(final String wantedLabel) {
+    private long getValue(final String wantedLabel) {
         if (!calculatedValuesByLabel.containsKey(wantedLabel)) {
-            final int evaluatedCommand = evaluateCommand(wantedLabel);
-            final int valueWithBitMask = evaluatedCommand & BIT_MASK;
+            final long evaluatedCommand = evaluateCommand(wantedLabel);
+            final long valueWithBitMask = evaluatedCommand & BIT_MASK;
             calculatedValuesByLabel.put(wantedLabel, valueWithBitMask);
         }
 
         return calculatedValuesByLabel.get(wantedLabel);
     }
 
-    private int evaluateCommand(final String wantedLabel) {
+    private long evaluateCommand(final String wantedLabel) {
         if (NumberUtils.isInteger(wantedLabel)) {
             return Integer.parseInt(wantedLabel);
         }
@@ -113,14 +112,14 @@ public final class Day07 {
             throw new IllegalStateException(String.format("Expected to find command with label '%s', found nothing", wantedLabel));
         }
 
-        final Pair<BitwiseOperator, String> operatorAndCommand = commandByLabel.get(wantedLabel);
-        final BitwiseOperator bitwiseOperator = operatorAndCommand.first();
+        final Pair<BitwiseOperation, String> operatorAndCommand = commandByLabel.get(wantedLabel);
+        final BitwiseOperation bitwiseOperation = operatorAndCommand.first();
         final String command = operatorAndCommand.second();
         final String[] commandTokens = StringUtils.splitOnWhitespace(command);
 
-        return switch (bitwiseOperator) {
-            case NOT -> bitwiseOperator.calculate(List.of(getValue(commandTokens[1])));
-            case AND, OR, LSHIFT, RSHIFT -> bitwiseOperator.calculate(List.of(getValue(commandTokens[0]), getValue(commandTokens[2])));
+        return switch (bitwiseOperation) {
+            case NOT -> bitwiseOperation.calculate(getValue(commandTokens[1]), 0L);
+            case AND, OR, LSHIFT, RSHIFT -> bitwiseOperation.calculate(getValue(commandTokens[0]), getValue(commandTokens[2]));
             default -> NumberUtils.isInteger(commandTokens[0]) ? Integer.parseInt(commandTokens[0]) : getValue(commandTokens[0]);
         };
     }

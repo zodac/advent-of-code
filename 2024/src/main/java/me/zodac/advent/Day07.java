@@ -82,7 +82,7 @@ public final class Day07 {
                 case "||" -> mathOperation = MathOperation.CONCATENATE;
                 default -> {
                     final long nextValue = Long.parseLong(nextSymbol);
-                    currentTotal = mathOperation.apply(currentTotal, nextValue);
+                    currentTotal = mathOperation.calculate(currentTotal, nextValue);
                 }
             }
         }
