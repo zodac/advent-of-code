@@ -53,8 +53,28 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 
 ## Progress And Ranks
 
-<details>
+<details open>
     <summary>2024 Results</summary>
+
+```mermaid
+---
+config:
+    xyChart:
+        width: 900
+        height: 400
+    themeVariables:
+        xyChart:
+            titleColor: "#F0F76F"
+            xAxisTitleColor: "#F0F76F"
+            yAxisTitleColor: "#F0F76F"
+---
+xychart-beta
+    title "2024 Results"
+    x-axis "Day" [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
+    y-axis "Ranking" 60000 --> 100
+    %% (For reference) line "P1" [2369, 19045, 6666, 6532, 6528, 1686, 5892, 57893, 58016, 2066, 15266, 45080, 42105, 40754, 37374, 60000, 60000, 22587, 7778, 1890, 21025, 60000, 60000, 60000, 60000]
+    line "P2" [2112, 16440, 4855, 4501, 5066, 2576, 5164, 55741, 50640, 5784, 41294, 35116, 37422, 37375, 29170, 60000, 60000, 21997, 6372, 11505, 19375, 60000, 60000, 60000, 60000]
+```
 
 | Day                                            |   Part 1 |   Part 2 |
 |:-----------------------------------------------|---------:|---------:|
