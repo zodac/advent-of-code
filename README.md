@@ -1,6 +1,6 @@
 # Advent Of Code: Java Edition
 
-![2024](https://img.shields.io/badge/2024%20⭐-36-yellow)
+![2024](https://img.shields.io/badge/2024%20⭐-38-yellow)
 ![2023](https://img.shields.io/badge/2023%20⭐-32-yellow)
 ![2022](https://img.shields.io/badge/2022%20⭐-28-yellow)
 ![2021](https://img.shields.io/badge/2021%20⭐-19-orange)
@@ -78,6 +78,11 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 18](https://adventofcode.com/2024/day/18) | 22,587 ⭐ | 21,997 ⭐ |
 | [Day 19](https://adventofcode.com/2024/day/19) |  7,778 ⭐ |  6,372 ⭐ |
 | [Day 20](https://adventofcode.com/2024/day/20) |  1,890 ⭐ | 11,505 ⭐ |
+| [Day 21](https://adventofcode.com/2024/day/21) | 21,025 ⭐ | 19,375 ⭐ |
+| [Day 22](https://adventofcode.com/2024/day/22) |          |          |
+| [Day 23](https://adventofcode.com/2024/day/23) |          |          |
+| [Day 24](https://adventofcode.com/2024/day/24) |          |          |
+| [Day 25](https://adventofcode.com/2024/day/25) |          |          |
 
 </details>
 
@@ -102,6 +107,15 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 14](https://adventofcode.com/2023/day/14) |  2,890 ⭐ |  5,790 ⭐ |
 | [Day 15](https://adventofcode.com/2023/day/15) |  3,486 ⭐ |  3,046 ⭐ |
 | [Day 16](https://adventofcode.com/2023/day/16) |  2,697 ⭐ |  2,557 ⭐ |
+| [Day 17](https://adventofcode.com/2023/day/17) |          |          |
+| [Day 18](https://adventofcode.com/2023/day/18) |          |          |
+| [Day 19](https://adventofcode.com/2023/day/19) |          |          |
+| [Day 20](https://adventofcode.com/2023/day/20) |          |          |
+| [Day 21](https://adventofcode.com/2023/day/21) |          |          |
+| [Day 22](https://adventofcode.com/2023/day/22) |          |          |
+| [Day 23](https://adventofcode.com/2023/day/23) |          |          |
+| [Day 24](https://adventofcode.com/2023/day/24) |          |          |
+| [Day 25](https://adventofcode.com/2023/day/25) |          |          |
 
 </details>
 
@@ -124,6 +138,17 @@ The source code is released under the [BSD Zero Clause License](https://opensour
 | [Day 12](https://adventofcode.com/2022/day/12) |   7,311 ⭐ |   6,766 ⭐ |
 | [Day 13](https://adventofcode.com/2022/day/13) |  14,960 ⭐ |  14,025 ⭐ |
 | [Day 14](https://adventofcode.com/2022/day/14) |  30,919 ⭐ |  30,485 ⭐ |
+| [Day 17](https://adventofcode.com/2022/day/15) |           |           |
+| [Day 17](https://adventofcode.com/2022/day/16) |           |           |
+| [Day 17](https://adventofcode.com/2022/day/17) |           |           |
+| [Day 18](https://adventofcode.com/2022/day/18) |           |           |
+| [Day 19](https://adventofcode.com/2022/day/19) |           |           |
+| [Day 20](https://adventofcode.com/2022/day/20) |           |           |
+| [Day 21](https://adventofcode.com/2022/day/21) |           |           |
+| [Day 22](https://adventofcode.com/2022/day/22) |           |           |
+| [Day 23](https://adventofcode.com/2022/day/23) |           |           |
+| [Day 24](https://adventofcode.com/2022/day/24) |           |           |
+| [Day 25](https://adventofcode.com/2022/day/25) |           |           |
 
 </details>
 
