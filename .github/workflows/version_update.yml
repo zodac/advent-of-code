@@ -66,7 +66,7 @@ jobs:
       - name: Run linters and unit/integration tests
         id: application_tests
         if: env.has_changes == 'true'
-        run: mvn clean install -Dall
+        run: mvn clean install -Dall -T 2C
 
       - name: Commit changes
         id: change_commit
