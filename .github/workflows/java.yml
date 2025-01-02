@@ -5,6 +5,7 @@ on:
     branches: [ master ]
     paths-ignore:
       - '.github/workflows/doc.yml'
+      - '.github/workflows/license_update.yml'
       - '.github/workflows/version_update.yml'
       - 'ci/doc/**'
       - 'create.sh'
