@@ -41,7 +41,7 @@
         <branch-coverage>0.0</branch-coverage>
 
         <!-- Test 3PP Versions -->
-        <assertj-core.version>3.27.0</assertj-core.version>
+        <assertj-core.version>3.27.1</assertj-core.version>
         <junit-bom.version>5.11.4</junit-bom.version>
 
         <!-- Plugin Versions -->
@@ -56,13 +56,13 @@
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
         <!-- Linter 3PP Versions -->
-        <checkstyle.version>10.21.0</checkstyle.version>
+        <checkstyle.version>10.21.1</checkstyle.version>
         <error_prone_core.version>2.36.0</error_prone_core.version>
         <jspecify.version>1.0.0</jspecify.version>
         <licenses.version>1</licenses.version>
         <nullaway.version>0.12.2</nullaway.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
-        <pmd.version>7.8.0</pmd.version>
+        <pmd.version>7.9.0</pmd.version>
         <spotbugs.version>4.8.6</spotbugs.version>
 
         <!-- Linter Plugin Versions -->
