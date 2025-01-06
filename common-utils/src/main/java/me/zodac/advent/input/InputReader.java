@@ -366,40 +366,6 @@ public final class InputReader {
         }
 
         /**
-         * Groups the {@code stream} of lines into {@link List}s, where each group has a size of {@code sizeOfGroup}.
-         *
-         * @param sizeOfGroup the size of the groups
-         * @return the group of {@link List}s of lines of the output type
-         */
-        public List<List<T>> bySize(final int sizeOfGroup) {
-            final List<? extends T> list = stream.toList();
-            final List<List<T>> groups = new ArrayList<>();
-            final int sizeOfList = list.size();
-            List<T> currentGroup = new ArrayList<>();
-            currentGroup.add(list.getFirst());
-
-            for (int i = 1; i < sizeOfList; i++) {
-                final T line = list.get(i);
-
-                if (i % sizeOfGroup == 0) {
-                    if (!currentGroup.isEmpty()) {
-                        groups.add(currentGroup);
-                    }
-                    currentGroup = new ArrayList<>();
-                    currentGroup.add(line);
-                } else {
-                    currentGroup.add(line);
-                }
-            }
-
-            // Add last group if not empty
-            if (!currentGroup.isEmpty()) {
-                groups.add(currentGroup);
-            }
-            return groups;
-        }
-
-        /**
          * Groups the {@code stream} of lines into {@link List}s, where each group is a split that is delimited when the provided
          * {@link Predicate} is met.
          *

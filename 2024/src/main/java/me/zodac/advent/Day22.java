@@ -87,8 +87,9 @@ public final class Day22 {
 
             final Collection<Long> existingDiffs = new HashSet<>();
 
+            final int numberOfPrices = prices.size();
             long runningDiff = 0L;
-            for (int i = 1; i < prices.size(); i++) {
+            for (int i = 1; i < numberOfPrices; i++) {
                 // Diff calculated based on following logic, gives a concise value for the diff that can be used for comparisons
                 // https://github.com/p-kovacs/advent-of-code-2024/blob/master/src/main/java/com/github/pkovacs/aoc/y2024/Day22.java#L33
                 runningDiff = (runningDiff % DIFF_RADIX_CUBED) * DIFF_RADIX + (prices.get(i) - prices.get(i - 1) + DIFF_RADIX_OFFSET);
@@ -169,5 +170,4 @@ public final class Day22 {
     private static long prune(final long input) {
         return input % PRUNE_CONSTANT;
     }
-
 }
