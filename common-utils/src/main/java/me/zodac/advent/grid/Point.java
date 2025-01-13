@@ -128,6 +128,32 @@ public record Point(int x, int y) implements Comparable<Point> {
     }
 
     /**
+     * Returns the {@link Direction} between the current {@link Point} and the provided {@link Point}.
+     *
+     * <p>
+     * If the two {@link Point}s are more than a single unit of distance away in any {@link Direction}, {@link Direction#INVALID} will be returned.
+     *
+     * @param other the other {@link Point}
+     * @return the {@link Direction} to the other {@link Point}
+     */
+    public Direction directionTo(final Point other) {
+        final int deltaX = other.x - x;
+        final int deltaY = other.y - y;
+
+        return switch (deltaX + "," + deltaY) {
+            case "0,1" -> Direction.RIGHT;
+            case "0,-1" -> Direction.LEFT;
+            case "1,0" -> Direction.DOWN;
+            case "-1,0" -> Direction.UP;
+            case "1,1" -> Direction.DOWN_RIGHT;
+            case "1,-1" -> Direction.DOWN_LEFT;
+            case "-1,1" -> Direction.UP_RIGHT;
+            case "-1,-1" -> Direction.UP_LEFT;
+            default -> Direction.INVALID;
+        };
+    }
+
+    /**
      * Calculates the Manhattan distance between this {@link Point} and another. The Manhattan distance can be considered as how many spaces up/down
      * and left/right between the {@link Point}s
      *

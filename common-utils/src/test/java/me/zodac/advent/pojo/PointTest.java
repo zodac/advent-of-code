@@ -142,20 +142,37 @@ class PointTest {
 
     @ParameterizedTest
     @MethodSource("provideForDeltaTo")
-    void testDeltaTo(final Point first, final Point second, final int deltaX, final int deltaY) {
+    void testDeltaTo(final Point first, final Point second, final int expectedDeltaX, final int expectedDeltaY) {
         final Pair<Integer, Integer> delta = first.deltaTo(second);
         assertThat(delta.first())
-            .isEqualTo(deltaX);
+            .isEqualTo(expectedDeltaX);
         assertThat(delta.second())
-            .isEqualTo(deltaY);
+            .isEqualTo(expectedDeltaY);
     }
 
     private static Stream<Arguments> provideForDeltaTo() {
         return Stream.of(
-            Arguments.of(Point.of(0, 0), Point.of(1, 1), 1, 1), // Second greater than first
+            Arguments.of(Point.of(0, 0), Point.of(1, 1), 1, 1),     // Second greater than first
             Arguments.of(Point.of(0, 0), Point.of(-1, -1), -1, -1), // Second less than first
-            Arguments.of(Point.of(0, 0), Point.of(-1, 1), -1, 1), // Second mixed greater/less than first
-            Arguments.of(Point.of(5, 5), Point.of(5, 5), 0, 0) // Second equal to first
+            Arguments.of(Point.of(0, 0), Point.of(-1, 1), -1, 1),   // Second mixed greater/less than first
+            Arguments.of(Point.of(5, 5), Point.of(5, 5), 0, 0)      // Second equal to first
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForDirectionTo")
+    void testDirectionTo(final Point first, final Point second, final Direction expectedDirection) {
+        final Direction direction = first.directionTo(second);
+        assertThat(direction)
+            .isEqualTo(expectedDirection);
+    }
+
+    private static Stream<Arguments> provideForDirectionTo() {
+        return Stream.of(
+            Arguments.of(Point.of(0, 0), Point.of(0, 1), Direction.RIGHT),      // Cardinal
+            Arguments.of(Point.of(0, 0), Point.of(-1, -1), Direction.UP_LEFT),  // Diagonal
+            Arguments.of(Point.of(0, 0), Point.of(0,0), Direction.INVALID),     // Invalid
+            Arguments.of(Point.of(5, 5), Point.of(5, 5), Direction.INVALID)     // Multiple
         );
     }
 
