@@ -171,7 +171,7 @@ class PointTest {
         return Stream.of(
             Arguments.of(Point.of(0, 0), Point.of(0, 1), Direction.RIGHT),      // Cardinal
             Arguments.of(Point.of(0, 0), Point.of(-1, -1), Direction.UP_LEFT),  // Diagonal
-            Arguments.of(Point.of(0, 0), Point.of(0,0), Direction.INVALID),     // Invalid
+            Arguments.of(Point.of(0, 0), Point.of(0, 0), Direction.INVALID),     // Invalid
             Arguments.of(Point.of(5, 5), Point.of(5, 5), Direction.INVALID)     // Multiple
         );
     }
