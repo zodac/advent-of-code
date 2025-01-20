@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>me.zodac</groupId>
+        <groupId>net.zodac</groupId>
         <artifactId>advent-of-code</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -22,7 +22,7 @@
     <dependencies>
         <!-- Project Dependencies -->
         <dependency>
-            <groupId>me.zodac</groupId>
+            <groupId>net.zodac</groupId>
             <artifactId>common-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
