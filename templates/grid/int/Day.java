@@ -1,7 +1,7 @@
 /*
  * BSD Zero Clause License
  *
- * Copyright (c) 2021-2025 zodac.me
+ * Copyright (c) 2021-2025 zodac.net
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted.
@@ -15,9 +15,9 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package me.zodac.advent;
+package net.zodac.advent;
 
-import me.zodac.advent.grid.Grid;
+import net.zodac.advent.grid.Grid;
 
 /**
  * Solution for %YEAR%, Day %DAY%.
