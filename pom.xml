@@ -41,7 +41,7 @@
         <branch-coverage>0.0</branch-coverage>
 
         <!-- Test 3PP Versions -->
-        <assertj-core.version>3.27.1</assertj-core.version>
+        <assertj-core.version>3.27.3</assertj-core.version>
         <junit-bom.version>5.11.4</junit-bom.version>
 
         <!-- Plugin Versions -->
@@ -56,21 +56,21 @@
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
         <!-- Linter 3PP Versions -->
-        <checkstyle.version>10.21.1</checkstyle.version>
+        <checkstyle.version>10.21.2</checkstyle.version>
         <error_prone_core.version>2.36.0</error_prone_core.version>
         <jspecify.version>1.0.0</jspecify.version>
         <licenses.version>1</licenses.version>
-        <nullaway.version>0.12.2</nullaway.version>
+        <nullaway.version>0.12.3</nullaway.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
-        <pmd.version>7.9.0</pmd.version>
-        <spotbugs.version>4.8.6</spotbugs.version>
+        <pmd.version>7.10.0</pmd.version>
+        <spotbugs.version>4.9.0</spotbugs.version>
 
         <!-- Linter Plugin Versions -->
         <license-maven-plugin.version>4.6</license-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
         <maven-pmd-plugin.version>3.26.0</maven-pmd-plugin.version>
-        <pitest-maven.version>1.17.3</pitest-maven.version>
+        <pitest-maven.version>1.17.4</pitest-maven.version>
         <sonar-maven-plugin.version>5.0.0.4389</sonar-maven-plugin.version>
         <spotbugs-maven-plugin.version>4.8.6.6</spotbugs-maven-plugin.version>
 
