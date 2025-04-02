@@ -18,8 +18,9 @@
 package net.zodac.advent.json;
 
 /**
- * Marker interface defining a JSON element.
+ * {@link FunctionalInterface} defining a JSON element.
  */
+@FunctionalInterface
 public interface JsonElement extends Comparable<JsonElement> {
 
 }
