@@ -42,10 +42,10 @@
 
         <!-- Test 3PP Versions -->
         <assertj-core.version>3.27.3</assertj-core.version>
-        <junit-bom.version>5.13.0</junit-bom.version>
+        <junit-bom.version>5.13.2</junit-bom.version>
 
         <!-- Plugin Versions -->
-        <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+        <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
@@ -56,23 +56,23 @@
         <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
         <!-- Linter 3PP Versions -->
-        <checkstyle.version>10.25.0</checkstyle.version>
-        <error_prone_core.version>2.38.0</error_prone_core.version>
+        <checkstyle.version>10.26.1</checkstyle.version>
+        <error_prone_core.version>2.39.0</error_prone_core.version>
         <jspecify.version>1.0.0</jspecify.version>
         <licenses.version>1</licenses.version>
         <nullaway.version>0.12.7</nullaway.version>
         <pitest-junit5-plugin.version>1.2.3</pitest-junit5-plugin.version>
-        <pmd.version>7.14.0</pmd.version>
+        <pmd.version>7.15.0</pmd.version>
         <spotbugs.version>4.9.3</spotbugs.version>
 
         <!-- Linter Plugin Versions -->
         <license-maven-plugin.version>5.0.0</license-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
-        <maven-pmd-plugin.version>3.26.0</maven-pmd-plugin.version>
-        <pitest-maven.version>1.19.4</pitest-maven.version>
+        <maven-pmd-plugin.version>3.27.0</maven-pmd-plugin.version>
+        <pitest-maven.version>1.20.0</pitest-maven.version>
         <sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
-        <spotbugs-maven-plugin.version>4.9.3.0</spotbugs-maven-plugin.version>
+        <spotbugs-maven-plugin.version>4.9.3.2</spotbugs-maven-plugin.version>
 
         <!-- Linter Properties -->
         <!--suppress UnresolvedMavenProperty, files are only used in child modules -->
